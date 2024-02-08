@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function () {
      * --------- Rutas para el usuario de los clientes
     ******************************************************
     *****************************************************/
-    require base_path('routes/modules/CustomerRole.php');
+    require base_path('routes/modules/customerRole.php');
 
 });
 
