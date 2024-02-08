@@ -43,14 +43,14 @@
             <!-- Filtros -->
             <div class="collapse card-border" id="buscar">
                 <form method="GET" id="frmBuscar" action="">
-                    @include('modules.Customers.Partials.formFilter', [
+                    @include('modules.customers.partials.formFilter', [
                         'provider' =>true,
                         'customer' => true,
                     ])
                 </form>
             </div>
 
-            @include('modules.Shared.servicesList', [
+            @include('modules.shared.servicesList', [
                 'services'          => $customerServices,
                 'module'            => 'customers',
                 'provider'          => true,
@@ -62,7 +62,7 @@
     @endcomponent
 
     {{-- modal servicio--}}
-    @include('modules.Shared.serviceForm', [
+    @include('modules.shared.serviceForm', [
         'module' => 'customers',
         'customer' => true
     ])
