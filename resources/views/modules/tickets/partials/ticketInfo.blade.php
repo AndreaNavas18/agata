@@ -34,7 +34,7 @@
         <tr class="border-bottom">
             <td>Estado</td>
             <td class="text-right">
-                <span class="badge {{ $ticket->state=='Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
+                <span class="badge {{ $ticket->state=='ABIERTO' ? 'bg-danger' : 'bg-success' }} rounded-pill">
                     {{ $ticket->state }}
                 </span>
             </td>

@@ -221,7 +221,7 @@
             <span class="badge {{ $ticket->priority->color }}">
                 {{ $ticket->priority->name }}
             </span>
-            <span class="badge {{ $ticket->state=='Abierto' ? 'bg-danger' : 'bg-success' }}">
+            <span class="badge {{ $ticket->state=='ABIERTO' ? 'bg-danger' : 'bg-success' }}">
                 {{ $ticket->state }}
             </span>
         </div>
@@ -273,7 +273,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if ($ticket->state=='Abierto')
+                        @if ($ticket->state=='ABIERTO')
                             <div class="flex-grow-0 py-3 px-4 border-top">
                                 <div class="d-flex align-items-center py-1">
                                     <div class="position-relative">
