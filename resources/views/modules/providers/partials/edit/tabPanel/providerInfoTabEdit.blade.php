@@ -35,7 +35,7 @@
                     'showButtons' => $loop->last ? true : false,
                     'numeroContacto' => $totalContactos,
                     'contact' => $contact,
-                    'route' => route('providers.contacts.destroy', $contact->id)
+                    'route' => 'providers.contacts.destroy'
                 ])
             @endforeach
         @else

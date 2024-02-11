@@ -7,7 +7,6 @@
         ])
     </div>
 
-
     {{-- Contactos titulo--}}
     <h4><strong>Contactos agregados</strong></h4>
     {{-- Contactos agregados--}}

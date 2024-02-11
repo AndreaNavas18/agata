@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    @include('modules.Tickets.Partials.ticketsList', [
+    @include('modules.tickets.partials.ticketsList', [
         'tickets'           => $tickets,
         'provider'          => true,
         'customer'          => false,

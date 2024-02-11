@@ -164,6 +164,14 @@ class ProviderServiceController extends Controller
         ));
     }
 
+    // public function showService($id) {
+    //     $service= CustomerService::findOrFail($id);
+
+    //     return view('modules.customers.services.show', compact(
+    //         'service',
+    //     ));
+    // }
+
     /**
      * Display the specified resource.
      *

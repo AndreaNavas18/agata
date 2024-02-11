@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Submodules;
 
 use App\Http\Controllers\Controller;
-use App\Models\permissions\Permission;
+use App\Models\Permissions\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Submodules\Submodule;
@@ -80,10 +80,12 @@ class SubmoduleController extends Controller
     public function destroy($id)
     {
         $permission = Permission::where('submodule_id', $id)->get();
-        if ($permission && $permission->count() > 0)
+        if ($permission && $permission->count() > 0){
+
             Alert::error('Error', 'Cannot remove this submodule because there are permissions that make use of this');
 
             return redirect()->back();
+        } 
 
         DB::beginTransaction();
         if (!Submodule::findOrFail($id)->delete()) {

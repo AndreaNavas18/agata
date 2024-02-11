@@ -190,36 +190,76 @@ class ProviderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function update(Request $request, $id)
+    // {
+    //     DB::beginTransaction();
+    //     $customer= Customer::findOrFail($id);
+    //     $customer->type_document_id     = $request->type_document_id;
+    //     $customer->identification       = $request->identification;
+    //     $customer->name                 = $request->name;
+    //     $customer->address              = $request->address;
+    //     $customer->phone                = $request->phone;
+    //     $customer->city_id              = $request->city_id;
+    //     $customer->observations         = $request->observations;
+    //     $customer->state_id             = 1;
+    //     if (!$customer->save()) {
+    //         DB::rollBack();
+    //         Alert::error('Error', 'Error al actualizar el registro.');
+    //         return redirect()->back();
+    //     }
+
+    //     CustomerContact::customerId($id)->delete();
+    //     //guardar contactos
+    //     foreach ($request->type_contact_id as $key => $value) {
+    //         $customerContact= new CustomerContact();
+    //         $customerContact->type_contact_id       = $value;
+    //         $customerContact->city_id               = $request->city_contact_id[$key];
+    //         $customerContact->name                  = $request->name_contact[$key];
+    //         $customerContact->home_phone            = $request->home_phone_contact[$key];
+    //         $customerContact->cell_phone            = $request->cell_phone_contact[$key];
+    //         $customerContact->email                 = $request->email_contact[$key];
+    //         $customerContact->customer_id           = $customer->id;
+    //         if (!$customerContact->save()) {
+    //             DB::rollBack();
+    //             Alert::error('Error', 'Error al actualizar el registro.');
+    //             return redirect()->back();
+    //         }
+    //     }
+
+    //     DB::commit();
+    //     Alert::success('Success!', 'Registro actualizado correctamente');
+    //     return redirect()->route('providers.index');
+    // }
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-        $customer= Customer::findOrFail($id);
-        $customer->type_document_id     = $request->type_document_id;
-        $customer->identification       = $request->identification;
-        $customer->name                 = $request->name;
-        $customer->address              = $request->address;
-        $customer->phone                = $request->phone;
-        $customer->city_id              = $request->city_id;
-        $customer->observations         = $request->observations;
-        $customer->state_id             = 1;
-        if (!$customer->save()) {
+        $provider= Provider::findOrFail($id);
+        $provider->type_document_id     = $request->type_document_id;
+        $provider->identification       = $request->identification;
+        $provider->name                 = $request->name;
+        $provider->address              = $request->address;
+        $provider->phone                = $request->phone;
+        $provider->city_id              = $request->city_id;
+        $provider->observations         = $request->observations;
+        $provider->state_id             = 1;
+        if (!$provider->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al actualizar el registro.');
             return redirect()->back();
         }
 
-        CustomerContact::customerId($id)->delete();
+        ProviderContact::providerId($id)->delete();
         //guardar contactos
         foreach ($request->type_contact_id as $key => $value) {
-            $customerContact= new CustomerContact();
-            $customerContact->type_contact_id       = $value;
-            $customerContact->city_id               = $request->city_contact_id[$key];
-            $customerContact->name                  = $request->name_contact[$key];
-            $customerContact->home_phone            = $request->home_phone_contact[$key];
-            $customerContact->cell_phone            = $request->cell_phone_contact[$key];
-            $customerContact->email                 = $request->email_contact[$key];
-            $customerContact->customer_id           = $customer->id;
-            if (!$customerContact->save()) {
+            $providerContact= new ProviderContact();
+            $providerContact->type_contact_id       = $value;
+            $providerContact->city_id               = $request->city_contact_id[$key];
+            $providerContact->name                  = $request->name_contact[$key];
+            $providerContact->home_phone            = $request->home_phone_contact[$key];
+            $providerContact->cell_phone            = $request->cell_phone_contact[$key];
+            $providerContact->email                 = $request->email_contact[$key];
+            $providerContact->provider_id           = $provider->id;
+            if (!$providerContact->save()) {
                 DB::rollBack();
                 Alert::error('Error', 'Error al actualizar el registro.');
                 return redirect()->back();
@@ -239,7 +279,25 @@ class ProviderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //karen
+        try {
+            DB::beginTransaction();
+            if (!Provider::findOrFail($id)->delete()) {
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DB::commit();
+            Alert::success('Success!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
     }
 
       /**

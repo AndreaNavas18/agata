@@ -10,7 +10,6 @@
 	    'breadcrumb' => 'providers/show',
         'dataBreadcrumb' => ['id' => $provider->id] ])
 
-
         {{-- tabs--}}
         @include('modules.providers.partials.tab',[
             'urlnfo' => route('providers.show',$provider->id),
@@ -22,4 +21,5 @@
         @include('modules.providers.partials.show.tabPanel.'.$tabPanel)
 
     @endcomponent
+    <h1>hola</h1>
 @endsection
