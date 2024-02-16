@@ -188,17 +188,18 @@
 					<div class="tab-menu-heading siderbar-tabs border-0  p-0">
 						<div class="tabs-menu ">
 							<!-- Tabs -->
+							@if(Auth()->check() && Auth()->user()->role_id != 2)
 							<ul class="nav panel-tabs">
 								<li>
                                     <a href="{{ route('home') }}" class="loading">
                                         <i class="fa fa-home fs-17"></i>
                                     </a>
                                 </li>
-								<li>
+								{{-- <li>
                                     <a href="{{ route('users.show', \Auth()->user()->id ) }}">
                                         <i class="fa fa-envelope fs-17"></i>
                                     </a>
-                                </li>
+                                </li> --}}
 								<li>
                                     <a href="{{ route('users.show', \Auth()->user()->id ) }}">
                                         <i class="fa fa-user fs-17"></i>
@@ -210,12 +211,38 @@
                                     </a>
                                 </li>
 							</ul>
+							@else 
+								<ul class="nav panel-tabs">
+									<li>
+										<a href="{{ route('customer.home') }}" class="loading">
+											<i class="fa fa-home fs-17"></i>
+										</a>
+									</li>
+									{{-- <li>
+										<a href="{{ route('users.show', \Auth()->user()->id ) }}">
+											<i class="fa fa-envelope fs-17"></i>
+										</a>
+									</li> --}}
+									<li>
+										<a href="{{ route('users.show', \Auth()->user()->id ) }}">
+											<i class="fa fa-user fs-17"></i>
+										</a>
+									</li>
+									<li>
+										<a href="{{ route('logout') }}" title="logout">
+											<i class="fa fa-power-off fs-17"></i>
+										</a>
+									</li>
+								</ul>
+
+							@endif
 						</div>
 					</div>
 					<div class="panel-body tabs-menu-body side-tab-body p-0 border-0 ">
 						<div class="tab-content">
 							<div class="tab-pane active " id="index1">
-                                @if(!is_null(Auth()->user()->customer_id))
+								{{-- karen --}}
+                                @if(Auth()->check() && Auth()->user()->role_id == 2)
                                     @component('componentes.sidebar_customer')
                                     @endcomponent
                                 @else()

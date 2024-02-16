@@ -8,6 +8,10 @@ use App\Models\Employees\Employee;
 use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
+
+
 
 class HomeController extends Controller
 {
@@ -28,11 +32,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->role_id==2){
-            DB::rollBack();
-            Alert::error('Error', 'No tienes acceso para ingresar.');
-            return redirect()->back();
-        }
+        // if(auth()->user()->role_id==2){
+        //     DB::rollBack();
+        //     Alert::error('Error', 'No tienes acceso para ingresar.');
+        //     return redirect()->back();
+        // }
 
         $ticketsOpen=Ticket::state('Abierto')->count();
         $ticketsClosed=Ticket::state('Cerrado')->count();

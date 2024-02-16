@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Parameters\General;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\General\Country;
+use App\Models\Tickets\GeneralTypesPriority;
+use App\Models\Tickets\TicketPriority;
 use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class GeneralCountryController extends Controller
+class GeneralTypePriorityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +19,13 @@ class GeneralCountryController extends Controller
      */
     public function index()
     {
-        $datos = Country::orderBy('name')->paginate();
-        return view('modules.parameters.general.countries.index', compact('datos'));
+        $datos = GeneralTypesPriority::orderBy('name')->paginate();
+        //Prioridades ALTA<MEDIA<BAJA
+        $prioritiesList = TicketPriority::all();
+        //Motivos de solicitud
+        $typesPrioritiesList = GeneralTypesPriority::all();
+        return view('modules.parameters.general.typePriorities.index', 
+        compact('datos','prioritiesList','typesPrioritiesList'));	
     }
 
     /**
@@ -31,10 +37,13 @@ class GeneralCountryController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        $request->validate(['name' => 'required|max:100']);
-        $country= new Country();
-        $country->name= $request->name;
-        if (!$country->save()) {
+        $request->validate(['name' => 'required|max:100', 'ticket_priority_id' => 'required']);
+        
+        $typePriority= new GeneralTypesPriority();
+        $typePriority->name= $request->name;
+        $typePriority->id_ticket_priority = $request->ticket_priority_id;
+        
+        if (!$typePriority->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');
             return redirect()->back();
@@ -55,21 +64,25 @@ class GeneralCountryController extends Controller
     {
         DB::beginTransaction();
 
-        $request->validate(['name' => 'required|max:100']);
-        $name = $request->input('name');
+        $request->validate(
+            ['name' => 'required|max:100', 
+            'ticket_priority_id' => 'required']);
+        $name = $request->name;
+        $ticketPriorityId = $request->ticket_priority_id;
 
         //validaciones
-        $country = Country::findOrFail($id);
-        $countryNew = Country::where('name', $name)->first();
+        $typePriority = GeneralTypesPriority::findOrFail($id);
+        $typePriorityNew = GeneralTypesPriority::where('name', $name)->first();
 
-        if ($countryNew && $countryNew->name != $country->name) {
+        if ($typePriorityNew && $typePriorityNew->name != $typePriority->name) {
             Alert::warning('Warning', 'El nombre '. $name .' esta en uso.');
             return redirect()->back();
         }
 
-        $country->name = $name;
+        $typePriority->name = $name;
+        $typePriority->id_ticket_priority = $ticketPriorityId;
 
-        if (!$country->save()) {
+        if (!$typePriority->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al actualizar registro.');
             return redirect()->back();
@@ -89,7 +102,7 @@ class GeneralCountryController extends Controller
     {
         try {
             DB::beginTransaction();
-            if (!Country::findOrFail($id)->delete()) {
+            if (!GeneralTypesPriority::findOrFail($id)->delete()) {
                 Alert::error('Error', 'Error al eliminar registro.');
                 return redirect()->back();
             }
@@ -105,6 +118,7 @@ class GeneralCountryController extends Controller
                 return redirect()->back();
             }
         }
+
     }
 
     /**
@@ -115,9 +129,9 @@ class GeneralCountryController extends Controller
      */
     public function search(Request $request)
     {
-        $datos = Country::name($request->input('name'))->orderBy('name')->paginate();
+        $datos = GeneralTypesPriority::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
-        return view('modules.parameters.general.countries.index', compact('datos','data'));
+        return view('modules.parameters.general.typePriorities.index', compact('datos','data'));
     }
 
 }

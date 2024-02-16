@@ -12,8 +12,19 @@ use App\Models\Helpers;
 class Ticket extends BaseModel {
 
 	protected $table = 'tickets';
-	protected $fillable = [];
+	protected $fillable = ['consecutive'];
 	protected $guarded = [];
+
+    // Definir el evento creating para generar el consecutivo
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            // Generar el consecutivo
+            $ticket->consecutive = 'STR-' . now()->format('dmy') . '-' . (static::count() + 1);
+        });
+    }
 
 
     /* *************************************************************

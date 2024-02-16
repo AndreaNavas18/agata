@@ -16,6 +16,7 @@ use App\Http\Controllers\Parameters\General\GeneralCityController;
 use App\Http\Controllers\Parameters\General\GeneralCountryController;
 use App\Http\Controllers\Parameters\General\GeneralDepartmentController;
 use App\Http\Controllers\Parameters\General\GeneralServiceController;
+use App\Http\Controllers\Parameters\General\GeneralTypePriorityController;
 use App\Http\Controllers\Parameters\General\GeneralTypeContactController;
 use App\Http\Controllers\Parameters\General\GeneralTypeDocumentController;
 use App\Http\Controllers\Parameters\ParameterController;
@@ -269,6 +270,24 @@ Route::namespace('Parameters\General')->name('params.general.')->group(function 
 		->where('id', '[0-9]+');
 
 	Route::delete('/parametros/general/tipos-documentos/eliminar/{id}', [GeneralTypeDocumentController::class, 'destroy'])->name('types_documents.destroy')
+		->where('id', '[0-9]+');
+
+	
+	/*
+    |-----------------------------------
+    | Motivos de solicitud
+    |-----------------------------------
+    */
+    Route::get('/parametros/general/tipos-prioridades', [GeneralTypePriorityController::class, 'index'])->name('types_priorities');
+
+    Route::get('/parametros/general/tipos-prioridades/buscar', [GeneralTypePriorityController::class, 'search'])->name('types_priorities.search');
+
+	Route::post('/parametros/general/tipos-prioridades/crear',[GeneralTypePriorityController::class, 'store'])->name('types_priorities.store');
+
+	Route::put('/parametros/general/tipos-prioridades/editar/{id}',[GeneralTypePriorityController::class, 'update'])->name('types_priorities.update')
+		->where('id', '[0-9]+');
+
+	Route::delete('/parametros/general/tipos-prioridades/eliminar/{id}', [GeneralTypePriorityController::class, 'destroy'])->name('types_priorities.destroy')
 		->where('id', '[0-9]+');
 
 });

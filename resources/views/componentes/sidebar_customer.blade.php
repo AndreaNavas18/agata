@@ -13,6 +13,8 @@
         </a>
     </li> --}}
 
+    {{-- karen --}}
+
     <li>
         <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
             <i class="side-menu__icon fas fa-ticket-alt"></i>

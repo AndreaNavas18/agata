@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if(Auth()->user()->role_id != 2)
     <div class="page-header">
         <ol class="breadcrumb"><!-- breadcrumb -->
             <li class="breadcrumb-item"><a href="#">Inicio</a></li>
@@ -102,4 +103,9 @@
             </div>
         </div><!-- col end -->
     </div>
+    @else
+    {{-- Contenido específico para el rol_id = 2 --}}
+    @include('customerRole.home')
+
+@endif
 @endsection

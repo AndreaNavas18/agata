@@ -8,13 +8,13 @@
 			else { openLoader(); }
 		});
 	</script>
+   
 @endpush
 @section('content')
 	@component('componentes.card',
 	['shadow' => true,
 	'title' => 'Tickets',
 	'breadcrumb' => 'tickets'])
-
         <!-- Acciones -->
         @slot('header')
             @can('tickets_ver')
@@ -52,7 +52,9 @@
             <div class="collapse card-border" id="buscar">
                 <form class="form-inline"
                     action="{{ route('tickets.search') }}"
-                    method="GET">
+                    method="GET"
+                    id="formSearch">
+                    
                     @include('modules.tickets.partials.formFilter', [
                         'customer' => true,
                         'provider' => true,

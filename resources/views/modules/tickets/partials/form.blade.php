@@ -11,7 +11,7 @@
             value="{{ isset($ticket) ? $ticket->ticket_issue : '' }}"
             required>
     </div>
-
+    @if(Auth()->user()->role_id!=2)
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
             'title' => 'Prioridad',
@@ -33,6 +33,31 @@
             @endforeach
         </select>
     </div>
+    @elseif(Auth()->user()->role_id==2)
+        <div class="col-md-6 mb-3">
+            @component('componentes.label', [
+                'title' => 'Motivo de solicitud',
+                'id' => 'priority_id ',
+                'required' => true])
+            @endcomponent
+            <select class="form-control"
+                name="priority_id"
+                id="priority_id"
+                required>
+                <option value="">--Seleccione--</option>
+                @foreach($prioritiesList as $priorityRow)
+                    <option value="{{ $priorityRow->id }}"
+                        {{ isset($ticket) &&
+                            $ticket->priority_id  == $priorityRow->id
+                            ? 'selected' : '' }}>
+                        {{ $priorityRow->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        
+
+    @endif
 
 
     @if(Auth()->user()->role_id!=2)
@@ -114,6 +139,7 @@
             'id' => 'customer_service_id',
             'required' => true])
         @endcomponent
+
         <select class="form-control
             selectpicker"
             name="customer_service_id"
@@ -130,7 +156,10 @@
                     </option>
                 @endforeach
             @endif
+            
         </select>
+
+        
     </div>
 
     <div class="col-md-6 mb-3">

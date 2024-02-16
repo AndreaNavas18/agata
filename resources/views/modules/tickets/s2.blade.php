@@ -161,7 +161,7 @@
                 </a>
             </li>
             <li class="breadcrumb-item"><a href="{{ route('tickets.index') }}">Tickets</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Gestionar ticket</li>
+            <li class="breadcrumb-item active" aria-current="page">Ver ticket</li>
         </ol><!-- End breadcrumb -->
         <div class="ml-auto">
             <a href="{{ route('tickets.show', $ticket->id) }}"
@@ -275,7 +275,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if ($ticket->state=='ABIERTO')
+                        @if ($ticket->state=='u')
                             <div class="flex-grow-0 py-3 px-4 border-top">
                                 <div class="d-flex align-items-center py-1">
                                     <div class="position-relative">

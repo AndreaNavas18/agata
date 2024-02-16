@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Servicios Stratecsa')
+@section('title', 'Motivos de Solicitud Stratecsa')
 @push('script')
 	<script>
 		$('form.frmEliminar').submit(function(e) {
@@ -11,14 +11,14 @@
 @section('content')
 	@component('componentes.card', [
         'shadow' => true,
-        'title' => 'Servicios Stratecsa',
-        'breadcrumb' => 'parameters/general/services'])
+        'title' => 'Motivos de Solicitud',
+        'breadcrumb' => 'parameters/general/types_priorities'])
 
         <!-- Acciones -->
         @slot('header')
 
             <a class="btn btn-primary btn-sm loading"
-                href="{{ route('params.general.services') }}">
+                href="{{ route('params.general.types_priorities') }}">
                 <i class="fas fa-sync-alt"></i> Refrescar
             </a>
 
@@ -43,7 +43,7 @@
         <div class="collapse card-border" id="buscar">
             <form method="GET"
                 id="formSearch"
-                action="{{ route('params.general.services.search') }}">
+                action="{{ route('params.general.types_priorities.search') }}">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 mb-4">
                         <input class="form-control mr-2"
@@ -70,6 +70,7 @@
                 @component('componentes.table')
                     @slot('thead')
                         <th>Nombre</th>
+                        <th>Prioridad</th>
                         <th></th>
                     @endslot
                     @slot('tbody')
@@ -77,6 +78,14 @@
                             <tr>
                                 <td>
                                     {{ $row->name }}
+                                </td>
+                                <td>
+                                    @if ($row->ticketPriority)
+                                        {{ $row->ticketPriority->name }}
+                                    @else
+                                        Sin prioridad asignada
+                                    @endif
+
                                 </td>
                                 <td>
 
@@ -89,7 +98,7 @@
                                     </button>
 
                                     <form class="d-inline frmDestroy"
-                                        action="{{ route('params.general.services.destroy', $row->id) }}"
+                                        action="{{ route('params.general.types_priorities.destroy', $row->id) }}"
                                         method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -103,14 +112,15 @@
                                     </form>
 
                                     {{-- editar --}}
-                                    <form action="{{ route('params.general.services.update', $row->id) }}"
+                                    <form action="{{ route('params.general.types_priorities.update', $row->id) }}"
                                         method="POST">
                                         @csrf
                                         @method('PUT')
                                         @component('componentes.modal', [
                                             'id' => 'modalEditar'. $row->id,
-                                            'title' => 'Editar servicio',
+                                            'title' => 'Editar motivo de solicitud',
                                             'btnCancel' => true])
+
                                             @slot('body')
                                                 <div class="form-group">
                                                     <label class="form-label">Nombre</label>
@@ -120,7 +130,23 @@
                                                         value="{{ $row->name }}"
                                                         required="">
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="form-label">Tipo de prioridad</label>
+                                                    <select 
+                                                        class="form-control" 
+                                                        name="ticket_priority_id" 
+                                                        value="{{ $row->ticket_priority_id }}"
+                                                        required>
+                                                        <option value="">Seleccione una prioridad</option>
+                                                        @foreach($prioritiesList as $priority)
+                                                            <option value="{{ $priority->id }}" {{ $priority->id == $priority->ticket_priority_id ? 'selected' : '' }}>
+                                                                {{ $priority->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             @endslot
+
                                             @slot('footer')
                                                 <button class="btn btn-primary btn-sm"
                                                     type="submit">
@@ -149,14 +175,14 @@
 
 
 	<!-- Modal -->
-    <form action="{{ route('params.general.services.store') }}"
+    <form action="{{ route('params.general.types_priorities.store') }}"
         method="POST"
         id="formStore">
         @csrf
 
         @component('componentes.modal', [
             'id' => 'modalCrear',
-            'title' => 'Nuevo servicio',
+            'title' => 'Nuevo motivo de solicitud',
             'btnCancel' => true])
             @slot('body')
                 <div class="form-group">
@@ -167,6 +193,17 @@
                         name="name"
                         class="form-control"
                         required="">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tipo de prioridad</label>
+                    <select class="form-control"
+                        name="ticket_priority_id"
+                        required>
+                        <option value="">Seleccione una prioridad</option>
+                        @foreach($prioritiesList as $priority)
+                            <option value="{{ $priority->id }}">{{ $priority->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
             @endslot
             @slot('footer')

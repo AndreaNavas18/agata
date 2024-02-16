@@ -56,11 +56,11 @@ class LoginController extends Controller
             'password' => $request->input('password'),
             'status'   => 'Activo'
         ])) {
-            if (Auth::user()->role_id==2) {
-                return redirect()->route('customer.home')->with('info', 'Bienvenido ' . Helpers::capitalizarTextoCompleto(Auth::user()->full_name) . '!');
-            } else {
+        //     if (Auth::user()->role_id==2) {
+        //         return redirect()->route('customer.home')->with('info', 'Bienvenido ' . Helpers::capitalizarTextoCompleto(Auth::user()->full_name) . '!');
+        //     } else {
                 return redirect()->route('home')->with('info', 'Bienvenido ' . Helpers::capitalizarTextoCompleto(Auth::user()->full_name) . '!');
-            }
+            
             } else
             return redirect()->route('login')->with('error', 'Las credenciales no coinciden ó el usuario se encuentra inactivo.');
     }

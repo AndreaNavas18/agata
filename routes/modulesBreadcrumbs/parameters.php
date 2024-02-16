@@ -169,3 +169,14 @@ Breadcrumbs::for('parameters/general/types_documents', function (BreadcrumbTrail
     $trail->push('Tipos documentos', route('params.general.types_documents'));
 });
 
+/*
+|-----------------------------------
+|Motivos de solicitud
+|-----------------------------------
+*/
+Breadcrumbs::for('parameters/general/types_priorities', function (BreadcrumbTrail $trail) {
+    $trail->parent('parameters/general');
+    $trail->push('Tipos prioridades', route('params.general.types_priorities'));
+});
+
+

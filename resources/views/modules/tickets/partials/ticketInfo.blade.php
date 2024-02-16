@@ -1,12 +1,14 @@
 @component('componentes.card', [
     'title'=> 'Información'])
     <table class="table">
+        @if(Auth()->user()->role_id!=2)
         <tr class="border-bottom">
             <td class="border-top-0">Cliente</td>
             <td class="text-right border-top-0">
                 <span>{{ $ticket->customer->name }}</span>
             </td>
         </tr>
+        @endif
         <tr class="border-bottom">
             <td>Servicio</td>
             <td class="text-right">
@@ -22,7 +24,7 @@
                     </span>
                 </td>
             </tr>
-        @endif
+
         <tr class="border-bottom">
             <td>Prioridad</td>
             <td class="text-right">
@@ -31,6 +33,7 @@
                 </span>
             </td>
         </tr>
+        @endif
         <tr class="border-bottom">
             <td>Estado</td>
             <td class="text-right">

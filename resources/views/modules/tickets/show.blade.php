@@ -5,6 +5,10 @@
 
 @section('content')
 
+@if(Auth()->user()->role_id != 2)
+
+    {{-- Contenido para otros roles --}}
+
 	@component('componentes.card',[
         'shadow' => true,
 	    'title' => 'Ver ticket #'.$ticket->id,
@@ -33,33 +37,36 @@
                             {{  $ticket->date }}
                         </div>
                     </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Departamento cargo',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            {{  $ticket->department ? $ticket->department->name : '' }}
+                    @if(Auth()->user()->role_id!=2)
+                        <div class="col-md-3 mb-4">
+                            @component('componentes.label', [
+                                'title' => 'Departamento cargo',
+                                'required' => false])
+                            @endcomponent
+                            <div>
+                                {{  $ticket->department ? $ticket->department->name : '' }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Agente',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            {{ $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}
+                    
+                        <div class="col-md-3 mb-4">
+                            @component('componentes.label', [
+                                'title' => 'Agente',
+                                'required' => false])
+                            @endcomponent
+                            <div>
+                                {{ $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Cliente',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            {{   $ticket->customer->name }}
+                        <div class="col-md-3 mb-4">
+                            @component('componentes.label', [
+                                'title' => 'Cliente',
+                                'required' => false])
+                            @endcomponent
+                            <div>
+                                {{   $ticket->customer->name }}
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     @if(Auth()->user()->role_id!=2)
                         <div class="col-md-3 mb-4">
                             @component('componentes.label', [
@@ -129,17 +136,19 @@
                             00
                         </div>
                     </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Prioridad',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            <span class="badge bg-{{ $ticket->priority->color }}">
-                                {{  $ticket->priority->name }}
-                            </span>
+                    @if(Auth()->user()->role_id!=2)
+                        <div class="col-md-3 mb-4">
+                            @component('componentes.label', [
+                                'title' => 'Prioridad',
+                                'required' => false])
+                            @endcomponent
+                            <div>
+                                <span class="badge bg-{{ $ticket->priority->color }}">
+                                    {{  $ticket->priority->name }}
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-md-3 mb-4">
                         @component('componentes.label', [
                             'title' => 'Estado ticket',
@@ -178,4 +187,10 @@
             </div>
         </div>
      @endcomponent
+     @else
+
+     {{-- Contenido específico para el rol_id = 2 --}}
+     @include('modules.tickets.s2')
+ 
+ @endif
 @endsection

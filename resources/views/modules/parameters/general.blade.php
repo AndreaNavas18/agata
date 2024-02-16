@@ -93,6 +93,20 @@
                 </a>
             </div>
 
+            <div class="col-md-4 col-lg-3 mb-3">
+                <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-success loading"
+                    href="{{ route('params.general.types_priorities') }}">
+                    <div class="row">
+                        <div class="col-12">
+                            <i class="fa-solid fa-list h2 text-white"></i>
+                        </div>
+                        <div class="col-12">
+                            <h5 class="text-white">Motivos de solicitud</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         </div>
     @endcomponent
 

@@ -1,3 +1,4 @@
+@if(Auth()->user()->role_id!=2)
 <div class="row">
     <div class="col-md-3 col-sm-12 mb-3">
         <input type="text"
@@ -16,7 +17,7 @@
             placeholder="Fecha fin"
             value="{{ (isset($data['final_date'])) ? $data['final_date'] : '' }}">
     </div>
-
+@endif
     <div class="col-md-3 col-sm-12 mb-3">
         <input class="form-control mr-2"
         type="text"
@@ -25,6 +26,7 @@
         value="{{ (isset($data['ticket_issue'])) ? $data['ticket_issue'] : '' }}">
     </div>
 
+@if(Auth()->user()->role_id!=2)
     <div class="col-md-3 col-sm-12 mb-3">
         <select class="form-control
             selectpicker"
@@ -100,7 +102,7 @@
             </select>
         </div>
     @endif
-
+@endif
     <div class="col-md-3 col-sm-12 mb-3">
         <select class="form-control
             selectpicker"
@@ -108,6 +110,11 @@
             name="customer_service_id"
             id="customer_service_id">
             <option value="">--Servicio--</option>
+            @if(!is_null($customerServices))
+                @foreach($customerServices as $service)
+                    <option value="{{ $service->id }}">{{ $service->description }}</option>
+                @endforeach
+            @endif
         </select>
     </div>
 

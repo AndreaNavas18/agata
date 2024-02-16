@@ -14,6 +14,7 @@ use App\Models\Tickets\Ticket;
 use App\Models\Tickets\TicketPriority;
 use App\Models\Tickets\TicketReply;
 use App\Models\Tickets\TicketReplyFile;
+use App\Models\Tickets\GeneralTypesPriority;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -27,38 +28,55 @@ class TicketController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtener todos los tickets ordenados por ID de forma descendente
-        $tickets = Ticket::orderBy('id', 'DESC');
+        // Obtener una instancia de consulta en lugar de una colección
+        $tickets = Ticket::query();
+        $user = Auth::user();
+        $customerServices = null;
 
         // Verificar si el usuario tiene el rol con ID 2
-        if (Auth()->user()->role_id == 2) {
-            // Si el usuario tiene el rol con ID 2, filtrar los tickets por su customer_id
-            $tickets = $tickets->customerId(Auth()->user()->customer_id);
-        }
+        if (Auth()->user()->role_id == 2 && $user->customer_id) {
+           
+            $states = Ticket::distinct()->pluck('state')->toArray();    
+            $customerId = Auth()->user()->customer_id;
+            $tickets = Ticket::where('customer_id', $customerId)
+                ->orderBy('id', 'DESC')
+                ->paginate();
+            $customerServices = CustomerService::where('customer_id', $user->customer_id)->get();
+            // $tickets = $tickets->paginate();
+            
+            return view('modules.tickets.index', compact(
+                'tickets', 
+                'customerServices', 
+                'states', 
+            ));
 
-        // Paginar los resultados de los tickets
-        $tickets = $tickets->paginate();
+        }else {
 
-        // Obtener todos los TicketPriorities, Customers, Employees y Providers
-        $priorities = TicketPriority::get();
-        $customers = Customer::get();
-        $employees = Employee::get();
-        $providers = Provider::get();
+            $tickets = Ticket::orderBy('id', 'DESC')->paginate();
+            $priorities = TicketPriority::all();
+            $customers = Customer::all();
+            $employees = Employee::all();
+            $providers = Provider::all();
+    
+            // Definir un array de estados
+            $states = Ticket::distinct()->pluck('state')->toArray();  
 
-        // Definir un array de estados
-        $states = ['Abierto', 'Cerrado'];
+            // $states = ['Abierto', 'Cerrado'];
+    
+            // Devolver la vista 'modules.tickets.index' con los datos necesarios
+            return view('modules.tickets.index', compact(
+                'tickets',
+                'priorities',
+                'customers',
+                'employees',
+                'providers',
+                'states',
+                'customerServices',
+            ));
 
-        // Devolver la vista 'modules.tickets.index' con los datos necesarios
-        return view('modules.tickets.index', compact(
-            'tickets',
-            'priorities',
-            'customers',
-            'employees',
-            'providers',
-            'states',
-        ));
+            }
     }
 
 
@@ -67,30 +85,162 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function search(Request $request)
-    {
-        $priorities = TicketPriority::get();
-        $customers = Customer::get();
-        $employees = Employee::get();
-        $providers = Provider::get();
-        $states = ['Abierto', 'Cerrado'];
-        $data = $request->all();
-        $tickets =  Ticket::buscar($data, null, 'tickets');
-        if ($request->action == 'buscar') {
-            $tickets = $tickets->paginate();
-            return view('modules.tickets.index', compact(
-                'tickets',
-                'priorities',
-                'customers',
-                'employees',
-                'providers',
-                'states',
-            ));
-        } else {
-            $tickets = $tickets->get();
-            return (new TicketsExport($tickets))->download('tickets.xlsx');
+
+    //Busqueda funcional para los tickets --karen--
+
+    public function search(Request $request) {
+
+        $tickets = Ticket::query();
+        // Obtener el usuario logueado
+        $user = Auth::user();
+        
+        // Verificar si el usuario tiene un cliente asociado
+        if ($user->role_id == 2 && $user->customer_id) {
+            
+            $ticketIssue = strtolower($request->input('ticket_issue'));
+            $customerServiceId = $request->input('customer_service_id');
+            // $states = $request->input('states');
+            // Obtener los servicios asociados al cliente del usuario
+            $customerServices = CustomerService::where('customer_id', $user->customer_id)->get();
+            $selectedState = $request->input('state');
+            
+            $query = Ticket::query();
+            
+            // Aplicar la búsqueda por asunto si se proporcionó
+            if (!empty($ticketIssue)) {
+                $query->where('ticket_issue', 'LIKE', "%$ticketIssue%");
+            }
+            
+            // Aplicar la búsqueda por servicio si se seleccionó
+            if (!empty($customerServiceId)) {
+                $query->where('customer_service_id', $customerServiceId);
+            }
+            
+            // Aplicar la búsqueda por estado si se seleccionó
+            if (!empty($selectedState)) {
+                $query->where('state', $selectedState);
+            }
+        
+            // Ordenar los resultados
+            $states = Ticket::distinct()->pluck('state')->toArray();    
+            $tickets = $query->orderBy('ticket_issue')->paginate();
+            $data = $request->all();
+            
+            // Pasar los servicios al formulario
+            return view('modules.tickets.index', 
+            ['customerServices' => $customerServices], 
+            compact('tickets', 'data', 'states'));
+
+        }
+        else{
+
+            $ticketIssue = strtolower($request->input('ticket_issue'));
+
+            $priorityId = $request->input('priority_id');
+            //Obtener las prioridades asociadas al ticket
+            $priorities = TicketPriority::where('id', $priorityId)->get();
+
+            //Agente-empleado
+            $employeeId = $request->input('employee_id');
+            $employees = Employee::where('id', $employeeId)->get();
+
+            //Cliente
+            $customerId = $request->input('customer_id');
+            $customers = Customer::where('id', $customerId)->get();
+
+            //Servicio
+            $customerServiceId = $request->input('customer_service_id');
+            $customerServices = CustomerService::where('customer_id', $customerId)->get();
+
+            //Proveedor
+            $providerId = $request->input('provider_id');
+            $providers = Provider::where('id', $providerId)->get();
+            
+            $selectedState = $request->input('state');
+
+            // Obtener las fechas de inicio y fin del request
+            $startDate = $request->input('start_date');
+            $finalDate = $request->input('final_date');
+
+            $query = Ticket::query();
+
+             // Aplicar la búsqueda por asunto si se proporcionó
+             if (!empty($ticketIssue)) {
+                $query->where('ticket_issue', 'LIKE', "%$ticketIssue%");
+            }
+
+             // Aplicar la búsqueda por prioridad si se proporcionó
+             if (!empty($priorityId)) {
+                $query->where('priority_id', $priorityId);
+            }
+
+            if(!empty($employeeId)) {
+                $query->where('employee_id', $employeeId);
+            }
+
+            if(!empty($customerId)) {
+                $query->where('customer_id', $customerId);
+            }
+
+            // Aplicar la búsqueda por servicio si se seleccionó
+            if (!empty($customerServiceId)) {
+                $query->where('customer_service_id', $customerServiceId);
+            }
+
+            if (!empty($providerId)) {
+                $query->join('customers_services as cs', 
+                'tickets.customer_service_id', '=', 'cs.id')
+              ->where('cs.provider_id', $providerId);
+            }
+
+            // Aplicar la búsqueda por estado si se seleccionó
+            if (!empty($selectedState)) {
+                $query->where('state', $selectedState);
+            }
+
+            // Condición para filtrar por fecha si se proporcionan las fechas de inicio y fin
+            if (!empty($startDate) && !empty($finalDate)) {
+                // Convertir las fechas a objetos Carbon para realizar la comparación
+                $start = Carbon::parse($startDate);
+                $end = Carbon::parse($finalDate)->endOfDay();
+
+                // Condición para buscar los tickets en el rango de fechas
+                $query->whereBetween('tickets.created_at', [$start, $end]);
+
+                 // Agregar las fechas al array de datos que se pasará a la vista
+                $data['start_date'] = $startDate;
+                $data['final_date'] = $finalDate;
+            }
+
+            //Ordenar los resultados
+            $states = Ticket::distinct()->pluck('state')->toArray(); 
+            $tickets = $query->orderBy('ticket_issue')->paginate();
+            $data = $request->all();
+
+            return view('modules.tickets.index', [
+                // 'customerServices' => $customerServices,
+                'priorities' => $priorities,
+                'employees' => $employees,
+                'customers' => $customers,
+                'customerServices' => $customerServices,
+                'providers' => $providers,
+                'tickets' => $tickets,
+                'data' => $data,
+                'states' => $states,
+            ]);
+
+            // return view('modules.tickets.index',
+            // // ['customerServices' => $customerServices], 
+            // ['priorities' => $priorities],
+            // ['employees' => $employees],
+            // compact(
+            //     'tickets', 
+            //     'data', 
+            // )->with('states', $states));
+
         }
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -101,10 +251,12 @@ class TicketController extends Controller
     {
         $customersList = Customer::get();
         $positionsDepartmanets = EmployeePositionDepartment::get();
-        $prioritiesList = TicketPriority::get();
+        // $prioritiesList = TicketPriority::get();
         if (Auth()->user()->role_id == 2) {
+            $prioritiesList = GeneralTypesPriority::all();
             $serviceList = CustomerService::customerId(Auth()->user()->customer_id)->get();
         } else {
+            $prioritiesList = TicketPriority::all();
             $serviceList = [];
         }
         $date = Carbon::now()->format('Y-m-d');
@@ -113,6 +265,7 @@ class TicketController extends Controller
             'customersList',
             'positionsDepartmanets',
             'prioritiesList',
+            // 'serviceArray',
             'serviceList',
             'date'
         ));
@@ -129,11 +282,31 @@ class TicketController extends Controller
         $ticket = new Ticket();
         $ticket->ticket_issue                       = $request->ticket_issue;
         $ticket->date                               = $request->date;
-        $ticket->priority_id                        = $request->priority_id;
+
+        // Verifica el rol del usuario y establece la prioridad adecuada
+        if (Auth()->user()->role_id == 2) {
+            // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
+            $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
+            $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
+        } else {
+            // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
+            $ticket->priority_id = $request->priority_id;
+        }
+
+
+        // $ticket->priority_id                        = $request->priority_id;
         $ticket->customer_service_id                = $request->customer_service_id;
         $ticket->state                              = 'Abierto';
         $ticket->description                        = $request->description;
-        $ticket->send_email                         = $request->send_email;
+            // Establece send_email como verdadero si el usuario es un cliente
+        if (Auth()->user()->role_id == 2) {
+            $ticket->send_email = "No";
+            $ticket->emails_notification = " "; 
+        } else {
+            // Si no es cliente, toma el valor proporcionado en el formulario
+            $ticket->send_email = $request->filled('send_email');
+        }
+        // $ticket->send_email                         = $request->send_email;
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
         }
@@ -185,6 +358,7 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::findOrFail($id);
+        
         return view('modules.tickets.show', compact('ticket'));
     }
 
@@ -258,11 +432,29 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            if (!Ticket::findOrFail($id)->delete()) {
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DB::commit();
+            Alert::success('Success!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
     }
 
 
-    public function manage($id) {
+    public function manage($id, Request $request) {
+
         $ticket= Ticket::findOrFail($id);
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
@@ -304,19 +496,56 @@ class TicketController extends Controller
             return $q->where('employees_positions.department_id', $ticket->employee_position_department_id);
         })->get();
 
-        return view('modules.tickets.manage', compact(
-            'hoursClock',
-            'minutesClock',
-            'secondsClock',
-            'ticket',
-            'customersList',
-            'positionsDepartmanets',
-            'prioritiesList',
-            'serviceList',
-            'employeesList',
-            'technicals'
-        ));
+        $action = $request->input('action');
+
+        if($action === 'manage'){
+            return view('modules.tickets.manage', compact(
+                'hoursClock',
+                'minutesClock',
+                'secondsClock',
+                'ticket',
+                'customersList',
+                'positionsDepartmanets',
+                'prioritiesList',
+                'serviceList',
+                'employeesList',
+                'technicals'
+            ));
+        }else {
+            if (Auth()->user()->role_id == 2){
+                return view('modules.tickets.show', compact(
+                    'hoursClock',
+                    'minutesClock',
+                    'secondsClock',
+                    'ticket',
+                    'customersList',
+                    'positionsDepartmanets',
+                    'prioritiesList',
+                    'serviceList',
+                    'employeesList',
+                    'technicals'
+                ));
+            } else {
+                return view('modules.tickets.manage', compact(
+                    'hoursClock',
+                    'minutesClock',
+                    'secondsClock',
+                    'ticket',
+                    'customersList',
+                    'positionsDepartmanets',
+                    'prioritiesList',
+                    'serviceList',
+                    'employeesList',
+                    'technicals'
+                ));
+            }
+        }
+
+
     }
+
+    //Para customer_manage
+    
 
     /**
      * Remove the specified resource from storage.

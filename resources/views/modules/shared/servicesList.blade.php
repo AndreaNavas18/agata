@@ -1,5 +1,6 @@
 @component('componentes.table')
     @slot('thead')
+            <th>Stratecsa ID</th>
         @if($provider)
             <th>Proveedor</th>
         @endif
@@ -19,6 +20,7 @@
     @slot('tbody')
         @foreach($services as $service)
             <tr>
+                <td>{{ $service->stratecsa_id }}</td>
                 @if($provider)
                     <td>{{ $service->provider ? $service->provider->name : '' }}</td>
                 @endif

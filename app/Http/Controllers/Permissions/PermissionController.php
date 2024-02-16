@@ -114,6 +114,8 @@ class PermissionController extends Controller
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
+
+    //  karen , esta es la unica busqueda que funciona bien 
     public function search(Request $request)
     {
         $submodules = Submodule::orderBy('name')->get();

@@ -5,9 +5,10 @@
     <span class="badge bg-warning text-dark p-1">{{ $ticketsMedium }} Media</span>
     <span class="badge bg-success p-1">{{ $ticketsLow }} Baja</span>
 </div> --}}
+
 @component('componentes.table')
     @slot('thead')
-        <th>Cons.</th>
+        <th>Consecutivo.</th>
         <th>Titulo</th>
         <th>Fecha</th>
         @if($customer && Auth()->user()->role_id!=2)
@@ -15,19 +16,20 @@
         @endif
         <th>Servicio</th>
         @if($provider && Auth()->user()->role_id!=2)
-            <th>Proveedor</th>
+            <th> Proveedor</th>
+            <th>Asignado</th>
+            <th>Prioridad</th>
         @endif
-        <th>Asignado</th>
-        <th>Prioridad</th>
         <th>Estado</th>
         @if($showActions)
             <th></th>
         @endif
     @endslot
     @slot('tbody')
+    
         @foreach($tickets as $ticket)
             <tr>
-                <td>{{ $ticket->id }}</td>
+                <td>{{ $ticket->consecutive }}</td>
 
                 <td>{{ $ticket->ticket_issue }}</td>
 
@@ -41,15 +43,13 @@
 
                 @if($provider && Auth()->user()->role_id!=2)
                     <td>{{ $ticket->service->provider ? $ticket->service->provider->name : '---' }}</td>
+                    <td>{{  $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}</td>
+                    <td>
+                        <span class="badge {{ $ticket->priority->color}}">
+                            {{ $ticket->priority->name}}
+                        </span>
+                    </td>
                 @endif
-
-                <td>{{  $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}</td>
-
-                <td>
-                    <span class="badge {{ $ticket->priority->color}}">
-                        {{ $ticket->priority->name}}
-                    </span>
-                </td>
 
                 <td>
                     <span class="badge {{ ($ticket->state  == 'Abierto') ? 'bg-danger' : 'bg-success' }}">
@@ -60,19 +60,35 @@
                 @if($showActions)
                     <td>
                         @can('tickets_ver')
-                            <a class="btn btn-info btn-sm loading mb-1"
-                                href="{{ route('tickets.show', $ticket->id) }}"
-                                @if(isset($newTab) && $newTab)
-                                    target="'_blank"
+                        @if(Auth()->user()->role_id!=2)
+
+                                <a class="btn btn-info btn-sm loading mb-1"
+                                    href="{{ route('tickets.show', $ticket->id) }}"
+                                    @if(isset($newTab) && $newTab)
+                                        target="'_blank"
+                                    @endif
+                                    bs-bs-toggle="tooltip"
+                                    bs-bs-placement="top"
+                                    title="Ver">
+                                    <i class="far fa-eye"></i>
+                                </a>
+                                @else
+                                <a class="btn btn-info btn-sm loading mb-1"
+                                    href="{{ route('tickets.manage', $ticket->id) }}"
+                                    @if(isset($newTab) && $newTab)
+                                        target="'_blank"
+                                    @endif
+                                    bs-bs-toggle="tooltip"
+                                    bs-bs-placement="top"
+                                    title="Ver">
+                                    <i class="far fa-eye"></i>
+                                </a>
                                 @endif
-                                bs-bs-toggle="tooltip"
-                                bs-bs-placement="top"
-                                title="Ver">
-                                <i class="far fa-eye"></i>
-                            </a>
+
                         @endcan
 
                         @can('tickets_editar')
+                        @if(Auth()->user()->role_id!=2)
                             <a class="btn btn-success btn-sm loading mb-1"
                                 href="{{ route('tickets.edit',$ticket->id)}}"
                                 @if(isset($newTab) && $newTab)
@@ -83,11 +99,12 @@
                                 title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
+                            @endif
                         @endcan
 
                         @can('tickets_editar')
                             <a class="btn btn-warning btn-sm loading mb-1"
-                                href="{{ route('tickets.manage',$ticket->id)}}"
+                                href="{{ route('tickets.manage',['id' => $ticket->id, 'action' => 'manage']) }}"
                                 @if(isset($newTab) && $newTab)
                                     target="'_blank"
                                 @endif
