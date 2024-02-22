@@ -52,6 +52,13 @@ Route::middleware(['auth'])->group(function () {
 
 	/*
 	|-----------------------------------
+	| Emails
+	|-----------------------------------
+	*/
+	require base_path('routes/modules/emails.php');
+
+	/*
+	|-----------------------------------
 	| Permisos y Roles
 	|-----------------------------------
 	*/

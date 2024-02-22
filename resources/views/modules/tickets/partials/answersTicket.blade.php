@@ -10,6 +10,13 @@
             <small class="float-right">
                 <em>
                     {{ $reply->created_at }}
+                    {{-- @if(Auth()->user()->role_id!=2)
+                    @foreach($ticket->replies as $reply)
+                        @if($reply === $ticket->replies->last())
+                            {{ $ticket->state_clock }}
+                        @endif
+                    @endforeach
+                    @endif --}}
                 </em>
             </small>
             <div class="font-weight-bold mb-1">Tú</div>

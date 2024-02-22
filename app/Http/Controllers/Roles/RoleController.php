@@ -36,7 +36,7 @@ class RoleController extends Controller
         $request->validate(['name' => 'required|max:191']);
         try {
             $role = new Role();
-            $role->name=$request->input('name');
+            $role->name     =   $request->input('name');
             if (!$role->save()) {
                 DB::rollBack();
                 Alert::error('Error', 'Error inserted record.');

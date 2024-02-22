@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\andreaDeveloper;
 
 class TicketController extends Controller
 {
@@ -299,13 +301,10 @@ class TicketController extends Controller
         $ticket->state                              = 'Abierto';
         $ticket->description                        = $request->description;
             // Establece send_email como verdadero si el usuario es un cliente
-        if (Auth()->user()->role_id == 2) {
-            $ticket->send_email = "No";
-            $ticket->emails_notification = " "; 
-        } else {
-            // Si no es cliente, toma el valor proporcionado en el formulario
-            $ticket->send_email = $request->filled('send_email');
+        if ($ticket->send_email = "No") {
+            $ticket->emails_notification = "  ";
         }
+
         // $ticket->send_email                         = $request->send_email;
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
@@ -321,6 +320,8 @@ class TicketController extends Controller
         //corre el reloj si es prioridad alta el ticket
         if ($request->priority_id == 1) {
             $ticket->state_clock                    = 'Corriendo';
+            $ticket->datetime_clock                 = Carbon::now();
+            $ticket->time_clock                     = '00:00:00';
         } else {
             $ticket->state_clock                    = 'Detenido';
         }
@@ -330,6 +331,9 @@ class TicketController extends Controller
             Alert::error('Error', 'Error al insertar registro.');
             return redirect()->back();
         }
+            // Pasa el ticket como dato de sesión
+            // session()->put('ticket', $ticket);
+
 
         //enviar correo al equipo de soporte
         // $emails=Db::table('emails_notifications_tickets')->pluck('email')->toArray();
@@ -343,11 +347,31 @@ class TicketController extends Controller
         //     $message->to($emails)
         //     ->subject('nuevo ticket creado '.Carbon::now()->format('Y-m-d'));
         // });
-
+            Log::info("Send email: ".$request->send_email);
         DB::commit();
         Alert::success('Success!', 'Registro insertado correctamente');
-        return redirect()->route('tickets.index');
+        // Verificar si el usuario ha optado por enviar un correo electrónico
+        if ($request->filled('send_email') && $request->send_email === 'Si') {
+            // Llama a la función para enviar el correo electrónico
+            $this->sendEmail($ticket, $request->input('emails_notification'));
+            Log::info("RESPUESTA SI  INICIAL");
+        }else {
+            Log::info("RESPUESTA NO INICIAL");
+        }
+        return redirect()->route('tickets.index')->with('ticket', $ticket);
+    
     }
+
+    public function sendEmail(Ticket $ticket, $emails)
+    {
+        // Envía correos electrónicos a cada dirección de correo
+        foreach (explode(';', $emails) as $email) {
+            Mail::to(trim($email))->send(new andreaDeveloper($ticket));
+        }
+    
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -459,16 +483,38 @@ class TicketController extends Controller
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
         if ($ticket->priority_id == 1) {
-            if($ticket->state_clock == 'Corriendo' && !is_null($ticket->time_clock)) {
-                $timeClock=Ticket::calculateTimeClock($timeActually, $ticket);
+            if(strcasecmp($ticket->state_clock, 'Corriendo') === 0 && !is_null($ticket->datetime_clock)) {
+                // $timeSaved = Carbon::parse($ticket->time_clock);
+                // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
+                // $timeClock = date('H:i:s', $timeSaved->timestamp + strtotime($timeClock)); 
+
+                $timeSaved = Carbon::parse($ticket->time_clock);
+                $datetimeClock = Carbon::parse($ticket->datetime_clock);
+                $timeClockInterval = $timeActually->diff($datetimeClock);
+                $timeClock = $timeClockInterval->format('%H:%I:%S');
+                $timeSaved->addHours($timeClockInterval->h)
+                ->addMinutes($timeClockInterval->i)
+                ->addSeconds($timeClockInterval->s);
+                // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
+
+                // Convertimos el tiempo del reloj calculado a un objeto Carbon
+                // $timeClockCarbon = Carbon::createFromFormat('H:i:s', $timeClock);
+
+                // Sumamos el tiempo del reloj calculado al tiempo guardado previamente
+                // $timeClock = $timeSaved->addHours($timeClockCarbon->hour)->addMinutes($timeClockCarbon->minute)->addSeconds($timeClockCarbon->second);
+                $timeClock = $timeSaved->format('H:i:s');
+                Log::info("ENTRO: ".$timeClock);
+
             } else {
                 // Calculate the time difference between created_at and current date
-                $createdAt = Carbon::parse($ticket->created_at);
-                $now = Carbon::parse($timeActually);
-                $timeDifference = $now->diff($createdAt);
+                    // $createdAt = Carbon::parse($ticket->created_at);
+                    // $now = Carbon::parse($timeActually);
+                    // $timeDifference = $now->diff($createdAt);
 
                 // Format the time difference as hours, minutes, and seconds
-                $timeClock = $timeDifference->format('%H:%I:%S');
+                // $timeClock = $timeDifference->format('%H:%I:%S');
+                $timeClock = $ticket->time_clock;
+                Log::info("message: ".$timeClock);
             }
 
             if(!is_null($timeClock) && !empty($timeClock)) {
@@ -476,6 +522,7 @@ class TicketController extends Controller
                 $hoursClock= $explodeHour[0];
                 $minutesClock= $explodeHour[1];
                 $secondsClock= $explodeHour[2];
+
             } else {
                 $hoursClock= NULL;
                 $minutesClock=  NULL;
@@ -487,6 +534,8 @@ class TicketController extends Controller
             $minutesClock=  NULL;
             $secondsClock= NULL;
         }
+
+        Log::info("message: ".$hoursClock." ".$minutesClock." ".$secondsClock);
 
         $customersList= Customer::get();
         $positionsDepartmanets= EmployeePositionDepartment::get();
@@ -587,45 +636,65 @@ class TicketController extends Controller
         $ticketReply->replie           = $request->replie;
         $ticketReply->ticket_id         = $ticket->id;
         $ticketReply->user_id                = Auth()->user()->id;
+       
+        if($request->state == 'Cerrado'){
+            $ticket->state_clock = 'Detenido';
+            $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+            $ticket->datetime_clock     = $timeActually;
+        }
+
         if (!$ticketReply->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar el registro.');
             return redirect()->back();
         }
 
-        if (Auth()->user()->role_id == 2) {
+        if($ticket->customer_id == Auth()->user()->customer_id) {
+            Log::info("AQUI ESTAMOS REY" .$ticket->state_clock);
+            if($ticket->state_clock == 'DETENIDO'){
+                $ticket->state_clock        = 'CORRIENDO';
+                $ticket->datetime_clock     = $timeActually; 
+            }
             $ticketReply->customer_id      = Auth()->user()->customer_id;
+    
         } else {
             $ticketReply->employee_id      = Auth()->user()->employee_id;
             //actualizar el ticket
-            if ($request->filled('state_clock')) {
-                if ($request->state_clock == 'Corriendo') {
-                    $ticket->state_clock        = $request->state_clock;
-                } else {
-                    if ($request->state_clock != $ticket->state_clock) {
-                        //se esta deteniendo el reloj
+            if(strcasecmp(strtolower($request->state_clock), strtolower($ticket->state_clock)) !== 0){
+                if ($request->filled('state_clock')) {
+                    if ($request->state_clock == 'Corriendo') {
                         $ticket->state_clock        = $request->state_clock;
+                        $ticket->datetime_clock     = $timeActually;
+                    } else {
+                        if ($request->state_clock != $ticket->state_clock) {
+                            //se esta deteniendo el reloj
+                            $ticket->state_clock        = $request->state_clock;
+                            $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+                        }
+                    }
+                } else {
+                    if ($ticket->state_clock == 'Corriendo' &&  !$request->filled('state_clock')) {
+                        $ticket->state_clock        = 'Detenido';
                         $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
                         $ticket->datetime_clock     = $timeActually;
                     }
                 }
-            } else {
-                if ($ticket->state_clock == 'Corriendo' &&  !$request->filled('state_clock')) {
-                    $ticket->state_clock        = 'Detenido';
-                    $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
-                    $ticket->datetime_clock     = $timeActually;
+                $ticket->state = $request->state;
+                if (is_null($ticket->employee_id)) {
+                    $ticket->employee_id = $request->employee_id;
                 }
+            }else {
+
+
+
             }
-            $ticket->state = $request->state;
-            if (is_null($ticket->employee_id)) {
-                $ticket->employee_id = $request->employee_id;
-            }
+            
         }
 
         //guardar info ticket
         if (!$ticket->save()) {
             DB::rollBack();
-            Alert::error('Error', 'Error al insertar el registro.');
+            Alert::error('Error', 'Error al insertar la respuesta.');
             return redirect()->back();
         }
 
@@ -649,12 +718,13 @@ class TicketController extends Controller
                 $ticketReplyFile->extension             = $file->getClientOriginalExtension();
                 if (!$ticketReplyFile->save()) {
                     DB::rollBack();
-                    Alert::error('Error', 'Error al insertar el registro.');
+                    Alert::error('Error', 'Error al insertar la respuesta.');
                     return redirect()->back();
                 }
             }
         }
 
+       
         //enviar correo al cliente
         // $contactsTickets=CustomerContact::customerId($ticket->customer_id)
         // ->typeContactId(1)
@@ -669,7 +739,61 @@ class TicketController extends Controller
         // }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('Success!', 'Respuesta insertada correctamente');
         return redirect()->back();
     }
+
+    //funcion para que un boton cambie el estado de cerrado a abierto en un ticket 
+    public function reopen(Request $request, $id) {
+        DB::beginTransaction();
+        try {
+            $ticket = Ticket::findOrFail($id);
+    
+            // Verificamos si el estado actual es 'CERRADO' para cambiarlo a 'ABIERTO'
+            if($ticket->state == 'CERRADO') {
+                $ticket->state = 'ABIERTO';
+                if($ticket->priority_id == 1) {
+                    $ticket->state_clock = 'Corriendo';
+                    $ticket->datetime_clock = Carbon::now();
+                }else{
+
+                }
+                $ticket->save();
+                DB::commit();
+                Alert::success('Success!', 'El estado del ticket se ha cambiado a ABIERTO');
+            } else {
+                DB::rollBack();
+                Alert::warning('Advertencia', 'El ticket no está cerrado, no se puede reabrir.');
+            }
+    
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error('Error', 'Error al cambiar el estado del ticket.');
+        }
+    
+        return redirect()->back();
+    }
+    
+//     public function reopen(Ticket $ticket, Request $request, $id) {
+//         DB::beginTransaction();
+//         $ticket = Ticket::findOrFail($id);
+//         $ticket->state = $request->state;
+
+//         if($ticket->state == 'CERRADO') {
+//             $ticket->update(['state' => 'ABIERTO']);
+//         } else {
+//         }
+
+//         if (!$ticket->save()) {
+//             DB::rollBack();
+//             Alert::error('Error', 'Error al insertar el registro.');
+//             return redirect()->back();
+//         }else {
+//             DB::commit();
+//             Alert::success('Success!', 'Solicitud de cambio de estado');
+//             return redirect()->back();
+        
+//         }
+
+//     }
 }

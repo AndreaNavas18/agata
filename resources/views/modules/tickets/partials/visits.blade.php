@@ -36,7 +36,7 @@
                         <b>Técnicos:</b>
                         <span class="ml-2">
                             @foreach ($ticketVisit->employees as $employeeT)
-                                {{ $employeeT->short_name }},&nbsp
+                                {{ $employeeT->short_name }} &nbsp;
                             @endforeach
                         </span>
                     </div>

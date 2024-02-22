@@ -156,7 +156,7 @@
         <ol class="breadcrumb">
             <!-- breadcrumb -->
             <li class="breadcrumb-item">
-                <a href="{{  Auth()->user()->role_id!=2 ? route('customer.home') : route('home') }}">
+                <a href="{{  Auth()->user()->role_id==2 ? route('customer.home') : route('home') }}">
                     Inicio
                 </a>
             </li>
@@ -331,10 +331,12 @@
                                             multiple
                                             data-width="100%">
                                             <option value="">--Seleccione--</option>
-                                            @foreach($technicals as $technical)
-                                            <option value="{{ $technical->id }}">
-                                                {{ $technical->short_name }}
-                                            </option>
+                                            @foreach($employeesList as $employee)
+                                            @if($employee->position_id==7)
+                                                <option value="{{ $employee->id }}">
+                                                    {{ $employee->full_name }}
+                                                </option>
+                                            @endif
                                             @endforeach
                                         </select>
                                     </div>

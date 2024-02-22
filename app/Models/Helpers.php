@@ -7,6 +7,8 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 use \Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateTime;
+use Illuminate\Support\Facades\Log;
+
 
 class Helpers
 {
@@ -276,8 +278,12 @@ class Helpers
 
 
     public static function sumaHora($hour1, $hour2) {
-		list( $h1, $m1, $s1 ) = explode( ':', $hour1 );
+      
+        list( $h1, $m1, $s1 ) = explode( ':', $hour1 );
 		list( $h2, $m2, $s2 ) = explode( ':', $hour2 );
+        
+        Log::info("message", ["Valor de hour1: $hour1"]);
+
 
 		$st = $s1+$s2;
         $minutosAdd=0;

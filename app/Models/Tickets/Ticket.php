@@ -8,6 +8,9 @@ use App\Models\Customers\CustomerService;
 use App\Models\Employees\Employee;
 use App\Models\Employees\EmployeePositionDepartment;
 use App\Models\Helpers;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class Ticket extends BaseModel {
 
@@ -183,9 +186,22 @@ class Ticket extends BaseModel {
 
     public static function calculateTimeClock($timeActually,$ticket) {
 
-        $timeToCompare= !is_null($ticket->datetime_clock) ? $ticket->datetime_clock : $ticket->created_at;
-        $diffHoursHmS = Helpers::calcularDiffHoursHmS($timeActually, $timeToCompare);
+        // $timeToCompare= !is_null($ticket->datetime_clock) ? $ticket->datetime_clock : $ticket->created_at;
+        $datetimeClock = !is_null($ticket->datetime_clock) ? Carbon::parse($ticket->datetime_clock) : null;
+        
+        $formatdatetimeClock = !is_null($datetimeClock) ? $datetimeClock->format('H:i:s') : '00:00:00';
+        
+        $diffHoursHmS = Helpers::calcularDiffHoursHmS($timeActually, $datetimeClock);
+
+        $impri = $ticket->time_clock;
+
         $hourClock = is_null($ticket->time_clock) ?  $diffHoursHmS : Helpers::sumaHora($ticket->time_clock, $diffHoursHmS);
+        
+        Log::info('formatDatetimeClock: '.$formatdatetimeClock);
+        Log::info('diffHoursHmS: '.$diffHoursHmS);
+        Log::info('hourClock: '.$hourClock);
+        Log::info('impri: '.$impri);
+
         return $hourClock;
     }
 

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\CustomerRole;
 use App\Http\Controllers\Controller;
 use App\Models\Customers\CustomerService;
 use App\Models\Tickets\Ticket;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeCustomerController extends Controller
 {

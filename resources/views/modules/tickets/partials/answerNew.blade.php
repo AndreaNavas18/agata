@@ -4,7 +4,7 @@
     enctype="multipart/form-data">
     @csrf
 
-    @if ($ticket->priority_id == 1 && Auth()->user()->role_id!=2)
+    @if (Auth()->user()->role_id!=2)
         <div class="row">
             <div class="col-md-6 mb-3">
                 @component('componentes.label', [
@@ -34,11 +34,11 @@
                     name="state_clock"
                     id="state_clock"
                     required>
-                    <option {{ $ticket->state_clock=='Corriendo' ? 'selected' : '' }}>
-                        Corriendo
-                    </option>
                     <option {{ $ticket->state_clock=='Detenido' ? 'selected' : '' }}>
                         Detenido
+                    </option>
+                    <option {{ $ticket->state_clock=='Corriendo' ? 'selected' : '' }}>
+                        Corriendo
                     </option>
                 </select>
             </div>

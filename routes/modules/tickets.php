@@ -37,6 +37,13 @@ Route::middleware(['can:tickets_ver'])->namespace('Tickets')->name('tickets.')->
     ->where('id', '[0-9]+')
     ->middleware('can:tickets_ver');
 
+	//Emails
+	Route::post('send-email', [ TicketController::class, 'sendEmail' ])->name('sendEmail');
+
+	//Reabrir tickets
+	Route::patch('/tickets/{ticket}/reopen', [ TicketController::class, 'reopen' ])->name('reopen');
+
+
     // respuestas nuevas tickets
     Route::post('/tickets/respuesta/crear/{id}',[ TicketController::class, 'replyStore' ])->name('reply.store')
     ->middleware('can:tickets_crear');
@@ -51,5 +58,6 @@ Route::middleware(['can:tickets_ver'])->namespace('Tickets')->name('tickets.')->
     //visitas tecnicas
     Route::post('/tickets/visitas/crear/{ticketId}',[ TicketVisitController::class, 'store' ])->name('visits.store')
     ->middleware('can:tickets_crear');
+
 
 });

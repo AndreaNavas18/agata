@@ -22,11 +22,12 @@
             name="priority_id"
             id="priority_id"
             required>
-            <option value="">--Seleccione--</option>
+            {{-- <option value="">--Seleccione--</option> --}}
             @foreach($prioritiesList as $priorityRow)
                 <option value="{{ $priorityRow->id }}"
                     {{ isset($ticket) &&
                         $ticket->priority_id  == $priorityRow->id
+                        || ($priorityRow->name == 'Alta')
                         ? 'selected' : '' }}>
                     {{ $priorityRow->name }}
                 </option>
@@ -44,7 +45,7 @@
                 name="priority_id"
                 id="priority_id"
                 required>
-                <option value="">--Seleccione--</option>
+                {{-- <option value="">--Seleccione--</option> --}}
                 @foreach($prioritiesList as $priorityRow)
                     <option value="{{ $priorityRow->id }}"
                         {{ isset($ticket) &&
@@ -188,7 +189,7 @@
                 name="send_email"
                 id="send_email"
                 required>
-                <option value="">--Seleccione--</option>
+                {{-- <option value="">--Seleccione--</option> --}}
                 <option value="Si"
                     {{ isset($ticket) &&
                         $ticket->send_email == 'Si'

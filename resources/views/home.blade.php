@@ -106,6 +106,6 @@
     @else
     {{-- Contenido específico para el rol_id = 2 --}}
     @include('customerRole.home')
+    @endif
 
-@endif
 @endsection

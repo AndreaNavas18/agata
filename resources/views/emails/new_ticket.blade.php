@@ -13,7 +13,7 @@
         margin-top: -4rem;
         margin-right: -2rem;">
         Nuevo tickect creado, consecutivo
-        <span style="background-color: #c9fdc4">{{  $ticket->id }}</span> 🎉
+        <span style="background-color: #c9fdc4">{{ isset($ticket->id) ? $ticket->id : 'N/A' }}</span> 🎉
     </p>
     <p>
        Se ha creado un nuevo tickect a continuación los detalles:
@@ -26,29 +26,29 @@
                 <table align="center" width="500" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #ccc;">
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Cliente:</th>
-                        <td style="border: 1px solid #ccc;">{{ $ticket->customer->name }}</td>
+                        <td style="border: 1px solid #ccc;">{{ isset($ticket->customer->name) ? $ticket->customer->name : 'N/A' }}</td>
                     </tr>
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Tipo instalación:</th>
-                        <td style="border: 1px solid #ccc;">{{ $ticket->service->installation_type }}</td>
+                        <td style="border: 1px solid #ccc;">{{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }}</td>
                     </tr>
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Tipo servicio:</th>
-                        <td style="border: 1px solid #ccc;">{{ $ticket->service->service->name  }}</td>
+                        <td style="border: 1px solid #ccc;">{{ isset($ticket->service->service->name) ? $ticket->service->service->name : 'N/A' }}</td>
                     </tr>
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Descripción servicio:</th>
                         <td style="border: 1px solid #ccc;">
-                            {{ $ticket->service->description }}
+                            {{ isset($ticket->service->description) ? $ticket->service->description : 'N/A' }}
                         </td>
                     </tr>
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Asunto:</th>
-                        <td style="border: 1px solid #ccc;">{{ $ticket->ticket_issue }}</td>
+                        <td style="border: 1px solid #ccc;">{{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}</td>
                     </tr>
                     <tr style="border: 1px solid #ccc;">
                         <th style="border: 1px solid #ccc;">Agente:</th>
-                        <td style="border: 1px solid #ccc;">{{ $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}</td>
+                        <td style="border: 1px solid #ccc;">{{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'N/A' }}</td>
                     </tr>
                 </table>
             </td>

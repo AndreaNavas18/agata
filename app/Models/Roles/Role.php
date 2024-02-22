@@ -9,7 +9,7 @@ class Role extends SpatieRole
 
     public function scopeNoCustomerRole($query)
     {
-        return $query->where('id','<>',2 );
+        return $query->where('id','>',0 );
     }
 
 }
