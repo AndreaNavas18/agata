@@ -32,7 +32,7 @@ class NewTicketCreatedMailable extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('andreadeveloper18@gmail.com', 'Andrea Navas'),
+            from: new Address('karennavas22@hotmail.com', 'Andrea Navas'),
             subject: 'New Ticket Created - Stratecsa',
         );
     }

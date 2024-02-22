@@ -71,6 +71,6 @@ class andreaDeveloper extends Mailable
     {
         return $this->view('emails/new_ticket')
                     ->subject('Correo de prueba')
-                    ->from('knavas@stratecsa.com', 'Andrea Navas Stratecsa');
+                    ->from('karennavas22@hotmail.com', 'Andrea Navas Stratecsa');
     }
 }
