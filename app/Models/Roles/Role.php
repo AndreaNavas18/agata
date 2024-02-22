@@ -9,7 +9,9 @@ class Role extends SpatieRole
 
     public function scopeNoCustomerRole($query)
     {
-        return $query->where('id','>',0 );
+        //Se hace el cambio para poder cambiar roles en la vista 
+        return $query->where( 'id' , '>' , 0 );
+        
     }
 
 }
