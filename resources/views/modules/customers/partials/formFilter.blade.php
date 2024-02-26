@@ -18,6 +18,24 @@
             placeholder="Fecha fin inst."
             value="{{ (isset($data['final_date'])) ? $data['final_date'] : '' }}">
     </div>
+
+    <div class="col-md-3 col-sm-12  mb-4">
+        <select class="form-control
+            selectpicker"
+            name="provider_id"
+            id="provider_id_filter">
+            <option value="">--Proyecto--</option>
+            @foreach($proyectos as $proyectoRow)
+                <option value="{{ $proyectoRow->id }}"
+                    {{ isset($data['proyecto_id']) &&
+                        $data['proyecto_id'] == $proyectoRow->id
+                        ? 'selected' : '' }}>
+                    {{ $proyectoRow->name }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
     <div class="col-md-3 col-sm-12 mb-4">
         <input class="form-control"
         type="text"
@@ -25,6 +43,7 @@
         placeholder="Descripción servicio"
         value="{{ (isset($data['description'])) ? $data['description'] : '' }}">
     </div>
+    
 
     <div class="col-md-3 col-sm-12 mb-4">
         <select class="form-control
@@ -39,7 +58,7 @@
             @endforeach
         </select>
     </div>
-    @if($provider)
+    @if($provider && Auth()->user()->role_id!=2)
         <div class="col-md-3 col-sm-12 mb-4">
             <select class="form-control
                 selectpicker"
@@ -74,7 +93,7 @@
         </div>
     @endif
 
-    @if($customer)
+    @if($customer && Auth()->user()->role_id!=2)
         <div class="col-md-3 col-sm-12 mb-4">
             <select class="form-control
                 selectpicker"
@@ -92,7 +111,7 @@
             </select>
         </div>
     @endif
-
+@if(Auth()->user()->role_id!=2)
     <div class="col-md-3 col-sm-12 mb-4">
         <select class="form-control
             selectpicker"
@@ -115,6 +134,7 @@
             <option value="">--Departamento--</option>
         </select>
     </div>
+    @endif
     <div class="col-md-3 col-sm-12 mb-4">
         <select class="form-control
             selectpicker"

@@ -11,6 +11,34 @@
 			else { openLoader(); }
 		});
 	</script>
+    <script>
+        // Espera a que el DOM esté completamente cargado
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener todos los botones con la clase createforservice
+            var buttons = document.querySelectorAll('.createforservice');
+            
+            // Iterar sobre cada botón
+            buttons.forEach(function(button) {
+                // Agregar un event listener para el clic en cada botón
+                button.addEventListener('click', function(event) {
+                    // Prevenir el comportamiento predeterminado del enlace
+                    event.preventDefault();
+                    
+                    // Obtener el data-id del botón clicado
+                    var serviceId = button.getAttribute('data-id');
+                    
+                    // Obtener la URL base del enlace
+                    var url = button.getAttribute('href');
+                    
+                    // Concatenar el data-id a la URL base
+                    var newUrl = url + '/' + serviceId;
+                    
+                    // Redirigir a la nueva URL
+                    window.location.href = newUrl;
+                });
+            });
+        });
+</script>
 @endpush
 @section('content')
 	@component('componentes.card',
@@ -33,12 +61,15 @@
                     <i class="fas fa-search"></i> Buscar
                 </a>
 
+                @if(Auth()->user()->role_id!=2)
+
                 <button class="btn btn-success btn-sm addService"
                     type="button"
                     dataUrl="{{ route('customers.services.store') }}">
                     <i class="fas fa-plus"></i> Crear
                 </button>
             </div>
+            @endif
 
             <!-- Filtros -->
             <div class="collapse card-border" id="buscar">

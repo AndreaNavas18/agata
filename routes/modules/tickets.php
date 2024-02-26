@@ -8,7 +8,7 @@ Route::middleware(['can:tickets_ver'])->namespace('Tickets')->name('tickets.')->
 	Route::get('/tickets', [ TicketController::class, 'index' ])->name('index')
 		->middleware('can:tickets_ver');
 
-	Route::get('/tickets/crear', [ TicketController::class, 'create' ])->name('create')
+	Route::get('/tickets/crear/{serviceId?}', [ TicketController::class, 'create' ])->name('create')
 		->middleware('can:tickets_crear');
 
 	Route::post('/tickets/crear',[ TicketController::class, 'store' ])->name('store')

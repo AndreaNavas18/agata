@@ -179,4 +179,14 @@ Breadcrumbs::for('parameters/general/types_priorities', function (BreadcrumbTrai
     $trail->push('Tipos prioridades', route('params.general.types_priorities'));
 });
 
+/*
+|-----------------------------------
+|Motivos de solicitud
+|-----------------------------------
+*/
+Breadcrumbs::for('parameters/general/proyectos', function (BreadcrumbTrail $trail) {
+    $trail->parent('parameters/general');
+    $trail->push('Proyectos', route('params.general.proyectos'));
+});
+
 

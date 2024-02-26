@@ -7,6 +7,7 @@ use App\Models\General\City;
 use App\Models\General\Service;
 use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
+use App\Models\General\Proyecto;
 
 class CustomerService extends BaseModel {
 
@@ -77,6 +78,12 @@ class CustomerService extends BaseModel {
     {
         return $this->hasMany(Ticket::class, 'customer_service_id');
     }
+
+    public function proyecto()
+    {
+        return $this->belongsTo(Proyecto::class, 'proyecto_id');
+    }
+
 
 
     /* *************************************************************

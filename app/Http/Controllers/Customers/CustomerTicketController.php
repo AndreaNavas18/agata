@@ -12,6 +12,7 @@ use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
 use App\Models\Tickets\TicketPriority;
 use Illuminate\Http\Request;
+use App\Models\Customers\CustomerService;
 use Session;
 
 class CustomerTicketController extends Controller
@@ -91,6 +92,7 @@ class CustomerTicketController extends Controller
     {
         session::flash('tab','tickets');
         $customer= Customer::findOrFail($customerId);
+        $customerServices = CustomerService::get();
         $tabPanel='customerTicketsTabEdit';
         $priorities= TicketPriority::get();
         $employees= Employee::get();
@@ -104,7 +106,8 @@ class CustomerTicketController extends Controller
             'employees',
             'providers',
             'states',
-            'tickets'
+            'tickets',
+            'customerServices'
         ));
     }
 

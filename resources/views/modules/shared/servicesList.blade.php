@@ -1,44 +1,65 @@
 @component('componentes.table')
     @slot('thead')
-            <th>Stratecsa ID</th>
+    @if(Auth()->user()->role_id!=2)
+        <th>Stratecsa ID</th>
+        <th>OTP</th>
+    @endif
+        <th>ID Servicio Cliente</th>
+        <th>Proyecto - Contrato - Subcliente</th>
+        <th>Descripción</th>
+    @if(Auth()->user()->role_id!=2)
         @if($provider)
             <th>Proveedor</th>
         @endif
         @if($customer)
             <th>Cliente</th>
         @endif
-        <th>Nombre</th>
+    @endif
+        <th>Tipo de servicio</th>
         <th>Ciudad</th>
-        <th>Latitud</th>
-        <th>Longitud</th>
         <th>Fecha</th>
+    @if(Auth()->user()->role_id!=2)
         <th>Estado</th>
+    @endif
         @if ($showActions)
+        @if(Auth()->user()->role_id!=2)
             <th></th>
+        @else
+            <th>Crear ticket</th>
         @endif
+    @endif
     @endslot
     @slot('tbody')
         @foreach($services as $service)
             <tr>
-                <td>{{ $service->stratecsa_id }}</td>
-                @if($provider)
-                    <td>{{ $service->provider ? $service->provider->name : '' }}</td>
+                @if(Auth()->user()->role_id!=2)
+                    <td>{{ $service->stratecsa_id }}</td>
+                    <td>{{ $service->otp }}</td>
                 @endif
-                @if($customer)
-                    <td>{{ $service->customer->name }}</td>
+                <td>{{ $service->id_serviciocliente }}</td>
+                <td>{{ $service->proyecto ? $service->proyecto->name : ''}}</td>
+                <td>{{ $service->description }}</td>
+                @if(Auth()->user()->role_id!=2)
+                    @if($provider)
+                        <td>{{ $service->provider ? $service->provider->name : '' }}</td>
+                    @endif
+                    @if($customer)
+                        <td>{{ $service->customer->name }}</td>
+                    @endif
                 @endif
                 <td>{{ $service->service->name }}</td>
                 <td>{{ $service->city->name }}</td>
-                <td>{{ $service->latitude_coordinates }}</td>
-                <td>{{ $service->longitude_coordinates }}</td>
                 <td>{{ $service->date_service }}</td>
+                @if(Auth()->user()->role_id!=2)
                 <td>
                     <span class="badge {{ ($service->state  == 'Activo') ? 'bg-success' : 'bg-danger' }}">
                         {{ $service->state}}
                     </span>
                 </td>
+                @endif
                 @if ($showActions)
                     <td>
+                @if(Auth()->user()->role_id!=2)
                         @can('users_ver')
                             <a class="btn btn-info btn-sm loading mb-1"
                                 @if( isset($viewShowService) && $viewShowService)
@@ -77,6 +98,22 @@
                                 </button>
                             </form>
                         @endcan
+                    @endif
+
+                        <a class="btn btn-success btn-sm loading mb-1 createforservice"
+                            href="{{ route('tickets.create') }}"
+                            data-id="{{ $service->id }}"
+                            @if(isset($newTab) && $newTab)
+                                target="'_blank"
+                            @endif
+                            bs-toggle="tooltip"
+                            bs-placement="top"
+                            title="Crear ticket para este servicio">
+                            <i class="fas fa-regular fa-land-mine-on"></i>
+                            @php
+                                echo $service->id;
+                            @endphp
+                        </a>
                     </td>
                 @endif
             </tr>
@@ -90,3 +127,5 @@
         {{ $services->appends($data)->links() }}
     @endif
 @endcomponent
+
+

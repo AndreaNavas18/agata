@@ -6,13 +6,12 @@
         </a>
     </li>
 
-    {{-- <li>
+    <li>
         <a class="side-menu__item loading" href="{{ route('customers.services.index.all') }}">
             <i class="side-menu__icon fas fa-list-alt"></i>
             <span class="side-menu__label"> Servicios</span>
         </a>
-    </li> --}}
-
+    </li>
     {{-- karen --}}
 
     <li>

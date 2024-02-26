@@ -249,8 +249,9 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($serviceId = null)
     {
+        
         $customersList = Customer::get();
         $positionsDepartmanets = EmployeePositionDepartment::get();
         // $prioritiesList = TicketPriority::get();
@@ -262,6 +263,16 @@ class TicketController extends Controller
             $serviceList = [];
         }
         $date = Carbon::now()->format('Y-m-d');
+        
+        if($serviceId != null){
+            //Quiero que le mande ese valor a la vista
+            return view('modules.tickets.create', compact('serviceId', 'customersList',
+            'positionsDepartmanets',
+            'prioritiesList',
+            // 'serviceArray',
+            'serviceList',
+            'date'));
+        }
 
         return view('modules.tickets.create', compact(
             'customersList',
@@ -273,6 +284,8 @@ class TicketController extends Controller
         ));
     }
 
+    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -281,6 +294,12 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
+        // Registrar los data-id recibidos en la solicitud
+    $serviceIds = $request->input('data-id');
+    foreach ($serviceIds as $serviceId) {
+        Log::info('Data-id recibido en tickets.store: ' . $serviceId);
+    }
+
         $ticket = new Ticket();
         $ticket->ticket_issue                       = $request->ticket_issue;
         $ticket->date                               = $request->date;
@@ -290,14 +309,15 @@ class TicketController extends Controller
             // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
             $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
             $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
+            $ticket->customer_service_id = $selectedServiceId;
         } else {
             // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
             $ticket->priority_id = $request->priority_id;
+            $ticket->customer_service_id                = $request->customer_service_id;
         }
 
 
         // $ticket->priority_id                        = $request->priority_id;
-        $ticket->customer_service_id                = $request->customer_service_id;
         $ticket->state                              = 'Abierto';
         $ticket->description                        = $request->description;
             // Establece send_email como verdadero si el usuario es un cliente
@@ -358,7 +378,9 @@ class TicketController extends Controller
         }else {
             Log::info("RESPUESTA NO INICIAL");
         }
-        return redirect()->route('tickets.index')->with('ticket', $ticket);
+
+      
+            return redirect()->route('tickets.index')->with('ticket', $ticket);
     
     }
 

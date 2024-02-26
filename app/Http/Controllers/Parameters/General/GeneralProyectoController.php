@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Parameters\General;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\General\Service;
+use App\Models\General\Proyecto;
 use Illuminate\Database\QueryException;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\Customers\Customer;
 
-class GeneralServiceController extends Controller
+class GeneralProyectoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +19,14 @@ class GeneralServiceController extends Controller
      */
     public function index()
     {
-        $datos = Service::orderBy('name')->paginate();
-        return view('modules.parameters.general.services.index', compact('datos'));
+        $datos = Proyecto::orderBy('name')->paginate();
+
+        return view('modules.parameters.general.proyectos.index', 
+        compact('datos'));	
+
+
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -32,15 +38,18 @@ class GeneralServiceController extends Controller
     {
         DB::beginTransaction();
         $request->validate(['name' => 'required|max:100']);
-        $service= new Service();
-        $service->name= $request->name;
-        if (!$service->save()) {
+
+        $proyecto= new Proyecto();
+        $proyecto->name             =       $request->name;
+        $proyecto->description      =       $request->description;
+
+        if (!$proyecto->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('Bien hecho!', 'Registro insertado correctamente');
         return redirect()->back();
     }
 
@@ -57,26 +66,28 @@ class GeneralServiceController extends Controller
 
         $request->validate(['name' => 'required|max:100']);
         $name = $request->input('name');
+        $description = $request->input('description');
 
         //validaciones
-        $service = Service::findOrFail($id);
-        $serviceNew = Service::where('name', $name)->first();
+        $proyecto = Proyecto::findOrFail($id);
+        $proyectoNew = Proyecto::where('name', $name)->first();
 
-        if ($serviceNew && $serviceNew->name != $service->name) {
+        if ($proyectoNew && $proyectoNew->name != $proyecto->name) {
             Alert::warning('Warning', 'El nombre '. $name .' esta en uso.');
             return redirect()->back();
         }
 
-        $service->name = $name;
+        $proyecto->name = $name;
+        $proyecto->description = $description;
 
-        if (!$service->save()) {
+        if (!$proyecto->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al actualizar registro.');
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado con éxito');
-        return redirect()->back();    
+        Alert::success('Bien hecho!', 'Registro actualizado con éxito');
+        return redirect()->back();
     }
 
     /**
@@ -89,12 +100,12 @@ class GeneralServiceController extends Controller
     {
         try {
             DB::beginTransaction();
-            if (!Service::findOrFail($id)->delete()) {
+            if (!Proyecto::findOrFail($id)->delete()) {
                 Alert::error('Error', 'Error al eliminar registro.');
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('Bien hecho!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {
@@ -105,7 +116,6 @@ class GeneralServiceController extends Controller
                 return redirect()->back();
             }
         }
-
     }
 
     /**
@@ -119,6 +129,7 @@ class GeneralServiceController extends Controller
         $datos = Service::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
         return view('modules.parameters.general.services.index', compact('datos','data'));
+       
     }
 
 }

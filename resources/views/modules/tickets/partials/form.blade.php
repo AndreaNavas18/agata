@@ -45,7 +45,7 @@
                 name="priority_id"
                 id="priority_id"
                 required>
-                {{-- <option value="">--Seleccione--</option> --}}
+                <option value="">--Seleccione--</option>
                 @foreach($prioritiesList as $priorityRow)
                     <option value="{{ $priorityRow->id }}"
                         {{ isset($ticket) &&
@@ -150,17 +150,25 @@
             @if(isset($ticket) || Auth()->user()->role_id==2)
                 @foreach($serviceList as $serviceRow)
                     <option value="{{ $serviceRow->id }}"
-                        {{ isset($ticket) &&
-                            $ticket->customer_service_id == $serviceRow->id
-                            ? 'selected' : '' }}>
+                        @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)
+                            selected
+                        @elseif(Auth()->user()->role_id==2 && isset($serviceId) && $serviceId == $serviceRow->id)
+                            selected
+                        @endif>
                         {{ $serviceRow->description }}
                     </option>
+
+                        {{-- {{ isset($ticket) &&
+                            $ticket->customer_service_id == $serviceRow->id
+                            ? 'selected' : '' }}>
+                        {{ $serviceRow->description }} --}}
+                    
                 @endforeach
+                
             @endif
             
         </select>
 
-        
     </div>
 
     <div class="col-md-6 mb-3">

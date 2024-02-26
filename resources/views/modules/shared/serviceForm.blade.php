@@ -27,6 +27,29 @@
                         required>
                 </div>
 
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'OTP',
+                        'required' => true])
+                    @endcomponent
+                    <input type="text"
+                        name="otp"
+                        id="otp"
+                        class="form-control">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'ID Servicio Cliente',
+                        'required' => true])
+                    @endcomponent
+                    <input type="text"
+                        name="id_serviciocliente"
+                        id="id_serviciocliente"
+                        class="form-control"
+                        required>
+                </div>
+
                 @if(isset($customer) && $customer)
                     <div class="col-md-6 mb-4">
                         @component('componentes.label', [
@@ -49,7 +72,7 @@
 
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
-                        'title' => 'Nombre del servicio',
+                        'title' => 'Nombre del servicio general',
                         'required' => true])
                     @endcomponent
                     <select class="form-control selectpicker"
@@ -60,6 +83,24 @@
                         @foreach($servicesList as $serviceRow)
                             <option value="{{ $serviceRow->id }}">
                                 {{ $serviceRow->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'Proyecto - Contrato - Subcliente',
+                        'required' => true])
+                    @endcomponent
+                    <select class="form-control selectpicker"
+                        name="proyecto_id"
+                        id="proyecto_id"
+                        required>
+                        <option value="">--Seleccione--</option>
+                        @foreach($proyectos as $proyectoRow)
+                            <option value="{{ $proyectoRow->id }}">
+                                {{ $proyectoRow->name }}
                             </option>
                         @endforeach
                     </select>

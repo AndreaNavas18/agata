@@ -19,6 +19,7 @@ use App\Http\Controllers\Parameters\General\GeneralServiceController;
 use App\Http\Controllers\Parameters\General\GeneralTypePriorityController;
 use App\Http\Controllers\Parameters\General\GeneralTypeContactController;
 use App\Http\Controllers\Parameters\General\GeneralTypeDocumentController;
+use App\Http\Controllers\Parameters\General\GeneralProyectoController;
 use App\Http\Controllers\Parameters\ParameterController;
 
 
@@ -288,6 +289,24 @@ Route::namespace('Parameters\General')->name('params.general.')->group(function 
 		->where('id', '[0-9]+');
 
 	Route::delete('/parametros/general/tipos-prioridades/eliminar/{id}', [GeneralTypePriorityController::class, 'destroy'])->name('types_priorities.destroy')
+		->where('id', '[0-9]+');
+
+	/*
+    |-----------------------------------
+    | Proyectos-Contratos-SubCliente
+    |-----------------------------------
+    */
+
+	Route::get('/parametros/general/proyectos', [GeneralProyectoController::class, 'index'])->name('proyectos');
+
+    Route::get('/parametros/general/proyectos/buscar', [GeneralProyectoController::class, 'search'])->name('proyectos.search');
+
+	Route::post('/parametros/general/proyectos/crear',[GeneralProyectoController::class, 'store'])->name('proyectos.store');
+
+	Route::put('/parametros/general/proyectos/editar/{id}',[GeneralProyectoController::class, 'update'])->name('proyectos.update')
+		->where('id', '[0-9]+');
+
+	Route::delete('/parametros/general/proyectos/eliminar/{id}', [GeneralProyectoController::class, 'destroy'])->name('proyectos.destroy')
 		->where('id', '[0-9]+');
 
 });

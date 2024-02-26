@@ -14,8 +14,10 @@ use App\Models\General\Department;
 use App\Models\General\Service;
 use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
+use App\Models\General\Proyecto;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Session;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -24,32 +26,79 @@ class CustomerServiceController extends Controller
 {
 
     public function indexAll() {
-        $servicesList=Service::get();
-        $customers= Customer::with('customerContacs','customerServices')->get();
-        $countries= Country::get();
-        $departments= Department::get();
-        $cities=City::get();
-        $customerServices= CustomerService::paginate();
-        $typesInstalations = [
-            'Propia'    =>'Propia',
-            'Terceros'  =>'Terceros'
-        ];
-        $providers = Provider::get();
-        $tabPanel='customerServicesTabEdit';
-        $typesServices=Service::get();
 
-        return view('modules.customers.services.index', compact(
-            'customers',
-            'countries',
-            'departments',
-            'cities',
-            'tabPanel',
-            'customerServices',
-            'servicesList',
-            'typesInstalations',
-            'providers',
-            'typesServices'
-        ));
+        $user = Auth::user();
+
+        if (Auth()->user()->role_id == 2 && $user->customer_id) {
+            // Filtra los servicios por el customer_id del usuario autenticado
+            $customerServices = CustomerService::where('customer_id', $user->customer_id)
+                ->orderBy('id', 'DESC')
+                ->paginate();
+            $customers = Customer::where('id', $user->customer_id)->get(); // Si el cliente está asociado al usuario autenticado, puede obtenerlo directamente desde el usuario
+            $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id); // También puedes usar $user->customer_id aquí
+            $departments = Department::get();
+            $cities = City::get();
+            $countries = Country::get();
+            $servicesList = Service::get();
+            $typesServices = Service::get();
+            // Obtener los ids únicos de los proyectos asociados a los servicios del cliente
+            $projectIds = $customerServices->pluck('proyecto_id')->unique();
+            $proyectos = Proyecto::whereIn('id', $projectIds)->get();
+
+            $tabPanel='customerServicesTabEdit';
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+            $providers = Provider::get();
+
+
+            return view('modules.customers.services.index', compact(
+                'customers',
+                'countries',
+                'departments',
+                'cities',
+                'tabPanel',
+                'customerServices',
+                'servicesList',
+                'typesServices',
+                'proyectos',
+                'typesInstalations',
+                'providers',
+            ));
+        } else {
+            
+            $servicesList=Service::get();
+            $customers= Customer::with('customerContacs','customerServices')->get();
+            $countries= Country::get();
+            $departments= Department::get();
+            $cities=City::get();
+            $customerServices= CustomerService::paginate();
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+            $providers = Provider::get();
+            $tabPanel='customerServicesTabEdit';
+            $typesServices=Service::get();
+            $proyectos = Proyecto::get();
+
+            return view('modules.customers.services.index', compact(
+                'customers',
+                'countries',
+                'departments',
+                'cities',
+                'tabPanel',
+                'customerServices',
+                'servicesList',
+                'typesInstalations',
+                'providers',
+                'typesServices',
+                'proyectos',
+            ));
+
+        }
+
     }
 
     /**
@@ -60,35 +109,38 @@ class CustomerServiceController extends Controller
      */
     public function index($customerId)
     {
-        session::flash('tab','services');
-        $servicesList=Service::get();
-        $customers= Customer::with('customerContacs','customerServices')->get();
-        $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
-        $departments= Department::get();
-        $cities=City::get();
-        $countries= Country::get();
-        $customerServices= CustomerService::customerId($customerId)->paginate();
-        $typesInstalations = [
-            'Propia'    =>'Propia',
-            'Terceros'  =>'Terceros'
-        ];
-        $providers = Provider::get();
-        $tabPanel='customerServicesTabEdit';
-        $typesServices=Service::get();
+            session::flash('tab','services');
+            $servicesList=Service::get();
+            $customers= Customer::with('customerContacs','customerServices')->get();
+            $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
+            $departments= Department::get();
+            $cities=City::get();
+            $countries= Country::get();
+            $customerServices= CustomerService::customerId($customerId)->paginate();
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+            $providers = Provider::get();
+            $tabPanel='customerServicesTabEdit';
+            $typesServices=Service::get();
+            $proyectos = Proyecto::get();
+    
+            return view('modules.customers.edit', compact(
+                'customer',
+                'departments',
+                'cities',
+                'tabPanel',
+                'customerServices',
+                'customers',
+                'servicesList',
+                'typesInstalations',
+                'providers',
+                'typesServices',
+                'countries',
+                'proyectos'
+            ));
 
-        return view('modules.customers.edit', compact(
-            'customer',
-            'departments',
-            'cities',
-            'tabPanel',
-            'customerServices',
-            'customers',
-            'servicesList',
-            'typesInstalations',
-            'providers',
-            'typesServices',
-            'countries'
-        ));
     }
 
      /**
@@ -99,6 +151,7 @@ class CustomerServiceController extends Controller
      */
     public function indexSearch(Request $request,$customerId)
     {
+        Log::info("Hice esto ");
         session::flash('tab','services');
         $servicesList=Service::get();
         $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
@@ -113,6 +166,7 @@ class CustomerServiceController extends Controller
         $typesServices=Service::get();
         $data=$request->all();
         $countries= Country::get();
+        $proyectos= Proyecto::get();
         $customerServices= CustomerService::buscar($data,$customerId,'customer');
         if ($request->action=='buscar') {
             $customerServices = $customerServices->paginate();
@@ -127,7 +181,8 @@ class CustomerServiceController extends Controller
                 'providers',
                 'data',
                 'typesServices',
-                'countries'
+                'countries',
+                'proyectos'
             ));
         } else {
             $customerServices = $customerServices->get();
@@ -147,6 +202,8 @@ class CustomerServiceController extends Controller
         DB::beginTransaction();
         $customerService                            = new CustomerService();
         $customerService->stratecsa_id              = $request->stratecsa_id;
+        $customerService->otp                       = $request->otp;
+        $customerService->id_serviciocliente        = $request->id_serviciocliente;
         $customerService->service_id                = $request->service_id;
         $customerService->city_id                   = $request->city_id;
         $customerService->date_service              = $request->date_service;
@@ -155,6 +212,7 @@ class CustomerServiceController extends Controller
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
         $customerService->department_id             = $request->department_id;
+        $customerService->proyecto_id               = $request->proyecto_id;
         if ($request->filled('provider_id')) {
             $customerService->provider_id           = $request->provider_id;
         }
@@ -172,7 +230,7 @@ class CustomerServiceController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('Bien hecho!', 'Registro insertado correctamente');
         return redirect()->back();
     }
 
@@ -194,6 +252,7 @@ class CustomerServiceController extends Controller
         $departments= Department::get();
         $typesServices=Service::get();
         $countries= Country::get();
+        $proyectos= Proyecto::get();
         return view('modules.customers.show', compact(
             'customer',
             'customerServices',
@@ -202,7 +261,8 @@ class CustomerServiceController extends Controller
             'typesInstalations',
             'departments',
             'typesServices',
-            'countries'
+            'countries',
+            'proyectos'
         ));
     }
 
@@ -222,10 +282,12 @@ class CustomerServiceController extends Controller
      */
     public function showSearch(Request $request,$customerId)
     {
+       
         session::flash('tab','services');
         $customer= Customer::findOrFail($customerId);
         $tabPanel='customerServicesTabShow';
         $providers= Provider::get();
+        $proyectos= Proyecto::get();
         $typesInstalations=['Propia','Terceros'];
         $departments= Department::get();
         $typesServices=Service::get();
@@ -243,7 +305,8 @@ class CustomerServiceController extends Controller
                 'departments',
                 'typesServices',
                 'data',
-                'countries'
+                'countries',
+                'proyectos'
             ));
         } else {
             $customerServices = $customerServices->get();
@@ -271,6 +334,7 @@ class CustomerServiceController extends Controller
         $customerService->longitude_coordinates     = $request->longitude_coordinates;
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
+        $customerService->proyecto_id               = $request->proyecto_id;
         if ($request->filled('provider_id')) {
             $customerService->provider_id           = $request->provider_id;
         }
@@ -282,7 +346,7 @@ class CustomerServiceController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('Bien hecho!', 'Registro actualizado correctamente');
         return redirect()->back();
     }
 
