@@ -1,9 +1,7 @@
 @component('componentes.table')
     @slot('thead')
-    @if(Auth()->user()->role_id!=2)
         <th>Stratecsa ID</th>
         <th>OTP</th>
-    @endif
         <th>ID Servicio Cliente</th>
         <th>Proyecto - Contrato - Subcliente</th>
         <th>Descripción</th>
@@ -32,10 +30,8 @@
     @slot('tbody')
         @foreach($services as $service)
             <tr>
-                @if(Auth()->user()->role_id!=2)
-                    <td>{{ $service->stratecsa_id }}</td>
-                    <td>{{ $service->otp }}</td>
-                @endif
+                <td>{{ $service->stratecsa_id }}</td>
+                <td>{{ $service->otp }}</td>
                 <td>{{ $service->id_serviciocliente }}</td>
                 <td>{{ $service->proyecto ? $service->proyecto->name : ''}}</td>
                 <td>{{ $service->description }}</td>
@@ -73,7 +69,7 @@
                                 <i class="far fa-eye"></i>
                             </a>
                         @endcan
-
+                            
                         <button class="btn btn-success btn-sm editService mb-1"
                             bs-toggle="tooltip"
                             bs-placement="top"
