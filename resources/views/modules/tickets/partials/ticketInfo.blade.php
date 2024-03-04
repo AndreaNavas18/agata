@@ -31,14 +31,37 @@
                 </td>
             </tr>
 
-        <tr class="border-bottom">
-            <td>Prioridad</td>
-            <td class="text-right">
-                <span class="badge {{ $ticket->priority->color=='BG-DANGER' ? 'bg-danger' : 'bg-info' }} rounded-pill">
-                    {{ $ticket->priority->name }}
-                </span>
-            </td>
-        </tr>
+            <tr class="border-bottom">
+                <td>Asignado a</td>
+                <td class="text-right">
+                    <span>
+                        {{ $ticket->employee_id ? $ticket->employee->short_name : 'No hay agente asignado'}}
+                        <div class="col-2 float-right">
+                            <button
+                                class="btn btn-secondary btn-sm text-white addAgent"
+                                data-toggle="tooltip"
+                                title=""
+                                data-placement="top"
+                                data-original-title="Asignar agente"
+                                type="button"
+                                data-replieId="">
+                                <span>
+                                    <i class="fa fa-regular fa-user"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </span>
+                </td>
+            </tr>
+
+            <tr class="border-bottom">
+                <td>Prioridad</td>
+                <td class="text-right">
+                    <span class="badge {{ $ticket->priority->color=='BG-DANGER' ? 'bg-danger' : 'bg-info' }} rounded-pill">
+                        {{ $ticket->priority->name }}
+                    </span>
+                </td>
+            </tr>
         @endif
         <tr class="border-bottom">
             <td>Fecha de creación</td>

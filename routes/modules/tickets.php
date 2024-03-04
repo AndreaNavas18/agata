@@ -43,6 +43,9 @@ Route::middleware(['can:tickets_ver'])->namespace('Tickets')->name('tickets.')->
 	//Reabrir tickets
 	Route::patch('/tickets/{ticket}/reopen', [ TicketController::class, 'reopen' ])->name('reopen');
 
+	//Asignar agente
+	Route::patch('/tickets/{ticket}/asignarAgente', [ TicketController::class, 'asignarAgente' ])->name('asignarAgente');
+
 
     // respuestas nuevas tickets
     Route::post('/tickets/respuesta/crear/{id}',[ TicketController::class, 'replyStore' ])->name('reply.store')

@@ -4,6 +4,7 @@ use App\Http\Controllers\Customers\CustomerController;
 use App\Http\Controllers\Customers\CustomerServiceController;
 use App\Http\Controllers\Customers\CustomerTicketController;
 use App\Http\Controllers\Customers\CustomerUserController;
+use App\Http\Controllers\Customers\CustomerProyectoController;
 
 Route::middleware(['can:customers_show'])->namespace('Customers')->name('customers.')->group(function () {
 
@@ -69,6 +70,11 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     ->where('id', '[0-9]+')
     ->middleware('can:customers_edit');
 
+    Route::get('/clientes/servicios/eliminar/{id}', [ CustomerServiceController::class, 'destroy' ])->name('services.destroy')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_destroy');
+
+
     /**********************
     *--------- tickets
     ***********************/
@@ -109,6 +115,55 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     Route::put('/clientes/usuarios/actualizar/{customerId}', [ CustomerUserController::class, 'update' ])->name('users.update')
     ->where('id', '[0-9]+')
     ->middleware('can:customers_edit');
+
+    /**********************
+    *--------- proyectos
+    ***********************/
+
+    Route::get('/clientes/proyectos/editar/{customerId}', [ CustomerProyectoController::class, 'index' ])->name('proyectos.index')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+    Route::get('/clientes/proyectos/editar/buscar/{customerId}', [ CustomerProyectoController::class, 'indexSearch' ])->name('proyectos.index.search')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+    Route::get('/clientes/proyectos/ver/{customerId}', [ CustomerProyectoController::class, 'show' ])->name('proyectos.show')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+    Route::get('/clientes/proyectos/ver/buscar/{customerId}', [ CustomerProyectoController::class, 'showSearch' ])->name('proyectos.show.search')
+    ->where('id', '[0-9]+');
+
+    Route::post('/clientes/proyectos/crear/{customerId}',[ CustomerProyectoController::class, 'store' ])->name('proyectos.store')
+    ->middleware('can:customers_create');
+
+    Route::put('/clientes/proyectos/editar/{id}', [ CustomerProyectoController::class, 'update' ])->name('proyectos.update')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+    Route::get('/clientes/proyectos/eliminar/{id}', [ CustomerProyectoController::class, 'destroy' ])->name('proyectos.destroy')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_destroy');
+
+    Route::get('/proyectos/show/{id}', [ CustomerProyectoController::class, 'showProyecto' ])->name('proyectos.show.proyecto')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+    Route::get('/proyectos/index', [ CustomerProyectoController::class, 'indexAll' ])->name('proyectos.index.all')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+    
+    Route::get('/clientes/proyectos/editarproyecto/{id}', [ CustomerProyectoController::class, 'edit' ])->name('proyectos.edit')
+    ->where('id', '[0-9]+')
+    ->middleware('can:customers_edit');
+
+	Route::patch('/clientes/{id}/asignarServicio', [ CustomerProyectoController::class, 'asignarServicio' ])->name('proyectos.asignarServicio');
+
+
+    //Rutas AJAX
+    Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');
+
 
 });
 

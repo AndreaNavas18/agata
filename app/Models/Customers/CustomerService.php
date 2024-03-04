@@ -12,7 +12,9 @@ use App\Models\General\Proyecto;
 class CustomerService extends BaseModel {
 
 	protected $table = 'customers_services';
-	protected $fillable = [];
+	protected $fillable = [
+        'proyecto_id',
+    ];
 	protected $guarded = [];
 
 

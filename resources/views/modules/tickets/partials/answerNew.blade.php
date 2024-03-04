@@ -24,6 +24,7 @@
                     </option>
                 </select>
             </div>
+            @if($ticket->priority_id == 1)
             <div class="col-md-6 mb-3">
                 @component('componentes.label', [
                     'title' => 'Estado reloj',
@@ -42,6 +43,7 @@
                     </option>
                 </select>
             </div>
+            @endif
         </div>
     @endif
 

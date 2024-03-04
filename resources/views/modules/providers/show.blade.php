@@ -21,5 +21,4 @@
         @include('modules.providers.partials.show.tabPanel.'.$tabPanel)
 
     @endcomponent
-    <h1>hola</h1>
 @endsection

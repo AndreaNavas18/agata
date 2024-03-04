@@ -29,6 +29,7 @@ class CustomerTicketController extends Controller
     {
         session::flash('tab','tickets');
         $customer= Customer::findOrFail($customerId);
+        $customerServices = CustomerService::get();
         $tabPanel='customerTicketsTabShow';
         $priorities= TicketPriority::get();
         $employees= Employee::get();
@@ -42,7 +43,8 @@ class CustomerTicketController extends Controller
             'employees',
             'providers',
             'states',
-            'tickets'
+            'tickets',
+            'customerServices'
         ));
     }
 
@@ -72,7 +74,8 @@ class CustomerTicketController extends Controller
                 'employees',
                 'providers',
                 'states',
-                'tickets'
+                'tickets',
+                'data'
             ));
         } else {
             $tickets = $tickets->get();

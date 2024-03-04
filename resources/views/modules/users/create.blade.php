@@ -66,29 +66,30 @@
                             required>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        @component('componentes.label', [
-                            'title' => 'Rol',
-                            'id' => 'role',
-                            'required' => true])
-                        @endcomponent
-                        <select class="form-control selectpicker
-                            {{ $errors->has('role_id') ? 'is-invalid' : '' }}"
-                            name="role_id"
-                            id="roles"
-                            required>
-                            <option value="">--Seleccione--</option>
-                            @foreach($roles as $rol)
-                                <option value="{{ $rol->id }}"
-                                    {{ old('role_id') && old('role_id') == $rol->id ? 'selected' : ''}}>
-                                    {{ $rol->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                @if(Auth()->user()->role_id != 3)
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            @component('componentes.label', [
+                                'title' => 'Rol',
+                                'id' => 'role',
+                                'required' => ''])
+                            @endcomponent
+                            <select class="form-control selectpicker
+                                {{ $errors->has('role_id') ? 'is-invalid' : '' }}"
+                                name="role_id"
+                                id="roles"
+                                required>
+                                <option value="">--Seleccione--</option>
+                                @foreach($roles as $rol)
+                                    <option value="{{ $rol->id }}"
+                                        {{ old('role_id') && old('role_id') == $rol->id ? 'selected' : ''}}>
+                                        {{ $rol->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-
+                @endif
                 <div class="col-sm-12 col-md-6">
                     <div class="form-group">
                         @component('componentes.label', [

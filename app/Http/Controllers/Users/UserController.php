@@ -25,9 +25,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate();
+        $user = Auth()->user();
+        if (Auth()->user()->role_id == 3 && $user->customer_id) {
+            $users = User::where('customer_id', Auth()->user()->customer_id)->paginate();
+            return view('modules.users.index', compact('users'));
 
-        return view('modules.users.index', compact('users'));
+        }else if (Auth()->user()->role_id == 1) {
+            $users = User::paginate();
+            return view('modules.users.index', compact('users'));
+        }
+
+
     }
 
     /**
@@ -55,17 +63,24 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'last_name' => 'required',
-            'role_id' => 'required',
+            'role_id' => '',
             'password' => 'required',
             'email' => 'required|email|unique:users,email',
         ]);
         $user = new User();
+
+        if(Auth()->user()->role_id == 3){
+            $user->role_id='2';
+            $user->customer_id=Auth()->user()->customer_id;
+        }else {
+            $user->role_id=$request->input('role_id');
+        }
+
         $user->name = $request->input('name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         $user->status = 'Activo';
-        $user->role_id=$request->input('role_id');
         $user->full_name=$request->input('name').' '.$request->input('last_name');
         self::assignRole($user, $request->input('role_id'));
         if(!$user->save()) {

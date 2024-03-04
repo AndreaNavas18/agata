@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\andreaDeveloper;
+use App\Mail\newAnswer;
 
 class TicketController extends Controller
 {
@@ -245,7 +246,7 @@ class TicketController extends Controller
     
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource
      *
      * @return \Illuminate\Http\Response
      */
@@ -266,7 +267,9 @@ class TicketController extends Controller
         
         if($serviceId != null){
             //Quiero que le mande ese valor a la vista
-            return view('modules.tickets.create', compact('serviceId', 'customersList',
+            return view('modules.tickets.create', compact(
+            'serviceId', 
+            'customersList',
             'positionsDepartmanets',
             'prioritiesList',
             // 'serviceArray',
@@ -292,24 +295,21 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        // Registrar los data-id recibidos en la solicitud
-    $serviceIds = $request->input('data-id');
-    foreach ($serviceIds as $serviceId) {
-        Log::info('Data-id recibido en tickets.store: ' . $serviceId);
-    }
+    public function store(Request $request) {
+    $serviceId = $request->customer_service_id;
+    $si = "Si";
 
         $ticket = new Ticket();
         $ticket->ticket_issue                       = $request->ticket_issue;
         $ticket->date                               = $request->date;
+        $ticket->send_email                         = $si;
 
         // Verifica el rol del usuario y establece la prioridad adecuada
         if (Auth()->user()->role_id == 2) {
             // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
             $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
             $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
-            $ticket->customer_service_id = $selectedServiceId;
+                $ticket->customer_service_id = $serviceId;
         } else {
             // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
             $ticket->priority_id = $request->priority_id;
@@ -320,14 +320,17 @@ class TicketController extends Controller
         // $ticket->priority_id                        = $request->priority_id;
         $ticket->state                              = 'Abierto';
         $ticket->description                        = $request->description;
-            // Establece send_email como verdadero si el usuario es un cliente
-        if ($ticket->send_email = "No") {
-            $ticket->emails_notification = "  ";
-        }
-
+      
         // $ticket->send_email                         = $request->send_email;
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
+        }else {
+            if(Auth()->user()->role_id == 1){
+                $ticket->emails_notification = '';
+            }else {
+                $ticket->emails_notification = '';
+
+            }
         }
         if (Auth()->user()->role_id == 2) {
             $ticket->customer_id                    = Auth()->user()->customer_id;
@@ -367,18 +370,11 @@ class TicketController extends Controller
         //     $message->to($emails)
         //     ->subject('nuevo ticket creado '.Carbon::now()->format('Y-m-d'));
         // });
-            Log::info("Send email: ".$request->send_email);
+        // Log::info("Send email", $ticket->send_email);
         DB::commit();
         Alert::success('Success!', 'Registro insertado correctamente');
         // Verificar si el usuario ha optado por enviar un correo electrónico
-        if ($request->filled('send_email') && $request->send_email === 'Si') {
-            // Llama a la función para enviar el correo electrónico
-            $this->sendEmail($ticket, $request->input('emails_notification'));
-            Log::info("RESPUESTA SI  INICIAL");
-        }else {
-            Log::info("RESPUESTA NO INICIAL");
-        }
-
+        $this->sendEmail($ticket, $request->input('emails_notification'));
       
             return redirect()->route('tickets.index')->with('ticket', $ticket);
     
@@ -386,14 +382,40 @@ class TicketController extends Controller
 
     public function sendEmail(Ticket $ticket, $emails)
     {
-        // Envía correos electrónicos a cada dirección de correo
-        foreach (explode(';', $emails) as $email) {
-            Mail::to(trim($email))->send(new andreaDeveloper($ticket));
+          // Envía correo a soporte@stratecsa.com
+        Mail::to(['soporte@stratecsa.com', 'karennavas333@gmail.com'])->send(new andreaDeveloper($ticket));
+        
+        if (!is_null($ticket->employee)) {
+            // Si hay un empleado asignado, obtén su correo electrónico
+            $agentEmail = $ticket->employee->email;
+        } else {
+            // Si no hay un empleado asignado, establece el correo electrónico del agente como vacío
+            $agentEmail = '';
         }
-    
+
+        Log::info('Agent Email: ' . $agentEmail);
+        Log::info('Emails: ' . $emails);
+
+        if (!empty($agentEmail) || !empty($emails)) {
+
+            // Envía correo al agente asignado si está presente
+            if (!empty($agentEmail)) {
+                Mail::to($agentEmail)->send(new andreaDeveloper($ticket));
+            }
+
+            if (!empty($emails)) {
+                // Envía correos electrónicos a cada dirección de correo especificada por el usuario
+                foreach (explode(';', $emails) as $email) {
+                    Mail::to(trim($email))->send(new andreaDeveloper($ticket));
+                }
+            }
+        } else {
+            // Maneja el caso en que no haya destinatarios especificados
+            Log::error('No hay destinatarios especificados para el correo electrónico.');
+        }
+
+
     }
-
-
 
     /**
      * Display the specified resource.
@@ -504,6 +526,7 @@ class TicketController extends Controller
         $ticket= Ticket::findOrFail($id);
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
+        $employeesAll = Employee::all();
         if ($ticket->priority_id == 1) {
             if(strcasecmp($ticket->state_clock, 'Corriendo') === 0 && !is_null($ticket->datetime_clock)) {
                 // $timeSaved = Carbon::parse($ticket->time_clock);
@@ -580,7 +603,8 @@ class TicketController extends Controller
                 'prioritiesList',
                 'serviceList',
                 'employeesList',
-                'technicals'
+                'technicals',
+                'employeesAll'
             ));
         }else {
             if (Auth()->user()->role_id == 2){
@@ -594,7 +618,8 @@ class TicketController extends Controller
                     'prioritiesList',
                     'serviceList',
                     'employeesList',
-                    'technicals'
+                    'technicals',
+                    'employeesAll'
                 ));
             } else {
                 return view('modules.tickets.manage', compact(
@@ -607,7 +632,8 @@ class TicketController extends Controller
                     'prioritiesList',
                     'serviceList',
                     'employeesList',
-                    'technicals'
+                    'technicals',
+                    'employeesAll'
                 ));
             }
         }
@@ -759,10 +785,49 @@ class TicketController extends Controller
         //         });
         //     }
         // }
-
+        // Verificar si se asigno un agente al ticket
+        $this->sendEmailAnswer($ticket);
         DB::commit();
         Alert::success('Success!', 'Respuesta insertada correctamente');
         return redirect()->back();
+    }
+
+    public function sendEmailAnswer (Ticket $ticket){
+        // Obtener la última respuesta al ticket
+        $lastReply = TicketReply::where('ticket_id', $ticket->id)->latest()->first();
+
+        if ($lastReply) {
+            // Obtener el usuario que respondió al ticket
+            $responder = $lastReply->user;
+
+            if ($responder->customer_id) {
+                // Si el usuario tiene un customer_id, es un cliente
+                // Enviar correo al empleado asignado y a soporte
+                if ($ticket->employee_id) {
+                    // Si hay un agente asignado, enviar correo al agente y a soporte
+                    $employeeEmail = $ticket->employee->email;
+                    $supportEmail = 'soporte@stratecsa.com';
+                    $recipients = [$employeeEmail, $supportEmail];
+                } else {
+                    // Si no hay agente asignado, enviar correo únicamente a soporte
+                    $recipients = ['soporte@stratecsa.com'];
+                }
+            } else {
+                // Si el usuario no tiene un customer_id, es un empleado
+                // Enviar correo al cliente
+                $clientEmails = explode(';', $ticket->emails_notification);
+                $recipients = $clientEmails;
+                Log::info($recipients);
+            }
+
+            // Enviar el correo electrónico
+            foreach ($recipients as $recipient) {
+                Mail::to($recipient)->send(new newAnswer($ticket));
+            }
+        } else {
+            // Manejar el caso en que no haya respuestas al ticket
+            Log::error('No se ha encontrado una respuesta al ticket.');
+        }
     }
 
     //funcion para que un boton cambie el estado de cerrado a abierto en un ticket 
@@ -795,27 +860,50 @@ class TicketController extends Controller
     
         return redirect()->back();
     }
+    //AQUI VOY
     
-//     public function reopen(Ticket $ticket, Request $request, $id) {
-//         DB::beginTransaction();
-//         $ticket = Ticket::findOrFail($id);
-//         $ticket->state = $request->state;
-
-//         if($ticket->state == 'CERRADO') {
-//             $ticket->update(['state' => 'ABIERTO']);
-//         } else {
-//         }
-
-//         if (!$ticket->save()) {
-//             DB::rollBack();
-//             Alert::error('Error', 'Error al insertar el registro.');
-//             return redirect()->back();
-//         }else {
-//             DB::commit();
-//             Alert::success('Success!', 'Solicitud de cambio de estado');
-//             return redirect()->back();
+    public function asignarAgente(Request $request, $id) {
+        DB::beginTransaction();
         
-//         }
+        try{
+            $ticket = Ticket::findOrFail($id);
+            // $positionsDepartmanets = EmployeePositionDepartment::get();
+            // $employees = Employee::where('position_id', $request->employee_position_department_id)->get();
+            
+            //Actualizo el ticket
+            $ticket->employee_position_department_id = $request->employee_position_department_id;
+            $ticket->employee_id = $request->employee_id;
+            
+            //imprimir en logs lo que llega por request 
+            Log::info($request->employee_id);
+            Log::info($request->employee_position_department_id);
+            $ticket->save();
+            
+            // Verificar si se asigno un agente al ticket
+            $this->sendEmailAgent($ticket, $request->input('employee_id'));
 
-//     }
+            DB::commit();
+            Alert::success('Success!', 'Agente asignado correctamente');
+        }catch (\Exception $e){
+            DB::rollBack();
+            Alert::error('Error', 'Error al asignar el agente al ticket.');
+        }
+        return redirect()->back();
+    }
+
+    public function sendEmailAgent(Ticket $ticket, $employeeId)
+    {
+        // Obtener el correo electrónico del agente asignado
+        $agentEmail = Employee::find($employeeId)->email;
+
+        // Verificar si el correo electrónico del agente no está vacío
+        if (!empty($agentEmail)) {
+            // Enviar correo electrónico al agente asignado
+            Mail::to($agentEmail)->send(new andreaDeveloper($ticket));
+        } else {
+            // Manejar el caso en que el correo electrónico del agente esté vacío
+            Log::error('No se ha especificado un correo electrónico para el agente asignado.');
+        }
+
+    }
 }

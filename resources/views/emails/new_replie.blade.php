@@ -16,8 +16,10 @@
         <span style="background-color: #c9fdc4">{{  $ticket->id }}</span> 🎉
     </p>
     <p>
-        El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br>
-        {{ $ticketReply->replie  }}
+        {{-- El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br> --}}
+        El departamento de STRATECSA ha enviado la siguiente respuesta:<br>
+        
+        {{-- {{ $ticketReply->replie  }} --}}
     </p>
     <p>
         <b>Estado tickect:</b>

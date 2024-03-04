@@ -95,8 +95,7 @@
                     @endcomponent
                     <select class="form-control selectpicker"
                         name="proyecto_id"
-                        id="proyecto_id"
-                        required>
+                        id="proyecto_id">
                         <option value="">--Seleccione--</option>
                         @foreach($proyectos as $proyectoRow)
                             <option value="{{ $proyectoRow->id }}">

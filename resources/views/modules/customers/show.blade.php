@@ -15,6 +15,7 @@
             @include('modules.customers.partials.tab',[
                 'urlnfo' => route('customers.show',$customer->id),
                 'urlServices' => route('customers.services.show',['customerId'=>$customer->id ]),
+                'urlProyectos' => route('customers.proyectos.show',['customerId'=>$customer->id ]),
                 'urlTickets' => route('customers.tickets.show',['customerId'=>$customer->id ]),
                 'urlUsers'=> route('customers.users.show',['customerId'=>$customer->id ]),
             ])

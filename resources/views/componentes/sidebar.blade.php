@@ -58,7 +58,7 @@
     </li>
 
     <li>
-        <a class="side-menu__item loading" href="{{ route('providers.index') }}">
+        <a class="side-menu__item loading" href="{{ route('customers.proyectos.index.all') }}">
             <i class="side-menu__icon fas fa-network-wired"></i>
             <span class="side-menu__label"> Proyectos</span>
         </a>

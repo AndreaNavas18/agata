@@ -6,6 +6,7 @@
     <script src="{{asset('assets/js/modules/Shared/services.js')}}"></script>
     <script src="{{asset('assets/js/modules/Shared/cities.js')}}"></script>
     <script src="{{asset('assets/js/modules/Shared/customerUsers.js')}}"></script>
+    <script src="{{asset('assets/js/modules/Shared/proyectos.js')}}" defer></script>
     <script>
         $(document).ready(function() {
             @if(Session::has('tab'))
@@ -14,6 +15,7 @@
             @endif
         });
     </script>
+    
 @endpush
 @section('content')
 
@@ -27,6 +29,7 @@
         @include('modules.customers.partials.tab',[
             'urlnfo' => route('customers.edit',$customer->id),
             'urlServices' => route('customers.services.index',['customerId'=>$customer->id ]),
+            'urlProyectos' => route('customers.proyectos.index',['customerId'=>$customer->id ]),
             'urlTickets' => route('customers.tickets.edit',['customerId'=>$customer->id ]),
             'urlUsers' => route('customers.users.index',['customerId'=>$customer->id ]),
         ])

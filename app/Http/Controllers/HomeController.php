@@ -37,22 +37,37 @@ class HomeController extends Controller
         //     Alert::error('Error', 'No tienes acceso para ingresar.');
         //     return redirect()->back();
         // }
+        $user = Auth()->user();
+        if (Auth()->user()->role_id == 3 && $user->customer_id || Auth()->user()->role_id == 2 && $user->customer_id) {
+            //Que solo pueda ver la informacion de sus tickets y no de todos
+            $ticketsOpen=Ticket::state('Abierto')->where('customer_id', Auth()->user()->customer_id)->count();
+            $ticketsClosed=Ticket::state('Cerrado')->where('customer_id', Auth()->user()->customer_id)->count();
+            $ticketsPending=Ticket::state('abierto')->where('customer_id', Auth()->user()->customer_id)->doesntHave('replies')->count();
 
-        $ticketsOpen=Ticket::state('Abierto')->count();
-        $ticketsClosed=Ticket::state('Cerrado')->count();
-        $ticketsPending=Ticket::state('abierto')->doesntHave('replies')->count();
-        $totalCustomers=Customer::count();
-        $tottalEmployees= Employee::count();
-        $totalProviders= Provider::count();
-        $totalServicesInternet= CustomerService::serviceId(1)->count();
-        return view('home', compact(
-            'ticketsOpen',
-            'ticketsClosed',
-            'ticketsPending',
-            'totalCustomers',
-            'tottalEmployees',
-            'totalProviders',
-            'totalServicesInternet'
-        ));
+            return view('home', compact(
+                'ticketsOpen',
+                'ticketsClosed',
+                'ticketsPending'
+            ));
+        } else {
+            
+            $ticketsOpen=Ticket::state('Abierto')->count();
+            $ticketsClosed=Ticket::state('Cerrado')->count();
+            $ticketsPending=Ticket::state('abierto')->doesntHave('replies')->count();
+            $totalCustomers=Customer::count();
+            $tottalEmployees= Employee::count();
+            $totalProviders= Provider::count();
+            $totalServicesInternet= CustomerService::serviceId(1)->count();
+            return view('home', compact(
+                'ticketsOpen',
+                'ticketsClosed',
+                'ticketsPending',
+                'totalCustomers',
+                'tottalEmployees',
+                'totalProviders',
+                'totalServicesInternet'
+            ));
+        }
+
     }
 }

@@ -36,6 +36,17 @@
         </a>
     </li>
     <li>
+        <a class="nav-link proyectos
+            {{ (Session::get('tab') == 'proyectos' ? 'active' : '') }}
+            loading"
+            href="{{ $urlProyectos }}">
+            <span class="d-block">
+                <i class="fab fa-sellsy text-white"></i>&nbsp;
+                Proyectos
+            </span>
+        </a>
+    </li>
+    <li>
         <a class="nav-link tickets
             {{ (Session::get('tab') == 'tickets' ? 'active' : '') }}
             loading"

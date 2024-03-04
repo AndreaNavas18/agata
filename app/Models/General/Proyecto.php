@@ -3,6 +3,7 @@
 namespace App\Models\General;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Customers\Customer;
 use App\Models\Customers\CustomerService;
 
 class Proyecto extends Model
@@ -12,12 +13,16 @@ class Proyecto extends Model
     protected $fillable = [
         'name',
         'description',
+        'customer_id',
         // Otros campos
     ];
 
-    // Relaciones con otros modelos si es necesario
-    //Relacion con la tabla customers_services por el campo proyecto_id 
-    public function servicios()
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function customerServices()
     {
         return $this->hasMany(CustomerService::class, 'proyecto_id');
     }
