@@ -6,6 +6,7 @@
     <script src="{{asset('assets/js/modules/Shared/services.js')}}"></script>
     <script src="{{asset('assets/js/modules/Shared/cities.js')}}"></script>
     <script src="{{asset('assets/js/modules/Shared/customerUsers.js')}}"></script>
+    <script src="{{asset('assets/js/modules/Shared/proyectos.js')}}" defer></script>
     <script>
         $(document).ready(function() {
             @if(Session::has('tab'))
@@ -14,6 +15,20 @@
             @endif
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Manejar el clic en el botón para abrir el formulario
+            $('#botonAbrirFormulario').click(function() {
+                // Ocultar todos los campos que no tienen la clase 'filtro-proyecto'
+                $('.row > div:not(.filtro-proyecto)').hide();
+                // Mostrar los campos que tienen la clase 'filtro-proyecto'
+                $('.filtro-proyecto').show();
+            });
+            console.log('ready');
+        });
+    </script>
+
+    
 @endpush
 @section('content')
 
@@ -27,6 +42,7 @@
         @include('modules.customers.partials.tab',[
             'urlnfo' => route('customers.edit',$customer->id),
             'urlServices' => route('customers.services.index',['customerId'=>$customer->id ]),
+            'urlProyectos' => route('customers.proyectos.index',['customerId'=>$customer->id ]),
             'urlTickets' => route('customers.tickets.edit',['customerId'=>$customer->id ]),
             'urlUsers' => route('customers.users.index',['customerId'=>$customer->id ]),
         ])

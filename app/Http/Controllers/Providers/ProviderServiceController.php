@@ -10,6 +10,8 @@ use App\Models\General\City;
 use App\Models\General\Department;
 use App\Models\General\Service;
 use App\Models\Providers\Provider;
+use App\Models\General\Proyecto;
+use App\Models\General\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Session;
@@ -41,6 +43,8 @@ class ProviderServiceController extends Controller
         $customersList = Customer::get();
         $typesServices=Service::get();
         $customers=Customer::get();
+        $proyectos= Proyecto::get();
+        $countries= Country::get();
 
         return view('modules.providers.edit', compact(
             'provider',
@@ -53,7 +57,9 @@ class ProviderServiceController extends Controller
             'providers',
             'customersList',
             'typesServices',
-            'customers'
+            'customers',
+            'proyectos',
+            'countries'
         ));
     }
 
@@ -144,15 +150,17 @@ class ProviderServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($providerId)
     {
         session::flash('tab','services');
-        $provider= Customer::findOrFail($id);
-        $providerServices= CustomerService::providerId($id)->paginate();
+        $provider= Provider::findOrFail($providerId);
+        $providerServices= CustomerService::providerId($providerId)->paginate();
         $tabPanel='ProviderServicesShowTab';
+        $countries= Country::get();
         $departments= Department::get();
         $typesServices=Service::get();
         $customers=Customer::get();
+        $proyectos=Proyecto::get();
 
         return view('modules.providers.show', compact(
             'provider',
@@ -161,6 +169,8 @@ class ProviderServiceController extends Controller
             'departments',
             'typesServices',
             'customers',
+            'proyectos',
+            'countries'
         ));
     }
 

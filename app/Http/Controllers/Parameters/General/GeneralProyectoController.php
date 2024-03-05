@@ -132,4 +132,23 @@ class GeneralProyectoController extends Controller
        
     }
 
+    //Funciones para asignar servicios existentes 
+
+      /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function indexAsignar($id)
+    {
+            session::flash('tab','proyectos');
+            $proyecto = Proyecto::findOrFail($id);
+    
+            return view('modules.parameters.general.proyectos.index', compact(
+                'proyecto'
+            ));
+
+    }
+
 }

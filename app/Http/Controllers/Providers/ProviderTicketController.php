@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Providers;
 use App\Exports\Tickets\TicketsExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customers\Customer;
+use App\Models\Customers\CustomerService;
 use App\Models\Employees\Employee;
 use App\Models\General\City;
 use App\Models\General\Department;
@@ -36,6 +37,7 @@ class ProviderTicketController extends Controller
         $cities= City::get();
         $employees= Employee::get();
         $customers= Customer::get();
+        $customerServices = CustomerService::get();
         $states=['Abierto','Cerrado'];
         $tickets = Ticket::whereHas('service', function($q) use($providerId) {
             return $q->where('customers_services.provider_id',$providerId);
@@ -49,7 +51,8 @@ class ProviderTicketController extends Controller
             'employees',
             'customers',
             'states',
-            'tickets'
+            'tickets',
+            'customerServices'
         ));
     }
 
@@ -68,6 +71,7 @@ class ProviderTicketController extends Controller
         $cities= City::get();
         $employees= Employee::get();
         $customers= Customer::get();
+        $customerServices = CustomerService::get();
         $states=['Abierto','Cerrado'];
         $data= $request->all();
         $tickets= Ticket::buscar($data,$providerId,'providers');
@@ -82,7 +86,8 @@ class ProviderTicketController extends Controller
                 'customers',
                 'states',
                 'tickets',
-                'data'
+                'data',
+                'customerServices'
             ));
         } else {
             $tickets = $tickets->get();
@@ -107,6 +112,7 @@ class ProviderTicketController extends Controller
         $cities= City::get();
         $employees= Employee::get();
         $customers= Customer::get();
+        $customerServices = CustomerService::get();
         $states=['Abierto','Cerrado'];
         $tickets = Ticket::whereHas('service', function($q) use($providerId) {
             return $q->where('customers_services.provider_id',$providerId);
@@ -120,7 +126,8 @@ class ProviderTicketController extends Controller
             'employees',
             'customers',
             'states',
-            'tickets'
+            'tickets',
+            'customerServices'
         ));
     }
 
@@ -139,6 +146,7 @@ class ProviderTicketController extends Controller
         $cities= City::get();
         $employees= Employee::get();
         $customers= Customer::get();
+        $customerServices = CustomerService::get();
         $states=['Abierto','Cerrado'];
         $data=$request->all();
         $tickets= Ticket::buscar($data,$providerId,'providers');
@@ -153,7 +161,8 @@ class ProviderTicketController extends Controller
                 'customers',
                 'states',
                 'tickets',
-                'data'
+                'data',
+                'customerServices'
             ));
         } else {
             $tickets = $tickets->get();

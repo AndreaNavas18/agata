@@ -76,3 +76,11 @@ require base_path('routes/modulesBreadcrumbs/tickets.php');
 |-----------------------------------
 */
 require base_path('routes/modulesBreadcrumbs/services.php');
+
+/*
+|-----------------------------------
+| proyectos
+|-----------------------------------
+*/
+require base_path('routes/modulesBreadcrumbs/proyectos.php');
+

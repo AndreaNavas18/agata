@@ -52,6 +52,8 @@
 @endpush
 @push('script')
 <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
+<script src="{{asset('assets/js/modules/Tickets/tickets.js')}}"></script>
+
 
     <script>
         /* initialization of different variables
@@ -122,6 +124,12 @@
             $('#ticket_replie_id').val(replieId);
             $('#modalVisit').modal('show');
         })
+        $('.addAgent').on('click', function() {
+            var replieId = $(this).attr('data-replieId');
+            $('#formAgent').trigger("reset");
+            $('#ticket_replie_id').val(replieId);
+            $('#modalAgent').modal('show');
+        })
         $('form#formVisit').submit(function(e) {
             e.preventDefault();
             var $form = $('#formVisit')[0];
@@ -148,6 +156,7 @@
 
 
     </script>
+
 @endpush
 @section('content')
 
@@ -383,5 +392,95 @@
                 </form>
             </div>
         </div>
+        <div>
+            <div class="modal fade" id="modalAgent" tabindex="-1" role="dialog" aria-hidden="true">
+                <form action="{{ route('tickets.asignarAgente', $ticket->id) }}"
+                    method="POST"
+                    id="formAgent">
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Asignar agente</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-4">
+                                        @component('componentes.label', [
+                                            'title' => 'Departamento',
+                                            'id' => 'employee_position_department_id',
+                                            'required' => true])
+                                        @endcomponent
+                                        <select class="form-control
+                                            selectpicker"
+                                            name="employee_position_department_id"
+                                            id="employee_position_department_id"
+                                            required
+                                            data-width="100%">
+                                            <option value="" selected>--Seleccione--</option>
+                                            @foreach($positionsDepartmanets as $positionDepartmanetList)
+                                                <option value="{{ $positionDepartmanetList->id }}"
+                                                    {{ isset($ticket) &&
+                                                        $ticket->employee_position_department_id == $positionDepartmanetList->id
+                                                        ? 'selected' : '' }}>
+                                                    {{ $positionDepartmanetList->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 mb-4">
+                                        @component('componentes.label', [
+                                            'title' => 'Agente',
+                                            'id' => 'employee_id ',
+                                            'required' => true])
+                                        @endcomponent
+                                        <select class="form-control
+                                            selectpicker"
+                                            name="employee_id"
+                                            id="employee_id"
+                                            required
+                                            data-width="100%">
+                                            <option value="">--Seleccione--</option>
+                                            @isset($ticket)
+                                                @foreach($employeesList as $employeeRow)
+                                                    <option value="{{ $employeeRow->id }}"
+                                                        {{ isset($ticket) &&
+                                                            $ticket->employee_id == $employeeRow->id
+                                                            ? 'selected' : '' }}>
+                                                        {{ $employeeRow->full_name }}
+                                                    </option>
+                                                @endforeach
+                                            @endisset
+                                        </select>
+                                    </div>
+                                    <input type="hidden" value="" name="ticket_replie_id" id="ticket_replie_id">
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                                <button class="btn btn-primary btn-sm"
+                                    type="submit">
+                                    <i class="fas fa-save"></i>
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     @endif
+<!-- Filtros -->
+ 
+    <!-- ocultos -->
+    <input type="hidden"
+        id="rutaAjax"
+        data-url-employees="{{ route('tickets.employees.positions.departments') }}"
+        data-url-services="{{ route('tickets.customers.services') }}">
 @endsection

@@ -242,10 +242,10 @@
 						<div class="tab-content">
 							<div class="tab-pane active " id="index1">
 								{{-- karen --}}
-                                @if(Auth()->check() && Auth()->user()->role_id == 2)
+                                @if(Auth()->check() && Auth()->user()->role_id == 2 || Auth()->user()->role_id == 3)
                                     @component('componentes.sidebar_customer')
                                     @endcomponent
-                                @else()
+                                @else
                                     @component('componentes.sidebar')
                                     @endcomponent
                                 @endif

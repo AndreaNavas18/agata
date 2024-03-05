@@ -12,11 +12,11 @@
                     href="">
                     <i class="fas fa-sync-alt"></i> Refrescar
                 </a>
-                <button class="btn btn-success btn-sm addService"
+                {{-- <button class="btn btn-success btn-sm addService"
                     type="button"
                     dataUrl="{{ route('customers.services.store') }}">
                     <i class="fas fa-plus"></i> Crear
-                </button>
+                </button> --}}
             </div>
 
             @include('modules.Shared.Users.usersList', [

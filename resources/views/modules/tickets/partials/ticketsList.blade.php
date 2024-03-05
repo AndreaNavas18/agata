@@ -39,7 +39,10 @@
                     <td>{{ $ticket->customer ? $ticket->customer->name : '' }}</td>
                 @endif
 
-                <td>{{ $ticket->service->description }}</td>
+                <td>
+                    {{-- {{ optional($ticket->service)->description }} --}}
+                    {{ $ticket->service->description }}
+                </td>
 
                 @if($provider && Auth()->user()->role_id!=2)
                     <td>{{ $ticket->service->provider ? $ticket->service->provider->name : '---' }}</td>

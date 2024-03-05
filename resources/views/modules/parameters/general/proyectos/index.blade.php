@@ -100,6 +100,13 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
 
+                                    <button class="btn btn-success btn-sm"
+                                        type="button"
+                                        data-toggle="modal"
+                                        data-target="#modalAsignar{{$row->id}}">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+
                                     <form class="d-inline frmDestroy"
                                         action="{{ route('params.general.proyectos.destroy', $row->id) }}"
                                         method="POST">
@@ -207,4 +214,43 @@
             @endslot
         @endcomponent
     </form>
+
+    <!-- Modal Asignar Servicios -->
+    <form action="{{ route('params.general.proyectos.indexAsignar', $row->id) }}"
+        method="POST">
+        @csrf
+        @method('PUT')
+        @component('componentes.modal', [
+            'id' => 'modalAsignar'. $row->id,
+            'title' => 'Asignar servicios a  proyecto - contrato - subcliente',
+            'btnCancel' => true])
+
+            @slot('body')
+                <div class="form-group">
+                    <label class="form-label">Nombre</label>
+                    <input type="text"
+                        name="name"
+                        class="form-control"
+                        value="{{ $row->name }}"
+                        required="">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descripcion</label>
+                    <input type="text"
+                        name="description"
+                        class="form-control"
+                        value="{{ $row->description }}">
+                </div>
+            @endslot
+
+            @slot('footer')
+                <button class="btn btn-primary btn-sm"
+                    type="submit">
+                    <i class="fas fa-save"></i>
+                    Actualizar
+                </button>
+            @endslot
+        @endcomponent
+    </form>
+
 @endsection

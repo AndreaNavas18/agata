@@ -16,7 +16,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('users_ver')
+            
                 <a class="btn btn-primary btn-sm loading"
                     href="{{ route('users.index') }}">
                     <i class="fas fa-sync-alt"></i>
@@ -31,21 +31,17 @@
                     <i class="fas fa-search"></i>
                     Buscar
                 </a>
-            @endcan
 
-            @can('users_crear')
                 <a class="btn btn-success
                     btn-sm loading"
                     href="{{ route('users.create') }}">
                     <i class="fas fa-plus"></i>
                     Crear
                 </a>
-            @endcan
 
         @endslot
 
         <!-- Filtros -->
-        @can('users_ver')
             <div class="collapse card-border" id="buscar">
                 <form
                     action="{{ route('users.search') }}"
@@ -85,7 +81,6 @@
                     </div>
                 </form>
             </div>
-        @endcan
 
         <!-- Datos -->
         @component('componentes.table')
@@ -93,7 +88,9 @@
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
-                <th>Rol</th>
+                @if(Auth()->user()->role_id != 3)
+                    <th>Rol</th>
+                @endif
                 <th>Estado</th>
                 <th></th>
             @endslot
@@ -103,16 +100,18 @@
                         <td>{{ $usu->name }}</td>
                         <td>{{ $usu->last_name }}</td>
                         <td>{{ $usu->email }}</td>
-                        <td>
-                           @forelse($usu->getRoleNames() as $role)
-                                {{ $role }}
-                            @unless($loop->last)
-                                ,
-                            @endunless
-                            @empty
-                                No se han asignado roles a este usuario.
-                            @endforelse
-                        </td>
+                        @if(Auth()->user()->role_id != 3)
+                            <td>
+                            @forelse($usu->getRoleNames() as $role)
+                                    {{ $role }}
+                                @unless($loop->last)
+                                    ,
+                                @endunless
+                                @empty
+                                    No se han asignado roles a este usuario.
+                                @endforelse
+                            </td>
+                        @endif
                         <td>
                             <span class="badge {{ ($usu->status == 'Activo') ? 'badge-success' : 'badge-danger' }}">
                                 {{ $usu->status }}
@@ -148,7 +147,6 @@
                                     </a>
                                 @endcan
 
-                                @can('users_eliminar')
                                     <form class="d-inline frmDestroy"
                                         action="{{ route('users.destroy', $usu->id) }}"
                                         method="POST">
@@ -162,7 +160,6 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
-                                @endcan
                             @endif
                         </td>
                     </tr>

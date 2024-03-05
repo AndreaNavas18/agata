@@ -185,46 +185,48 @@
             required="">
     </div>
 
-    @if(Auth()->user()->role_id!=2 || Auth()->user()->role_id!=2 && isset($ticket))
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Enviar email ?',
-                'id' => 'send_email',
-                'required' => true])
-            @endcomponent
-            <select class="form-control
-                selectpicker"
-                name="send_email"
-                id="send_email"
-                required>
-                {{-- <option value="">--Seleccione--</option> --}}
-                <option value="Si"
-                    {{ isset($ticket) &&
-                        $ticket->send_email == 'Si'
-                        ? 'selected' : '' }}>
-                    Si
-                </option>
-                <option value="No"
-                    {{ isset($ticket) &&
-                        $ticket->send_email == 'No'
-                        ? 'selected' : '' }}>
-                    No
-                </option>
-            </select>
-        </div>
-
+    {{-- @if(Auth()->user()->role_id==2 || Auth()->user()->role_id==2 && isset($ticket)) --}}
+        @if(Auth()->user()->role_id==000)
+                <div class="col-md-6 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Enviar email ?',
+                        'id' => 'send_email',
+                        'required' => true])
+                    @endcomponent
+                    <select class="form-control
+                        selectpicker"
+                        name="send_email"
+                        id="send_email"
+                        required>
+                        {{-- <option value="">--Seleccione--</option> --}}
+                        <option value="Si"
+                            {{ isset($ticket) &&
+                                $ticket->send_email == 'Si'
+                                ? 'selected' : '' }}>
+                            Si
+                        </option>
+                        <option value="No"
+                            {{ isset($ticket) &&
+                                $ticket->send_email == 'No'
+                                ? 'selected' : '' }}>
+                            No
+                        </option>
+                    </select>
+                </div>
+        @endif
         <div class="col-md-12 mb-3">
             @component('componentes.label', [
-                'title' => 'Correos separados con ;',
+                'title' => 'Ingrese el/los correo(s) para notificaciones',
                 'id' => 'emails_notification',
                 'required' => false])
             @endcomponent
             <input type="text"
                 name="emails_notification"
                 class="form-control"
+                placeholder="Separados por ;"
                 value="{{ isset($ticket) ? $ticket->emails_notification : '' }}">
         </div>
-    @endif
+    {{-- @endif --}}
 
 
     <div class="col-md-12 mb-3">

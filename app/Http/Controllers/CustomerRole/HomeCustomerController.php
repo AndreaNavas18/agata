@@ -30,22 +30,26 @@ class HomeCustomerController extends Controller
     */
     public function index()
     {
-        if(auth()->user()->role_id!=2){
+        $user = Auth()->user();
+
+        if(Auth()->user()->role_id == 3 && $user->customer_id || Auth()->user()->role_id == 2 && $user->customer_id){
+            $customerId=auth()->user()->customer_id;
+            $ticketsOpen=Ticket::state('Abierto')->customerId($customerId)->count();
+            $ticketsClosed=Ticket::state('Cerrado')->customerId($customerId)->count();
+            $ticketsPending=Ticket::state('abierto')->customerId($customerId)->doesntHave('replies')->count();
+            $totalServicesInternet= CustomerService::serviceId(1)->customerId($customerId)->count();
+            return view('customerRole.home', compact(
+                'ticketsOpen',
+                'ticketsClosed',
+                'ticketsPending',
+                'totalServicesInternet'
+            ));
+
+        }else {
             DB::rollBack();
             Alert::error('Error', 'Modulo solo es accesible para los clientes.');
             return redirect()->back();
         }
 
-        $customerId=auth()->user()->customer_id;
-        $ticketsOpen=Ticket::state('Abierto')->customerId($customerId)->count();
-        $ticketsClosed=Ticket::state('Cerrado')->customerId($customerId)->count();
-        $ticketsPending=Ticket::state('abierto')->customerId($customerId)->doesntHave('replies')->count();
-        $totalServicesInternet= CustomerService::serviceId(1)->customerId($customerId)->count();
-        return view('customerRole.home', compact(
-            'ticketsOpen',
-            'ticketsClosed',
-            'ticketsPending',
-            'totalServicesInternet'
-        ));
     }
 }

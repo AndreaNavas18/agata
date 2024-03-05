@@ -1,5 +1,5 @@
 /* Carga las jerarquías */
-$('#employee_position_department_id').on('change', function() {
+$('#employee_position_department_id').change (function() {
     openLoader();
     var positionDepartmentId = $(this).val(),
     ruta = $('input#rutaAjax').attr('data-url-employees');

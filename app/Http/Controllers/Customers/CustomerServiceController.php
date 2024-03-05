@@ -213,7 +213,12 @@ class CustomerServiceController extends Controller
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
         $customerService->department_id             = $request->department_id;
-        $customerService->proyecto_id               = $request->proyecto_id;
+          
+        // Verificar si el campo proyecto_id está presente y tiene un valor válido
+        if ($request->filled('proyecto_id') && is_numeric($request->proyecto_id)) {
+            $customerService->proyecto_id = $request->proyecto_id;
+        }
+
         if ($request->filled('provider_id')) {
             $customerService->provider_id           = $request->provider_id;
         }

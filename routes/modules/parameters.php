@@ -308,6 +308,9 @@ Route::namespace('Parameters\General')->name('params.general.')->group(function 
 
 	Route::delete('/parametros/general/proyectos/eliminar/{id}', [GeneralProyectoController::class, 'destroy'])->name('proyectos.destroy')
 		->where('id', '[0-9]+');
+		
+	Route::put('/parametros/general/proyectos/indexAsignar/{id}',[GeneralProyectoController::class, 'indexAsignar'])->name('proyectos.indexAsignar')
+	->where('id', '[0-9]+');
 
 });
 

@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Tickets\Ticket;
 
-class andreaDeveloper extends Mailable
+class newAnswer extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -69,8 +69,8 @@ class andreaDeveloper extends Mailable
      */
     public function build()
     {
-        return $this->view('emails/new_ticket')
-                    ->subject('Notificaciones Stratecsa')
-                    ->from('karennavas22@hotmail.com', 'Stratecsa');
+        return $this->view('emails/new_replie')
+                    ->subject('Respuesta Ticket Stratecsa')
+                    ->from('karennavas22@hotmail.com', 'Andrea Navas Stratecsa');
     }
 }
