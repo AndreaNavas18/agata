@@ -22,9 +22,9 @@
     @endif
 
     <li>
-        <a class="side-menu__item loading" href="{{ route('customers.services.index.all') }}">
+        <a class="side-menu__item loading" href="{{ route('customers.proyectos.index.all') }}">
             <i class="side-menu__icon fas fa-list-alt"></i>
-            <span class="side-menu__label"> Servicios</span>
+            <span class="side-menu__label"> Proyectos</span>
         </a>
     </li>
     {{-- karen --}}

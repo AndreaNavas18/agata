@@ -3,10 +3,9 @@
 use App\Http\Controllers\Tickets\TicketController;
 use App\Http\Controllers\Tickets\TicketVisitController;
 
-Route::middleware(['can:tickets_ver'])->namespace('Tickets')->name('tickets.')->group(function () {
+Route::namespace('Tickets')->name('tickets.')->group(function () {
 
-	Route::get('/tickets', [ TicketController::class, 'index' ])->name('index')
-		->middleware('can:tickets_ver');
+	Route::get('/tickets', [ TicketController::class, 'index' ])->name('index');
 
 	Route::get('/tickets/crear/{serviceId?}', [ TicketController::class, 'create' ])->name('create')
 		->middleware('can:tickets_crear');

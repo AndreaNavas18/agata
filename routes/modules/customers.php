@@ -116,21 +116,24 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     ->where('id', '[0-9]+')
     ->middleware('can:customers_edit');
 
+
+});
+
+Route::namespace('Customers')->name('customers.')->group(function () {
+
+    
     /**********************
     *--------- proyectos
     ***********************/
 
     Route::get('/clientes/proyectos/editar/{customerId}', [ CustomerProyectoController::class, 'index' ])->name('proyectos.index')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
     Route::get('/clientes/proyectos/editar/buscar/{customerId}', [ CustomerProyectoController::class, 'indexSearch' ])->name('proyectos.index.search')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
     Route::get('/clientes/proyectos/ver/{customerId}', [ CustomerProyectoController::class, 'show' ])->name('proyectos.show')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
     Route::get('/clientes/proyectos/ver/buscar/{customerId}', [ CustomerProyectoController::class, 'showSearch' ])->name('proyectos.show.search')
     ->where('id', '[0-9]+');
@@ -139,24 +142,19 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     ->middleware('can:customers_create');
 
     Route::put('/clientes/proyectos/editar/{id}', [ CustomerProyectoController::class, 'update' ])->name('proyectos.update')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
     Route::get('/clientes/proyectos/eliminar/{id}', [ CustomerProyectoController::class, 'destroy' ])->name('proyectos.destroy')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_destroy');
+    ->where('id', '[0-9]+');
 
     Route::get('/proyectos/show/{id}', [ CustomerProyectoController::class, 'showProyecto' ])->name('proyectos.show.proyecto')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
     Route::get('/proyectos/index', [ CustomerProyectoController::class, 'indexAll' ])->name('proyectos.index.all')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
     
     Route::get('/clientes/proyectos/editarproyecto/{id}', [ CustomerProyectoController::class, 'edit' ])->name('proyectos.edit')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->where('id', '[0-9]+');
 
 	Route::post('/clientes/asignarServicio', [ CustomerProyectoController::class, 'asignarServicio' ])->name('proyectos.asignarServicio');
 
@@ -166,6 +164,6 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');
 
 
-});
 
+});
 

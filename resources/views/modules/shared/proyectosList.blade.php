@@ -179,9 +179,9 @@
 
                 </tr>
             @endif
-        @endforeach
-    @endslot
-
+            @endforeach
+            @endslot
+            
     @if(!isset($data))
         {{ $proyectos->links() }}
     @else

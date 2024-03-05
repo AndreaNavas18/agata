@@ -23,12 +23,18 @@ class CustomerProyectoController extends Controller
     public function indexAll() {
 
         session::flash('tab','proyectos');
+        $user = Auth()->user();
+
 
         if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
-            // Filtra los servicios por el customer_id del usuario autenticado
-            $customerServices = CustomerService::where('customer_id', $user->customer_id)
-                ->orderBy('id', 'DESC')
-                ->paginate();
+            
+    
+            if(Auth()->user()->proyecto_id != null){
+                $customerServices = CustomerService::where('proyecto_id', Auth()->user()->proyecto_id);
+            }else{
+                $customerServices = CustomerService::where('customer_id', $user->customer_id);
+            }
+
             $customers = Customer::where('id', $user->customer_id)->get(); // Si el cliente está asociado al usuario autenticado, puede obtenerlo directamente desde el usuario
             $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id); // También puedes usar $user->customer_id aquí
             $departments = Department::get();
@@ -38,7 +44,9 @@ class CustomerProyectoController extends Controller
             $typesServices = Service::get();
             // Obtener los ids únicos de los proyectos asociados a los servicios del cliente
             $projectIds = $customerServices->pluck('proyecto_id')->unique();
-            $proyectos = Proyecto::whereIn('id', $projectIds)->get();
+            // $proyectos = Proyecto::whereIn('id', $projectIds)->get();
+            $proyectos = Proyecto::whereIn('id', $projectIds)->paginate();
+
 
             $tabPanel='customerProyectosTabEdit';
             $typesInstalations = [
@@ -47,7 +55,8 @@ class CustomerProyectoController extends Controller
             ];
             $providers = Provider::get();
 
-            return view('modules.customers.proyectos.index', compact(
+            return view('modules.customers.proyectos.index',
+            compact(
                 'customers',
                 'countries',
                 'departments',
@@ -93,8 +102,6 @@ class CustomerProyectoController extends Controller
         }
 
     }
-
-
 
 
     /**

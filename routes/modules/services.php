@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Customers\CustomerServiceController;
 
-Route::middleware(['can:customers_show'])->namespace('Customers')->name('customers.')->group(function () {
+Route::namespace('Customers')->name('customers.')->group(function () {
 
     /**********************
     *--------- servicios

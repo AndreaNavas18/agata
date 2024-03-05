@@ -89,4 +89,9 @@ class User extends Authenticatable
         return $query->where('customer_id', $customerId);
     }
 
+    public function proyecto()
+    {
+        return $this->belongsTo(Proyecto::class, 'proyecto_id');
+    }
+
 }

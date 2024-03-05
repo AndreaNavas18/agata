@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employees\Employee;
 use App\Models\Permissions\Permission;
 use App\Models\Roles\Role;
+use App\Models\General\Proyecto;
 use App\Models\Submodules\Submodule;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -28,7 +29,8 @@ class UserController extends Controller
         $user = Auth()->user();
         if (Auth()->user()->role_id == 3 && $user->customer_id) {
             $users = User::where('customer_id', Auth()->user()->customer_id)->paginate();
-            return view('modules.users.index', compact('users'));
+            $proyectos = Proyecto::where('customer_id', $user->customer_id)->get();
+            return view('modules.users.index', compact('users', 'proyectos'));
 
         }else if (Auth()->user()->role_id == 1) {
             $users = User::paginate();
@@ -46,7 +48,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::orderBy('name')->noCustomerRole()->get();
-        return view('modules.users.create', compact('roles'));
+        $proyectos = Proyecto::where('customer_id', Auth()->user()->customer_id)->get();
+        return view('modules.users.create', compact('roles', 'proyectos'));
     }
 
 
@@ -66,12 +69,14 @@ class UserController extends Controller
             'role_id' => '',
             'password' => 'required',
             'email' => 'required|email|unique:users,email',
+            'proyecto_id' => '',
         ]);
         $user = new User();
 
         if(Auth()->user()->role_id == 3){
             $user->role_id='2';
             $user->customer_id=Auth()->user()->customer_id;
+            $user->proyecto_id=$request->input('proyecto_id');
         }else {
             $user->role_id=$request->input('role_id');
         }

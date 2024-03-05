@@ -26,5 +26,10 @@ class Proyecto extends Model
     {
         return $this->hasMany(CustomerService::class, 'proyecto_id');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'proyecto_id');
+    }
     
 }

@@ -30,7 +30,7 @@ class CustomerServiceController extends Controller
 
         $user = Auth::user();
 
-        if (Auth()->user()->role_id == 2 && $user->customer_id) {
+        if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
             // Filtra los servicios por el customer_id del usuario autenticado
             $customerServices = CustomerService::where('customer_id', $user->customer_id)
                 ->orderBy('id', 'DESC')

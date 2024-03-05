@@ -77,7 +77,7 @@
                 'provider'          => true,
                 'customer'          => true,
                 'showActions'       => true,
-                'viewShowProyecto'   => true
+                'viewShowProyecto'   => true,
             ])
         </div>
     @endcomponent
