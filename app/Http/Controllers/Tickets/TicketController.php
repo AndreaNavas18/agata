@@ -847,7 +847,7 @@ class TicketController extends Controller
                 }
                 $ticket->save();
                 DB::commit();
-                Alert::success('¡Éxito!', 'El estado del ticket se ha cambiado a ABIERTO');
+                Alert::success('Bien hecho!', 'El estado del ticket se ha cambiado a ABIERTO');
             } else {
                 DB::rollBack();
                 Alert::warning('Advertencia', 'El ticket no está cerrado, no se puede reabrir.');
