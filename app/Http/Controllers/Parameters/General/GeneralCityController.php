@@ -46,7 +46,7 @@ class GeneralCityController extends Controller
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
         return redirect()->back();
     }
 
@@ -85,7 +85,7 @@ class GeneralCityController extends Controller
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado con éxito');
+        Alert::success('¡Éxito!', 'Registro actualizado con éxito');
         return redirect()->back();    }
 
     /**
@@ -103,7 +103,7 @@ class GeneralCityController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {

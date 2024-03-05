@@ -167,7 +167,7 @@ class EmployeeController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
         return redirect()->route('employees.index');
     }
 
@@ -284,7 +284,7 @@ class EmployeeController extends Controller
             }
 
             DB::commit();
-            Alert::success('Success!', 'Registro actualizado correctamente');
+            Alert::success('¡Éxito!', 'Registro actualizado correctamente');
             return redirect()->route('employees.index');
         } catch (\Throwable $th) {
             Alert::error('Error', 'Error al actualizar registro. '.$th->getMessage());
@@ -303,7 +303,7 @@ class EmployeeController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {

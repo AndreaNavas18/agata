@@ -73,7 +73,7 @@ class UserController extends Controller
             Alert::error('Error', 'Error al guardar el registro.');
         }
         DB::commit();
-        Alert::success('Success!', 'Registro insertado exitosamente');
+        Alert::success('¡Éxito!', 'Registro insertado exitosamente');
         return redirect()->route('users.index');
     }
 
@@ -136,7 +136,7 @@ class UserController extends Controller
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->route('users.index');
 
     }
@@ -156,7 +156,7 @@ class UserController extends Controller
             return redirect()->back();
         }
         DB::commit();
-        Alert::success('Success!', 'Registro eliminado exitosamente');
+        Alert::success('¡Éxito!', 'Registro eliminado exitosamente');
         return redirect()->back();
     }
 
@@ -206,7 +206,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $this->assignPermissions($user, $request->input('permissions'));
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->route('users.index');
     }
 
@@ -249,12 +249,12 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
             if (!$user->save()) {
                 DB::rollBack();
-                Alert::success('Success!', 'Registro actualizado correctamente');
+                Alert::success('¡Éxito!', 'Registro actualizado correctamente');
                 return redirect()->back();
             }
             DB::commit();
 
-            Alert::success('Success!', 'Registro actualizado correctamente');
+            Alert::success('¡Éxito!', 'Registro actualizado correctamente');
             return redirect()->route('home');
         }
     }

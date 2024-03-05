@@ -134,7 +134,7 @@ class ProviderServiceController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
         return redirect()->back();
     }
 
@@ -236,7 +236,7 @@ class ProviderServiceController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->back();
     }
 

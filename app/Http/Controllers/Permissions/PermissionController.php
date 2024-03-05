@@ -52,7 +52,7 @@ class PermissionController extends Controller
             Alert::error('Error', 'Error inserted record.');
         }
         DB::commit();
-        Alert::success('Success!', 'Registro insertado exitosamente');
+        Alert::success('¡Éxito!', 'Registro insertado exitosamente');
         return redirect()->back();
     }
 
@@ -86,7 +86,7 @@ class PermissionController extends Controller
             Alert::error('Error', 'Error updating record.');
         }
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->back();
     }
 
@@ -104,7 +104,7 @@ class PermissionController extends Controller
             Alert::error('Error', 'Error deleting record.');
         }
         DB::commit();
-        Alert::success('Success!', 'Registro eliminado exitosamente');
+        Alert::success('¡Éxito!', 'Registro eliminado exitosamente');
         return redirect()->back();
     }
 

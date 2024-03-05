@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Session;
 use RealRashid\SweetAlert\Facades\Alert;
 
+
 class CustomerServiceController extends Controller
 {
 
@@ -365,7 +366,7 @@ class CustomerServiceController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {

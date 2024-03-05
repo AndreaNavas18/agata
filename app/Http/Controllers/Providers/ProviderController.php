@@ -131,7 +131,7 @@ class ProviderController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
         return redirect()->route('providers.index');
     }
 
@@ -227,7 +227,7 @@ class ProviderController extends Controller
     //     }
 
     //     DB::commit();
-    //     Alert::success('Success!', 'Registro actualizado correctamente');
+    //     Alert::success('¡Éxito!', 'Registro actualizado correctamente');
     //     return redirect()->route('providers.index');
     // }
     public function update(Request $request, $id)
@@ -267,7 +267,7 @@ class ProviderController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->route('providers.index');
     }
 
@@ -287,7 +287,7 @@ class ProviderController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {
@@ -314,7 +314,7 @@ class ProviderController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {

@@ -47,7 +47,7 @@ class RoleController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro insertado exitosamente');
+        Alert::success('¡Éxito!', 'Registro insertado exitosamente');
         return back();
     }
 
@@ -95,7 +95,7 @@ class RoleController extends Controller
                 Alert::error('Error', 'Error updating record.');
             }
             DB::commit();
-            Alert::success('Success!', 'Registro actualizado correctamente');
+            Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         } else {
             Alert::warning('Warning', 'The administrative role cannot be edited');
         }
@@ -121,7 +121,7 @@ class RoleController extends Controller
             Alert::error('Error', 'Error deleting record.');
         }
         DB::commit();
-        Alert::success('Success!', 'Registro eliminado exitosamente');
+        Alert::success('¡Éxito!', 'Registro eliminado exitosamente');
     }
 
     /**

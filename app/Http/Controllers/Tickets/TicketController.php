@@ -369,7 +369,7 @@ class TicketController extends Controller
         // });
             Log::info("Send email: ".$request->send_email);
         DB::commit();
-        Alert::success('Success!', 'Registro insertado correctamente');
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
         // Verificar si el usuario ha optado por enviar un correo electrónico
         if ($request->filled('send_email') && $request->send_email === 'Si') {
             // Llama a la función para enviar el correo electrónico
@@ -466,7 +466,7 @@ class TicketController extends Controller
         }
 
         DB::commit();
-        Alert::success('Success!', 'Registro actualizado correctamente');
+        Alert::success('¡Éxito!', 'Registro actualizado correctamente');
         return redirect()->route('tickets.index');
     }
 
@@ -485,7 +485,7 @@ class TicketController extends Controller
                 return redirect()->back();
             }
             DB::commit();
-            Alert::success('Success!', 'Registro eliminado correctamente');
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
             return redirect()->back();
         } catch (QueryException $th) {
             if ($th->getCode() === '23000') {
@@ -761,7 +761,7 @@ class TicketController extends Controller
         // }
 
         DB::commit();
-        Alert::success('Success!', 'Respuesta insertada correctamente');
+        Alert::success('¡Éxito!', 'Respuesta insertada correctamente');
         return redirect()->back();
     }
 
@@ -782,7 +782,7 @@ class TicketController extends Controller
                 }
                 $ticket->save();
                 DB::commit();
-                Alert::success('Success!', 'El estado del ticket se ha cambiado a ABIERTO');
+                Alert::success('¡Éxito!', 'El estado del ticket se ha cambiado a ABIERTO');
             } else {
                 DB::rollBack();
                 Alert::warning('Advertencia', 'El ticket no está cerrado, no se puede reabrir.');
@@ -812,7 +812,7 @@ class TicketController extends Controller
 //             return redirect()->back();
 //         }else {
 //             DB::commit();
-//             Alert::success('Success!', 'Solicitud de cambio de estado');
+//             Alert::success('¡Éxito!', 'Solicitud de cambio de estado');
 //             return redirect()->back();
         
 //         }
