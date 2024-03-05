@@ -69,6 +69,17 @@
                                             </form>
                                         @endcan
 
+                                        
+                                        <button class="btn btn-purple btn-sm obtenerServicios mb-1"
+                                            bs-toggle="tooltip"
+                                            bs-placement="top"
+                                            title="Asignar Servicios"
+                                            data-proyecto-name="{{ $proyecto->name }}"
+                                            data-proyecto-id="{{ $proyecto->id }}"
+                                            data-customer-id="{{ $proyecto->customer_id }}">
+                                            <i class="fas fa-light fa-handshake"></i>
+                                        </button>
+
                                     {{-- <a class="btn btn-success btn-sm loading mb-1 createforproyecto"
                                         href="{{ route('tickets.create') }}"
                                         data-id="{{ $service->id }}"
@@ -136,7 +147,7 @@
                                             </form>
                                         @endcan
 
-                                        <button class="btn btn-success btn-sm obtenerServicios mb-1"
+                                        <button class="btn btn-purple btn-sm obtenerServicios mb-1"
                                             bs-toggle="tooltip"
                                             bs-placement="top"
                                             title="Asignar Servicios"

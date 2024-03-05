@@ -137,54 +137,70 @@ class CustomerProyectoController extends Controller
                 'proyectos'
             ));
 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function indexSearch(Request $request,$customerId)
-    {
-        Log::info("Hice esto ");
-        session::flash('tab','proyectos');
-        $servicesList=Service::get();
-        $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
-        $departments= Department::get();
-        $cities=City::get();
-        $typesInstalations = [
-            'Propia'    =>'Propia',
-            'Terceros'  =>'Terceros'
-        ];
-        $providers = Provider::get();
-        $tabPanel='customerProyectosTabEdit';
-        $typesServices=Service::get();
-        $data=$request->all();
-        $countries= Country::get();
-        $customerServices= CustomerService::get();
-        $proyectos = Proyecto::buscar($data,$customerId,'customer');
-        if ($request->action=='buscar') {
-            $proyectos = $proyectos->paginate();
-            return view('modules.customers.edit', compact(
-                'customer',
-                'departments',
-                'cities',
-                'tabPanel',
-                'customerServices',
-                'servicesList',
-                'typesInstalations',
-                'providers',
-                'data',
-                'typesServices',
-                'countries',
-                'proyectos'
-            ));
-        } else {
-            $customerServices = $customerServices->get();
-            return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
         }
-    }
+        
+        /**
+         * Show the form for editing the specified resource.
+         *
+         * @param  int  $id
+         * @return \Illuminate\Http\Response
+         */
+        //Otra busqueda funcional --karen --
+        public function indexSearch(Request $request,$customerId)
+        {
+            
+          // Obtener el cliente
+            $customer = Customer::findOrFail($customerId);
+
+            // Obtener el proyecto seleccionado en la solicitud
+            $projectId = $request->input('proyecto_id');
+
+            // Realizar la búsqueda de proyectos del cliente específico y el proyecto seleccionado
+            $proyectos = Proyecto::where('customer_id', $customerId);
+                    
+             // Si se proporciona un proyecto específico, agregar el filtro por su ID
+            if (!empty($projectId)) {
+                $proyectos->where('id', $projectId);
+            }
+
+            // Obtener los proyectos paginados
+            $proyectos = $proyectos->paginate();
+
+            $customerServices= CustomerService::customerId($customerId)->paginate();
+            $tabPanel='customerProyectosTabEdit';
+            $cities= City::get();
+            $countries = Country::get();
+            $services= Service::get();
+            $typesServices = Service::get();
+            $providers= Provider::get();
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+
+
+            return view('modules.customers.edit', 
+            compact(
+                'proyectos',
+                'customer',
+                'tabPanel',
+                'cities',
+                'services',
+                'providers',
+                'customerServices',
+                'typesServices',
+                'typesInstalations',
+                'countries'
+
+
+            ));
+
+            
+                    // } else {
+                    //     $customerServices = $customerServices->get();
+                    //     return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
+                    // }
+        }
 
 
     public function show($id)
@@ -344,12 +360,37 @@ class CustomerProyectoController extends Controller
     }
 
     public function getServices ($id) {
-        $customerServices = CustomerService::where('customer_id', $id)
-                ->whereNull('proyecto_id')
-                ->get();
+
+        // Obtener los proyectos asociados al cliente
+        $projects = Proyecto::where('customer_id', $id)->pluck('id')->toArray();
+
+        // Verificar si hay servicios asociados a alguno de los proyectos del cliente
+        $projectServicesCount = CustomerService::whereIn('proyecto_id', $projects)->count();
+
+        // Obtener los servicios según la validación
+        $customerServices = CustomerService::where(function ($query) use ($projects, $projectServicesCount) {
+            if ($projectServicesCount > 0) {
+                // Si hay servicios asociados a alguno de los proyectos del cliente, listar los servicios sin proyecto_id o con proyecto_id diferente de los proyectos del cliente
+                $query->whereNull('proyecto_id')
+                    ->orWhereNotIn('proyecto_id', $projects);
+            } else {
+                // Si no hay servicios asociados a ninguno de los proyectos del cliente, listar todos los servicios sin proyecto_id
+                $query->whereNull('proyecto_id');
+            }
+        })
+        ->where('customer_id', $id)
+        ->get();
+
         Log::info($customerServices);
+
         return response()->json(['customerServices' => $customerServices]);
-    }
+    
+    //     $customerServices = CustomerService::where('customer_id', $id)
+    //             ->whereNull('proyecto_id')
+    //             ->get();
+    //     Log::info($customerServices);
+    //     return response()->json(['customerServices' => $customerServices]);
+        }
 
     public function asignarServicio(Request $request) {
         try {

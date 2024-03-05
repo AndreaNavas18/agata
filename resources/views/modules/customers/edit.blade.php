@@ -15,6 +15,19 @@
             @endif
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Manejar el clic en el botón para abrir el formulario
+            $('#botonAbrirFormulario').click(function() {
+                // Ocultar todos los campos que no tienen la clase 'filtro-proyecto'
+                $('.row > div:not(.filtro-proyecto)').hide();
+                // Mostrar los campos que tienen la clase 'filtro-proyecto'
+                $('.filtro-proyecto').show();
+            });
+            console.log('ready');
+        });
+    </script>
+
     
 @endpush
 @section('content')

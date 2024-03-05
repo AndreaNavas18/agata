@@ -19,11 +19,11 @@
             value="{{ (isset($data['final_date'])) ? $data['final_date'] : '' }}">
     </div>
 
-    <div class="col-md-3 col-sm-12  mb-4">
+    <div class="col-md-3 col-sm-12  mb-4 filtro-proyecto">
         <select class="form-control
             selectpicker"
-            name="provider_id"
-            id="provider_id_filter">
+            name="proyecto_id"
+            id="proyecto_filter_id">
             <option value="">--Proyecto--</option>
             @foreach($proyectos as $proyectoRow)
                 <option value="{{ $proyectoRow->id }}"
