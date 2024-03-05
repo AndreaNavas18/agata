@@ -136,14 +136,13 @@
                                             </form>
                                         @endcan
 
-                                        <button class="btn btn-success btn-sm asignarServicios mb-1"
+                                        <button class="btn btn-success btn-sm obtenerServicios mb-1"
                                             bs-toggle="tooltip"
                                             bs-placement="top"
                                             title="Asignar Servicios"
-                                            data-proyecto-id="{{ $proyecto->id }}"
                                             data-proyecto-name="{{ $proyecto->name }}"
-                                            dataUrl="{{ route('customers.proyectos.asignarServicio', $proyecto->id) }}"
-                                            data-proyecto-customer="{{ $proyecto }}">
+                                            data-proyecto-id="{{ $proyecto->id }}"
+                                            data-customer-id="{{ $proyecto->customer_id }}">
                                             <i class="fas fa-light fa-handshake"></i>
                                         </button>
 

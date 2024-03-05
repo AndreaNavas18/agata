@@ -158,8 +158,9 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     ->where('id', '[0-9]+')
     ->middleware('can:customers_edit');
 
-	Route::patch('/clientes/{id}/asignarServicio', [ CustomerProyectoController::class, 'asignarServicio' ])->name('proyectos.asignarServicio');
+	Route::post('/clientes/asignarServicio', [ CustomerProyectoController::class, 'asignarServicio' ])->name('proyectos.asignarServicio');
 
+    Route::get('/clientes/proyectos/getServicios/{id}', [ CustomerProyectoController::class, 'getServices' ])->name('proyectos.getServices');
 
     //Rutas AJAX
     Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');

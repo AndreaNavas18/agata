@@ -34,6 +34,8 @@
         </form>
     </div>
 
+    @include('modules.shared.proyectoAsignar')
+    
     @include('modules.shared.proyectosList', [
         'proyectos'          => $proyectos,
         'module'            => 'customers',
@@ -44,8 +46,6 @@
 
     {{-- modal servicio--}}
     @include('modules.shared.proyectoForm', ['module' => 'customers'])
-    @include('modules.shared.proyectoAsignar', 
-    ['module'   => 'customers',
-    'proyecto' => $proyectos,])
+    
 </div>
 

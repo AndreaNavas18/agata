@@ -1,15 +1,10 @@
 @php
-    $proyectoSeleccionadoId = session('proyectoSeleccionadoId');
-    $proyectoSeleccionado = $proyectos->firstWhere('id', $proyectoSeleccionadoId);
+    
 @endphp
-@foreach($proyectos as $proyecto)
-<form action=""
+<form action="{{ route('customers.proyectos.asignarServicio') }}"
     method="POST"
     id="formAsignarServicio">
     @csrf
-    <div class="put d-none">
-        @method('PUT')
-    </div>
     @component('componentes.modal', [
         'id' => 'modalAsignarServicio',
         'title' => 'Asignar servicio',
@@ -22,6 +17,10 @@
             <div class="mb-4">
                 <label class="form-label" for="{{ isset($id) ? $id : ''}}">
                     <span id="title_proyecto"></span>
+                    <input type="hidden"
+                        name="proyecto_id"
+                        id="proyecto_id"
+                        value="">
                     @if(isset($required) && $required)
                         <i class=" fa fa-asterisk small text-danger"></i>
                     @endif
@@ -37,15 +36,10 @@
                 @endcomponent
                 <select class="form-control selectpicker"
                     name="customerservices[]"
-                    id="customerservices[]"
+                    id="customerservices"
                     multiple
                     data-width="100%">
                     <option value="">--Seleccione--</option>
-                    @foreach($customerServices as $customerService)
-                        <option value="{{ $customerService->id }}">
-                            {{ $customerService->description }}
-                        </option>
-                    @endforeach
                 </select>
             </div>
         </div>
@@ -60,19 +54,4 @@
     @endslot
     @endcomponent
     </form>
-    @endforeach
-
-{{-- inputs ocultos--}}
-<input type="hidden"
-    id="rutaAjax"
-    data-url-cities="{{ route('general.cities') }}">
-
-<input type="hidden"
-    id="rutaAjaxDepartments"
-    value="{{ route('general.departments') }}">
-
-<input type="hidden" 
-    id="proyectoSeleccionadoId" 
-    name="proyectoSeleccionadoId"
-    value="">
 

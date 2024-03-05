@@ -27,73 +27,27 @@ $('.addProyecto').on('click', function() {
     $('#modalProyecto').modal('show');
 });
 
-//Asignar servicios a proyecto
-$('.asignarServicios').on('click', function() {
-    // Limpiar el select de servicios
-    $(".put input").attr('name', '_method');
+$('.obtenerServicios').on('click', function() {
     $('#customerservices').empty();
-    // Obtener la URL de la acción del botón
-    var action = $(this).attr('dataUrl');
-    // Obtener el nombre del proyecto
-    var projectName = $(this).data('proyecto-name');
-    var proyectoId = $(this).data('proyecto-id');
-
-    $('#proyectoSeleccionadoId').val(proyectoId);
-    $('#projectName').text('Proyecto (' + projectName + ')');
-    $('#title_proyecto').text(projectName);
-     // Establecer la acción del formulario
-     $('#formAsignarServicio').attr('action', action);
-
-     // Mostrar el modal
-     $('#modalAsignarServicio').modal('show');
-
-     console.log('ID del proyecto seleccionado:', proyectoId);
-     console.log('Nombre del proyecto seleccionado:', projectName);
-
-     $.ajax({
-        url: '/obtener-proyecto-seleccionado?proyectoId=' + proyectoId,
+    const proyectoId = $(this).data('proyecto-id');
+    const customerId = $(this).data('customer-id');
+    const projectName = $(this).data('proyecto-name');
+    $.ajax({
+        url: '/clientes/proyectos/getServicios/' + customerId,
         method: 'GET',
         success: function(response) {
-            console.log('Información del proyecto obtenida con éxito:', response.proyecto);
+            console.log('Servicios obtenidos con éxito:', response.customerServices);
+            $.each(response.customerServices, function(i, servicio) {
+                $('#customerservices').append('<option value="' + servicio.id + '">' + servicio.description + '</option>');
+            });
+            $('#customerservices').selectpicker('refresh');
         },
         error: function(xhr, status, error) {
-            console.error('Error al enviar ID del proyecto seleccionado al servidor:', error);
+            console.error('Error al obtener servicios:', error);
         }
     });
- });
+    $('#title_proyecto').text(projectName);
+    $('#proyecto_id').val(proyectoId);
+    $('#modalAsignarServicio').modal('show');
 
- // Manejar el envío del formulario
-// $('#formAsignarServicio').on('submit', function(event) {
-//     // Evitar que se envíe el formulario de manera predeterminada
-//     event.preventDefault();
-
-//     // Obtener los datos del formulario
-//     var formData = $(this).serialize();
-
-//     // Realizar una solicitud AJAX para enviar los datos al servidor
-//     $.ajax({
-//         url: $(this).attr('action'), 
-//         method: 'PUT',
-//         data: formData,
-//         success: function(response) {
-//             // Manejar la respuesta del servidor (por ejemplo, mostrar un mensaje de éxito)
-//             console.log('Servicios asignados correctamente');
-//             // Cerrar el modal después de asignar los servicios
-//             $('#modalAsignarServicio').modal('hide');
-//         },
-//         error: function(xhr, status, error) {
-//             // Manejar errores de la solicitud AJAX
-//             console.error('Error al asignar servicios:', error);
-//         }
-//     });
-// });
-
-
-
-
-//     $('#formAsignarServicio input[name="_method"]').remove();
-//     document.getElementById("formProyecto").reset();
-//     action = $(this).attr('dataUrl');
-//     $('#formAsignarServicio').attr('action', action);
-//     $('#modalAsignarServicio').modal('show');
-// })
+});

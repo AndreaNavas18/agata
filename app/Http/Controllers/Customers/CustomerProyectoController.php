@@ -343,23 +343,20 @@ class CustomerProyectoController extends Controller
         }
     }
 
-    public function asignarServicio(Request $request, $id) {
-        DB::beginTransaction();
+    public function getServices ($id) {
+        $customerServices = CustomerService::where('customer_id', $id)
+                ->whereNull('proyecto_id')
+                ->get();
+        Log::info($customerServices);
+        return response()->json(['customerServices' => $customerServices]);
+    }
 
+    public function asignarServicio(Request $request) {
         try {
-            session::flash('modal', 'modalAsignarServicio');
-    
-            $customerServices = CustomerService::where('customer_id', $id)->get();
-            $proyecto = Proyecto::findOrFail($id);
+            DB::beginTransaction();
     
             // Actualizar el campo proyecto_id de todos los servicios que se seleccionaron con el id del proyecto
-            foreach ($request->customerServices as $servicioId) {
-                $customerService = CustomerService::findOrFail($servicioId);
-                $customerService->proyecto_id = $proyecto->id;
-                $customerService->save();
-                Log::info("Aquí abajo el servicio");
-                Log::info($servicioId);
-            }
+            CustomerService::whereIn('id', $request->customerservices)->update(['proyecto_id' => $request->proyecto_id]);
     
             DB::commit();
             Alert::success('Éxito!', 'Servicio(s) asignado(s) correctamente');
@@ -369,11 +366,7 @@ class CustomerProyectoController extends Controller
         }
     
         // Redirigir a la ruta deseada después de completar el proceso
-        return redirect()->back()->with([
-            'proyecto' => $proyecto, 
-            'proyectoSeleccionadoId' => $id,
-            'customerServices' => $customerServices
-        ]);
+        return redirect()->back();
     }
 
     public function obtenerProyectoSeleccionado(Request $request) {
