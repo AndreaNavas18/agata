@@ -256,36 +256,50 @@ class CustomerProyectoController extends Controller
      */
     public function showSearch(Request $request,$customerId)
     {
-       
-        session::flash('tab','proyectos');
-        $customer= Customer::findOrFail($customerId);
-        $tabPanel='customerProyectosTabShow';
-        $providers= Provider::get();
-        $typesInstalations=['Propia','Terceros'];
-        $departments= Department::get();
-        $typesServices=Service::get();
-        $data=$request->all();
-        $countries= Country::get();
-        $customerServices= CustomerService::get();
-        $proyectos= Proyecto::buscar($data,$customerId,'customer');
-        if ($request->action=='buscar') {
-            $proyectos = $proyectos->paginate();
-            return view('modules.customers.show', compact(
-                'customer',
-                'customerServices',
-                'tabPanel',
-                'providers',
-                'typesInstalations',
-                'departments',
-                'typesServices',
-                'data',
-                'countries',
-                'proyectos'
-            ));
-        } else {
-            $customerServices = $customerServices->get();
-            return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
+        // Obtener el cliente
+        $customer = Customer::findOrFail($customerId);
+
+        // Obtener el proyecto seleccionado en la solicitud
+        $projectId = $request->input('proyecto_id');
+
+        // Realizar la búsqueda de proyectos del cliente específico y el proyecto seleccionado
+        $proyectos = Proyecto::where('customer_id', $customerId);
+                
+            // Si se proporciona un proyecto específico, agregar el filtro por su ID
+        if (!empty($projectId)) {
+            $proyectos->where('id', $projectId);
         }
+
+        // Obtener los proyectos paginados
+        $proyectos = $proyectos->paginate();
+
+        $customerServices= CustomerService::customerId($customerId)->get();
+        $tabPanel='customerProyectosTabEdit';
+        $cities= City::get();
+        $countries = Country::get();
+        $services= Service::get();
+        $typesServices = Service::get();
+        $providers= Provider::get();
+        $typesInstalations = [
+            'Propia'    =>'Propia',
+            'Terceros'  =>'Terceros'
+        ];
+            return view('modules.customers.show', compact(
+                'proyectos',
+                'customer',
+                'tabPanel',
+                'cities',
+                'services',
+                'providers',
+                'customerServices',
+                'typesServices',
+                'typesInstalations',
+                'countries'
+            ));
+    //     }else {
+    //         $customerServices = $customerServices->get();
+    //         return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
+    //     }
     }
 
      /**

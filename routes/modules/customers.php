@@ -96,25 +96,7 @@ Route::middleware(['can:customers_show'])->namespace('Customers')->name('custome
     ->where('id', '[0-9]+')
     ->middleware('can:customers_edit');
 
-    /**********************
-    *--------- usuarios
-    ***********************/
-    Route::get('/clientes/usuarios/editar/{customerId}', [ CustomerUserController::class, 'index' ])->name('users.index')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
-
-    Route::get('/clientes/usuarios/ver/{customerId}', [ CustomerUserController::class, 'show' ])->name('users.show')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
-
-
-    Route::post('/clientes/usuarios/guardar/{customerId}', [ CustomerUserController::class, 'store' ])->name('users.store')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
-
-    Route::put('/clientes/usuarios/actualizar/{customerId}', [ CustomerUserController::class, 'update' ])->name('users.update')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+   
 
 
 });
@@ -163,7 +145,21 @@ Route::namespace('Customers')->name('customers.')->group(function () {
     //Rutas AJAX
     Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');
 
+     /**********************
+    *--------- usuarios
+    ***********************/
+    Route::get('/clientes/usuarios/editar/{customerId}', [ CustomerUserController::class, 'index' ])->name('users.index')
+    ->where('id', '[0-9]+');
 
+    Route::get('/clientes/usuarios/ver/{customerId}', [ CustomerUserController::class, 'show' ])->name('users.show')
+    ->where('id', '[0-9]+');
+
+
+    Route::post('/clientes/usuarios/guardar/{customerId}', [ CustomerUserController::class, 'store' ])->name('users.store')
+    ->where('id', '[0-9]+');
+
+    Route::put('/clientes/usuarios/actualizar/{customerId}', [ CustomerUserController::class, 'update' ])->name('users.update')
+    ->where('id', '[0-9]+');
 
 });
 

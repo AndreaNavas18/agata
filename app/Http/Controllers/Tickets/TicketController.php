@@ -37,6 +37,10 @@ class TicketController extends Controller
         $tickets = Ticket::query();
         $user = Auth::user();
         $customerServices = null;
+        $priorities = TicketPriority::all();
+        $customers = Customer::all();
+        $employees = Employee::all();
+        $providers = Provider::all();
 
         // Verificar si el usuario tiene el rol con ID 2
         if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
@@ -52,7 +56,11 @@ class TicketController extends Controller
             return view('modules.tickets.index', compact(
                 'tickets', 
                 'customerServices', 
-                'states', 
+                'states',
+                'priorities',
+                'customers',
+                'employees',
+                'providers'
             ));
 
         }else {

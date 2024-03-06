@@ -20,7 +20,7 @@
         <th>Estado</th>
     @endif
         @if ($showActions)
-        @if(Auth()->user()->role_id!=2)
+        @if(Auth()->user()->role_id!=2 && Auth()->user()->role_id!=3)
             <th></th>
         @else
             <th>Crear ticket</th>
@@ -55,7 +55,7 @@
                 @endif
                 @if ($showActions)
                     <td>
-                        @if(Auth()->user()->role_id!=2)
+                        @if(Auth()->user()->role_id!=2 && Auth()->user()->role_id!=3)
                                 @can('users_ver')
                                     <a class="btn btn-info btn-sm loading mb-1"
                                         @if( isset($viewShowService) && $viewShowService)
@@ -97,7 +97,7 @@
                                         </form>
                                     @endcan
                                 
-
+                                @if(Auth()->user()->role_id!=1)
                                 <a class="btn btn-success btn-sm loading mb-1 createforservice"
                                     href="{{ route('tickets.create') }}"
                                     data-id="{{ $service->id }}"
@@ -112,6 +112,7 @@
                                         echo $service->id;
                                     @endphp
                                 </a>
+                                @endif
                         @endif
                     </td>
                 @endif

@@ -64,7 +64,7 @@
             <!-- Filtros -->
             <div class="collapse card-border" id="buscar">
                 <form method="GET" id="frmBuscar" action="">
-                    @include('modules.customers.partials.formFilter', [
+                    @include('modules.customers.partials.formFilter2', [
                         'provider' =>true,
                         'customer' => true,
                     ])

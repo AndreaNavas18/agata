@@ -9,6 +9,10 @@ use App\Models\Permissions\Permission;
 use Spatie\Permission\Exceptions\PermissionAlreadyExists;
 use App\Models\Submodules\Submodule;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Permission as SpatiePermission;
+
+
 
 class PermissionController extends Controller
 {
@@ -70,7 +74,7 @@ class PermissionController extends Controller
         $submodule = Submodule::findOrFail($request->input('submodule'));
         $name = $submodule->initials.'_'.$request->input('name');
         $description = $request->input('description');
-        $permiso = Permission::findOrFail($id);
+        $permiso = SpatiePermission::findOrFail($id);
         $permisoNew = Permission::where('name', $name)->first();
 
         if ($permisoNew && $permisoNew->name != $permiso->name) {
@@ -98,14 +102,19 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        DB::beginTransaction();
-        if (!Permission::findOrFail($id)->delete()) {
-            DB::rollBack();
-            Alert::error('Error', 'Error deleting record.');
+        Log::info($id);
+        try {
+            $permission = SpatiePermission::findOrFail($id);
+            $permission->delete();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
+        } catch (ModelNotFoundException $exception) {
+            Alert::error('Error', 'El permiso no pudo ser encontrado.');
+        } catch (QueryException $exception) {
+            Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
         }
-        DB::commit();
-        Alert::success('¡Éxito!', 'Registro eliminado exitosamente');
+    
         return redirect()->back();
+
     }
 
     /**
