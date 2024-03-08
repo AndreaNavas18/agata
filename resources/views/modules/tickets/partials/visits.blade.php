@@ -4,7 +4,7 @@
             <div class="col-10">
                 <h4 class="card-title">Visitas tecnicas</h4>
             </div>
-            @if(Auth()->user()->role_id!=2)
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <div class="col-2 float-right">
                     <button
                         class="btn btn-success btn-sm text-white addVisit"

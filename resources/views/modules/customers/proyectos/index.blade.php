@@ -76,7 +76,7 @@
                 'module'            => 'customers',
                 'provider'          => true,
                 'customer'          => true,
-                'showActions'       => true,
+                'showActions'       => false,
                 'viewShowProyecto'   => true,
             ])
         </div>

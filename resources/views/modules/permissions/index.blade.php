@@ -101,7 +101,7 @@
                             @foreach($permissions as $perm)
                                 <tr>
                                     <td>
-                                        @can('permissions.edit')
+                                        @can('permissions.index')
                                             <a class="link-tabla"
                                                 href="#"
                                                 data-toggle="modal"
@@ -109,13 +109,13 @@
                                                 {{ $perm->name }}
                                             </a>
                                         @endcan
-                                        @cannot('permissions.edit')
+                                        @cannot('permissions.index')
                                             {{ $perm->name }}
                                         @endcannot
                                     </td>
                                     <td>{{ $perm->description }}</td>
                                     <td>
-                                        @can('permissions.edit')
+                                        @can('permissions.index')
                                             <form action="{{ route('permissions.update', $perm->id) }}"
                                                 method="POST"
                                                 id="formUpdate">

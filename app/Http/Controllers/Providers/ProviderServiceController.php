@@ -161,6 +161,11 @@ class ProviderServiceController extends Controller
         $typesServices=Service::get();
         $customers=Customer::get();
         $proyectos=Proyecto::get();
+        $typesInstalations = [
+            'Propia'    =>'Propia',
+            'Terceros'  =>'Terceros'
+        ];
+        $providers = Provider::get();
 
         return view('modules.providers.show', compact(
             'provider',
@@ -170,7 +175,9 @@ class ProviderServiceController extends Controller
             'typesServices',
             'customers',
             'proyectos',
-            'countries'
+            'countries',
+            'typesInstalations',
+            'providers'
         ));
     }
 

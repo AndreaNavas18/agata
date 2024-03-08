@@ -10,7 +10,11 @@ class Role extends SpatieRole
     public function scopeNoCustomerRole($query)
     {
         //Se hace el cambio para poder cambiar roles en la vista 
-        return $query->where( 'id' , '>' , 0 );
+        return $query
+        ->where( 'id' , '>' , 4 )
+        ->where('id', '<', 9)
+        //Que no puedan crear usuarios administradores
+        ->where('id', '!=', 6);
         
     }
 

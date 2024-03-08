@@ -58,7 +58,7 @@
             @endforeach
         </select>
     </div>
-    @if($provider && Auth()->user()->role_id!=2)
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-3 col-sm-12 mb-4">
             <select class="form-control
                 selectpicker"
@@ -93,7 +93,7 @@
         </div>
     @endif
 
-    @if($customer && Auth()->user()->role_id!=2)
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-3 col-sm-12 mb-4">
             <select class="form-control
                 selectpicker"
@@ -111,29 +111,30 @@
             </select>
         </div>
     @endif
-@if(Auth()->user()->role_id!=2)
-    <div class="col-md-3 col-sm-12 mb-4">
-        <select class="form-control
-            selectpicker"
-            name="country_id"
-            id="country_id_filter">
-            <option value="">--Pais--</option>
-            @foreach($countries as $country)
-                <option value="{{ $country->id }}">
-                    {{ $country->name }}
-                </option>
-            @endforeach
-        </select>
-    </div>
 
-    <div class="col-md-3 col-sm-12 mb-4">
-        <select class="form-control
-            selectpicker"
-            name="department_id"
-            id="department_id_filter">
-            <option value="">--Departamento--</option>
-        </select>
-    </div>
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+        <div class="col-md-3 col-sm-12 mb-4">
+            <select class="form-control
+                selectpicker"
+                name="country_id"
+                id="country_id_filter">
+                <option value="">--Pais--</option>
+                @foreach($countries as $country)
+                    <option value="{{ $country->id }}">
+                        {{ $country->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-3 col-sm-12 mb-4">
+            <select class="form-control
+                selectpicker"
+                name="department_id"
+                id="department_id_filter">
+                <option value="">--Departamento--</option>
+            </select>
+        </div>
     @endif
     <div class="col-md-3 col-sm-12 mb-4">
         <select class="form-control

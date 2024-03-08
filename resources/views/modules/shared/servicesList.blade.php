@@ -5,7 +5,7 @@
         <th>ID Servicio Cliente</th>
         <th>Proyecto - Contrato - Subcliente</th>
         <th>Descripción</th>
-    @if(Auth()->user()->role_id!=2)
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         @if($provider)
             <th>Proveedor</th>
         @endif
@@ -20,7 +20,7 @@
         <th>Estado</th>
     @endif
         @if ($showActions)
-        @if(Auth()->user()->role_id!=2 && Auth()->user()->role_id!=3)
+        @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <th></th>
         @else
             <th>Crear ticket</th>
@@ -35,7 +35,7 @@
                 <td>{{ $service->id_serviciocliente }}</td>
                 <td>{{ $service->proyecto ? $service->proyecto->name : ''}}</td>
                 <td>{{ $service->description }}</td>
-                @if(Auth()->user()->role_id!=2)
+                @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     @if($provider)
                         <td>{{ $service->provider ? $service->provider->name : '' }}</td>
                     @endif
@@ -46,7 +46,7 @@
                 <td>{{ $service->service->name }}</td>
                 <td>{{ $service->city->name }}</td>
                 <td>{{ $service->date_service }}</td>
-                @if(Auth()->user()->role_id!=2)
+                @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <td>
                     <span class="badge {{ ($service->state  == 'Activo') ? 'bg-success' : 'bg-danger' }}">
                         {{ $service->state}}
@@ -55,8 +55,8 @@
                 @endif
                 @if ($showActions)
                     <td>
-                        @if(Auth()->user()->role_id!=2 && Auth()->user()->role_id!=3)
-                                @can('users_ver')
+                        @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                                @can('services.index')
                                     <a class="btn btn-info btn-sm loading mb-1"
                                         @if( isset($viewShowService) && $viewShowService)
                                             href="{{route('customers.services.show.service', $service->id) }}"
@@ -81,7 +81,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
 
-                                    @can('users_eliminar')
+                                    @can('services.destroy')
                                         <form class="d-inline frmDestroy mb-1"
                                             action="{{ route($module.'.services.destroy', $service->id) }}"
                                             method="POST">
@@ -97,7 +97,7 @@
                                         </form>
                                     @endcan
                                 
-                                @if(Auth()->user()->role_id!=1)
+                                @if(in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                                 <a class="btn btn-success btn-sm loading mb-1 createforservice"
                                     href="{{ route('tickets.create') }}"
                                     data-id="{{ $service->id }}"

@@ -8,7 +8,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('users_ver')
+            @can('employees.index')
                 <a class="btn btn-primary btn-sm loading mb-2"
                     href="{{ route('employees.index') }}">
                     <i class="fas fa-sync-alt"></i> Refrescar
@@ -23,7 +23,7 @@
                 </a>
             @endcan
 
-            @can('users_crear')
+            @can('employees.create')
                 <a class="btn btn-success btn-sm loading mb-2"
                     href="{{ route('employees.create') }}">
                     <i class="fas fa-plus"></i> Crear
@@ -33,7 +33,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('users_ver')
+        @can('employees.index')
             <div class="collapse card-border" id="buscar">
                 <form
                     action="{{ route('employees.search') }}"
@@ -91,7 +91,7 @@
                             </span>
                         </td>
                         <td>
-                            @can('users_ver')
+                            @can('employees.show')
                                 <a class="btn btn-info btn-sm  mb-1  loading"
                                     href="{{ route('employees.show', $employee->id) }}"
                                     bs-bs-toggle="tooltip"
@@ -101,7 +101,7 @@
                                 </a>
                             @endcan
 
-                            @can('users_editar')
+                            @can('employees.edit')
                                 <a class="btn btn-success btn-sm  mb-1  loading"
                                     href="{{ route('employees.edit',$employee->id)
                                     }}"
@@ -112,7 +112,7 @@
                                 </a>
                             @endcan
 
-                            @can('users_eliminar')
+                            @can('employees.destroy')
                                 <form class="d-inline frmDestroy"
                                     action="{{ route('employees.destroy', $employee->id) }}"
                                     method="POST">

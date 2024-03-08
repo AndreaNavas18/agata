@@ -259,6 +259,7 @@ class CustomerServiceController extends Controller
         $typesServices=Service::get();
         $countries= Country::get();
         $proyectos= Proyecto::get();
+        $customers = Customer::get();
         return view('modules.customers.show', compact(
             'customer',
             'customerServices',
@@ -268,7 +269,8 @@ class CustomerServiceController extends Controller
             'departments',
             'typesServices',
             'countries',
-            'proyectos'
+            'proyectos',
+            'customers'
         ));
     }
 

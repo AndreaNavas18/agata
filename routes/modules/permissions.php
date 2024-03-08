@@ -19,7 +19,7 @@ Route::middleware(['can:permissions.index'])->namespace('Permissions')->name('pe
 
 	Route::put('/permisos/editar/{id}', [ PermissionController::class, 'update' ])->name('update')
 		->where('id', '[0-9]+')
-		->middleware('can:permissions.edit');
+		->middleware('can:permissions.index');
 
 	Route::delete('/permisos/eliminar/{id}', [ PermissionController::class, 'destroy' ])->name('destroy')
 		->where('id', '[0-9]+')

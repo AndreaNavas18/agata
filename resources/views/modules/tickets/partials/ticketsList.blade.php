@@ -11,11 +11,11 @@
         <th>Consecutivo.</th>
         <th>Titulo</th>
         <th>Fecha</th>
-        @if($customer && Auth()->user()->role_id!=2)
+        @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <th>Cliente</th>
         @endif
         <th>Servicio</th>
-        @if($provider && Auth()->user()->role_id!=2)
+        @if($provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <th> Proveedor</th>
             <th>Asignado</th>
             <th>Prioridad</th>
@@ -35,7 +35,7 @@
 
                 <td>{{ $ticket->date }}</td>
 
-                @if($customer && Auth()->user()->role_id!=2)
+                @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     <td>{{ $ticket->customer ? $ticket->customer->name : '' }}</td>
                 @endif
 
@@ -44,7 +44,7 @@
                     {{ $ticket->service->description }}
                 </td>
 
-                @if($provider && Auth()->user()->role_id!=2)
+                @if($provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     <td>{{ $ticket->service->provider ? $ticket->service->provider->name : '---' }}</td>
                     <td>{{  $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}</td>
                     <td>
@@ -62,8 +62,8 @@
 
                 @if($showActions)
                     <td>
-                        @can('tickets_ver')
-                        @if(Auth()->user()->role_id!=2)
+                        @can('tickets.index')
+                        @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
 
                                 <a class="btn btn-info btn-sm loading mb-1"
                                     href="{{ route('tickets.show', $ticket->id) }}"
@@ -90,8 +90,8 @@
 
                         @endcan
 
-                        @can('tickets_editar')
-                        @if(Auth()->user()->role_id!=2)
+                        @can('tickets.edit')
+                        @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                             <a class="btn btn-success btn-sm loading mb-1"
                                 href="{{ route('tickets.edit',$ticket->id)}}"
                                 @if(isset($newTab) && $newTab)
@@ -105,7 +105,7 @@
                             @endif
                         @endcan
 
-                        @can('tickets_editar')
+                        @can('tickets.edit')
                             <a class="btn btn-warning btn-sm loading mb-1"
                                 href="{{ route('tickets.manage',['id' => $ticket->id, 'action' => 'manage']) }}"
                                 @if(isset($newTab) && $newTab)
@@ -120,7 +120,7 @@
                             </a>
                         @endcan
 
-                        @can('tickets_eliminar')
+                        @can('tickets.destroy')
                             <form class="d-inline frmDestroy"
                                 action="{{ route('tickets.destroy', $ticket->id) }}"
                                 method="POST">

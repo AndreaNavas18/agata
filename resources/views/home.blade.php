@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-@if(Auth()->user()->role_id != 2 && Auth()->user()->role_id != 3)
+@if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
     <div class="page-header">
         <ol class="breadcrumb"><!-- breadcrumb -->
             <li class="breadcrumb-item"><a href="#">Inicio</a></li>

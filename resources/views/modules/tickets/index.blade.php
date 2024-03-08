@@ -17,7 +17,7 @@
 	'breadcrumb' => 'tickets'])
         <!-- Acciones -->
         @slot('header')
-            @can('tickets_ver')
+            @can('tickets.show')
                 <a class="btn btn-primary btn-sm loading"
                     href="{{ route('tickets.index') }}">
                     <i class="fas fa-sync-alt"></i> Refrescar
@@ -32,12 +32,12 @@
                 </a>
             @endcan
 
-            @can('tickets_crear')
+            @can('tickets.create')
                 <a class="btn btn-success btn-sm loading"
                     href="{{ route('tickets.create') }}">
                     <i class="fas fa-plus"></i> Crear
                 </a>
-            @endcan
+            @endcan 
 
         @endslot
 

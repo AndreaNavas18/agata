@@ -11,7 +11,7 @@
             value="{{ isset($ticket) ? $ticket->ticket_issue : '' }}"
             required>
     </div>
-    @if(Auth()->user()->role_id!=2)
+    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
             'title' => 'Prioridad',
@@ -34,7 +34,7 @@
             @endforeach
         </select>
     </div>
-    @elseif(Auth()->user()->role_id==2)
+    @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
                 'title' => 'Motivo de solicitud',
@@ -61,7 +61,7 @@
     @endif
 
 
-    @if(Auth()->user()->role_id!=2)
+    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
                 'title' => 'Departamento',
@@ -147,7 +147,7 @@
             id="customer_service_id"
             required>
             <option value="">--Seleccione--</option>
-            @if(isset($ticket) || Auth()->user()->role_id==2)
+            @if(isset($ticket) || in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 @foreach($serviceList as $serviceRow)
                     <option value="{{ $serviceRow->id }}"
                         @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)

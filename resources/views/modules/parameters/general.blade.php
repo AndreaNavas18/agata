@@ -107,7 +107,7 @@
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-3 mb-3">
+            {{-- <div class="col-md-4 col-lg-3 mb-3">
                 <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-info loading"
                     href="{{ route('params.general.proyectos') }}">
                     <div class="row">
@@ -119,7 +119,7 @@
                         </div>
                     </div>
                 </a>
-            </div>
+            </div> --}}
 
         </div>
     @endcomponent

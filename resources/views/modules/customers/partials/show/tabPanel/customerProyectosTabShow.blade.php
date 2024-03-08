@@ -30,6 +30,6 @@
     @include('modules.shared.proyectosList', [
         'proyectos'         => $proyectos,
         'module'            => 'customers',
-        'showActions'       => true,
+        'showActions'       => false,
     ])
 </div>

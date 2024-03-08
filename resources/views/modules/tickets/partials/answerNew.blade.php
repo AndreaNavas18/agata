@@ -4,7 +4,7 @@
     enctype="multipart/form-data">
     @csrf
 
-    @if (Auth()->user()->role_id!=2)
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="row">
             <div class="col-md-6 mb-3">
                 @component('componentes.label', [

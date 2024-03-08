@@ -293,28 +293,43 @@ Route::middleware(['can:parametros.general.index'])->namespace('Parameters\Gener
 	Route::delete('/parametros/general/tipos-prioridades/eliminar/{id}', [GeneralTypePriorityController::class, 'destroy'])->name('types_priorities.destroy')
 		->where('id', '[0-9]+');
 
-	/*
-    |-----------------------------------
-    | Proyectos-Contratos-SubCliente
-    |-----------------------------------
-    */
-
-	Route::get('/parametros/general/proyectos', [GeneralProyectoController::class, 'index'])->name('proyectos');
-
-    Route::get('/parametros/general/proyectos/buscar', [GeneralProyectoController::class, 'search'])->name('proyectos.search');
-
-	Route::post('/parametros/general/proyectos/crear',[GeneralProyectoController::class, 'store'])->name('proyectos.store');
-
-	Route::put('/parametros/general/proyectos/editar/{id}',[GeneralProyectoController::class, 'update'])->name('proyectos.update')
-		->where('id', '[0-9]+');
-
-	Route::delete('/parametros/general/proyectos/eliminar/{id}', [GeneralProyectoController::class, 'destroy'])->name('proyectos.destroy')
-		->where('id', '[0-9]+');
 		
-	Route::put('/parametros/general/proyectos/indexAsignar/{id}',[GeneralProyectoController::class, 'indexAsignar'])->name('proyectos.indexAsignar')
-	->where('id', '[0-9]+');
+	});
+	
+	Route::middleware(['can:proyectos.index'])->namespace('Parameters\General')->name('params.general')->group(function () {
+		
+		/*
+		|-----------------------------------
+		| Proyectos-Contratos-SubCliente
+		|-----------------------------------
+		*/
+	
+		Route::get('/parametros/general/proyectos', [GeneralProyectoController::class, 'index'])->name('proyectos')
+			->middleware('can:proyectos.index');
+	
+		Route::get('/parametros/general/proyectos/buscar', [GeneralProyectoController::class, 'search'])->name('proyectos.search')
+			->middleware('can:proyectos.index');
+	
+		Route::post('/parametros/general/proyectos/crear',[GeneralProyectoController::class, 'store'])->name('proyectos.store')
+			->middleware('can:proyectos.index');
+	
+		Route::put('/parametros/general/proyectos/editar/{id}',[GeneralProyectoController::class, 'update'])->name('proyectos.update')
+			->where('id', '[0-9]+')
+			->middleware('can:proyectos.edit');
+	
+		Route::delete('/parametros/general/proyectos/eliminar/{id}', [GeneralProyectoController::class, 'destroy'])->name('proyectos.destroy')
+			->where('id', '[0-9]+')
+			->middleware('can:proyectos.destroy');
+
+			
+		Route::put('/parametros/general/proyectos/indexAsignar/{id}',[GeneralProyectoController::class, 'indexAsignar'])->name('proyectos.indexAsignar')
+			->where('id', '[0-9]+')
+			->middleware('can:proyectos.index');
+
+
 
 });
+
 
 
 

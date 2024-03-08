@@ -7,7 +7,7 @@
                 <span> {{ $ticket->consecutive }}</span>
             </td>
         </tr>
-        @if(Auth()->user()->role_id!=2)
+        @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <tr class="border-bottom">
             <td class="border-top-0">Cliente</td>
             <td class="text-right border-top-0">
@@ -21,7 +21,7 @@
                 <span> {{ $ticket->service->description }}</span>
             </td>
         </tr>
-        @if(Auth()->user()->role_id!=2)
+        @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <tr class="border-bottom">
                 <td>Proveedor</td>
                 <td class="text-right">

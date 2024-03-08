@@ -20,7 +20,7 @@
                 </em>
             </small>
             <div class="font-weight-bold mb-1">Tú</div>
-            <small><em>{{ Auth()->user()->role_id===2 ? 'Cliente' : 'Soporte'  }}</em></small>
+            <small><em>{{ in_array(Auth()->user()->role_id, [2, 3, 7, 8]) ? 'Cliente' : 'Soporte'  }}</em></small>
             {!! $reply->replie !!}
             {{-- archivos--}}
             @if(count($reply->files)>0)
@@ -40,7 +40,7 @@
             @endif
             {{-- visita tecnica --}}
             <div class="border-top mt-2 mb-2"></div>
-            @if(Auth()->user()->role_id!=2)
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <button
                     class="btn btn-success btn-sm text-white float-right addVisit"
                     data-toggle="tooltip"
@@ -86,7 +86,7 @@
             @endif
             {{-- visita tecnica --}}
             <div class="border-top mt-2 mb-2"></div>
-            @if(Auth()->user()->role_id!=2)
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <button
                     class="btn btn-success btn-sm text-white float-right addVisit"
                     data-toggle="tooltip"

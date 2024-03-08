@@ -82,7 +82,7 @@
                                 <td>{{ $rol->id }}</td>
                                 <td>{{ $rol->name }}</td>
                                 <td>
-                                    @can('roles.edit')
+                                    @can('permission.index')
                                         @if($rol->id != 1)
                                             <a class="btn btn-info btn-sm loading mb-3"
                                                 href="{{ route('roles.edit', $rol->id) }}"

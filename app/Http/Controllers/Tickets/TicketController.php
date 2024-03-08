@@ -42,8 +42,8 @@ class TicketController extends Controller
         $employees = Employee::all();
         $providers = Provider::all();
 
-        // Verificar si el usuario tiene el rol con ID 2
-        if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
+        // Verificar si el usuario tiene el rol con ID 2, 3, 7 o 8
+        if($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
            
             $states = Ticket::distinct()->pluck('state')->toArray();    
             $customerId = Auth()->user()->customer_id;
@@ -106,7 +106,7 @@ class TicketController extends Controller
         $user = Auth::user();
         
         // Verificar si el usuario tiene un cliente asociado
-        if ($user->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
+        if ($user->role_id == 2 && $user->customer_id || $user->role_id == 3 && $user->customer_id || $user->role_id == 7 && $user->customer_id || $user->role_id == 8 && $user->customer_id) {
             
             $ticketIssue = strtolower($request->input('ticket_issue'));
             $customerServiceId = $request->input('customer_service_id');
@@ -260,11 +260,11 @@ class TicketController extends Controller
      */
     public function create($serviceId = null)
     {
-        
+        $user = Auth::user();
         $customersList = Customer::get();
         $positionsDepartmanets = EmployeePositionDepartment::get();
         // $prioritiesList = TicketPriority::get();
-        if (Auth()->user()->role_id == 2 || Auth()->user()->role_id == 3 ) {
+        if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $prioritiesList = GeneralTypesPriority::all();
             $serviceList = CustomerService::customerId(Auth()->user()->customer_id)->get();
         } else {
@@ -303,9 +303,11 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-    $serviceId = $request->customer_service_id;
-    $si = "Si";
+    public function store(Request $request) 
+    {
+        $user = Auth::user();
+        $serviceId = $request->customer_service_id;
+        $si = "Si";
 
         $ticket = new Ticket();
         $ticket->ticket_issue                       = $request->ticket_issue;
@@ -313,7 +315,7 @@ class TicketController extends Controller
         $ticket->send_email                         = $si;
 
         // Verifica el rol del usuario y establece la prioridad adecuada
-        if (Auth()->user()->role_id == 2 || Auth()->user()->role_id == 3 ) {
+        if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
             $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
             $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
@@ -333,14 +335,14 @@ class TicketController extends Controller
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
         }else {
-            if(Auth()->user()->role_id == 1){
+            if($user->role_id == 1){
                 $ticket->emails_notification = '';
             }else {
                 $ticket->emails_notification = '';
 
             }
         }
-        if (Auth()->user()->role_id == 2 || Auth()->user()->role_id == 3) {
+        if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $ticket->customer_id                    = Auth()->user()->customer_id;
         } else {
             $ticket->customer_id                    = $request->customer_id;
@@ -531,6 +533,7 @@ class TicketController extends Controller
 
     public function manage($id, Request $request) {
 
+        $user = Auth::user();
         $ticket= Ticket::findOrFail($id);
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
@@ -615,7 +618,7 @@ class TicketController extends Controller
                 'employeesAll'
             ));
         }else {
-            if (Auth()->user()->role_id == 2){
+            if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8){
                 return view('modules.tickets.show', compact(
                     'hoursClock',
                     'minutesClock',

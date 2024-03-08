@@ -11,7 +11,7 @@
 
 	@component('componentes.card',[
         'shadow' => true,
-	    'title' => 'Ver ticket #'.$ticket->id,
+	    'title' => 'Ver ticket '.($ticket->consecutive ?? $ticket->id),
 	    'breadcrumb' => 'tickets/show',
         'dataBreadcrumb' => ['id' =>$ticket->id ] ])
 
@@ -37,7 +37,7 @@
                             {{  $ticket->date }}
                         </div>
                     </div>
-                    @if(Auth()->user()->role_id!=2)
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                         <div class="col-md-3 mb-4">
                             @component('componentes.label', [
                                 'title' => 'Departamento cargo',
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                     @endif
-                    @if(Auth()->user()->role_id!=2)
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                         <div class="col-md-3 mb-4">
                             @component('componentes.label', [
                                 'title' => 'Tipo instalacion',
@@ -96,7 +96,7 @@
                             {{   $ticket->service->description }}
                         </div>
                     </div>
-                    @if(Auth()->user()->role_id!=2)
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                         <div class="col-md-3 mb-4">
                             @component('componentes.label', [
                                 'title' => 'Proveedor',
@@ -136,7 +136,7 @@
                             00
                         </div>
                     </div>
-                    @if(Auth()->user()->role_id!=2)
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                         <div class="col-md-3 mb-4">
                             @component('componentes.label', [
                                 'title' => 'Prioridad',

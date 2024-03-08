@@ -14,11 +14,11 @@
             <i class="fas fa-search"></i> Buscar
         </a>
 
-        <button class="btn btn-success btn-sm addService"
+        {{-- <button class="btn btn-success btn-sm addService"
             type="button"
             dataUrl="{{ route('tickets.create') }}">
             <i class="fas fa-plus"></i> Crear
-        </button>
+        </button> --}}
     </div>
 
     <!-- Filtros -->

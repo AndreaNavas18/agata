@@ -62,8 +62,8 @@ class RoleController extends Controller
         $rol = Role::findOrFail($id);
         $permissions = Permission::orderBy('name')->get();
         $submodules = Submodule::orderBy('name')->get();
-        if ($rol->name == "admin" || $rol->name == "administrador")
-            Alert::warning('Warning', 'The administrative role cannot be edited');
+        // if ($rol->name == "admin" || $rol->name == "administrador")
+        //     Alert::warning('Warning', 'The administrative role cannot be edited');
 
 
         return view('modules.roles.edit', compact('rol','permissions','submodules'));
@@ -80,7 +80,7 @@ class RoleController extends Controller
     {
         DB::beginTransaction();
         $rol = Role::findOrFail($id);
-        if ($rol->name != "admin" || $rol->name != "administrador") {
+        // if ($rol->name != "admin" || $rol->name != "administrador") {
             $permissions = (!is_null($request->input('to_assign'))) ? array_keys($request->input('to_assign')) : null;
             $rol->syncPermissions($permissions);
             $request->validate(['name' => 'required|max:191']);
@@ -96,9 +96,9 @@ class RoleController extends Controller
             }
             DB::commit();
             Alert::success('¡Éxito!', 'Registro actualizado correctamente');
-        } else {
-            Alert::warning('Warning', 'The administrative role cannot be edited');
-        }
+        // } else {
+        //     Alert::warning('Warning', 'The administrative role cannot be edited');
+        // }
 
         return back();
     }
@@ -111,8 +111,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        if (Role::findOrFail($id)->name == "admin" || Role::findOrFail($id)->name == "administrador")
-            Alert::warning('Warning', 'The administrative role cannot be removed');
+        // if (Role::findOrFail($id)->name == "admin" || Role::findOrFail($id)->name == "administrador")
+        //     Alert::warning('Warning', 'The administrative role cannot be removed');
 
 
         DB::beginTransaction();

@@ -16,7 +16,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('users_ver')
+            @can('customers.index')
                 <a class="btn btn-primary btn-sm loading"
                     href="{{ route('customers.index') }}">
                     <i class="fas fa-sync-alt"></i> Refrescar
@@ -31,7 +31,7 @@
                 </a>
             @endcan
 
-            @can('users_crear')
+            @can('customers.create')
                 <a class="btn btn-success btn-sm loading"
                     href="{{ route('customers.create') }}">
                     <i class="fas fa-plus"></i> Crear
@@ -41,7 +41,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('users_ver')
+        @can('customers.search')
             <div class="collapse card-border" id="buscar">
                 <form
                     action="{{ route('customers.search') }}"
@@ -110,7 +110,7 @@
                             </span>
                         </td>
                         <td>
-                            @can('users_ver')
+                            @can('customers.show')
                                 <a class="btn btn-info btn-sm mb-1 loading"
                                     href="{{ route('customers.show', $customer->id) }}"
                                     data-toggle="tooltip"
@@ -120,7 +120,7 @@
                                 </a>
                             @endcan
 
-                            @can('users_editar')
+                            @can('customers.edit')
                                 <a class="btn btn-success btn-sm  mb-1 loading"
                                     href="{{ route('customers.edit',$customer->id)
                                     }}"
@@ -131,7 +131,7 @@
                                 </a>
                             @endcan
 
-                            @can('users_eliminar')
+                            @can('customers.destroy')
                                 <form class="d-inline frmDestroy"
                                     action="{{ route('customers.destroy', $customer->id) }}"
                                     method="POST">

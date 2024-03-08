@@ -16,7 +16,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('users_ver')
+            @can('providers.index')
                 <a class="btn btn-primary btn-sm loading mb-2"
                     href="{{ route('providers.index') }}">
                     <i class="fas fa-sync-alt"></i> Refrescar
@@ -31,7 +31,7 @@
                 </a>
             @endcan
 
-            @can('users_crear')
+            @can('providers.create')
                 <a class="btn btn-success btn-sm loading mb-2"
                     href="{{ route('providers.create') }}">
                     <i class="fas fa-plus"></i> Crear
@@ -41,7 +41,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('users_ver')
+        @can('providers.search')
             <div class="collapse card-border" id="buscar">
                 <form
                     action="{{ route('providers.search') }}"
@@ -97,7 +97,7 @@
                             </span>
                         </td>
                         <td>
-                            @can('users_ver')
+                            @can('providers.show')
                                 <a class="btn btn-info btn-sm loading mb-1"
                                     href="{{ route('providers.show', $provider->id) }}"
                                     data-toggle="tooltip"
@@ -107,17 +107,17 @@
                                 </a>
                             @endcan
 
-                            @can('users_editar')
+                            @can('providers.edit')
                                 <a class="btn btn-success btn-sm loading mb-1"
                                     href="{{ route('providers.edit',[ 'providerId'=>$provider->id ]) }}"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                        title="Edit and Assign Role">
+                                        title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan
 
-                            @can('users_eliminar')
+                            @can('providers.destroy')
                                 <form class="d-inline frmDestroy mb-1"
                                     action="{{ route('providers.destroy', $provider->id) }}"
                                     method="POST">

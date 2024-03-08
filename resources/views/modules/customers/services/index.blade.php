@@ -61,15 +61,14 @@
                     <i class="fas fa-search"></i> Buscar
                 </a>
 
-                @if(Auth()->user()->role_id!=2)
-
-                <button class="btn btn-success btn-sm addService"
-                    type="button"
-                    dataUrl="{{ route('customers.services.store') }}">
-                    <i class="fas fa-plus"></i> Crear
-                </button>
-            </div>
-            @endif
+                @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                    <button class="btn btn-success btn-sm addService"
+                        type="button"
+                        dataUrl="{{ route('customers.services.store') }}">
+                        <i class="fas fa-plus"></i> Crear
+                    </button>
+                @endif
+                </div>
 
             <!-- Filtros -->
             <div class="collapse card-border" id="buscar">

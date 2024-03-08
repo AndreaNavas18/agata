@@ -1,4 +1,4 @@
-@if(Auth()->user()->role_id!=2)
+@if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
 <div class="row">
     <div class="col-md-3 col-sm-12 mb-3">
         <input type="text"
@@ -26,7 +26,7 @@
         value="{{ (isset($data['ticket_issue'])) ? $data['ticket_issue'] : '' }}">
     </div>
 
-@if(Auth()->user()->role_id!=2)
+@if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
     <div class="col-md-3 col-sm-12 mb-3">
         <select class="form-control
             selectpicker"
@@ -63,7 +63,7 @@
         </select>
     </div>
 
-    @if($provider && Auth()->user()->role_id!=2)
+    @if($provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-3 col-sm-12 mb-3">
             <select class="form-control
                 selectpicker"
@@ -83,7 +83,7 @@
         </div>
     @endif
 
-    @if($customer && Auth()->user()->role_id!=2)
+    @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div class="col-md-3 col-sm-12 mb-3">
             <select class="form-control
                 selectpicker"

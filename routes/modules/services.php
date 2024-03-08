@@ -10,23 +10,23 @@ Route::namespace('Customers')->name('customers.')->group(function () {
 
     Route::get('/servicios/index', [ CustomerServiceController::class, 'indexAll' ])->name('services.index.all')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:services.index');
 
     Route::get('/servicios/show/{id}', [ CustomerServiceController::class, 'showService' ])->name('services.show.service')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:services.show');
 
     Route::get('/clientes/servicios/editar/{customerId}', [ CustomerServiceController::class, 'index' ])->name('services.index')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:services.index');
 
     Route::get('/clientes/servicios/editar/buscar/{customerId}', [ CustomerServiceController::class, 'indexSearch' ])->name('services.index.search')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:services.search');
 
     Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:services.show');
 
     Route::get('/clientes/servicios/ver/buscar/{customerId}', [ CustomerServiceController::class, 'showSearch' ])->name('services.show.search')
     ->where('id', '[0-9]+')
@@ -42,7 +42,7 @@ Route::namespace('Customers')->name('customers.')->group(function () {
 
 	Route::delete('/servicios/eliminar/{id}', [ CustomerServiceController::class, 'destroy' ])->name('services.destroy')
     ->where('id', '[0-9]+')
-    ->middleware('can:empleados_destroy');
+    ->middleware('can:servides.destroy');
 });
 
 

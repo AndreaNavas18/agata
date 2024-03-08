@@ -8,33 +8,33 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
 	Route::get('/tickets', [ TicketController::class, 'index' ])->name('index');
 
 	Route::get('/tickets/crear/{serviceId?}', [ TicketController::class, 'create' ])->name('create')
-		->middleware('can:tickets_crear');
+		->middleware('can:tickets.create');
 
 	Route::post('/tickets/crear',[ TicketController::class, 'store' ])->name('store')
-		->middleware('can:tickets_crear');
+		->middleware('can:tickets.create');
 
 	Route::get('/tickets/ver/{id}', [ TicketController::class, 'show' ])->name('show')
 		->where('id', '[0-9]+')
-		->middleware('can:tickets_ver');
+		->middleware('can:tickets.show');
 
 	Route::get('/tickets/editar/{customerId}', [ TicketController::class, 'edit' ])->name('edit')
 		->where('id', '[0-9]+')
-		->middleware('can:tickets_editar');
+		->middleware('can:tickets.edit');
 
 	Route::put('/tickets/editar/{id}', [ TicketController::class, 'update' ])->name('update')
 		->where('id', '[0-9]+')
-		->middleware('can:tickets_editar');
+		->middleware('can:tickets.edit');
 
 	Route::delete('/tickets/eliminar/{id}', [ TicketController::class, 'destroy' ])->name('destroy')
 		->where('id', '[0-9]+')
-		->middleware('can:tickets_eliminar');
+		->middleware('can:tickets.destroy');
 
 	Route::get('/tickets/buscar', [ TicketController::class, 'search' ])->name('search')
-		->middleware('can:tickets_show');
+		->middleware('can:tickets.search');
 
     Route::get('/tickets/gestionar/{id}', [ TicketController::class, 'manage' ])->name('manage')
     ->where('id', '[0-9]+')
-    ->middleware('can:tickets_ver');
+    ->middleware('can:tickets.manage');
 
 	//Emails
 	Route::post('send-email', [ TicketController::class, 'sendEmail' ])->name('sendEmail');
@@ -48,18 +48,18 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
 
     // respuestas nuevas tickets
     Route::post('/tickets/respuesta/crear/{id}',[ TicketController::class, 'replyStore' ])->name('reply.store')
-    ->middleware('can:tickets_crear');
+    ->middleware('can:tickets.index');
 
     //rutas ajax
 	Route::get('/tickets/obtener-empleados-area', [ TicketController::class, 'employeesPositionDepartmant' ])->name('employees.positions.departments')
-		->middleware('can:tickets_crear');
+		->middleware('can:tickets.index');
 
     Route::get('/tickets/obtener-clientes-servicios', [ TicketController::class, 'customerServices' ])->name('customers.services')
-    ->middleware('can:tickets_crear');
+    ->middleware('can:tickets.index');
 
     //visitas tecnicas
     Route::post('/tickets/visitas/crear/{ticketId}',[ TicketVisitController::class, 'store' ])->name('visits.store')
-    ->middleware('can:tickets_crear');
+    ->middleware('can:tickets.create');
 
 
 });

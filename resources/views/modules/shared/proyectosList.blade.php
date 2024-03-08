@@ -8,7 +8,7 @@
         <th>Servicio Asignado</th>
         <th>Estado</th>
         @if ($showActions)
-            @if(Auth()->user()->role_id!=2)
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <th></th>
             @else
                 <th>Crear ticket</th>
@@ -33,8 +33,7 @@
                     </td>
                         @if ($showActions)
                             <td>
-                                @if(Auth()->user()->role_id!=2)
-                                    @can('users_ver')
+                                @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                                         <a class="btn btn-info btn-sm loading mb-1"
                                             href="{{route('customers.proyectos.show.proyecto', $proyecto->id) }}"
                                             bs-bs-toggle="tooltip"
@@ -42,7 +41,6 @@
                                             title="Ver">
                                             <i class="far fa-eye"></i>
                                         </a>
-                                    @endcan
                                         
                                         <button class="btn btn-success btn-sm editProyect mb-1"
                                             bs-toggle="tooltip"
@@ -53,7 +51,7 @@
                                             <i class="fas fa-edit"></i>
                                         </button>
 
-                                        @can('users_eliminar')
+                                        @can('proyectos.destroy')
                                             <form class="d-inline frmDestroy mb-1"
                                                 action="{{ route($module.'.proyectos.destroy', $proyecto->id) }}"
                                                 method="POST">
@@ -111,8 +109,8 @@
                     <td></td>
                     @if ($showActions)
                             <td>
-                                @if(Auth()->user()->role_id!=2)
-                                    @can('users_ver')
+                                @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                                    @can('proyectos.index')
                                         <a class="btn btn-info btn-sm loading mb-1"
                                             href="{{route('customers.proyectos.show.proyecto', $proyecto->id) }}"
                                             bs-bs-toggle="tooltip"
@@ -131,7 +129,7 @@
                                             <i class="fas fa-edit"></i>
                                         </button>
 
-                                        @can('users_eliminar')
+                                        @can('proyectos.destroy')
                                             <form class="d-inline frmDestroy mb-1"
                                                 action="{{ route($module.'.proyectos.destroy', $proyecto->id) }}"
                                                 method="POST">

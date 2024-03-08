@@ -24,7 +24,7 @@
                 </span>
             </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link tickets
                 {{ (Session::get('tab') == 'tickets' ? 'active' : '') }}
                 loading"
@@ -34,7 +34,7 @@
                     Tickets
                 </span>
             </a>
-        </li>
+        </li> --}}
         {{-- <li class="nav-item">
             <a class="nav-link"
                 data-bs-toggle="tab"

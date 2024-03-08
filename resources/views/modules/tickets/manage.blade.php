@@ -165,7 +165,7 @@
         <ol class="breadcrumb">
             <!-- breadcrumb -->
             <li class="breadcrumb-item">
-                <a href="{{  Auth()->user()->role_id==2 ? route('customer.home') : route('home') }}">
+                <a href="{{ in_array(Auth()->user()->role_id, [2, 3, 7, 8]) ? route('customer.home') : route('home') }}">
                     Inicio
                 </a>
             </li>
@@ -195,7 +195,8 @@
                     <i class="fa fa-edit"></i>
                 </span>
             </a>
-            @if(Auth()->user()->role_id!=2)
+            @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+            {{-- @if(Auth()->user()->role_id!=2) --}}
                 <a href="{{ route('customers.show', $ticket->customer_id) }}"
                     class="btn btn-warning text-white"
                     data-toggle="tooltip"
@@ -208,7 +209,7 @@
                     </span>
                 </a>
             @endif
-            @if($ticket->service->provider && Auth()->user()->role_id!=2)
+            @if($ticket->service->provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <a href="{{ route('providers.show', $ticket->service->provider_id) }}"
                     class="btn btn-info text-white"
                     data-toggle="tooltip"
@@ -227,7 +228,7 @@
     <!-- End page-header -->
     <div class="row mb-4">
         <div class="col-md-8">
-            @if(Auth()->user()->role_id!=2)
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <span class="badge {{ $ticket->priority->color }}">
                 {{ $ticket->priority->name }}
             </span>
@@ -312,7 +313,7 @@
             @include('modules.tickets.partials.visits')
         </div>
     </div>
-    @if(Auth()->user()->role_id!=2)
+    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <div>
             <div class="modal fade" id="modalVisit" tabindex="-1" role="dialog" aria-hidden="true">
                 <form action="{{ route('tickets.visits.store', ['ticketId' =>$ticket->id]) }}"
