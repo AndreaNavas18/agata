@@ -30,14 +30,16 @@ Route::namespace('Parameters')->name('params.')->group(function () {
 	| Empleados
 	|-----------------------------------
 	*/
-	Route::get('/parametros/empleados', [ParameterController::class, 'employees'])->name('employees');
+	Route::get('/parametros/empleados', [ParameterController::class, 'employees'])->name('employees')
+	->middleware('can:parametros.empleados.index');
 
 	/*
 	|-----------------------------------
 	| clientes
 	|-----------------------------------
 	*/
-	Route::get('/parametros/general', [ParameterController::class, 'general'])->name('general');
+	Route::get('/parametros/general', [ParameterController::class, 'general'])->name('general')
+	->middleware('can:parametros.general.index');
 
 
 });
@@ -53,7 +55,7 @@ Route::namespace('Parameters')->name('params.')->group(function () {
 | ARL
 |-----------------------------------
 */
-Route::namespace('Parameters\Employees')->name('params.employees.')->group(function () {
+Route::middleware(['can:parametros.empleados.index'])->namespace('Parameters\Employees')->name('params.employees.')->group(function () {
 
 	Route::get('/parametros/empleados/arl', [EmployeeArlController::class, 'index'])->name('arl');
 
@@ -167,7 +169,7 @@ Route::namespace('Parameters\Employees')->name('params.employees.')->group(funct
 	|---------------------------------------------------------------------------
 */
 
-Route::namespace('Parameters\General')->name('params.general.')->group(function () {
+Route::middleware(['can:parametros.general.index'])->namespace('Parameters\General')->name('params.general.')->group(function () {
 
     /*
     |-----------------------------------

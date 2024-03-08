@@ -118,7 +118,6 @@
                             </span>
                         </td>
                         <td>
-                            @can('users_ver')
                                 <a class="btn btn-info btn-sm mb-1 loading"
                                     href="{{ route('users.show', $usu->id) }}"
                                     data-toggle="tooltip"
@@ -126,9 +125,7 @@
                                     title="Ver">
                                     <i class="far fa-eye"></i>
                                 </a>
-                            @endcan
-                            @if (!$usu->hasRole(2))
-                                @can('users_asignar_permisos')
+                            @can('permissions.index')
                                     <a class="btn btn-warning btn-sm mb-1 loading"
                                         href="{{ route('users.assignment_permissions', $usu->id) }}"
                                         data-toggle="tooltip"
@@ -136,8 +133,8 @@
                                         title="Asignar permisos">
                                         <i class="fas fa-key"></i>
                                     </a>
-                                @endcan
-                                @can('users_editar')
+                            @endcan
+                                @can('users.edit')
                                     <a class="btn btn-success btn-sm mb-1 loading"
                                         href="{{ route('users.edit', $usu->id) }}"
                                         data-toggle="tooltip"
@@ -146,7 +143,6 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 @endcan
-
                                     <form class="d-inline frmDestroy"
                                         action="{{ route('users.destroy', $usu->id) }}"
                                         method="POST">
@@ -160,7 +156,6 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
-                            @endif
                         </td>
                     </tr>
                 @endforeach

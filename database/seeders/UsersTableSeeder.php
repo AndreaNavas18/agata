@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'id'          => 1,
-    		'username'      => 'julian.calderon',
-    		'password'    => bcrypt('123456'),
-            'status'      => 'Active',
-            'employee_id' => 1,
-    	]);
+        // User::create([
+        //     'id'          => 1,
+    	// 	'username'      => 'julian.calderon',
+    	// 	'password'    => bcrypt('123456'),
+        //     'status'      => 'Active',
+        //     'employee_id' => 1,
+    	// ]);
     }
 }

@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
         $this->call(TicketSeeder::class);
 
         $this->call(RoleSeeder::class);
+        $this->call(PermisosSeeder::class);
+        $this->call(SubmodulosSeeder::class);
+        $this->call(NuevosPermisos::class);
 
         // \App\Models\User::factory(10)->create();
 

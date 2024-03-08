@@ -21,7 +21,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('submodules_show')
+            @can('submodules.index')
                 <a class="btn btn-primary btn-sm loading"
                     href="{{ route('submodules.index') }}">
                     <i class="fas fa-sync-alt"></i>
@@ -37,7 +37,7 @@
                     Buscar
                 </a>
             @endcan
-            @can('submodules_crear')
+            @can('submodules.create')
                 <button class="btn btn-success
                     btn-sm"
                     type="button"
@@ -49,7 +49,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('submodules_show')
+        @can('submodules.search')
             <div class="collapse card-border" id="search">
                 <form
                     action="{{ route('submodules.search') }}"
@@ -90,14 +90,14 @@
                         @foreach($submodules as $submodule)
                             <tr>
                                 <td>
-                                    @can('submodules_editar')
+                                    @can('submodules.edit')
                                         <a class="link-tabla" href="#"
                                             data-toggle="modal"
                                             data-target="#modalEdit{{ $submodule->id }}">
                                             {{ $submodule->name }}
                                         </a>
                                     @endcan
-                                    @cannot('submodules_editar')
+                                    @cannot('submodules.edit')
                                         {{ $submodule->name }}
                                     @endcannot
                                 </td>
@@ -150,7 +150,7 @@
                                         @endcomponent
                                     </form>
 
-                                    @can('submodules_destroy')
+                                    @can('submodules.destroy')
                                         <form class="d-inline frmDestroy"
                                             action="{{ route('submodules.destroy', $submodule->id) }}"
                                             method="POST">
@@ -182,7 +182,7 @@
 	@endcomponent
 
 	<!-- Modal -->
-	@can('submodules_crear')
+	@can('submodules.create')
 		<form action="{{ route('submodules.store') }}"
             method="POST"
             id="formStore">

@@ -15,8 +15,8 @@ class ProviderSeeder  extends Seeder
     public function run()
     {
         // estados
-        ProviderState::create(['name' => 'Activo']);
-        ProviderState::create(['name' => 'Inactivo']);
+        // ProviderState::create(['name' => 'Activo']);
+        // ProviderState::create(['name' => 'Inactivo']);
     }
 
 }

@@ -15,9 +15,9 @@ class CustomerSeeder  extends Seeder
     public function run()
     {
         // estados
-        CustomerState::create(['name' => 'Activo']);
-        CustomerState::create(['name' => 'Inactivo']);
-        CustomerState::create(['name' => 'Suspendido']);
+        // CustomerState::create(['name' => 'Activo']);
+        // CustomerState::create(['name' => 'Inactivo']);
+        // CustomerState::create(['name' => 'Suspendido']);
     }
 
 }

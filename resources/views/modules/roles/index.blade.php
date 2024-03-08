@@ -16,7 +16,7 @@
 
         <!-- Acciones -->
         @slot('header')
-            @can('roles_show')
+            @can('roles.index')
                 <a class="btn btn-primary btn-sm loading"
                     href="{{ route('roles.index') }}">
                     <i class="fas fa-sync-alt"></i> Refrescar
@@ -30,7 +30,7 @@
                     <i class="fas fa-search"></i> Buscar
                 </a>
             @endcan
-            @can('roles_create')
+            @can('roles.create')
                 <button class="btn btn-success btn-sm"
                     type="button"
                     data-toggle="modal"
@@ -41,7 +41,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('roles_show')
+        @can('roles.search')
             <div class="collapse card-border" id="search">
                 <form
                     action="{{ route('roles.search') }}"
@@ -82,7 +82,7 @@
                                 <td>{{ $rol->id }}</td>
                                 <td>{{ $rol->name }}</td>
                                 <td>
-                                    @can('roles_editar')
+                                    @can('roles.edit')
                                         @if($rol->id != 1)
                                             <a class="btn btn-info btn-sm loading mb-3"
                                                 href="{{ route('roles.edit', $rol->id) }}"
@@ -94,7 +94,7 @@
                                         @endif
                                     @endcan
 
-                                    @can('roles_destroy')
+                                    @can('roles.destroy')
                                         @if($rol->id != 1 && $rol->id != 2)
                                             <form class="d-inline
                                                 frmEliminar"
@@ -129,7 +129,7 @@
 	@endcomponent
 
 	<!-- Modal -->
-	@can('roles_create')
+	@can('roles.create')
 		<form action="{{ route('roles.store') }}"
             method="POST"
             id="formStore">

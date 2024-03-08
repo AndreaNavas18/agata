@@ -30,7 +30,7 @@
                             <div class="dropdown-divider"></div>
                             <h6 class="dropdown-header">Control de Acceso</h6>
 
-                            @can('permissions_ver')
+                            @can('permissions.index')
                                 <a class="dropdown-item loading" href="{{ route('permissions.index') }}">Permisos</a>
                             @endcan
                             @can('roles_ver')

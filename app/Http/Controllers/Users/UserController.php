@@ -14,6 +14,7 @@ use App\Models\Roles\Role;
 use App\Models\General\Proyecto;
 use App\Models\Submodules\Submodule;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Gate;
 
 
 class UserController extends Controller
@@ -32,7 +33,7 @@ class UserController extends Controller
             $proyectos = Proyecto::where('customer_id', $user->customer_id)->get();
             return view('modules.users.index', compact('users', 'proyectos'));
 
-        }else if (Auth()->user()->role_id == 1) {
+        }else if (Gate::allows('users.index')) {
             $users = User::paginate();
             return view('modules.users.index', compact('users'));
         }

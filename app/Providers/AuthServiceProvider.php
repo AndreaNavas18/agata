@@ -25,12 +25,15 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+        //Esta funcion antepone todos los permisos, y entonces ese rol tiene acceso a todo 
+        //sin importar si despues se le niega el acceso a algo
         Gate::before(function ($user, $ability) {
-            if ($user->hasRole('admin')) {
+            if ($user->hasRole('programador')) {
                 return true;
             }
         });
+
+        
 
         //
     }
