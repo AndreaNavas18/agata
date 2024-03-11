@@ -16,7 +16,7 @@
         <th>Tipo de servicio</th>
         <th>Ciudad</th>
         <th>Fecha</th>
-    @if(Auth()->user()->role_id!=2)
+    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <th>Estado</th>
     @endif
         @if ($showActions)

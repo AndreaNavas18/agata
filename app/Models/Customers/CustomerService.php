@@ -13,7 +13,22 @@ class CustomerService extends BaseModel {
 
 	protected $table = 'customers_services';
 	protected $fillable = [
+        'stratecsa_id',
+        'id_serviciocliente',
+        'otp',
+        'customer_id',
         'proyecto_id',
+        'service_id',
+        'country_id',
+        'department_id',
+        'city_id',
+        'date_service',
+        'latitude_coordinates',
+        'longitude_coordinates',
+        'installation_type',
+        'provider_id',
+        'description',
+        'state'
     ];
 	protected $guarded = [];
 

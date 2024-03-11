@@ -21,6 +21,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Session;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\CustomerServiceImport;
+use Illuminate\Support\Facades\Log;
+
 
 
 class CustomerServiceController extends Controller
@@ -383,6 +387,25 @@ class CustomerServiceController extends Controller
                 Alert::error('Error!', $th->getMessage());
                 return redirect()->back();
             }
+        }
+    }
+
+    public function import(Request $request)
+    {
+        if($request->hasFile('customerservicesdocumento')){
+
+            $file = $request->file('customerservicesdocumento');
+            Excel::import(new CustomerServiceImport, $file);
+            Log::info("funcione, importe los servicios");
+
+            Alert::success('Bien hecho!', 'Servicio(s) importado(s) correctamente');
+            return redirect()->back();
+
+            
+        }else {
+            Alert::error('Error', 'Error al importar archivo.');
+            Log::info("no funcioneeee");
+            return redirect()->back();
         }
     }
 }

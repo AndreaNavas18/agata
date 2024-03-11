@@ -24,9 +24,9 @@ Route::namespace('Customers')->name('customers.')->group(function () {
     ->where('id', '[0-9]+')
     ->middleware('can:services.search');
 
-    Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
-    ->where('id', '[0-9]+')
-    ->middleware('can:services.show');
+    // Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
+    // ->where('id', '[0-9]+')
+    // ->middleware('can:services.show');
 
     Route::get('/clientes/servicios/ver/buscar/{customerId}', [ CustomerServiceController::class, 'showSearch' ])->name('services.show.search')
     ->where('id', '[0-9]+')
@@ -43,6 +43,7 @@ Route::namespace('Customers')->name('customers.')->group(function () {
 	Route::delete('/servicios/eliminar/{id}', [ CustomerServiceController::class, 'destroy' ])->name('services.destroy')
     ->where('id', '[0-9]+')
     ->middleware('can:servides.destroy');
+
 });
 
 

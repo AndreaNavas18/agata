@@ -74,6 +74,9 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     ->where('id', '[0-9]+')
     ->middleware('can:customers.services.destroy');
 
+    //Ruta para importar servicios
+    Route::post('/servicios/index/importar', [ CustomerServiceController::class, 'import' ])->name('services.import');
+
 
     /**********************
     *--------- tickets
