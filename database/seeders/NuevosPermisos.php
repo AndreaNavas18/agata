@@ -19,8 +19,8 @@ class NuevosPermisos extends Seeder
         // $roleProgramador = Role::find(9);
         // Permission::create(['name' => 'permissions.edit', 'submodule_id' => 7])->syncRoles([$roleProgramador]);
 
-        $rolesIds = [1,2,3,5,6,7,8,9];
-        $roles = Role::whereIn('id', $rolesIds)->get();
+        // $rolesIds = [1,2,3,5,6,7,8,9];
+        // $roles = Role::whereIn('id', $rolesIds)->get();
 
         // if ($roles->isNotEmpty()) {
         //     foreach ($roles as $role) {
@@ -29,14 +29,21 @@ class NuevosPermisos extends Seeder
         //     }
         // }
 
-        if ($roles->isNotEmpty()) {
-            foreach ($roles as $role) {
-            //Permisos dados el dia 8 de marzo del 2024 por seeder
-                $role->givePermissionTo(['users.my_profile', 'users.update_my_profile', 'customers.services.index', 
-                'customers.services.search', 'customers.projects.index', 'customers.projects.search', 'customers.tickets.index',
-                'customers.tickets.search', 'proyectos.index', 'proyectos.show', 'services.index', 'services.show', 'services.search'
-            ]);
-            }
-        }
+        // if ($roles->isNotEmpty()) {
+        //     foreach ($roles as $role) {
+        //     //Permisos dados el dia 8 de marzo del 2024 por seeder
+        //         $role->givePermissionTo(['users.my_profile', 'users.update_my_profile', 'customers.services.index', 
+        //         'customers.services.search', 'customers.projects.index', 'customers.projects.search', 'customers.tickets.index',
+        //         'customers.tickets.search', 'proyectos.index', 'proyectos.show', 'services.index', 'services.show', 'services.search'
+        //     ]);
+        //     }
+        // }
+
+        $roleSoporte = Role::find(5);
+
+            //Permisos dados el dia 11 de marzo del 2024 por seeder
+                $roleSoporte->givePermissionTo(['employees.index', 'employees.edit', 'employees.show', 'employees.search', 
+                'providers.index', 'providers.edit', 'providers.show', 'providers.search']);
+        
     }
 }

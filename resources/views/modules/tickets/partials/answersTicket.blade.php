@@ -1,5 +1,5 @@
 
-@if(\Auth()->user()->id == $reply->user_id)
+@if(Auth()->user()->id == $reply->user_id)
     <div class="chat-message-right pb-4 mb-4">
         <div>
             <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
@@ -136,6 +136,12 @@
                         <b>Fecha:</b>
                         <span class="ml-2">
                             {{ $ticketVisit->date }}
+                        </span>
+                    </div>
+                    <div>
+                        <b>Hora:</b>
+                        <span class="ml-2">
+                            {{ $ticketVisit->time }}
                         </span>
                     </div>
                 </div>

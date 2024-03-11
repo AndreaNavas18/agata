@@ -35,11 +35,12 @@
                     name="state_clock"
                     id="state_clock"
                     required>
-                    <option {{ $ticket->state_clock=='Detenido' ? 'selected' : '' }}>
-                        Detenido
-                    </option>
+                    <option value="">--Seleccione--</option>
                     <option {{ $ticket->state_clock=='Corriendo' ? 'selected' : '' }}>
                         Corriendo
+                    </option>
+                    <option {{ $ticket->state_clock=='Detenido' ? 'selected' : '' }}>
+                        Detenido
                     </option>
                 </select>
             </div>

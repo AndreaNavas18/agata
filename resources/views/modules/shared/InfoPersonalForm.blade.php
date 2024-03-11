@@ -1,59 +1,61 @@
 <div class="row">
-    <div class="col-md-4 mb-3">
-        <div class="form-group">
-            @component('componentes.label', [
-                'title' => 'Tipo de documento',
-                'id' => 'type_document_id',
-                'required' => true])
-            @endcomponent
-            <select class="form-control
-                selectpicker"
-                name="type_document_id"
-                id="type_document_id"
-                required>
-                <option value="">--Seleccione--</option>
-                @foreach($typesDocuments as $typeDocument)
-                    <option value="{{ $typeDocument->id }}"
-                        {{ isset($objeto) &&
-                            $objeto->type_document_id == $typeDocument->id
-                            ? 'selected' : '' }}>
-                        {{ $typeDocument->name }}
-                    </option>
-                @endforeach
-            </select>
+    @if (Auth()->user()->role_id!=5)
+        <div class="col-md-4 mb-3">
+            <div class="form-group">
+                @component('componentes.label', [
+                    'title' => 'Tipo de documento',
+                    'id' => 'type_document_id',
+                    'required' => true])
+                @endcomponent
+                <select class="form-control
+                    selectpicker"
+                    name="type_document_id"
+                    id="type_document_id"
+                    required>
+                    <option value="">--Seleccione--</option>
+                    @foreach($typesDocuments as $typeDocument)
+                        <option value="{{ $typeDocument->id }}"
+                            {{ isset($objeto) &&
+                                $objeto->type_document_id == $typeDocument->id
+                                ? 'selected' : '' }}>
+                            {{ $typeDocument->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-4  mb-3">
-        <div class="form-group">
-            @component('componentes.label', [
-                'title' => 'Identificación',
-                'id' => 'identification',
-                'required' => true])
-            @endcomponent
-           <input type="text"
-                name="identification"
-                class="form-control"
-                value="{{ isset($objeto) ? $objeto->identification : '' }}"
-                required>
+        <div class="col-md-4  mb-3">
+            <div class="form-group">
+                @component('componentes.label', [
+                    'title' => 'Identificación',
+                    'id' => 'identification',
+                    'required' => true])
+                @endcomponent
+            <input type="text"
+                    name="identification"
+                    class="form-control"
+                    value="{{ isset($objeto) ? $objeto->identification : '' }}"
+                    required>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-4  mb-3">
-        <div class="form-group">
-            @component('componentes.label', [
-                'title' => 'Nombre',
-                'id' => 'name',
-                'required' => true])
-            @endcomponent
-           <input type="text"
-                name="name"
-                class="form-control"
-                value="{{ isset($objeto) ? $objeto->name : '' }}"
-                required>
+        <div class="col-md-4  mb-3">
+            <div class="form-group">
+                @component('componentes.label', [
+                    'title' => 'Nombre',
+                    'id' => 'name',
+                    'required' => true])
+                @endcomponent
+            <input type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ isset($objeto) ? $objeto->name : '' }}"
+                    required>
+            </div>
         </div>
-    </div>
-
+    @endif
+    
     <div class="col-md-4  mb-3">
         <div class="form-group">
             @component('componentes.label', [

@@ -153,9 +153,23 @@
     .catch(error => {
         console.error(error);
     });
-
-
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var selectTipoVisita = document.getElementById('tipodevisita');
+            var selectTecnicosDiv = document.getElementById('selectTecnicosDiv');
+
+            selectTipoVisita.addEventListener('change', function() {
+                if (this.value === '1') {
+                    selectTecnicosDiv.style.display = 'block';
+                } else {
+                    selectTecnicosDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
 
 @endpush
 @section('content')
@@ -332,6 +346,20 @@
                                 <div class="row">
                                     <div class="col-sm-12 mb-4">
                                         @component('componentes.label', [
+                                        'title' => 'Tipo de visita',
+                                        'required' => false])
+                                        @endcomponent
+                                        <select class="form-control selectpicker"
+                                            name="tipodevisita"
+                                            id="tipodevisita"
+                                            data-width="100%">
+                                                <option value="">--Seleccione--</option>
+                                                <option value="1">Propia</option>
+                                                <option value="2">Terceros</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 mb-4" id="selectTecnicosDiv" style="display: none">
+                                        @component('componentes.label', [
                                         'title' => 'Técnicos',
                                         'required' => false])
                                         @endcomponent
@@ -341,18 +369,18 @@
                                             multiple
                                             data-width="100%">
                                             <option value="">--Seleccione--</option>
-                                            @foreach($employeesList as $employee)
-                                            @if($employee->position_id==7)
+                                            @foreach($employeesAll as $employee)
+                                            {{-- @if($employee->position_id==7) --}}
                                                 <option value="{{ $employee->id }}">
                                                     {{ $employee->full_name }}
                                                 </option>
-                                            @endif
+                                            {{-- @endif --}}
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-sm-12 mb-4">
                                         @component('componentes.label', [
-                                        'title' => 'Fecha del servicio',
+                                        'title' => 'Fecha de visita',
                                         'required' => true])
                                         @endcomponent
                                         <input
@@ -361,6 +389,17 @@
                                             name="date"
                                             id="date"
                                             required>
+                                    </div>
+                                    <div class="col-sm-12 mb-4">
+                                        @component('componentes.label', [
+                                        'title' => 'Hora de visita',
+                                        'required' => false])
+                                        @endcomponent
+                                        <input
+                                            type="time"
+                                            class="form-control hora"
+                                            name="time"
+                                            id="time">
                                     </div>
                                     <div class="col-sm-12 mb-4">
                                         @component('componentes.label', [

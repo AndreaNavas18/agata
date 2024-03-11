@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+
 
 class TicketVisitController extends Controller
 {
@@ -26,10 +28,20 @@ class TicketVisitController extends Controller
         $ticketVisit= new TicketVisit();
         $ticketVisit->ticket_id                             = $ticketId;
         $ticketVisit->date                                  = $request->date;
+        $ticketVisit->time                                  = $request->time;
         $ticketVisit->description                           = $request->description;
         if($request->filled('ticket_replie_id')) {
             $ticketVisit->ticket_replie_id                  = $request->ticket_replie_id;
         }
+        Log::info($request->visit_type);
+        if($request->visit_type == 'Propia') {
+            $ticketVisit->visit_type                        = '1';
+            Log::info("visita con instalacion propia");
+        } else {
+            $ticketVisit->visit_type                        = '2';
+            Log::info("Visita con instalacion tercerizada");
+        }
+            
 
         if (!$ticketVisit->save()) {
             DB::rollBack();
@@ -49,6 +61,8 @@ class TicketVisitController extends Controller
                     return redirect()->back();
                 }
             }
+        }else{
+            Log::info("Visita tercerizada no tiene tecnicos asignados");
         }
 
         DB::commit();

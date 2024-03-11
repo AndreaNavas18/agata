@@ -54,10 +54,17 @@
                         {{ $priorityRow->name }}
                     </option>
                 @endforeach
+                <option value="other">Otro motivo</option>
             </select>
         </div>
-        
-
+        <div id="otherPriorityDiv" class="col-md-6 mb-3" style="display: none">
+            @component('componentes.label', [
+                'title' => 'Otro motivo',
+                'id' => 'other_priority',
+                'required' => false])
+            @endcomponent
+            <input type="text" class="form-control" name="other_priority" id="other_priority">
+        </div>
     @endif
 
 
@@ -238,7 +245,7 @@
         <textarea class="form-control"
             name="description"
             id="description"
-            rows="5">{{ isset($ticket) ? $ticket->description : '' }}</textarea>
+            rows="7">{{ isset($ticket) ? $ticket->description : '' }}</textarea>
     </div>
 </div>
 
@@ -247,4 +254,39 @@
     id="rutaAjax"
     data-url-employees="{{ route('tickets.employees.positions.departments') }}"
     data-url-services="{{ route('tickets.customers.services') }}">
+    {{-- Scripts para tener formatos en las text areas de las descripciones de los tickets --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    height: '500px',
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+
+    {{-- Script para mostrar el input de otro motivo de solicitud --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var selectPriority = document.getElementById('priority_id');
+            var otherPriorityDiv = document.getElementById('otherPriorityDiv');
+            var otherPriorityInput = document.getElementById('other_priority');
+
+            selectPriority.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    otherPriorityDiv.style.display = 'block';
+                    otherPriorityInput.required = true;
+                } else {
+                    otherPriorityDiv.style.display = 'none';
+                    otherPriorityInput.required = false;
+                }
+            });
+        });
+    </script>
+
+    
 

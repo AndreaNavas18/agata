@@ -106,7 +106,7 @@ class TicketController extends Controller
         $user = Auth::user();
         
         // Verificar si el usuario tiene un cliente asociado
-        if ($user->role_id == 2 && $user->customer_id || $user->role_id == 3 && $user->customer_id || $user->role_id == 7 && $user->customer_id || $user->role_id == 8 && $user->customer_id) {
+        if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             
             $ticketIssue = strtolower($request->input('ticket_issue'));
             $customerServiceId = $request->input('customer_service_id');
@@ -318,10 +318,15 @@ class TicketController extends Controller
 
         // Verifica el rol del usuario y establece la prioridad adecuada
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
+
+            // Que si la prioridad que da es otro motivo la guarde en algo, AQUI QUEDE
+            // if($request->prority_id)
+
             // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
             $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
             $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
-                $ticket->customer_service_id = $serviceId;
+            $ticket->customer_service_id = $serviceId;
+
         } else {
             // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
             $ticket->priority_id = $request->priority_id;
@@ -337,7 +342,7 @@ class TicketController extends Controller
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
         }else {
-            if($user->role_id == 1){
+            if($user->role_id == 1 || $user->role_id == 6){
                 $ticket->emails_notification = '';
             }else {
                 $ticket->emails_notification = '';
@@ -540,58 +545,58 @@ class TicketController extends Controller
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
         $employeesAll = Employee::all();
-        if ($ticket->priority_id == 1) {
-            if(strcasecmp($ticket->state_clock, 'Corriendo') === 0 && !is_null($ticket->datetime_clock)) {
-                // $timeSaved = Carbon::parse($ticket->time_clock);
-                // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
-                // $timeClock = date('H:i:s', $timeSaved->timestamp + strtotime($timeClock)); 
+            if ($ticket->priority_id == 1) {
+                if(strcasecmp($ticket->state_clock, 'Corriendo') === 0 && !is_null($ticket->datetime_clock)) {
+                    // $timeSaved = Carbon::parse($ticket->time_clock);
+                    // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
+                    // $timeClock = date('H:i:s', $timeSaved->timestamp + strtotime($timeClock)); 
 
-                $timeSaved = Carbon::parse($ticket->time_clock);
-                $datetimeClock = Carbon::parse($ticket->datetime_clock);
-                $timeClockInterval = $timeActually->diff($datetimeClock);
-                $timeClock = $timeClockInterval->format('%H:%I:%S');
-                $timeSaved->addHours($timeClockInterval->h)
-                ->addMinutes($timeClockInterval->i)
-                ->addSeconds($timeClockInterval->s);
-                // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
+                    $timeSaved = Carbon::parse($ticket->time_clock);
+                    $datetimeClock = Carbon::parse($ticket->datetime_clock);
+                    $timeClockInterval = $timeActually->diff($datetimeClock);
+                    $timeClock = $timeClockInterval->format('%H:%I:%S');
+                    $timeSaved->addHours($timeClockInterval->h)
+                    ->addMinutes($timeClockInterval->i)
+                    ->addSeconds($timeClockInterval->s);
+                    // $timeClock = Ticket::calculateTimeClock($timeActually, $ticket);
 
-                // Convertimos el tiempo del reloj calculado a un objeto Carbon
-                // $timeClockCarbon = Carbon::createFromFormat('H:i:s', $timeClock);
+                    // Convertimos el tiempo del reloj calculado a un objeto Carbon
+                    // $timeClockCarbon = Carbon::createFromFormat('H:i:s', $timeClock);
 
-                // Sumamos el tiempo del reloj calculado al tiempo guardado previamente
-                // $timeClock = $timeSaved->addHours($timeClockCarbon->hour)->addMinutes($timeClockCarbon->minute)->addSeconds($timeClockCarbon->second);
-                $timeClock = $timeSaved->format('H:i:s');
-                Log::info("ENTRO: ".$timeClock);
+                    // Sumamos el tiempo del reloj calculado al tiempo guardado previamente
+                    // $timeClock = $timeSaved->addHours($timeClockCarbon->hour)->addMinutes($timeClockCarbon->minute)->addSeconds($timeClockCarbon->second);
+                    $timeClock = $timeSaved->format('H:i:s');
+                    Log::info("ENTRO: ".$timeClock);
 
-            } else {
-                // Calculate the time difference between created_at and current date
-                    // $createdAt = Carbon::parse($ticket->created_at);
-                    // $now = Carbon::parse($timeActually);
-                    // $timeDifference = $now->diff($createdAt);
+                } else {
+                    // Calculate the time difference between created_at and current date
+                        // $createdAt = Carbon::parse($ticket->created_at);
+                        // $now = Carbon::parse($timeActually);
+                        // $timeDifference = $now->diff($createdAt);
 
-                // Format the time difference as hours, minutes, and seconds
-                // $timeClock = $timeDifference->format('%H:%I:%S');
-                $timeClock = $ticket->time_clock;
-                Log::info("message: ".$timeClock);
-            }
+                    // Format the time difference as hours, minutes, and seconds
+                    // $timeClock = $timeDifference->format('%H:%I:%S');
+                    $timeClock = $ticket->time_clock;
+                    Log::info("message: ".$timeClock);
+                }
 
-            if(!is_null($timeClock) && !empty($timeClock)) {
-                $explodeHour= explode(':',$timeClock);
-                $hoursClock= $explodeHour[0];
-                $minutesClock= $explodeHour[1];
-                $secondsClock= $explodeHour[2];
+                if(!is_null($timeClock) && !empty($timeClock)) {
+                    $explodeHour= explode(':',$timeClock);
+                    $hoursClock= $explodeHour[0];
+                    $minutesClock= $explodeHour[1];
+                    $secondsClock= $explodeHour[2];
+
+                } else {
+                    $hoursClock= NULL;
+                    $minutesClock=  NULL;
+                    $secondsClock= NULL;
+                }
 
             } else {
                 $hoursClock= NULL;
                 $minutesClock=  NULL;
                 $secondsClock= NULL;
             }
-
-        } else {
-            $hoursClock= NULL;
-            $minutesClock=  NULL;
-            $secondsClock= NULL;
-        }
 
         Log::info("message: ".$hoursClock." ".$minutesClock." ".$secondsClock);
 
@@ -786,7 +791,6 @@ class TicketController extends Controller
             }
         }
 
-       
         //enviar correo al cliente
         // $contactsTickets=CustomerContact::customerId($ticket->customer_id)
         // ->typeContactId(1)

@@ -32,18 +32,34 @@
                     data-placement="top"
                     data-original-title=" {{ $ticketVisit->description }}"
                     class="pointer border-top-cs">
-                    <div>
-                        <b>Técnicos:</b>
-                        <span class="ml-2">
-                            @foreach ($ticketVisit->employees as $employeeT)
-                                {{ $employeeT->short_name }} &nbsp;
-                            @endforeach
-                        </span>
-                    </div>
+                    @if (count($ticketVisit->employees)>0)
+                        <div>
+                            <b>Técnicos:</b>
+                            <span class="ml-2">
+                                @foreach ($ticketVisit->employees as $employeeT)
+                                    </br> {{ $employeeT->short_name }} 
+                                    {{-- &nbsp; --}}
+                                @endforeach
+                            </span>
+                        </div>
+                    @else
+                        <div>
+                            <b>Visita:</b>
+                            <span class="ml-2">
+                               Tercerizada
+                            </span>
+                        </div>
+                    @endif
                     <div>
                         <b>Fecha:</b>
                         <span class="ml-2">
                             {{ $ticketVisit->date }}
+                        </span>
+                    </div>
+                    <div>
+                        <b>Hora:</b>
+                        <span class="ml-2">
+                            {{ $ticketVisit->time }}
                         </span>
                     </div>
                 </div>

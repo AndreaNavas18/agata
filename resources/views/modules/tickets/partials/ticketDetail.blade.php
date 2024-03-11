@@ -11,5 +11,8 @@
         'id' => 'type_document_id',
         'required' => false])
     @endcomponent
-    <textarea class="form-control" disabled>{{ $ticket->description }}</textarea>
+    <div>
+        {!! $ticket->description !!}
+    </div>
+    {{-- <textarea class="form-control" disabled>{{ $ticket->description }}</textarea> --}}
 </div>
