@@ -175,6 +175,7 @@
                     <i class="fas fa-info-circle"></i>
                 </span>
             </a>
+            @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <a href="{{ route('tickets.edit', $ticket->id) }}"
                 class="btn btn-success text-white"
                 data-toggle="tooltip"
@@ -186,7 +187,6 @@
                     <i class="fa fa-edit"></i>
                 </span>
             </a>
-            @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <a href="{{ route('customers.show', $ticket->customer_id) }}"
                     class="btn btn-warning text-white"
                     data-toggle="tooltip"

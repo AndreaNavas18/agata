@@ -96,7 +96,7 @@
                                             </button>
                                         </form>
                                     @endcan
-                                
+                        @endif
                                 @if(in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                                 <a class="btn btn-success btn-sm loading mb-1 createforservice"
                                     href="{{ route('tickets.create') }}"
@@ -108,12 +108,12 @@
                                     bs-placement="top"
                                     title="Crear ticket para este servicio">
                                     <i class="fas fa-regular fa-land-mine-on"></i>
-                                    @php
+                                    {{-- @php
                                         echo $service->id;
-                                    @endphp
+                                    @endphp --}}
                                 </a>
                                 @endif
-                        @endif
+                                
                     </td>
                 @endif
             </tr>

@@ -28,7 +28,7 @@ class UserController extends Controller
     public function index()
     {
         $user = Auth()->user();
-        if (Auth()->user()->role_id == 3 && $user->customer_id) {
+        if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $users = User::where('customer_id', Auth()->user()->customer_id)->paginate();
             $proyectos = Proyecto::where('customer_id', $user->customer_id)->get();
             return view('modules.users.index', compact('users', 'proyectos'));
@@ -73,11 +73,11 @@ class UserController extends Controller
             'proyecto_id' => '',
         ]);
         $user = new User();
-
-        if(Auth()->user()->role_id == 3){
-            $user->role_id='2';
+        $userAuthenticated = Auth()->user();
+        if ($userAuthenticated->role_id == 2 || $userAuthenticated->role_id == 3 || $userAuthenticated->role_id == 7 || $userAuthenticated->role_id == 8){
+            $user->role_id=7;
             $user->customer_id=Auth()->user()->customer_id;
-            $user->proyecto_id=$request->input('proyecto_id');
+            $user->proyecto_id=$request->input('proyecto_id') ?? null;
         }else {
             $user->role_id=$request->input('role_id');
         }

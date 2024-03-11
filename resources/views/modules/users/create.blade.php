@@ -66,7 +66,7 @@
                             required>
                     </div>
                 </div>
-                @if(Auth()->user()->role_id != 3)
+                @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group">
                             @component('componentes.label', [
@@ -106,33 +106,32 @@
                             required>
                     </div>
                 </div>
-            </div>
 
-            @if(Auth()->user()->role_id == 3)
-                <div class="col-sm-12 col-md-6">
-                    <div class="form-group">
-                        @component('componentes.label', [
-                            'title' => 'Proyecto',
-                            'id' => 'proyecto_id',
-                            'required' => ''])
-                        @endcomponent
-                        <select class="form-control selectpicker
-                            {{ $errors->has('proyecto_id') ? 'is-invalid' : '' }}"
-                            name="proyecto_id"
-                            id="proyecto_id"
-                            >
-                            <option value="">--Seleccione--</option>
-                            @foreach($proyectos as $proyecto)
-                                <option value="{{ $proyecto->id }}">
-                                    {{-- {{ old('role_id') && old('role_id') == $rol->id ? 'selected' : ''}}> --}}
-                                    {{ $proyecto->name }}
-                                </option>
-                            @endforeach
-                        </select>
+                @if(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8)
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group">
+                            @component('componentes.label', [
+                                'title' => 'Proyecto',
+                                'id' => 'proyecto_id',
+                                'required' => ''])
+                            @endcomponent
+                            <select class="form-control selectpicker
+                                {{ $errors->has('proyecto_id') ? 'is-invalid' : '' }}"
+                                name="proyecto_id"
+                                id="proyecto_id"
+                                >
+                                <option value="">--Seleccione--</option>
+                                @foreach($proyectos as $proyecto)
+                                    <option value="{{ $proyecto->id }}">
+                                        {{-- {{ old('role_id') && old('role_id') == $rol->id ? 'selected' : ''}}> --}}
+                                        {{ $proyecto->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-            @endif
-
+                @endif
+            </div>
             <div class="row mt-3">
                 <div class="col">
                     <button class="btn btn-success

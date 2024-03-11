@@ -33,11 +33,12 @@ class CustomerServiceController extends Controller
     public function indexAll() {
 
         $user = Auth::user();
+        $allowedRoles = [2, 3, 7, 8];
 
-        if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
+        if (in_array(Auth()->user()->role_id, $allowedRoles) && $user->customer_id) {
             // Filtra los servicios por el customer_id del usuario autenticado
             $customerServices = CustomerService::where('customer_id', $user->customer_id)
-                ->orderBy('id', 'DESC')
+                ->orderBy('created_at', 'DESC')
                 ->paginate();
             $customers = Customer::where('id', $user->customer_id)->get(); // Si el cliente está asociado al usuario autenticado, puede obtenerlo directamente desde el usuario
             $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id); // También puedes usar $user->customer_id aquí
@@ -78,7 +79,7 @@ class CustomerServiceController extends Controller
             $countries= Country::get();
             $departments= Department::get();
             $cities=City::get();
-            $customerServices= CustomerService::paginate();
+            $customerServices= CustomerService::orderBy('created_at', 'DESC')->paginate();
             $typesInstalations = [
                 'Propia'    =>'Propia',
                 'Terceros'  =>'Terceros'

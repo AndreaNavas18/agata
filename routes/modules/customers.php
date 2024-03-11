@@ -134,11 +134,6 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     Route::get('/proyectos/show/{id}', [ CustomerProyectoController::class, 'showProyecto' ])->name('proyectos.show.proyecto')
     ->where('id', '[0-9]+')
     ->middleware('can:customers.proyectos.show');
-
-
-    Route::get('/proyectos/index', [ CustomerProyectoController::class, 'indexAll' ])->name('proyectos.index.all')
-    ->where('id', '[0-9]+')
-    ->middleware('can:proyectos.index');
     
     Route::get('/clientes/proyectos/editarproyecto/{id}', [ CustomerProyectoController::class, 'edit' ])->name('proyectos.edit')
     ->where('id', '[0-9]+')
@@ -175,3 +170,10 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
 
 });
 
+Route::namespace('Customers')->name('customers.')->group(function () {
+
+    Route::get('/proyectos/index', [ CustomerProyectoController::class, 'indexAll' ])->name('proyectos.index.all')
+    ->where('id', '[0-9]+')
+    ->middleware('can:proyectos.index');
+
+});

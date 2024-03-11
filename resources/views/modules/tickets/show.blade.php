@@ -5,7 +5,7 @@
 
 @section('content')
 
-@if(Auth()->user()->role_id != 2)
+@if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
 
     {{-- Contenido para otros roles --}}
 
@@ -189,7 +189,7 @@
      @endcomponent
      @else
 
-     {{-- Contenido específico para el rol_id = 2 --}}
+     {{-- Contenido específico para el rol_id = 2,3,7,8--}}
      @include('modules.tickets.s2')
  
  @endif

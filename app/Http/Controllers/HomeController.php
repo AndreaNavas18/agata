@@ -38,7 +38,9 @@ class HomeController extends Controller
         //     return redirect()->back();
         // }
         $user = Auth()->user();
-        if (Auth()->user()->role_id == 3 && $user->customer_id || Auth()->user()->role_id == 2 && $user->customer_id) {
+        $allowedRoles = [2, 3, 7, 8];
+
+        if (in_array(Auth()->user()->role_id, $allowedRoles) && $user->customer_id) {
             //Que solo pueda ver la informacion de sus tickets y no de todos
             $ticketsOpen=Ticket::state('Abierto')->where('customer_id', Auth()->user()->customer_id)->count();
             $ticketsClosed=Ticket::state('Cerrado')->where('customer_id', Auth()->user()->customer_id)->count();

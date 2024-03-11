@@ -88,7 +88,7 @@
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
-                @if(Auth()->user()->role_id != 3)
+                @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
                     <th>Rol</th>
                 @endif
                 <th>Estado</th>
@@ -100,7 +100,7 @@
                         <td>{{ $usu->name }}</td>
                         <td>{{ $usu->last_name }}</td>
                         <td>{{ $usu->email }}</td>
-                        @if(Auth()->user()->role_id != 3)
+                        @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
                             <td>
                             @forelse($usu->getRoleNames() as $role)
                                     {{ $role }}

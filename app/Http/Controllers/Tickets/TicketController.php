@@ -274,6 +274,8 @@ class TicketController extends Controller
         $date = Carbon::now()->format('Y-m-d');
         
         if($serviceId != null){
+            Log::info($serviceId);
+            Log::info("Si tiene servicio Id");
             //Quiero que le mande ese valor a la vista
             return view('modules.tickets.create', compact(
             'serviceId', 
@@ -618,7 +620,8 @@ class TicketController extends Controller
                 'employeesAll'
             ));
         }else {
-            if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8){
+            $allowedRoles = [2, 3, 7, 8];
+            if (in_array($user->role_id, $allowedRoles)){
                 return view('modules.tickets.show', compact(
                     'hoursClock',
                     'minutesClock',

@@ -5,7 +5,7 @@
             <span class="side-menu__label">Inicio</span>
         </a>
     </li>
-    @if(Auth()->check() && Auth()->user()->role_id == 3)
+    @if(Auth()->check() && (Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
 
     <li class="slide">
         <a class="side-menu__item"  data-toggle="slide" href="#">
@@ -27,6 +27,15 @@
             <span class="side-menu__label"> Proyectos</span>
         </a>
     </li>
+
+    @if(auth()->user()->can('services.index'))
+        <li>
+            <a class="side-menu__item loading" href="{{ route('customers.services.index.all') }}">
+                <i class="side-menu__icon fas fa-list-alt"></i>
+                <span class="side-menu__label"> Servicios</span>
+            </a>
+        </li>
+    @endif
     {{-- karen --}}
 
     <li>

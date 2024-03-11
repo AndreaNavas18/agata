@@ -152,7 +152,7 @@
                     <option value="{{ $serviceRow->id }}"
                         @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)
                             selected
-                        @elseif(Auth()->user()->role_id==2 && isset($serviceId) && $serviceId == $serviceRow->id)
+                        @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]) && isset($serviceId) && $serviceId == $serviceRow->id)
                             selected
                         @endif>
                         {{ $serviceRow->description }}

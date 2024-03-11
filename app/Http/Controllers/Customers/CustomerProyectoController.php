@@ -24,9 +24,10 @@ class CustomerProyectoController extends Controller
 
         session::flash('tab','proyectos');
         $user = Auth()->user();
+        $allowedRoles = [2, 3, 7, 8];
 
 
-        if (Auth()->user()->role_id == 2 && $user->customer_id || Auth()->user()->role_id == 3 && $user->customer_id) {
+        if (in_array(Auth()->user()->role_id, $allowedRoles) && $user->customer_id) {
             
     
             if(Auth()->user()->proyecto_id != null){
@@ -36,7 +37,7 @@ class CustomerProyectoController extends Controller
             }
 
             $customers = Customer::where('id', $user->customer_id)->get(); // Si el cliente está asociado al usuario autenticado, puede obtenerlo directamente desde el usuario
-            $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id); // También puedes usar $user->customer_id aquí
+            $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id); 
             $departments = Department::get();
             $cities = City::get();
             $countries = Country::get();

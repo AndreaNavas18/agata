@@ -32,7 +32,7 @@ class HomeCustomerController extends Controller
     {
         $user = Auth()->user();
 
-        if( $user->customer_id && !in_array(Auth()->user()->role_id, [2, 3, 7, 8])){
+        if( $user->customer_id && in_array(Auth()->user()->role_id, [2, 3, 7, 8])){
             $customerId=auth()->user()->customer_id;
             $ticketsOpen=Ticket::state('Abierto')->customerId($customerId)->count();
             $ticketsClosed=Ticket::state('Cerrado')->customerId($customerId)->count();

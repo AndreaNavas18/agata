@@ -1,7 +1,9 @@
 @component('componentes.table')
     @slot('thead')
         <th>Proyecto - Contrato - Subcliente</th>
+        @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         <th>Cliente</th>
+        @endif
         <th>Tipo de servicio</th>
         <th>Ciudad</th>
         <th>Fecha</th>
@@ -21,11 +23,22 @@
             @foreach ($proyecto->customerServices as $customerService)
                 <tr>
                     <td>{{ $proyecto->name }}</td>
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     <td>{{ $proyecto->customer ? $proyecto->customer->name : '' }}</td>
+                    @endif
                     <td>{{ $customerService->service->name }}</td>
                     <td>{{ $customerService->city->name }}</td>
                     <td>{{ $customerService->date_service }}</td>
-                    <td>{{ $customerService->description }}</td>
+                    <td>
+                        {{ $customerService->description }}
+                        {{-- <a class="link-tabla description-link"
+                            href="{{ route('tickets.create') }}"
+                            data-id="{{ $customerService->id }}"
+                            data-toggle="modal"
+                            data-target="#modalEdit{{ $customerService->id }}">
+                            {{ $customerService->description }}
+                        </a> --}}
+                    </td>
                     <td>
                         <span class="badge {{ $proyecto->state == 'Activo' ? 'bg-success' : 'bg-danger' }}">
                             {{ $customerService->state }}
@@ -101,7 +114,9 @@
             @else 
                 <tr>
                     <td>{{ $proyecto->name }}</td>
+                    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     <td>{{ $proyecto->customer ? $proyecto->customer->name : '' }}</td>
+                    @endif
                     <td></td>
                     <td></td>
                     <td>{{ $proyecto->created_at}}</td>
