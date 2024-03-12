@@ -315,17 +315,22 @@ class TicketController extends Controller
         $ticket->ticket_issue                       = $request->ticket_issue;
         $ticket->date                               = $request->date;
         $ticket->send_email                         = $si;
+        $ticket->other_priority                     = $request->other_priority;
 
+        
         // Verifica el rol del usuario y establece la prioridad adecuada
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
-
-            // Que si la prioridad que da es otro motivo la guarde en algo, AQUI QUEDE
-            // if($request->prority_id)
-
-            // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
-            $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
-            $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
-            $ticket->customer_service_id = $serviceId;
+            
+            // Que si la prioridad que da es otro motivo la guarde en other_priority
+            if($request->filled('other_priority')) {
+                $ticket->priority_id = 3;
+                $ticket->customer_service_id = $serviceId;
+            }else {
+                // Si el usuario es cliente (rol == 2), establece la prioridad basada en general_types_priorities
+                $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
+                $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
+                $ticket->customer_service_id = $serviceId;
+            }
 
         } else {
             // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
@@ -400,7 +405,7 @@ class TicketController extends Controller
     public function sendEmail(Ticket $ticket, $emails)
     {
           // Envía correo a soporte@stratecsa.com
-        Mail::to(['soporte@stratecsa.com', 'karennavas333@gmail.com'])->send(new andreaDeveloper($ticket));
+        Mail::to(['plataformaagata@stratecsa.cloud', 'karennavas333@gmail.com'])->send(new andreaDeveloper($ticket));
         
         if (!is_null($ticket->employee)) {
             // Si hay un empleado asignado, obtén su correo electrónico
@@ -498,6 +503,8 @@ class TicketController extends Controller
         $ticket->customer_service_id                = $request->customer_service_id;
         $ticket->description                        = $request->description;
         $ticket->send_email                         = $si;
+        $ticket->other_priority                     = $request->other_priority;
+
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
         }
@@ -826,11 +833,11 @@ class TicketController extends Controller
                 if ($ticket->employee_id) {
                     // Si hay un agente asignado, enviar correo al agente y a soporte
                     $employeeEmail = $ticket->employee->email;
-                    $supportEmail = 'soporte@stratecsa.com';
+                    $supportEmail = 'plataformaagata@stratecsa.cloud';
                     $recipients = [$employeeEmail, $supportEmail];
                 } else {
                     // Si no hay agente asignado, enviar correo únicamente a soporte
-                    $recipients = ['soporte@stratecsa.com'];
+                    $recipients = ['plataformaagata@stratecsa.cloud'];
                 }
             } else {
                 // Si el usuario no tiene un customer_id, es un empleado

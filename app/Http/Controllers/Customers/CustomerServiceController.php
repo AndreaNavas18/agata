@@ -57,6 +57,7 @@ class CustomerServiceController extends Controller
                 'Terceros'  =>'Terceros'
             ];
             $providers = Provider::get();
+            
 
 
             return view('modules.customers.services.index', compact(
@@ -88,6 +89,25 @@ class CustomerServiceController extends Controller
             $tabPanel='customerServicesTabEdit';
             $typesServices=Service::get();
             $proyectos = Proyecto::get();
+            $camposAdicionales = [
+                'ip',
+                'vlan',
+                'mascara',
+                'gateway',
+                'mac',
+                'ancho_de_banda',
+                'ip_vpn',
+                'tipo_vpn',
+                'user_vpn',
+                'password_vpn',
+                'user_tunel',
+                'id_tunel',
+                'tecnologia',
+                'equipo',
+                'modelo',
+                'serial',
+                'activo_fijo'
+            ];
 
             return view('modules.customers.services.index', compact(
                 'customers',
@@ -101,6 +121,7 @@ class CustomerServiceController extends Controller
                 'providers',
                 'typesServices',
                 'proyectos',
+                'camposAdicionales'
             ));
 
         }
@@ -131,6 +152,25 @@ class CustomerServiceController extends Controller
             $tabPanel='customerServicesTabEdit';
             $typesServices=Service::get();
             $proyectos = Proyecto::get();
+            $camposAdicionales = [
+                'ip',
+                'vlan',
+                'mascara',
+                'gateway',
+                'mac',
+                'ancho_de_banda',
+                'ip_vpn',
+                'tipo_vpn',
+                'user_vpn',
+                'password_vpn',
+                'user_tunel',
+                'id_tunel',
+                'tecnologia',
+                'equipo',
+                'modelo',
+                'serial',
+                'activo_fijo'
+            ];
     
             return view('modules.customers.edit', compact(
                 'customer',
@@ -144,7 +184,8 @@ class CustomerServiceController extends Controller
                 'providers',
                 'typesServices',
                 'countries',
-                'proyectos'
+                'proyectos',
+                'camposAdicionales'
             ));
 
     }
@@ -218,6 +259,7 @@ class CustomerServiceController extends Controller
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
         $customerService->department_id             = $request->department_id;
+
           
         // Verificar si el campo proyecto_id está presente y tiene un valor válido
         if ($request->filled('proyecto_id') && is_numeric($request->proyecto_id)) {
@@ -234,6 +276,60 @@ class CustomerServiceController extends Controller
         }
         $customerService->state                     = 'Activo';
         $customerService->description               = $request->description;
+
+        if($request->filled('ip')) {
+            $customerService->ip                        = $request->ip;
+        }
+        if($request->filled('vlan')) {
+            $customerService->vlan                      = $request->vlan;
+        }
+        if($request->filled('mascara')) {
+            $customerService->mascara                   = $request->mascara;
+        }
+        if($request->filled('gateway')) {
+            $customerService->gateway                   = $request->gateway;
+        }
+        if($request->filled('mac')) {
+            $customerService->mac                       = $request->mac;
+        }
+        if($request->filled('ancho_de_banda')) {
+            $customerService->ancho_de_banda            = $request->ancho_de_banda;
+        }
+        if($request->filled('ip_vpn')) {
+            $customerService->ip_vpn                    = $request->ip_vpn;
+        }
+        if($request->filled('tipo_vpn')) {
+            $customerService->tipo_vpn                  = $request->tipo_vpn;
+        }
+        if($request->filled('user_vpn')) {
+            $customerService->user_vpn                  = $request->user_vpn;
+        }
+        if($request->filled('password_vpn')) {
+            $customerService->password_vpn              = $request->password_vpn;
+        }
+        if($request->filled('user_tunel')) {
+            $customerService->user_tunel                = $request->user_tunel;
+        }
+        if($request->filled('id_tunel')) {
+            $customerService->id_tunel                  = $request->id_tunel;
+        }
+        if($request->filled('tecnologia')) {
+            $customerService->tecnologia                = $request->tecnologia;
+        }
+        if($request->filled('equipo')) {
+            $customerService->equipo                    = $request->equipo;
+        }
+        if($request->filled('modelo')) {
+            $customerService->modelo                    = $request->modelo;
+        }
+        if($request->filled('serial')) {
+            $customerService->serial                    = $request->serial;
+        }
+        if($request->filled('activo_fijo')) {
+            $customerService->activo_fijo               = $request->activo_fijo;
+        }
+
+
         if (!$customerService->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');

@@ -263,6 +263,121 @@
                         id="description"
                         class="form-control"></textarea>
                 </div>
+                {{-- <div class="col-md-6 mb-4" style="display: none">
+                    @component('componentes.label', [
+                        'title' => 'Ip',
+                        'required' => false])
+                    @endcomponent
+                    <input type="text"
+                        name="ip"
+                        id="ip"
+                        class="form-control">
+                </div>
+                <div class="col-md-6 mb-4" style="display: none">
+                    @component('componentes.label', [
+                        'title' => 'Vlan',
+                        'required' => false])
+                    @endcomponent
+                    <input type="text"
+                        name="vlan"
+                        id="vlan"
+                        class="form-control">
+                </div>
+                <div class="col-md-6 mb-4" style="display: none">
+                    @component('componentes.label', [
+                        'title' => 'Mascara',
+                        'required' => false])
+                    @endcomponent
+                    <input type="text"
+                        name="mascara"
+                        id="mascara"
+                        class="form-control">
+                </div> --}}
+
+                {{-- @foreach($camposAdicionales as $key => $campoAdicional)
+                    <div class="col-md-6 mb-4 inputCampoAdicional" id="{{ $key }}Input" style="display: none;">
+                        @component('componentes.label', [
+                            'title' => ucfirst($campoAdicional),
+                            'required' => false])
+                        @endcomponent
+                        @if($campoAdicional == 'ancho_de_banda')
+                            <select class="form-control
+                                selectpicker selectCampoAdicional"
+                                name="{{ $campoAdicional }}"  
+                                data-width="100%">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Carga</option>
+                                <option value="2">Descarga</option>
+                            </select>
+                        @elseif($campoAdicional == 'tecnologia')
+                            <select class="form-control
+                                selectpicker selectCampoAdicional"
+                                name="{{ $campoAdicional }}"  
+                                data-width="100%">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Radio</option>
+                                <option value="2">Fibra</option>
+                                <option value="3">Satelital</option>
+                            </select>
+                        @else
+                            <input type="text" name="{{ $campoAdicional }}" class="form-control">
+                        @endif
+                    </div>
+                @endforeach --}}
+                @foreach($camposAdicionales as $key => $campoAdicional)
+                    <div class="col-md-6 mb-4 inputCampoAdicional" id="{{ $key }}Input" style="display: none;">
+                        @component('componentes.label', [
+                            'title' => ucfirst($campoAdicional),
+                            'required' => false])
+                        @endcomponent
+                        @if($campoAdicional == 'ancho_de_banda')
+                            <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Carga</option>
+                                <option value="2">Descarga</option>
+                            </select>
+                        @elseif($campoAdicional == 'tecnologia')
+                            <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
+                                <option value="">--Seleccione--</option>
+                                <option value="1">Radio</option>
+                                <option value="2">Fibra</option>
+                                <option value="3">Satelital</option>
+                            </select>
+                        @else
+                            <input type="text" name="{{ $campoAdicional }}" class="form-control">
+                        @endif
+                    </div>
+                @endforeach
+
+                <div class="col-12 mb-4">
+                    <!-- Botón para agregar campo adicional -->
+                    <button type="button" 
+                    id="agregarCampo" 
+                    class="btn btn-teal" 
+                    >
+                        Agregar configuracion adicional
+                    </button>
+                </div>
+
+                <div class="col-12 mb-4" id="selectContenedor" style="display: none;">
+                    @component('componentes.label', [
+                        'title' => 'Añadir campo',
+                        'required' => true])
+                    @endcomponent
+                    <select class="form-control
+                        selectpicker"
+                        name="camposDisponibles[]"
+                        data-width="100%"
+                        id="camposDisponibles">
+                        <option value="">--Seleccione--</option>
+                        @foreach($camposAdicionales as $key => $campoAdicional)
+                            <option value="{{ $campoAdicional }}" data-input="{{ $key }}">
+                                {{-- Mostrar los campos con la primer letra en mayuscula --}}
+                                {{ ucfirst($campoAdicional) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         @endslot
         @slot('footer')
@@ -284,4 +399,169 @@
 <input type="hidden"
     id="rutaAjaxDepartments"
     value="{{ route('general.departments') }}">
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Escuchar el evento de clic en el botón "Agregar Campo"
+    document.getElementById("agregarCampo").addEventListener("click", function() {
+        // Mostrar el select de campos disponibles
+        document.getElementById("selectContenedor").style.display = "block";
+    });
+});
+</script> --}}
+{{-- 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Escuchar el evento de cambio en el select de campos disponibles
+        document.getElementById("camposDisponibles").addEventListener("change", function() {
+            // Obtener el valor seleccionado del select
+            var selectedOption = this.options[this.selectedIndex];
+            var inputId = selectedOption.getAttribute("data-input");
+            // Ocultar todos los inputs
+            ocultarTodosInputs();
+            // Mostrar el input correspondiente al valor seleccionado
+            document.getElementById(inputId + "Input").style.display = "block";
+            // Ocultar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "none";
+        });
+
+        // Función para ocultar todos los inputs
+        function ocultarTodosInputs() {
+            var inputs = document.querySelectorAll('.inputCampoAdicional');
+            inputs.forEach(function(input) {
+                input.style.display = "none";
+            });
+        }
+
+        // Escuchar el evento de clic en el botón "Agregar Campo"
+        document.getElementById("agregarCampo").addEventListener("click", function() {
+            // Mostrar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "block";
+        });
+    });
+</script> --}}
+{{-- 
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // Escuchar el evento de cambio en el select de campos disponibles
+        document.getElementById("camposDisponibles").addEventListener("change", function() {
+            // Obtener el valor seleccionado del select
+            var selectedOption = this.options[this.selectedIndex];
+            var inputId = selectedOption.getAttribute("data-input");
+            // Ocultar todos los inputs
+            ocultarTodosInputs();
+            // Mostrar el input correspondiente al valor seleccionado
+            document.getElementById(inputId + "Input").style.display = "block";
+            // Ocultar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "none";
+        });
+
+        // Función para ocultar todos los inputs
+        function ocultarTodosInputs() {
+            var inputs = document.querySelectorAll('.inputCampoAdicional');
+            inputs.forEach(function(input) {
+                input.style.display = "none";
+            });
+        }
+
+        // Escuchar el evento de clic en el botón "Agregar Campo"
+        document.getElementById("agregarCampo").addEventListener("click", function() {
+            // Mostrar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "block";
+        });
+    });
+</script> --}}
+{{-- el que mejor funciona, agrega los campos sin eliminar los otros pero no tiene selects --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    // Escuchar el evento de cambio en el select de campos disponibles
+    document.getElementById("camposDisponibles").addEventListener("change", function() {
+        // Obtener el valor seleccionado del select
+        var selectedOption = this.options[this.selectedIndex];
+        var inputId = selectedOption.getAttribute("data-input");
+        // Mostrar el input correspondiente al valor seleccionado
+        document.getElementById(inputId + "Input").style.display = "block";
+    });
+
+    // Escuchar el evento de clic en el botón "Agregar Campo"
+    document.getElementById("agregarCampo").addEventListener("click", function() {
+            // Mostrar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "block";
+        });
+    });
+</script>
+
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Escuchar el evento de cambio en el select de campos disponibles
+        document.getElementById("camposDisponibles").addEventListener("change", function() {
+            // Obtener el valor seleccionado del select
+            var selectedOption = this.options[this.selectedIndex];
+            var inputId = selectedOption.getAttribute("data-input");
+
+            // Ocultar todos los inputs y selects
+            ocultarTodosInputs();
+
+            // Mostrar el input o select correspondiente al valor seleccionado
+            if (inputId == "ancho_de_banda" || inputId == "tecnologia") {
+                document.getElementById(inputId + "Select").style.display = "block";
+            } else {
+                document.getElementById(inputId + "Input").style.display = "block";
+            }
+
+            // Mostrar campos adicionales dependiendo de la selección
+            mostrarCamposAdicionales(inputId);
+
+            // Ocultar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "none";
+        });
+
+        // Función para ocultar todos los inputs y selects
+        function ocultarTodosInputs() {
+            var inputs = document.querySelectorAll('.inputCampoAdicional');
+            inputs.forEach(function(input) {
+                input.style.display = "none";
+            });
+
+            var selects = document.querySelectorAll('.selectCampoAdicional');
+            selects.forEach(function(select) {
+                select.style.display = "none";
+            });
+        }
+
+        // Función para mostrar campos adicionales dependiendo de la selección
+        function mostrarCamposAdicionales(inputId) {
+            // Ocultar todos los campos adicionales
+            ocultarCamposAdicionales();
+
+            // Mostrar campos adicionales dependiendo de la selección
+            switch(inputId) {
+                case "ip_vpn":
+                    document.getElementById("tipo_vpnInput").style.display = "block";
+                    document.getElementById("user_vpnInput").style.display = "block";
+                    document.getElementById("password_vpnInput").style.display = "block";
+                    break;
+                case "user_tunel":
+                    document.getElementById("id_tunelInput").style.display = "block";
+                    break;
+                // Agregar más casos según sea necesario
+            }
+        }
+
+        // Función para ocultar todos los campos adicionales
+        function ocultarCamposAdicionales() {
+            var camposAdicionales = document.querySelectorAll('.campoAdicional');
+            camposAdicionales.forEach(function(campo) {
+                campo.style.display = "none";
+            });
+        }
+
+        // Escuchar el evento de clic en el botón "Agregar Campo"
+        document.getElementById("agregarCampo").addEventListener("click", function() {
+            // Mostrar el select de campos disponibles
+            document.getElementById("selectContenedor").style.display = "block";
+        });
+    });
+</script> --}}
+
 
