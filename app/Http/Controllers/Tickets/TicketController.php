@@ -485,6 +485,9 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
+        $si = "Si";
+
+
         $ticket = Ticket::findOrFail($id);
         $ticket->ticket_issue                       = $request->ticket_issue;
         $ticket->ticket_issue                       = $request->ticket_issue;
@@ -494,7 +497,7 @@ class TicketController extends Controller
         $ticket->employee_id                        = $request->employee_id;
         $ticket->customer_service_id                = $request->customer_service_id;
         $ticket->description                        = $request->description;
-        $ticket->send_email                         = $request->send_email;
+        $ticket->send_email                         = $si;
         if ($request->filled('emails_notification')) {
             $ticket->emails_notification                = $request->emails_notification;
         }
@@ -733,6 +736,7 @@ class TicketController extends Controller
                         $ticket->state_clock        = $request->state_clock;
                         $ticket->datetime_clock     = $timeActually;
                     } else {
+                        
                         if ($request->state_clock != $ticket->state_clock) {
                             //se esta deteniendo el reloj
                             $ticket->state_clock        = $request->state_clock;
@@ -751,8 +755,6 @@ class TicketController extends Controller
                     $ticket->employee_id = $request->employee_id;
                 }
             }else {
-
-
 
             }
             
