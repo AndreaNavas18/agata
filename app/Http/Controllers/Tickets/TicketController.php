@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\andreaDeveloper;
 use App\Mail\newAnswer;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
@@ -330,12 +331,15 @@ class TicketController extends Controller
                 $priority = GeneralTypesPriority::find($request->priority_id); // Obtén la prioridad correspondiente desde la tabla general_types_priorities
                 $ticket->priority_id = $priority->ticketPriority->id; // Asigna la prioridad de la tabla general_types_priorities al ticket
                 $ticket->customer_service_id = $serviceId;
+                $ticket->other_priority = null;
             }
 
         } else {
             // Si el usuario no es cliente, utiliza la prioridad proporcionada en el formulario
-            $ticket->priority_id = $request->priority_id;
+            $ticket->priority_id                        = $request->priority_id;
             $ticket->customer_service_id                = $request->customer_service_id;
+            $ticket->other_priority = null;
+
         }
 
 
@@ -357,20 +361,22 @@ class TicketController extends Controller
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $ticket->customer_id                    = Auth()->user()->customer_id;
         } else {
-            $ticket->customer_id                    = $request->customer_id;
+            $ticket->customer_id                        = $request->customer_id;
             $ticket->employee_position_department_id    = $request->employee_position_department_id;
             $ticket->employee_id                        = $request->employee_id;
         }
 
         //corre el reloj si es prioridad alta el ticket
+        Log::info($request->priority_id);
         if ($request->priority_id == 1) {
             $ticket->state_clock                    = 'Corriendo';
             $ticket->datetime_clock                 = Carbon::now();
             $ticket->time_clock                     = '00:00:00';
         } else {
             $ticket->state_clock                    = 'Detenido';
+            Log::info("Si llego como detenido");
         }
-
+        Log::info($ticket->state_clock);
         if (!$ticket->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');
@@ -739,11 +745,15 @@ class TicketController extends Controller
             //actualizar el ticket
             if(strcasecmp(strtolower($request->state_clock), strtolower($ticket->state_clock)) !== 0){
                 if ($request->filled('state_clock')) {
+                    Log::info("Este es el estado del ticketclock".$ticket->state_clock);
                     if ($request->state_clock == 'Corriendo') {
                         $ticket->state_clock        = $request->state_clock;
                         $ticket->datetime_clock     = $timeActually;
+                        Log::info("Efectivamente es corriendo");
+                        Log::info($request->state_clock);
                     } else {
-                        
+                        Log::info("No, no fue corriendo");
+                        Log::info($request->state_clock);
                         if ($request->state_clock != $ticket->state_clock) {
                             //se esta deteniendo el reloj
                             $ticket->state_clock        = $request->state_clock;
@@ -832,9 +842,16 @@ class TicketController extends Controller
                 // Enviar correo al empleado asignado y a soporte
                 if ($ticket->employee_id) {
                     // Si hay un agente asignado, enviar correo al agente y a soporte
-                    $employeeEmail = $ticket->employee->email;
-                    $supportEmail = 'plataformaagata@stratecsa.cloud';
-                    $recipients = [$employeeEmail, $supportEmail];
+                   // Verificar si el correo electrónico del agente es válido
+                   $employeeEmail = $ticket->employee->email;
+                   $supportEmail = 'plataformaagata@stratecsa.cloud';
+                   $validator = Validator::make(['email' => $employeeEmail], ['email' => 'email']);
+
+                    if($validator->fails() || empty($employeeEmail)) {
+                        $recipients = [$supportEmail];
+                    }else{
+                        $recipients = [$employeeEmail, $supportEmail];
+                    }
                 } else {
                     // Si no hay agente asignado, enviar correo únicamente a soporte
                     $recipients = ['plataformaagata@stratecsa.cloud'];
@@ -843,13 +860,18 @@ class TicketController extends Controller
                 // Si el usuario no tiene un customer_id, es un empleado
                 // Enviar correo al cliente
                 $clientEmails = explode(';', $ticket->emails_notification);
-                $recipients = $clientEmails;
-                Log::info($recipients);
+                $recipients = array_filter($clientEmails);
+                // dd($recipients);
+                // Log::info($recipients);
             }
-
-            // Enviar el correo electrónico
-            foreach ($recipients as $recipient) {
-                Mail::to($recipient)->send(new newAnswer($ticket));
+            if (!empty($recipients)) {
+                // Enviar el correo electrónico
+                foreach ($recipients as $recipient) {
+                    Mail::to($recipient)->send(new newAnswer($ticket));
+                    Log::info("Si, se estan enviando");
+                }
+            }else {
+                Log::error('No hay destinatarios especificados para el correo electrónico.');
             }
         } else {
             // Manejar el caso en que no haya respuestas al ticket

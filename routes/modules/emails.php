@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('prueba',function () {
-    Mail::to('karennavas22@hotmail.com')
+    Mail::to('stratecsa@outlook.es')
         ->send(new NewTicketCreatedMailable);
 
         return 'Email enviado';
@@ -21,7 +21,7 @@ Route::get('prueba',function () {
 })->name('prueba');
 
 Route::get('prueba2',function () {
-    Mail::to('karennavas22@hotmail.com')
+    Mail::to('stratecsa@outlook.es')
         ->send(new andreaDeveloper);
 
         return 'Email enviado';
