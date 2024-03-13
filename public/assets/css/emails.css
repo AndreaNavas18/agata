@@ -1,0 +1,19 @@
+.divcontenedor{
+    background-image: url('https://i.ibb.co/q7rz19C/img-sfondo.png');
+    background-repeat: no-repeat;
+    width: 69%;
+    height: 596px;
+    
+}
+
+
+.divInformacion{
+    font-size:medium;
+    padding-left:50px;
+    padding-right:50px;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    height: 100%;
+    justify-content: center;
+}

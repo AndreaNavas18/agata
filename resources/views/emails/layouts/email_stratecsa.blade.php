@@ -21,41 +21,55 @@
                 margin: 20px;
             }
         </style>
+		<link href="{{asset('assets/css/emails.css')}}" rel="stylesheet" />
     </head>
 
     <body style="margin: 0; padding: 0;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0; background: #ffffff;">
+
+           <div class="information"
+        style="background-image: url(https://ci3.googleusercontent.com/meips/ADKq_NbS-L_aoxL63oKvGPFf9uh_oteE6TFtV0fpWGCpovv72ENC_IaZCq3FXGK7qySxEqbOSOt9hzqMqUvsJYg=s0-d-e1-ft#https://i.ibb.co/6mkLfKy/img-sfondo.png);
+        background-repeat: no-repeat;
+        margin: 0 auto;
+        width: 640px;
+        height: 468px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin-top: -30px;
+        text-align: left;">
+        {{-- <table role="presentation" style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0; background: #ffffff;">
             <tr>
                 <td align="center" style="padding: 0;">
-                    <table role="presentation" style="width: 600px; border-collapse: collapse; border-spacing: 0; text-align: left;">
-                        <tr>
+                    <table role="presentation" style="width: 600px; border-collapse: collapse; border-spacing: 0; text-align: left;"> --}}
+                        {{-- <tr>
                             <td align="center" style="padding: 0;">
                                 <a href="https://creditos.somosziro.com/users/login" target="_blank">
                                     <img src="https://creditos.somosziro.com/img/email/mailBienvenida/img/Header.png" alt="" width="600" style="height: auto; display: block;" />
                                 </a>
                             </td>
-                        </tr>
+                        </tr> --}}
                         {{-- contenido de la vista --}}
                         @yield('content')
                         {{-- fin contenido de la vista --}}
-                        <tr>
+                        {{-- <tr>
                             <td align="center" style="padding: 0;">
                                 <a href="https://creditos.somosziro.com/users/login" target="_blank">
                                     <img src="https://creditos.somosziro.com/img/email/mailBienvenida/img/Footer_01.jpg" alt="" width="600" style="height: auto; display: block;" />
                                 </a>
                             </td>
-                        </tr>
-                        <tr>
+                        </tr> --}}
+                        {{-- <tr>
                             <td align="center" style="padding: 0; background: #144755;">
                                 <p style="height: 60px; color: #fff; font-size: 12.2px; margin: 0;">
                                     <br />
                                     Stratecsa. Tecnologia que conecta.
                                 </p>
                             </td>
-                        </tr>
-                    </table>
+                        </tr> --}}
+                    {{-- </table>
                 </td>
             </tr>
-        </table>
+        </table> --}}
     </body>
 </html>
