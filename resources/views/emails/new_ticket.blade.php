@@ -1,84 +1,72 @@
-{{-- @extends('layouts.email')
-@section('content') --}}
+@extends('layouts.email')
 
 
+@section('message')
+    <p style="font-size: 20px;margin-bottom: 40px; color: black;">
+        Le informamos que hemos registrado su solicitud como un nuevo ticket de soporte. Estamos trabajando para atender su
+        requerimiento y nos comunicaremos con usted pronto. A continuación, encontrará los detalles correspondientes.
+    </p>
+@endsection
 
-<p>
-    Se ha creado un nuevo tickect a continuación los detalles:
-</p>
 
-<div class="contenedor"
-    style="background-image: url('https://i.ibb.co/6mkLfKy/img-sfondo.png');
-    background-repeat: no-repeat;
-    margin: 0 auto; /* Centrar el div contenedor en la página */
-    width: 640px;
-    height: 1000px;
-    margin-top: 15%;
-    text-align: center;"> <!-- Añadido text-align: center para centrar el contenido dentro del contenedor -->
+@section('content')
+    <div
+        style="
+    font-size: medium;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 165px;
+    width: 65%;
+    height: 100%;
+    color: black;
+">
 
-<div class="contenedor"
-style="background-image: url('https://i.ibb.co/6mkLfKy/img-sfondo.png');
-background-repeat: no-repeat;
-margin: 0 auto;
-width: 640px;
-height: 1000px;
-text-align: center;
+        <div>
+            <span><b>Tipo instalación:</b></span>
+            {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }}
+        </div>
 
-text-align: center;"> <!-- Añadido text-align: center para centrar el contenido dentro del contenedor -->
+        <div>
+            <span><b>Tipo servicio:</b></span>
+            {{ isset($ticket->service->service->name) ? $ticket->service->service->name : 'N/A' }}
+        </div>
+        <div>
+            <span><b>Descripción servicio:</b></span>
+            {{ isset($ticket->service->description) ? $ticket->service->description : 'N/A' }}
+        </div>
 
-<div class="information"
-   style="width: 500px; /* Ancho del div de información */
-   margin: 0 auto; /* Centrar el div de información dentro del contenedor */
-margin-top: 15%;
-padding-top: 120px;
-   text-align: left;"> <!-- Ajustar el alineamiento del texto dentro del div de información -->
+        <div>
+            <span><b>Asunto:</b></span>
+            {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}</td>
+        </div>
 
-   <table role="presentation" style="width: 100%; border-collapse: collapse; border: 0; border-spacing: 0;">
-       <tr>
-           <td style="color: #153643; width: 60px; height: 70px;"></td>
-           <td style="color: #153643; height: 70px;">
-               <br />
-               <table align="center" width="500" border="0" cellspacing="0" cellpadding="0"
-                   style="border: 1px solid #ccc;">
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Cliente:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->customer->name) ? $ticket->customer->name : 'N/A' }}</td>
-                   </tr>
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Tipo instalación:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }}
-                       </td>
-                   </tr>
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Tipo servicio:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->service->service->name) ? $ticket->service->service->name : 'N/A' }}
-                       </td>
-                   </tr>
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Descripción servicio:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->service->description) ? $ticket->service->description : 'N/A' }}
-                       </td>
-                   </tr>
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Asunto:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}</td>
-                   </tr>
-                   <tr style="border: 1px solid #ccc;">
-                       <th style="border: 1px solid #ccc;">Agente:</th>
-                       <td style="border: 1px solid #ccc;">
-                           {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'N/A' }}</td>
-                   </tr>
-               </table>
-           </td>
-           <td style="color: #153643; width: 60px; height: 70px;"></td>
-       </tr>
-   </table>
-</div>
-</div>
+        <div>
+            <span><b>Agente:</b></span>
+            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'N/A' }}</td>
+        </div>
 
-{{-- @endsection --}}
+        <div style="margin: 0 auto;  padding-top: 20px; position: relative;
+            top: 144px; left: 34%;">
+            <button
+                style="
+                text-align: left;
+                background-color: blue;
+                border-radius: 15px;
+                height: 30px;
+                color: white;
+                border: none; 
+                cursor: pointer; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                text-decoration: none; ">
+                <a href="https://www.stratecsa.com/"
+                    style="
+            color: inherit; /* Hereda el color del texto del botón */
+            text-decoration: none; /* Quita el subrayado */
+        ">Para
+                    más información</a></button>
+
+        </div>
+    </div>
+@endsection

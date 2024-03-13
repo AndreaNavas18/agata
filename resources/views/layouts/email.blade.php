@@ -15,7 +15,7 @@
         </xml>
       </noscript>
     <![endif]-->
-	<style>
+	{{-- <style>
 		table,
 		td,
 		div,
@@ -23,11 +23,31 @@
 		p {
 			font-family: Arial, sans-serif;
 		}
-	</style>
+	</style> --}}
+			{{-- <link href="{{asset('assets/css/emails.css')}}" rel="stylesheet" /> --}}
+
+
+
 </head>
 
 <body style="margin: 0; padding: 0">
-	<table role="presentation" style="
+
+
+	@yield('message')
+
+
+
+	<div style="
+		background-image: url(https://i.ibb.co/q7rz19C/img-sfondo.png);
+		background-repeat: no-repeat;
+		background-size: contain;
+		/*background-position: center;*/
+		width: 100%;
+		height: 596px;
+	">
+
+
+	{{-- <table role="presentation" style="
         width: 100%;
         border-collapse: collapse;
         border: 0;
@@ -50,9 +70,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="color: #153643; height: 70px; padding: 0; margin-left:5px" >
+						<td style="color: #153643; height: 70px; padding: 0; margin-left:5px" > --}}
 							@yield('content')
-						</td>
+							
+						{{-- </td>
                         <td>
                             <img src="{{asset('assets/images/robot.png')}}" alt="" width="200" style="height: auto; display: block" />
                         </td>
@@ -73,7 +94,8 @@
 				</table>
 			</td>
 		</tr>
-	</table>
+	</table> --}}
+</div>
 </body>
 
 </html>
