@@ -118,11 +118,13 @@
                 $('#state_clock').prop('disabled', false);
             }
         })
-        $('.addVisit').on('click', function() {
+        $(document).on('click', '.addVisit', function() {
             var replieId = $(this).attr('data-replieId');
             $('#formVisit').trigger("reset");
             $('#ticket_replie_id').val(replieId);
             $('#modalVisit').modal('show');
+            console.log("Si me estoy mostrando");
+            console.log(replieId);
         })
         $('.addAgent').on('click', function() {
             var replieId = $(this).attr('data-replieId');
@@ -157,7 +159,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var selectTipoVisita = document.getElementById('tipodevisita');
+            var selectTipoVisita = document.getElementById('visit_type');
             var selectTecnicosDiv = document.getElementById('selectTecnicosDiv');
 
             selectTipoVisita.addEventListener('change', function() {
@@ -168,6 +170,68 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#technicals\\[\\]').on('change', function() {
+                var employeeFiles = $(this).val();
+                if (employeeFiles && employeeFiles.length > 0) {
+                    $.ajax({
+                        url: '/get-employee-files',
+                        type: 'GET',
+                        data: { employeeIds: employeeFiles },
+                        success: function(response) {
+                            console.log(response);
+                            $('#selectArchivosDiv').show();
+                            $('#files').empty();
+                            response.forEach(function(employeeData) {
+                                var employeeName = employeeData.employeeName;
+                                var files = employeeData.files;
+                                files.forEach(function(filename) {
+                                    $('#files').append('<option value="' + filename + '">' + employeeName + ' - ' + filename + '</option>');
+                                });
+                            });
+                        }
+                    });
+                } else {
+                    $('#selectArchivosDiv').hide();
+                    $('#files').empty();
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+    $('#technicals\\[\\]').on('change', function() {
+        var employeeFiles = $(this).val();
+        if (employeeFiles && employeeFiles.length > 0) {
+            $.ajax({
+                url: '/get-employee-files',
+                type: 'GET',
+                data: { employeeIds: employeeFiles },
+                success: function(response) {
+                    console.log(response);
+                    $('#selectArchivosDiv').show();
+                    $('#files').empty();
+                    response.forEach(function(employeeData) {
+                        var employeeName = employeeData.employeeName;
+                        var files = employeeData.files;
+                        console.log(files);
+                        files.forEach(function(fileId) {
+                            $('#files').append('<option value="' + fileId + '">' + employeeName + ' - ' + fileId + '</option>');
+                        });
+                    });
+                }
+            });
+        } else {
+            $('#selectArchivosDiv').hide();
+            $('#files').empty();
+        }
+    });
+});
     </script>
 
 
@@ -327,7 +391,7 @@
             @include('modules.tickets.partials.visits')
         </div>
     </div>
-    @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+    {{-- @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8])) --}}
         <div>
             <div class="modal fade" id="modalVisit" tabindex="-1" role="dialog" aria-hidden="true">
                 <form action="{{ route('tickets.visits.store', ['ticketId' =>$ticket->id]) }}"
@@ -350,8 +414,8 @@
                                         'required' => false])
                                         @endcomponent
                                         <select class="form-control selectpicker"
-                                            name="tipodevisita"
-                                            id="tipodevisita"
+                                            name="visit_type"
+                                            id="visit_type"
                                             data-width="100%">
                                                 <option value="">--Seleccione--</option>
                                                 <option value="1">Propia</option>
@@ -376,6 +440,19 @@
                                                 </option>
                                             {{-- @endif --}}
                                             @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 mb-4" id="selectArchivosDiv" style="display: none">
+                                        @component('componentes.label', [
+                                        'title' => 'Documentos adjuntos',
+                                        'id' => 'files[]',
+                                        'required' => false])
+                                        @endcomponent
+                                        <select class="form-control"
+                                            name="files[]"
+                                            id="files"
+                                            data-width="100%">
+                                            <option value="">--Seleccione--</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-12 mb-4">
@@ -515,7 +592,7 @@
                 </form>
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 <!-- Filtros -->
  
     <!-- ocultos -->

@@ -13,6 +13,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Models\Employees\EmployeeFile;
+use App\Models\Employees\Employee;
+use App\Models\General\TypeDocument;
+use App\Models\Helpers;
+use App\Models\Tickets\TicketVisitFile;
 
 
 class TicketVisitController extends Controller
@@ -33,8 +38,9 @@ class TicketVisitController extends Controller
         if($request->filled('ticket_replie_id')) {
             $ticketVisit->ticket_replie_id                  = $request->ticket_replie_id;
         }
+        Log::info("este es el tipo de visita:");
         Log::info($request->visit_type);
-        if($request->visit_type == 'Propia') {
+        if($request->visit_type === '1') {
             $ticketVisit->visit_type                        = '1';
             Log::info("visita con instalacion propia");
         } else {
@@ -64,6 +70,23 @@ class TicketVisitController extends Controller
         }else{
             Log::info("Visita tercerizada no tiene tecnicos asignados");
         }
+
+         //guardar documentos
+        
+         if ($request->filled('files')) {
+            Log::info("Si hay archivos");
+            foreach ($request->files as $file) {
+                Log::info($file);
+                $ticketVisitFile = new TicketVisitFile();
+                $ticketVisitFile->ticket_visit_id = $ticketVisit->id;
+                $ticketVisitFile->employee_file_id = $file; 
+                $ticketVisitFile->save();
+            }
+        }else {
+            Log::info("No hay archivos adjuntos");
+        }
+        
+        
 
         DB::commit();
         Alert::success('¡Éxito!', 'Registro insertado correctamente');

@@ -17,6 +17,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class EmployeeController extends Controller
 {
@@ -154,10 +155,11 @@ class EmployeeController extends Controller
                 $file->move($destinationPath, $slugArchivo);
                 // Definir la ruta del archivo
                 $path = 'empleados/documentos/' . $slugArchivo;
-                $fileEmployee->name_original = uniqid().'_'.$nameOriginal;
-                $fileEmployee->slug = $slugArchivo;
+                $fileEmployee->name_original = uniqid().'_'.strtolower($nameOriginal);
+                $fileEmployee->slug = strtolower($slugArchivo);
                 $fileEmployee->path = $path;
                 $fileEmployee->employee_id = $employee->id;
+
                 if(!$fileEmployee->save()) {
                     DB::rollBack();
                     Alert::error('Error', 'Error al insertar el registro.');
@@ -255,7 +257,7 @@ class EmployeeController extends Controller
                     // Obtener el archivo
                     $file = $value;
                     // Obtener el nombre original del archivo
-                    $nameOriginal = $file->getClientOriginalName();
+                    $nameOriginal = ($file->getClientOriginalName());
                     // Carpeta de destino
                     $destinationPath = public_path('storage/empleados/documentos');
                     // Generar un nombre de archivo único
@@ -264,10 +266,11 @@ class EmployeeController extends Controller
                     $file->move($destinationPath, $slugArchivo);
                     // Definir la ruta del archivo
                     $path = 'empleados/documentos/' . $slugArchivo;
-                    $fileEmployee->name_original = uniqid().'_'.$nameOriginal;
-                    $fileEmployee->slug = $slugArchivo;
+                    $fileEmployee->name_original = uniqid().'_'.Str::lower($nameOriginal);
+                    $fileEmployee->slug = Str::lower($slugArchivo);
                     $fileEmployee->path = $path;
                     $fileEmployee->employee_id = $employee->id;
+
                     if(!$fileEmployee->save()) {
                         DB::rollBack();
                         Alert::error('Error', 'Error al insertar el registro.');

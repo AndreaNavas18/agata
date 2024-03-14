@@ -910,26 +910,56 @@ class TicketController extends Controller
         return redirect()->back();
     }
     
-//     public function reopen(Ticket $ticket, Request $request, $id) {
-//         DB::beginTransaction();
-//         $ticket = Ticket::findOrFail($id);
-//         $ticket->state = $request->state;
+    // public function getEmployeeFiles(Request $request) {
+    //     $employeeIds = $request->input('employeeIds', []);
+    //     $files = [];
+    //     foreach ($employeeIds as $employeeId) {
+    //         $employee = Employee::findOrFail($employeeId);
+    //         Log::info("Employee: " . $employee);
+    //         $files = array_merge($files, $employee->files->pluck('name_original', 'id')->toArray());
+    //     }
+    //     return response()->json($files);
+    // }
 
-//         if($ticket->state == 'CERRADO') {
-//             $ticket->update(['state' => 'ABIERTO']);
-//         } else {
-//         }
+    // public function getEmployeeFiles(Request $request) {
+    //     $employeeIds = $request->input('employeeIds', []);
+    //     $data = [];
+    
+    //     foreach ($employeeIds as $employeeId) {
+    //         $employee = Employee::findOrFail($employeeId);
+    //         $employeeName = $employee->short_name;
+    //         $files = $employee->files->pluck('name_original')->toArray();
+    
+    //         // Agregar el nombre del empleado y sus archivos al array de datos
+    //         $data[] = [
+    //             'employeeName' => $employeeName,
+    //             'files' => $files,
+    //         ];
+    //     }
+    
+    //     return response()->json($data);
+    // }
 
-//         if (!$ticket->save()) {
-//             DB::rollBack();
-//             Alert::error('Error', 'Error al insertar el registro.');
-//             return redirect()->back();
-//         }else {
-//             DB::commit();
-//             Alert::success('Success!', 'Solicitud de cambio de estado');
-//             return redirect()->back();
-        
-//         }
+    public function getEmployeeFiles(Request $request) {
+        $employeeIds = $request->input('employeeIds', []);
+        $data = [];
+    
+        foreach ($employeeIds as $employeeId) {
+            $employee = Employee::findOrFail($employeeId);
+            $employeeName = $employee->short_name;
+            $files = $employee->files->pluck('id')->toArray(); // Modificación aquí
+    
+            // Agregar el nombre del empleado y los IDs de sus archivos al array de datos
+            $data[] = [
+                'employeeName' => $employeeName,
+                'files' => $files,
+            ];
+        }
+    
+        return response()->json($data);
+    }
+    
 
-//     }
+
+
 }

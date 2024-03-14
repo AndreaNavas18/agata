@@ -61,5 +61,10 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
     Route::post('/tickets/visitas/crear/{ticketId}',[ TicketVisitController::class, 'store' ])->name('visits.store')
     ->middleware('can:tickets.create');
 
+	// Route::get('get-employee-files/{employeeId}', [ TicketController::class, 'getEmployeeFiles' ])->name('getEmployeeFiles');
+
+	Route::get('get-employee-files', [TicketController::class, 'getEmployeeFiles'])->name('getEmployeeFiles');
+
+
 
 });
