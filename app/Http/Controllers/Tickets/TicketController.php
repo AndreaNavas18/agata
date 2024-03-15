@@ -561,6 +561,7 @@ class TicketController extends Controller
         $timeActually= Carbon::now();
         $technicals= Employee::positionId(1)->get();
         $employeesAll = Employee::all();
+        $lastReplyId = TicketReply::latest()->first();
             if ($ticket->priority_id == 1) {
                 if(strcasecmp($ticket->state_clock, 'Corriendo') === 0 && !is_null($ticket->datetime_clock)) {
                     // $timeSaved = Carbon::parse($ticket->time_clock);
@@ -638,7 +639,8 @@ class TicketController extends Controller
                 'serviceList',
                 'employeesList',
                 'technicals',
-                'employeesAll'
+                'employeesAll',
+                'lastReplyId'
             ));
         }else {
             $allowedRoles = [2, 3, 7, 8];
@@ -654,7 +656,9 @@ class TicketController extends Controller
                     'serviceList',
                     'employeesList',
                     'technicals',
-                    'employeesAll'
+                    'employeesAll',
+                    'lastReplyId'
+
                 ));
             } else {
                 return view('modules.tickets.manage', compact(
@@ -668,7 +672,9 @@ class TicketController extends Controller
                     'serviceList',
                     'employeesList',
                     'technicals',
-                    'employeesAll'
+                    'employeesAll',
+                    'lastReplyId'
+
                 ));
             }
         }

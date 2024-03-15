@@ -118,7 +118,7 @@
                 $('#state_clock').prop('disabled', false);
             }
         })
-        $(document).on('click', '.addVisit', function() {
+       $('.addVisit').on('click', function() {
             var replieId = $(this).attr('data-replieId');
             $('#formVisit').trigger("reset");
             $('#ticket_replie_id').val(replieId);

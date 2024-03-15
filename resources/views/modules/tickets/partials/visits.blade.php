@@ -13,7 +13,7 @@
                         data-placement="top"
                         data-original-title="Nueva visita tecnica"
                         type="button"
-                        data-replieId="">
+                        data-replieId="{{ $lastReplyId->id }}">
                         <span>
                             <i class="fa fa-plus"></i>
                         </span>
