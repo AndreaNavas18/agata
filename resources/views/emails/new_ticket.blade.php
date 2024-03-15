@@ -1,40 +1,41 @@
 @extends('layouts.email')
 
-
+@section('information')
+<p style="text-align: justify;">
+    Le informamos que hemos registrado su solicitud como un nuevo ticket. Estamos trabajando para atender su requerimiento y nos comunicaremos con usted pronto.
+</p>
+@endsection
 
 @section('content')
     <div
         style="
-            font-size: medium;
             padding-left: 50px;
             padding-right: 50px;
             color: black;
-            position: absolute;
-            top: 365px;
 ">
 
-        <div>
+        <div class="div-datos">
             <span><b>Tipo instalación:</b></span>
             {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }}
         </div>
 
-        <div>
+        <div class="div-datos">
             <span><b>Tipo servicio:</b></span>
             {{ isset($ticket->service->service->name) ? $ticket->service->service->name : 'N/A' }}
         </div>
 
-        <div>
+        <div class="div-datos">
             <span><b>Descripción servicio:</b></span>
             {{ isset($ticket->service->description) ? $ticket->service->description : 'N/A' }}
         </div>
 
-        <div>
+        <div class="div-datos">
             <span><b>Asunto:</b></span>
             {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
         </div>
 
-        <div>
-            <span><b>AGENTECAMBIO:</b></span>
+        <div class="div-datos">
+            <span><b>Agente:</b></span>
             {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'N/A' }}
         </div>
 
