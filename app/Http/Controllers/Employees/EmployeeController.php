@@ -147,6 +147,7 @@ class EmployeeController extends Controller
                 $file = $value;
                 // Obtener el nombre original del archivo
                 $nameOriginal = $file->getClientOriginalName();
+                Log::info($nameOriginal);
                 // Carpeta de destino
                 $destinationPath = public_path('storage/empleados/documentos');
                 // Generar un nombre de archivo único
@@ -155,7 +156,7 @@ class EmployeeController extends Controller
                 $file->move($destinationPath, $slugArchivo);
                 // Definir la ruta del archivo
                 $path = 'empleados/documentos/' . $slugArchivo;
-                $fileEmployee->name_original = uniqid().'_'.strtolower($nameOriginal);
+                $fileEmployee->name_original = strtolower($nameOriginal).'_'.uniqid();
                 $fileEmployee->slug = strtolower($slugArchivo);
                 $fileEmployee->path = $path;
                 $fileEmployee->employee_id = $employee->id;

@@ -9,9 +9,16 @@ class BaseModel extends Model
     // Sobrescribe el método setAttribute para convertir a mayúsculas
     public function setAttribute($key, $value)
     {
-        $targetTables = ['employees_files', 'ticket_visits_files', 'tickets_replie_files'];
-        // Verifica si el atributo no es una relación
-        if(in_array($this->getTable(), $targetTables)){
+         // Verifica si el atributo no es una relación
+         if($this->getTable() === 'employees_files'){
+            if (!$this->isCustomRelation($key)) {
+                $value = strtolower($value);
+            }
+        }else if($this->getTable() === 'tickets_visits_files'){
+            if (!$this->isCustomRelation($key)) {
+                $value = strtolower($value);
+            }
+        }else if($this->getTable() === 'tickets_replies_files'){
             if (!$this->isCustomRelation($key)) {
                 $value = strtolower($value);
             }
@@ -20,7 +27,6 @@ class BaseModel extends Model
                 $value = strtoupper($value);
             }
         }
-
         // Aplica strtoupper al valor antes de establecerlo en el atributo
         parent::setAttribute($key, $value);
     }
@@ -28,20 +34,30 @@ class BaseModel extends Model
     // Sobrescribe el método getAttribute para devolver el valor en mayúsculas si no es una relación
     public function getAttribute($key)
     {
-        $targetTables = ['employees_files', 'ticket_visits_files', 'tickets_replie_files'];
+        if($this->getTable() === 'employees_files'){
+            // Verifica si el atributo no es una relación
+           if (!$this->isCustomRelation($key)) {
+               return strtolower(parent::getAttribute($key));
+           }
 
-        if(in_array($this->getTable(), $targetTables)){
-             // Verifica si el atributo no es una relación
+        } else if($this->getTable() === 'tickets_visits_files'){
+            // Verifica si el atributo no es una relación
             if (!$this->isCustomRelation($key)) {
                 return strtolower(parent::getAttribute($key));
             }
-        }else {
+
+        }else if($this->getTable() === 'tickets_replies_files'){
             // Verifica si el atributo no es una relación
             if (!$this->isCustomRelation($key)) {
-                return strtoupper(parent::getAttribute($key));
+                return strtolower(parent::getAttribute($key));
             }
-        }
-
+            
+        }else {
+           // Verifica si el atributo no es una relación
+           if (!$this->isCustomRelation($key)) {
+               return strtoupper(parent::getAttribute($key));
+           }
+       }
 
         // Si es una relación, devuelve el valor normal
         return parent::getAttribute($key);

@@ -1,4 +1,3 @@
-
 @if(Auth()->user()->id == $reply->user_id)
     <div class="chat-message-right pb-4 mb-4">
         <div>
@@ -149,6 +148,3 @@
         </div>
     </div>
 @endif
-
-
-

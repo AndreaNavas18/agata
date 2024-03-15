@@ -34,7 +34,7 @@
                     class="pointer border-top-cs">
                     @if (count($ticketVisit->employees)>0)
                         <div>
-                            <b>Técnicos:</b>
+                            <b>Empleados agendados:</b>
                             <span class="ml-2">
                                 @foreach ($ticketVisit->employees as $employeeT)
                                     </br> {{ $employeeT->short_name }} 
@@ -62,6 +62,36 @@
                             {{ $ticketVisit->time }}
                         </span>
                     </div>
+                    {{-- Si hay archivos que los muestre --}}
+                    @if(count($ticketVisit->ticketvisitfiles)>0)
+                        <div class="row">
+                            @component('componentes.table')
+                                @slot('thead')
+                                    <th>Documentos adjuntos:</th>
+                                    <th></th>
+                                @endslot
+                                @slot('tbody')
+                                    @foreach ($ticketVisit->ticketvisitfiles as $file)
+                                        <tr>
+                                            <td>
+                                                <a class="btn btn-info"
+                                                    target="_blank"
+                                                    href="{{ Storage::url($file->path) }}"
+                                                    data-original-title= "{{ $ticketVisit->name_original }}" >
+                                                    <i class="fas fa-file-download"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <span> 
+                                                    {{ $file->name_original }}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endslot
+                            @endcomponent
+                        </div>
+                    @endif
                 </div>
             @endforeach
         @else

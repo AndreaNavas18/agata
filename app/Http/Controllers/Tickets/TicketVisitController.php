@@ -75,11 +75,19 @@ class TicketVisitController extends Controller
         
          if ($request->filled('files')) {
             Log::info("Si hay archivos");
-            foreach ($request->files as $file) {
+            $selectedFiles = $request->input('files', []);
+            foreach ($selectedFiles as $file) {
                 Log::info($file);
+                $file = EmployeeFile::findOrFail($file);
+
                 $ticketVisitFile = new TicketVisitFile();
                 $ticketVisitFile->ticket_visit_id = $ticketVisit->id;
-                $ticketVisitFile->employee_file_id = $file; 
+                $ticketVisitFile->employee_file_id = $file->id; 
+
+
+                $ticketVisitFile->path = $file->path;
+                $ticketVisitFile->name_original = $file->name_original;
+                $ticketVisitFile->slug = $file->slug;
                 $ticketVisitFile->save();
             }
         }else {

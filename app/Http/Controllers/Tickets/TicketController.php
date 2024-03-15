@@ -947,7 +947,7 @@ class TicketController extends Controller
         foreach ($employeeIds as $employeeId) {
             $employee = Employee::findOrFail($employeeId);
             $employeeName = $employee->short_name;
-            $files = $employee->files->pluck('id')->toArray(); // Modificación aquí
+            $files = $employee->files->pluck('id', 'name_original')->toArray(); // Modificación aquí
     
             // Agregar el nombre del empleado y los IDs de sus archivos al array de datos
             $data[] = [

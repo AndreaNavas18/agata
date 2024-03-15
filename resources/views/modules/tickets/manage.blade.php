@@ -172,7 +172,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#technicals\\[\\]').on('change', function() {
                 var employeeFiles = $(this).val();
@@ -201,7 +201,7 @@
             });
         });
 
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function() {
@@ -220,9 +220,12 @@
                         var employeeName = employeeData.employeeName;
                         var files = employeeData.files;
                         console.log(files);
-                        files.forEach(function(fileId) {
-                            $('#files').append('<option value="' + fileId + '">' + employeeName + ' - ' + fileId + '</option>');
-                        });
+                        for (var fileName in files) {
+                            if (files.hasOwnProperty(fileName)) {
+                                var fileId = files[fileName];
+                                $('#files').append('<option value="' + fileId + '">' + employeeName + ' - ' + fileName + '</option>');
+                            }
+                        }
                     });
                 }
             });
@@ -451,7 +454,8 @@
                                         <select class="form-control"
                                             name="files[]"
                                             id="files"
-                                            data-width="100%">
+                                            data-width="100%"
+                                            multiple>
                                             <option value="">--Seleccione--</option>
                                         </select>
                                     </div>

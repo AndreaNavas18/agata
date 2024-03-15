@@ -4,6 +4,7 @@ namespace App\Models\Tickets;
 
 use App\Models\BaseModel;
 use App\Models\Employees\Employee;
+use App\Models\Tickets\TicketVisitFile;
 
 class TicketVisit extends BaseModel {
 
@@ -27,6 +28,10 @@ class TicketVisit extends BaseModel {
     public function employees() {
         return $this->belongsToMany(Employee::class, 'tickets_visits_employees', 'ticket_visit_id', 'employee_id')
             ->withTimestamps();
+    }
+
+    public function ticketvisitfiles() {
+        return $this->hasMany(TicketVisitFile::class, 'ticket_visit_id');
     }
 
 }
