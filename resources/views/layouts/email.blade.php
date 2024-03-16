@@ -25,6 +25,14 @@
 		}
 	</style> --}}
     {{-- <link href="{{asset('assets/css/emails.css')}}" rel="stylesheet" /> --}}
+
+    <style>
+        .div-datos{
+            padding-bottom: 10px;
+    }
+    </style>
+
+
 </head>
 
 <body style="margin: 0; padding: 0">
@@ -40,20 +48,22 @@
 						border-collapse:collapse;
 						border-spacing:0;
 						text-align:left;
-						background-image: url(https://ci3.googleusercontent.com/meips/ADKq_NbJk5PQLdd5IcpwDNFl4EzPzPzcIhKdwUCrbCFnBnvdVGokg6D6fdHdO4GsGTfIBDcV7vAL7MbzAo3UidU=s0-d-e1-ft#https://i.ibb.co/tsXQmhf/correos-02.png);
+						background-image: url('https://i.ibb.co/x6WSxxk/correos-fondo.png');
 						background-repeat: no-repeat;
 						background-position: center;">
                         <tr>
                             <td align="center"
                                 style="background-color:#009cda00;
 							text-align: left;
-    						padding-bottom: 0;"
+    						padding-bottom: 0;
+                            padding-top: 40px;"
                                 colspan="2">
                                 <h1
                                     style="
-								/* color: #03A9F4; */
-								padding-left: 20px;
-								/* font-size: 38px; */
+								height: 27px;
+                                padding-left: 45px;
+                                padding-bottom: 15px;
+                               
 								">
                                     <img src="https://i.ibb.co/DCP2hLW/logov3.png"alt="" width="200">
                                     {{-- <em>STRATECSA</em> --}}
@@ -61,13 +71,26 @@
                             </td>
                         </tr>
 						<tr>
-                            <td style="color: #153643; height: 70px; padding: 0 20px; margin-left:5px; font-size: 16px; ">
-                            Le informamos que hemos REGISTRADOOOOO KJH su solicitud como un nuevo ticket. Estamos trabajando para atender su requerimiento y nos comunicaremos con usted pronto.
+                            <td style="
+                                color: #153643;
+                                height: 70px;
+                                padding: 0 46px;
+                                font-size: 16px;
+                                text-align: justify;">
+
+                                @yield('information')
 
                             </td>
                         </tr>
                         <tr>
-                            <td style="color: #153643; height: 70px; padding: 0; margin-left:5px">
+                            <td style="color: #153643;
+                            height: 70px;
+                            padding: 20px 20px;
+                            margin-left: 5px;
+                            font-size: 16px;
+                            text-align: justify;
+                            padding-bottom: 25px;">
+
                                 @yield('content')
                             </td>
                             {{-- <td>
@@ -75,7 +98,7 @@
                             </td> --}}
                         </tr>
                         <tr>
-                            <td align="center" style="padding: 0;" colspan="2">
+                            <td align="center" style="padding: 0; padding-bottom: 30px; padding-top: 10px" colspan="2">
                                 <button
                                     style="
 											text-align: center;
@@ -89,7 +112,7 @@
 																	style="
 										color: inherit; /* Hereda el color del texto del botón */
 										text-decoration: none; /* Quita el subrayado */
-									">Para más información</a></button>
+									">Consulta más aquí</a></button>
 
                             </td>
                         </tr>
@@ -97,15 +120,19 @@
 
 
                         <tr>
-                            <td align="center" style="padding: 0;" colspan="2">
+                            <td align="center" style="padding: 0; padding-bottom: 0px;" colspan="2">
                                 <p
-                                    style="height: 60px;
-								color: black;
-								font-size: 14.2px;
-								margin: 0;">
-                                    <br />
+                                    style="color: #153643;
+                                        padding: 28px 46px;
+                                        margin-left: 5px;
+                                        font-size: 12.4px;
+                                        text-align: center;">
                                     Stratecsa, Avenida 4 norte 26 n 18, Cali, Colombia, (+57) 315 472 5104
                                 </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding: 0; padding: 0 320px;" colspan="2">
                             </td>
                         </tr>
                     </table>
