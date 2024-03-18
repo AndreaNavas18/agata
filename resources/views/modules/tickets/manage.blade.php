@@ -143,7 +143,7 @@
             $('#modalVisit').modal('show');
             console.log("Si me estoy mostrando");
             console.log(replieId);
-        })
+        });
 
         $('form#formVisit').submit(function(e) {
             e.preventDefault();
@@ -162,7 +162,16 @@
             $('#formAgent').trigger("reset");
             $('#ticket_replie_id').val(replieId);
             $('#modalAgent').modal('show');
-        })
+        });
+
+        $('.addPriority').on('click', function() {
+            var replieId = $(this).attr('data-replieId');
+            $('#formPriority').trigger("reset");
+            $('#ticket_replie_id').val(replieId);
+            $('#modalPriority').modal('show');
+        });
+
+
 
     </script>
 
@@ -551,7 +560,6 @@
                                             id="employee_position_department_id"
                                             required
                                             data-width="100%">
-                                            <option value="" selected>--Seleccione--</option>
                                             @foreach($positionsDepartmanets as $positionDepartmanetList)
                                                 <option value="{{ $positionDepartmanetList->id }}"
                                                     {{ isset($ticket) &&
@@ -574,7 +582,6 @@
                                             id="employee_id"
                                             required
                                             data-width="100%">
-                                            <option value="">--Seleccione--</option>
                                             @isset($ticket)
                                                 @foreach($employeesList as $employeeRow)
                                                     <option value="{{ $employeeRow->id }}"
@@ -604,6 +611,64 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div>
+            <div class="modal fade" id="modalPriority" tabindex="-1" role="dialog" aria-hidden="true">
+                <form action="{{ route('tickets.cambiarPrioridad', $ticket->id) }}"
+                    method="POST"
+                    id="formPriority">
+                    @csrf
+                    @method('PATCH')
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Prioridad ticket</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-12 mb-4">
+                                        @component('componentes.label', [
+                                            'title' => 'Tipo de prioridad',
+                                            'id' => 'priority_id',
+                                            'required' => true])
+                                        @endcomponent
+                                        <select class="form-control
+                                            selectpicker"
+                                            name="priority_id"
+                                            id="priority_id"
+                                            required
+                                            data-width="100%">
+                                                @foreach($prioritiesList as $priorityRow)
+                                                    <option value="{{ $priorityRow->id }}"
+                                                        {{ isset($ticket) &&
+                                                            $ticket->priority_id  == $priorityRow->id
+                                                            ? 'selected' : '' }}>
+                                                        {{ $priorityRow->name }}
+                                                    </option>
+                                                @endforeach
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                                <button class="btn btn-primary btn-sm"
+                                    type="submit">
+                                    <i class="fas fa-save"></i>
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
         </div>
     {{-- @endif --}}
 <!-- Filtros -->

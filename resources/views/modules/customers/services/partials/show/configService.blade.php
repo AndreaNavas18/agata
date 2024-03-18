@@ -14,27 +14,27 @@
          {{-- tabs--}}
          @include('modules.customers.services.partials.tab',[
             'urlnfo' => route('customers.services.show.service', $service->id),
-            'urlConfig' => route('customers.services.show.config', ['id' => $service->id] )
+            'urlConfig' => route('customers.services.show.config', $service->id )
         ])
 
         {{-- contactos--}}
         @component('componentes.cardTitle',[
             'shadow' => true,
             'icono'  => 'fas fa-info-circle',
-            'title' => 'Información servicio'])
+            'title' => 'Información de la configuración del servicio'])
         @endcomponent
 		<div class="card-border">
             <div class="row">
                 <div class="col-md-4 mb-3">
                     @component('componentes.label', [
-                        'title' => 'Cliente',
+                        'title' => 'Ip',
                         'required' => false])
                     @endcomponent
                     <div>
-                        {{  $service->customer->name}}
+                        {{  $service->ip}}
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+                {{-- <div class="col-md-4 mb-3">
                     @component('componentes.label', [
                         'title' => 'Servicio',
                         'required' => false])
@@ -118,7 +118,7 @@
                         'required' => false])
                     @endcomponent
                     <textarea disabled class="form-control">{{  $service->description }}</textarea>
-                </div>
+                </div> --}}
             </div>
         </div>
      @endcomponent

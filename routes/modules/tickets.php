@@ -45,6 +45,9 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
 	//Asignar agente
 	Route::patch('/tickets/{ticket}/asignarAgente', [ TicketController::class, 'asignarAgente' ])->name('asignarAgente');
 
+	//Cambio de prioridad 
+
+	Route::patch('/tickets/{ticket}/cambiarPrioridad', [ TicketController::class, 'cambiarPrioridad' ])->name('cambiarPrioridad');
 
     // respuestas nuevas tickets
     Route::post('/tickets/respuesta/crear/{id}',[ TicketController::class, 'replyStore' ])->name('reply.store')

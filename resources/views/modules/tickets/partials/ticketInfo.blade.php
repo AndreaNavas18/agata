@@ -62,7 +62,7 @@
                     </span>
                         <div class="col-2 float-right">
                             <button
-                                class="btn btn-secondary btn-sm text-white addPriority"
+                                class="btn btn-warning btn-sm text-white addPriority"
                                 data-toggle="tooltip"
                                 title=""
                                 data-placement="top"
@@ -70,7 +70,7 @@
                                 type="button"
                                 data-replieId="">
                                 <span>
-                                    <i class="fa fa-regular fa-user"></i>
+                                    <i class="fa fa-solid fa-triangle-exclamation"></i>
                                 </span>
                             </button>
                         </div>

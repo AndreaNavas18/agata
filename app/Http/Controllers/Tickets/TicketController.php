@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\andreaDeveloper;
 use App\Mail\newAnswer;
+use App\Mail\answerSoporte;
 use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
@@ -594,7 +595,7 @@ class TicketController extends Controller
                     // Format the time difference as hours, minutes, and seconds
                     // $timeClock = $timeDifference->format('%H:%I:%S');
                     $timeClock = $ticket->time_clock;
-                    Log::info("message: ".$timeClock);
+                    Log::info("timeClock: ".$timeClock);
                 }
 
                 if(!is_null($timeClock) && !empty($timeClock)) {
@@ -615,7 +616,7 @@ class TicketController extends Controller
                 $secondsClock= NULL;
             }
 
-        Log::info("message: ".$hoursClock." ".$minutesClock." ".$secondsClock);
+        Log::info("horas,minutos,segundos: ".$hoursClock." ".$minutesClock." ".$secondsClock);
 
         $customersList= Customer::get();
         $positionsDepartmanets= EmployeePositionDepartment::get();
@@ -843,8 +844,8 @@ class TicketController extends Controller
             // Obtener el usuario que respondió al ticket
             $responder = $lastReply->user;
 
+            // Si el usuario tiene un customer_id, es un cliente
             if ($responder->customer_id) {
-                // Si el usuario tiene un customer_id, es un cliente
                 // Enviar correo al empleado asignado y a soporte
                 if ($ticket->employee_id) {
                     // Si hay un agente asignado, enviar correo al agente y a soporte
@@ -862,23 +863,40 @@ class TicketController extends Controller
                     // Si no hay agente asignado, enviar correo únicamente a soporte
                     $recipients = ['plataformaagata@stratecsa.cloud'];
                 }
+
+                if (!empty($recipients)) {
+                    // Enviar el correo electrónico
+                    
+                    foreach ($recipients as $recipient) {
+                        //NUEVA PLANTILLA
+                        Mail::to($recipient)->send(new answerSoporte($ticket));
+                        Log::info("Si, se estan enviando");
+                    }
+                }else {
+                    Log::error('No hay destinatarios especificados para el correo electrónico.');
+                }
+
             } else {
                 // Si el usuario no tiene un customer_id, es un empleado
                 // Enviar correo al cliente
+                Log::info("Es un empleado elque respondio");
                 $clientEmails = explode(';', $ticket->emails_notification);
                 $recipients = array_filter($clientEmails);
                 // dd($recipients);
-                // Log::info($recipients);
-            }
-            if (!empty($recipients)) {
-                // Enviar el correo electrónico
-                foreach ($recipients as $recipient) {
-                    Mail::to($recipient)->send(new newAnswer($ticket));
-                    Log::info("Si, se estan enviando");
+                Log::info($recipients);
+
+                if (!empty($recipients)) {
+                    // Enviar el correo electrónico
+                    
+                    foreach ($recipients as $recipient) {
+                        Mail::to($recipient)->send(new newAnswer($ticket));
+                        Log::info("Si, se estan enviando");
+                    }
+                }else {
+                    Log::error('No hay destinatarios especificados para el correo electrónico.');
                 }
-            }else {
-                Log::error('No hay destinatarios especificados para el correo electrónico.');
             }
+           
         } else {
             // Manejar el caso en que no haya respuestas al ticket
             Log::error('No se ha encontrado una respuesta al ticket.');
@@ -933,6 +951,75 @@ class TicketController extends Controller
         }
     
         return response()->json($data);
+    }
+
+    public function asignarAgente(Request $request, $id) {
+        DB::beginTransaction();
+        
+        try{
+            $ticket = Ticket::findOrFail($id);
+            // $positionsDepartmanets = EmployeePositionDepartment::get();
+            // $employees = Employee::where('position_id', $request->employee_position_department_id)->get();
+            
+            //Actualizo el ticket
+            $ticket->employee_position_department_id = $request->employee_position_department_id;
+            $ticket->employee_id = $request->employee_id;
+            
+            //imprimir en logs lo que llega por request 
+            Log::info($request->employee_id);
+            Log::info($request->employee_position_department_id);
+            $ticket->save();
+            
+            // Verificar si se asigno un agente al ticket
+            $this->sendEmailAgent($ticket, $request->input('employee_id'));
+
+            DB::commit();
+            Alert::success('Success!', 'Agente asignado correctamente');
+        }catch (\Exception $e){
+            DB::rollBack();
+            Alert::error('Error', 'Error al asignar el agente al ticket.');
+        }
+        return redirect()->back();
+    }
+
+    public function sendEmailAgent(Ticket $ticket, $employeeId)
+    {
+        // Obtener el correo electrónico del agente asignado
+        $agentEmail = Employee::find($employeeId)->email;
+
+        // Verificar si el correo electrónico del agente no está vacío
+        if (!empty($agentEmail)) {
+            // Enviar correo electrónico al agente asignado
+            Mail::to($agentEmail)->send(new andreaDeveloper($ticket));
+        } else {
+            // Manejar el caso en que el correo electrónico del agente esté vacío
+            Log::error('No se ha especificado un correo electrónico para el agente asignado.');
+        }
+
+    }
+
+    public function cambiarPrioridad(Request $request, $id) {
+        DB::beginTransaction();
+        
+        try{
+            $ticket = Ticket::findOrFail($id);
+            // $positionsDepartmanets = EmployeePositionDepartment::get();
+            // $employees = Employee::where('position_id', $request->employee_position_department_id)->get();
+            
+            //Actualizo el ticket
+            $ticket->priority_id = $request->priority_id;
+            
+            //imprimir en logs lo que llega por request 
+            Log::info($request->priority_id);
+            $ticket->save();
+
+            DB::commit();
+            Alert::success('Success!', 'Prioridad asignada correctamente');
+        }catch (\Exception $e){
+            DB::rollBack();
+            Alert::error('Error', 'Error al asignar la prioridad al ticket.');
+        }
+        return redirect()->back();
     }
     
 

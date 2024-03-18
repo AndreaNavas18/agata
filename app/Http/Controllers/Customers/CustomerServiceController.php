@@ -505,4 +505,13 @@ class CustomerServiceController extends Controller
             return redirect()->back();
         }
     }
+
+    public function showConfig($id) {
+        $service= CustomerService::findOrFail($id);
+
+
+        return view('modules.customers.services.partials.show.configService', compact(
+            'service'
+        ));
+    }
 }
