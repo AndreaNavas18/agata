@@ -118,31 +118,9 @@
                 $('#state_clock').prop('disabled', false);
             }
         })
-       $('.addVisit').on('click', function() {
-            var replieId = $(this).attr('data-replieId');
-            $('#formVisit').trigger("reset");
-            $('#ticket_replie_id').val(replieId);
-            $('#modalVisit').modal('show');
-            console.log("Si me estoy mostrando");
-            console.log(replieId);
-        })
-        $('.addAgent').on('click', function() {
-            var replieId = $(this).attr('data-replieId');
-            $('#formAgent').trigger("reset");
-            $('#ticket_replie_id').val(replieId);
-            $('#modalAgent').modal('show');
-        })
-        $('form#formVisit').submit(function(e) {
-            e.preventDefault();
-            var $form = $('#formVisit')[0];
-            if ($form.checkValidity()) {
-                openLoader();
-                $form.submit();
-            }
-            else {
-                closeLoader();
-            }
-        });
+       
+       
+        
         ClassicEditor
     .create(document.querySelector('#editor'), {
         // Configuración personalizada
@@ -155,6 +133,37 @@
     .catch(error => {
         console.error(error);
     });
+    </script>
+
+    <script>
+        $('.addVisit').on('click', function() {
+            var replieId = $(this).attr('data-replieId');
+            $('#formVisit').trigger("reset");
+            $('#ticket_replie_id').val(replieId);
+            $('#modalVisit').modal('show');
+            console.log("Si me estoy mostrando");
+            console.log(replieId);
+        })
+
+        $('form#formVisit').submit(function(e) {
+            e.preventDefault();
+            var $form = $('#formVisit')[0];
+            if ($form.checkValidity()) {
+                openLoader();
+                $form.submit();
+            }
+            else {
+                closeLoader();
+            }
+        });
+
+        $('.addAgent').on('click', function() {
+            var replieId = $(this).attr('data-replieId');
+            $('#formAgent').trigger("reset");
+            $('#ticket_replie_id').val(replieId);
+            $('#modalAgent').modal('show');
+        })
+
     </script>
 
     <script>
@@ -319,11 +328,11 @@
             </span>
         </div>
 
-        <div class="col-md-4">
-            @if($ticket->priority_id==1)
+        @if($ticket->priority_id==1)
+            <div class="col-md-4">
                 @include('modules.tickets.partials.clock')
-            @endif
-        </div>
+            </div>
+        @endif
     </div>
 
     {{-- panel--}}

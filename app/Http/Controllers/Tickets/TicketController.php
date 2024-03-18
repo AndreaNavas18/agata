@@ -915,36 +915,6 @@ class TicketController extends Controller
     
         return redirect()->back();
     }
-    
-    // public function getEmployeeFiles(Request $request) {
-    //     $employeeIds = $request->input('employeeIds', []);
-    //     $files = [];
-    //     foreach ($employeeIds as $employeeId) {
-    //         $employee = Employee::findOrFail($employeeId);
-    //         Log::info("Employee: " . $employee);
-    //         $files = array_merge($files, $employee->files->pluck('name_original', 'id')->toArray());
-    //     }
-    //     return response()->json($files);
-    // }
-
-    // public function getEmployeeFiles(Request $request) {
-    //     $employeeIds = $request->input('employeeIds', []);
-    //     $data = [];
-    
-    //     foreach ($employeeIds as $employeeId) {
-    //         $employee = Employee::findOrFail($employeeId);
-    //         $employeeName = $employee->short_name;
-    //         $files = $employee->files->pluck('name_original')->toArray();
-    
-    //         // Agregar el nombre del empleado y sus archivos al array de datos
-    //         $data[] = [
-    //             'employeeName' => $employeeName,
-    //             'files' => $files,
-    //         ];
-    //     }
-    
-    //     return response()->json($data);
-    // }
 
     public function getEmployeeFiles(Request $request) {
         $employeeIds = $request->input('employeeIds', []);

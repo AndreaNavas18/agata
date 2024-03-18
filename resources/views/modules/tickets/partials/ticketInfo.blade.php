@@ -57,9 +57,23 @@
             <tr class="border-bottom">
                 <td>Prioridad</td>
                 <td class="text-right">
-                    <span class="badge {{ $ticket->priority->color=='BG-DANGER' ? 'bg-danger' : 'bg-info' }} rounded-pill">
+                    <span class="badge col-4 {{ $ticket->priority->color=='BG-DANGER' ? 'bg-danger' : 'bg-info' }} rounded-pill">
                         {{ $ticket->priority->name }}
                     </span>
+                        <div class="col-2 float-right">
+                            <button
+                                class="btn btn-secondary btn-sm text-white addPriority"
+                                data-toggle="tooltip"
+                                title=""
+                                data-placement="top"
+                                data-original-title="Asignar prioridad"
+                                type="button"
+                                data-replieId="">
+                                <span>
+                                    <i class="fa fa-regular fa-user"></i>
+                                </span>
+                            </button>
+                        </div>
                 </td>
             </tr>
         @endif
