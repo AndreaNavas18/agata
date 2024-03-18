@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Log;
 use App\Mail\andreaDeveloper;
 use App\Mail\newAnswer;
 use App\Mail\answerSoporte;
+use App\Mail\NewTicketClient;
+use App\Mail\ticketSoporte;
 use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
@@ -400,49 +402,68 @@ class TicketController extends Controller
         //     ->subject('nuevo ticket creado '.Carbon::now()->format('Y-m-d'));
         // });
         // Log::info("Send email", $ticket->send_email);
+
+
         DB::commit();
         Alert::success('¡Éxito!', 'Registro insertado correctamente');
         // Verificar si el usuario ha optado por enviar un correo electrónico
         $this->sendEmail($ticket, $request->input('emails_notification'));
       
-            return redirect()->route('tickets.index')->with('ticket', $ticket);
+        return redirect()->route('tickets.index')->with('ticket', $ticket);
     
     }
 
     public function sendEmail(Ticket $ticket, $emails)
     {
-          // Envía correo a soporte@stratecsa.com
-        Mail::to(['plataformaagata@stratecsa.cloud', 'karennavas333@gmail.com'])->send(new andreaDeveloper($ticket));
-        
-        if (!is_null($ticket->employee)) {
-            // Si hay un empleado asignado, obtén su correo electrónico
-            $agentEmail = $ticket->employee->email;
+        Mail::to(['plataformaagata@stratecsa.cloud', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
+        //Si fue el cliente quien creo el ticket, no va haber un empleado asigando y se enviaran dos series de correo distintas
+        if (is_null($ticket->employee)) {
+            $agentEmail = 'plataformaagata@stratecsa.cloud';
+
+            if (!empty($agentEmail) || !empty($emails)) {
+
+                // Envía correo al agente asignado si está presente
+                if (!empty($agentEmail)) {
+                    Mail::to($agentEmail)->send(new ticketSoporte($ticket));
+                }
+    
+                if (!empty($emails)) {
+                    // Envía correos electrónicos a cada dirección de correo especificada por el usuario
+                    foreach (explode(';', $emails) as $email) {
+                        Mail::to(trim($email))->send(new NewTicketClient($ticket));
+                    }
+                }
+            } else {
+                // Maneja el caso en que no haya destinatarios especificados
+                Log::error('No hay destinatarios especificados para el correo electrónico.');
+            }
+
         } else {
-            // Si no hay un empleado asignado, establece el correo electrónico del agente como vacío
-            $agentEmail = '';
+           //Si fue soporte quien creo el ticket, se le envia esto al cliente y a soporte
+           $agentEmail = $ticket->employee->email;
+           
+            if (!empty($agentEmail) || !empty($emails)) {
+
+                // Envía correo al agente asignado si está presente
+                if (!empty($agentEmail)) {
+                    Mail::to($agentEmail)->send(new ticketSoporte($ticket));
+                }
+
+                if (!empty($emails)) {
+                    // Envía correos electrónicos a cada dirección de correo especificada por el usuario
+                    foreach (explode(';', $emails) as $email) {
+                        Mail::to(trim($email))->send(new andreaDeveloper($ticket));
+                    }
+                }
+            } else {
+                // Maneja el caso en que no haya destinatarios especificados
+                Log::error('No hay destinatarios especificados para el correo electrónico.');
+            }
+
         }
 
         Log::info('Agent Email: ' . $agentEmail);
         Log::info('Emails: ' . $emails);
-
-        if (!empty($agentEmail) || !empty($emails)) {
-
-            // Envía correo al agente asignado si está presente
-            if (!empty($agentEmail)) {
-                Mail::to($agentEmail)->send(new andreaDeveloper($ticket));
-            }
-
-            if (!empty($emails)) {
-                // Envía correos electrónicos a cada dirección de correo especificada por el usuario
-                foreach (explode(';', $emails) as $email) {
-                    Mail::to(trim($email))->send(new andreaDeveloper($ticket));
-                }
-            }
-        } else {
-            // Maneja el caso en que no haya destinatarios especificados
-            Log::error('No hay destinatarios especificados para el correo electrónico.');
-        }
-
 
     }
 

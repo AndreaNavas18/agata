@@ -1,3 +1,5 @@
+{{-- Este cuando soporte lo crea, le llega asoporte --}}
+
 @extends('emails.layouts.email_stratecsa')
 
 @section('information')
@@ -43,7 +45,7 @@
         
         <div class="div-datos">
             <span><b>Agente asignado:</b></span>
-            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'N/A' }}
+            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'No hay un agente asignado aún' }}
         </div>
 
     </div>
