@@ -60,7 +60,7 @@
                                 font-size: 16px;
                                 text-align: justify;">
 
-                                @yield('information')
+                                @yield('message')
 
                             </td>
                         </tr>

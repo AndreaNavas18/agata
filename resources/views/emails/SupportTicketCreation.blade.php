@@ -1,6 +1,6 @@
 @extends('emails.layouts.email_stratecsa')
 
-@section('information')
+@section('message')
 <p style="text-align: justify;">
     Se ha creado un nuevo ticket, a continuación los detalles.
 </p>
