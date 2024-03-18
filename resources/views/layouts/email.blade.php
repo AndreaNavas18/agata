@@ -29,6 +29,7 @@
     <style>
         .div-datos{
             padding-bottom: 10px;
+            color: black;
     }
     </style>
 
@@ -123,7 +124,7 @@
                             <td align="center" style="padding: 0; padding-bottom: 0px;" colspan="2">
                                 <p
                                     style="color: #153643;
-                                        padding: 28px 46px;
+                                        padding: 23px 46px;
                                         margin-left: 5px;
                                         font-size: 12.4px;
                                         text-align: center;">
