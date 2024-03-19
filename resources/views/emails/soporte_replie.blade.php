@@ -9,7 +9,7 @@
 
     <p style="">
         Se ha registrado una nueva respuesta de un cliente
-        <span style="background-color: #c9fdc4">{{  $ticket->id }}</span> 🎉
+        <span style="background-color: #c9fdc4">{{  $ticket->id }}> </span> 🎉
     </p>
     <p>
         {{-- El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br> --}}

@@ -2,16 +2,17 @@
 
 @section('information')
 <p style="text-align: justify;">
-    ESTIMADO cliente, le informamos que en base a su solicitud se ha creado un ticket. Estamos trabajando para atender su requerimiento, nos comunicaremos con usted pronto. 
+    Estimado cliente, su ticket {{$ticket->consecutive}} ha sido creado para responder a su solicitud {{$ticket->ticket_issue }} del servicio {{$ticket->service->description}}. Estamos trabajando para atender su requerimiento y comunicarnos pronto.
 
+	
 </p>
 <p style="text-align: justify;">
-    A continuacion los detalles.
+    Gracias por hacer uso de nuestra plataforma.
 </p>
 @endsection
 
 @section('content')
-    <div
+    {{-- <div
         style="
             color: black;
             padding: 20px 50px;
@@ -32,7 +33,7 @@
             {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
         </div>
 
-    </div>
+    </div> --}}
 @endsection
 
 
