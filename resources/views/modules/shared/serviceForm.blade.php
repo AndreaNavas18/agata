@@ -1,7 +1,8 @@
 
 <form action=""
     method="POST"
-    id="formService">
+    id="formService"
+    enctype="multipart/form-data">
     @csrf
     <div class="put d-none">
         @method('PUT')
@@ -263,6 +264,19 @@
                         id="description"
                         class="form-control"></textarea>
                 </div>
+                <div class="col-12 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'Documentos',
+                        'id' => 'files[]',
+                        'required' => false])
+                    @endcomponent
+                    <input type="file"
+                        class="form-control"
+                        name="files[]"
+                        id="files"
+                        multiple>
+                </div>
+
                 {{-- <div class="col-md-6 mb-4" style="display: none">
                     @component('componentes.label', [
                         'title' => 'Ip',

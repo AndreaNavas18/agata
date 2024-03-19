@@ -8,6 +8,7 @@ use App\Models\General\Service;
 use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
 use App\Models\General\Proyecto;
+use App\Models\Customers\CustomerServiceFile;
 
 class CustomerService extends BaseModel {
 
@@ -99,6 +100,11 @@ class CustomerService extends BaseModel {
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class, 'proyecto_id');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(CustomerServiceFile::class,'customers_services_id');
     }
 
 

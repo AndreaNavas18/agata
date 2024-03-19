@@ -15,6 +15,7 @@ use App\Models\General\Service;
 use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
 use App\Models\General\Proyecto;
+use App\Models\Customers\CustomerServiceFile;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CustomerServiceImport;
 use Illuminate\Support\Facades\Log;
+use App\Models\Helpers;
 
 
 
@@ -329,13 +331,47 @@ class CustomerServiceController extends Controller
             $customerService->activo_fijo               = $request->activo_fijo;
         }
 
-
         if (!$customerService->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');
             return redirect()->back();
         }
 
+         //guardar documentos
+         if ($request->hasFile('files')) {
+            Log::info("si hay archivos en el servicio");
+            $files = $request->file('files');
+            foreach ($files as $value) {
+                $fileService= new CustomerServiceFile();
+                // Obtener el archivo
+                $file = $value;
+                Log::info($file);
+                // Obtener el nombre original del archivo
+                $nameOriginal = $file->getClientOriginalName();
+                // Carpeta de destino
+                $destinationPath = public_path('storage/servicios/documentos');
+                // Generar un nombre de archivo único
+                $slugArchivo = 'documento_' . $customerService->id . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                // Mover el archivo a la carpeta de destino
+                $file->move($destinationPath, $slugArchivo);
+                // Definir la ruta del archivo
+                $path = 'servicios/documentos/' . $slugArchivo;
+                $fileService->name_original = strtolower($nameOriginal).'_'.uniqid();
+                $fileService->slug = strtolower($slugArchivo);
+                $fileService->path = $path;
+                $fileService->customers_services_id = $customerService->id;
+
+                if(!$fileService->save()) {
+                    Log::info("No se guardo el archivo");
+                    DB::rollBack();
+                    Alert::error('Error', 'Error al insertar el registro.');
+                    return redirect()->back();
+                }
+            }
+        }else {
+            Log::info("no hay archivos en el servicio");
+        }
+      
         DB::commit();
         Alert::success('Bien hecho!', 'Registro insertado correctamente');
         return redirect()->back();
@@ -353,6 +389,7 @@ class CustomerServiceController extends Controller
         session::flash('tab','services');
         $customer= Customer::findOrFail($id);
         $customerServices= CustomerService::customerId($id)->paginate();
+        $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
         $tabPanel='customerServicesTabShow';
         $providers= Provider::get();
         $typesInstalations=['Propia','Terceros'];
@@ -371,15 +408,18 @@ class CustomerServiceController extends Controller
             'typesServices',
             'countries',
             'proyectos',
-            'customers'
+            'customers',
+            'customerServicesFiles'
         ));
     }
 
     public function showService($id) {
         $service= CustomerService::findOrFail($id);
+        $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
 
         return view('modules.customers.services.show', compact(
             'service',
+            'customerServicesFiles'
         ));
     }
 
@@ -508,10 +548,12 @@ class CustomerServiceController extends Controller
 
     public function showConfig($id) {
         $service= CustomerService::findOrFail($id);
+        $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
 
 
         return view('modules.customers.services.partials.show.configService', compact(
-            'service'
+            'service',
+            'customerServicesFiles'
         ));
     }
 }

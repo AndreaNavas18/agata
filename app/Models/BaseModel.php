@@ -22,6 +22,10 @@ class BaseModel extends Model
             if (!$this->isCustomRelation($key)) {
                 $value = strtolower($value);
             }
+        }else if($this->getTable() === 'customers_services_files'){
+            if (!$this->isCustomRelation($key)) {
+                $value = strtolower($value);
+            }
         }else {
             if (!$this->isCustomRelation($key)) {
                 $value = strtoupper($value);
@@ -47,6 +51,12 @@ class BaseModel extends Model
             }
 
         }else if($this->getTable() === 'tickets_replies_files'){
+            // Verifica si el atributo no es una relación
+            if (!$this->isCustomRelation($key)) {
+                return strtolower(parent::getAttribute($key));
+            }
+            
+        }else if($this->getTable() === 'customers_services_files'){
             // Verifica si el atributo no es una relación
             if (!$this->isCustomRelation($key)) {
                 return strtolower(parent::getAttribute($key));
