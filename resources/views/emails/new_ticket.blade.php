@@ -1,6 +1,6 @@
-@extends('layouts.email')
+@extends('emails.layouts.email_stratecsa')
 
-@section('information')
+@section('message')
 <p style="text-align: justify;">
     Estimado cliente, le informamos que en base a su solicitud se ha creado un ticket. Estamos trabajando para atender su requerimiento, nos comunicaremos con usted pronto. 
 
