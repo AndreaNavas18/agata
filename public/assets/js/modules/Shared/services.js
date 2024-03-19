@@ -24,6 +24,23 @@ $('.editService').on('click', function() {
     }
     $('select#provider_id').selectpicker('refresh');
     $('#description').val(service.description);
+    $('#ip').val(service.ip);
+    $('#vlan').val(service.vlan);
+    $('#mascara').val(service.mascara);
+    $('#gateway').val(service.gateway);
+    $('#mac').val(service.mac);
+    $('#ancho_de_banda').val(service.ancho_de_banda);
+    $('#ip_vpn').val(service.ip_vpn);
+    $('#tipo_vpn').val(service.tipo_vpn);
+    $('#user_vpn').val(service.user_vpn);
+    $('#password_vpn').val(service.password_vpn);
+    $('#user_tunel').val(service.user_tunel);
+    $('#id_tunel').val(service.id_tunel);
+    $('#tecnologia').val(service.tecnologia);
+    $('#equipo').val(service.equipo);
+    $('#modelo').val(service.modelo);
+    $('#serial').val(service.serial);
+    $('#activo_fijo').val(service.activo_fijo);
     $('#modalService').modal('show');
 })
 
@@ -87,8 +104,6 @@ function loadDepartments(countryId, department_id) {
         }
     });
 }
-
-
 
 
 function loadCities(departmentId, cityId) {

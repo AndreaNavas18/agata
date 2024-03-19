@@ -6,7 +6,7 @@
 
 	@component('componentes.card',[
             'shadow' => true,
-            'title' => 'Ver servicio '.$service->service->name,
+            'title' => 'Ver servicio '.$service->description,
             'breadcrumb' => 'services/show',
             'dataBreadcrumb' => ['id' =>$service->id ]
         ])
@@ -27,11 +27,47 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     @component('componentes.label', [
+                        'title' => 'Stratecsa Id',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->stratecsa_id ? $service->stratecsa_id : 'No se especifico'}}
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Id servicio cliente',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->id_serviciocliente ? $service->id_serviciocliente : 'No se especifico'}}
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Otp',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->otp ? $service->otp : 'No se especifico'}}
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
                         'title' => 'Cliente',
                         'required' => false])
                     @endcomponent
                     <div>
                         {{  $service->customer->name}}
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Proyecto',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->proyecto->name ? $service->proyecto->name : 'No se especifico'}}
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
@@ -123,3 +159,8 @@
         </div>
      @endcomponent
 @endsection
+
+{{-- inputs ocultos --}}
+{{-- <input type="hidden"
+id="cities"
+value="{{$cities}}"> --}}

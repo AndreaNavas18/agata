@@ -1,71 +1,47 @@
-<div class="tabs-menu ">
+<div class="tabs-menu d-flex justify-content-between align-items-center">
     <!-- Tabs -->
     <ul class="nav panel-tabs">
            <li>
-        <a class="nav-link info
-            {{ (Session::get('tab') == 'info' ? 'active' : '') }}
-            loading"
-            href="{{ $urlnfo }}">
-            <span class="d-block">
-                <i class="fas fa-info-circle text-white"></i>&nbsp;
-                Datos
-            </span>
-        </a>
-    </li>
-        <ul class="nav panel-tabs">
-                 <li>
                 <a class="nav-link info
-                    {{ (Session::get('tab') == 'users' ? 'active' : '') }}
+                    {{ (Session::get('tab') == 'service' ? 'active' : '') }}
+                    loading"
+                    href="{{ $urlnfo }}">
+                    <span class="d-block">
+                        <i class="fas fa-info-circle text-white"></i>&nbsp;
+                        Datos
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link info
+                    {{ (Session::get('tab') == 'config' ? 'active' : '') }}
                     loading"
                     href="{{ $urlConfig }}">
                     <span class="d-block">
-                        <i class="fas fa-users text-white"></i>&nbsp;
+                        <i class="fab fa-sellsy text-white"></i>&nbsp;
                         Configuración
                     </span>
                 </a>
             </li>
-          {{--  <li>
-                <a class="nav-link services
-                    {{ (Session::get('tab') == 'services' ? 'active' : '') }}
-                    loading"
-                    href="{{ $urlServices }}">
-                    <span class="d-block">
-                        <i class="fab fa-sellsy text-white"></i>&nbsp;
-                        Servicios
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link proyectos
-                    {{ (Session::get('tab') == 'proyectos' ? 'active' : '') }}
-                    loading"
-                    href="{{ $urlProyectos }}">
-                    <span class="d-block">
-                        <i class="fab fa-sellsy text-white"></i>&nbsp;
-                        Proyectos
-                    </span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link tickets
-                    {{ (Session::get('tab') == 'tickets' ? 'active' : '') }}
-                    loading"
-                    href="{{ $urlTickets }}">
-                    <span class="d-block">
-                        <i class="fas fa-ticket-alt text-white"></i>&nbsp;
-                        Tickets
-                    </span>
-                </a>
-            </li> --}}
-            {{-- <li>
-                <a class="nav-link" data-bs-toggle="tab" href="#profile2" role="tab" aria-selected="false">
-                    <span class="d-block">
-                        <i class="fas fa-paste text-white"></i>
-                        Documentos
-                    </span>
-                </a>
-            </li> --}}
         </ul>
+    <!-- Boton de editar -->
+
+    <div>
+        <a class="btn btn-success btn-sm mb-1 loading"
+            href="{{ route('customers.services.edit', $service->id) }}"
+            bd-toggle="tooltip"
+            bd-placement="top"
+            title="Editar">
+            <i class="fas fa-edit"></i>
+        </a>
+        {{-- <button 
+        type="button" 
+        class="btn btn-success"
+        dataUrl=""
+        >
+        Editar
+    </button> --}}
+    </div>
     </div>
 
 

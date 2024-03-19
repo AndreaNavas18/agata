@@ -1,7 +1,6 @@
 @extends('layouts.app')
-@section('title', 'Empleados')
-@push('script')
-@endpush
+@section('title', 'Configuración de servicios')
+
 @section('content')
 
 	@component('componentes.card',[

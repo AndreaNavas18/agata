@@ -33,6 +33,8 @@ class CustomerServiceController extends Controller
 {
 
     public function indexAll() {
+        session::flash('tab','servicesAll');
+
 
         $user = Auth::user();
         $allowedRoles = [2, 3, 7, 8];
@@ -138,7 +140,7 @@ class CustomerServiceController extends Controller
      */
     public function index($customerId)
     {
-            session::flash('tab','services');
+            session::flash('tab','servicesIndex');
             $servicesList=Service::get();
             $customers= Customer::with('customerContacs','customerServices')->get();
             $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
@@ -201,7 +203,7 @@ class CustomerServiceController extends Controller
     public function indexSearch(Request $request,$customerId)
     {
         Log::info("Hice esto ");
-        session::flash('tab','services');
+        session::flash('tab','servicesindexSearch');
         $servicesList=Service::get();
         $customer= Customer::with('customerContacs','customerServices')->findOrFail($customerId);
         $departments= Department::get();
@@ -386,7 +388,7 @@ class CustomerServiceController extends Controller
      */
     public function show($id)
     {
-        session::flash('tab','services');
+        session::flash('tab','servicesShow');
         $customer= Customer::findOrFail($id);
         $customerServices= CustomerService::customerId($id)->paginate();
         $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
@@ -409,11 +411,12 @@ class CustomerServiceController extends Controller
             'countries',
             'proyectos',
             'customers',
-            'customerServicesFiles'
+            'customerServicesFiles',
         ));
     }
 
     public function showService($id) {
+        session::flash('tab','service');
         $service= CustomerService::findOrFail($id);
         $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
 
@@ -432,7 +435,7 @@ class CustomerServiceController extends Controller
     public function showSearch(Request $request,$customerId)
     {
        
-        session::flash('tab','services');
+        session::flash('tab','servicesshowSearch');
         $customer= Customer::findOrFail($customerId);
         $tabPanel='customerServicesTabShow';
         $providers= Provider::get();
@@ -461,6 +464,60 @@ class CustomerServiceController extends Controller
             $customerServices = $customerServices->get();
             return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
         }
+    }
+
+    public function edit($id) {
+
+        $service= CustomerService::findOrFail($id);
+        $servicesList=Service::get();
+        $customers= Customer::get();
+        $customersList= Customer::get();
+        $countries= Country::get();
+        $departments= Department::get();
+        $cities=City::get();
+        $typesInstalations = [
+            'Propia'    =>'Propia',
+            'Terceros'  =>'Terceros'
+        ];
+        $providers = Provider::get();
+        $tabPanel='customerServicesTabEdit';
+        $typesServices=Service::get();
+        $proyectos = Proyecto::get();
+        $camposAdicionales = [
+            'ip',
+            'vlan',
+            'mascara',
+            'gateway',
+            'mac',
+            'ancho_de_banda',
+            'ip_vpn',
+            'tipo_vpn',
+            'user_vpn',
+            'password_vpn',
+            'user_tunel',
+            'id_tunel',
+            'tecnologia',
+            'equipo',
+            'modelo',
+            'serial',
+            'activo_fijo'
+        ];
+       
+        return view(' modules.customers.services.partials.edit.serviceEdit', compact(
+            'service',
+            'customers',
+            'countries',
+            'departments',
+            'cities',
+            'tabPanel',
+            'servicesList',
+            'typesInstalations',
+            'providers',
+            'typesServices',
+            'proyectos',
+            'camposAdicionales',
+            'customersList'
+        ));
     }
 
 
@@ -547,6 +604,8 @@ class CustomerServiceController extends Controller
     }
 
     public function showConfig($id) {
+        session::flash('tab','config');
+
         $service= CustomerService::findOrFail($id);
         $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
 

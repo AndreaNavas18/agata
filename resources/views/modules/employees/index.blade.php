@@ -96,18 +96,17 @@
                                     href="{{ route('employees.show', $employee->id) }}"
                                     bs-bs-toggle="tooltip"
                                     bs-bs-placement="top"
-                                    title="Ver">
+                                    title="Ver detalles">
                                     <i class="far fa-eye"></i>
                                 </a>
                             @endcan
 
                             @can('employees.edit')
                                 <a class="btn btn-success btn-sm  mb-1  loading"
-                                    href="{{ route('employees.edit',$employee->id)
-                                    }}"
+                                    href="{{ route('employees.edit',$employee->id) }}"
                                     bs-toggle="tooltip"
                                     bs-placement="top"
-                                        title="Edit and Assign Role">
+                                        title="Editar empleado">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endcan

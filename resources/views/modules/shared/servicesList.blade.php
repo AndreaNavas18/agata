@@ -59,9 +59,9 @@
                                 @can('services.index')
                                     <a class="btn btn-info btn-sm loading mb-1"
                                         @if( isset($viewShowService) && $viewShowService)
-                                            href="{{route('customers.services.show.service', $service->id) }}"
+                                            href="{{ route('customers.services.show.service', $service->id) }}"
                                         @else
-                                        href="{{route('customers.services.show.service', $service->id) }}"
+                                        href="{{ route('customers.services.show.service', $service->id) }}"
 
                                             {{-- href="{{route($module.'.show', $service->id) }}" --}}
                                         @endif
