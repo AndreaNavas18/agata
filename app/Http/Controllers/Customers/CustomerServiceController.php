@@ -475,10 +475,14 @@ class CustomerServiceController extends Controller
         $countries= Country::get();
         $departments= Department::get();
         $cities=City::get();
+        //Quiero traer el tipo de instalacion que tiene el servicio del id que estoy pasando
         $typesInstalations = [
             'Propia'    =>'Propia',
             'Terceros'  =>'Terceros'
         ];
+        $typeInstalation = $service->installation_type;
+        Log::info($typeInstalation);
+        $serviceDescription = $service->description;
         $providers = Provider::get();
         $tabPanel='customerServicesTabEdit';
         $typesServices=Service::get();
@@ -516,9 +520,148 @@ class CustomerServiceController extends Controller
             'typesServices',
             'proyectos',
             'camposAdicionales',
-            'customersList'
+            'customersList',
+            'typeInstalation',
+            'serviceDescription'
         ));
     }
+
+
+    public function updateService(Request $request, $id) {
+
+        DB::beginTransaction();
+        $customerService                            = CustomerService::findOrFail($id);
+        $customerService->stratecsa_id              = $request->stratecsa_id;
+        $customerService->id_serviciocliente        = $request->id_serviciocliente;
+        $customerService->otp                       = $request->otp;
+        $customerService->customer_id               = $request->customer_id;
+        $customerService->proyecto_id               = $request->proyecto_id;
+        $customerService->service_id                = $request->service_id;
+        $customerService->city_id                   = $request->city_id;
+        $customerService->date_service              = $request->date_service;
+        $customerService->latitude_coordinates      = $request->latitude_coordinates;
+        $customerService->longitude_coordinates     = $request->longitude_coordinates;
+        $customerService->installation_type         = $request->installation_type;
+        $customerService->state                     = $request->state;
+        $customerService->description               = $request->description;
+
+         // Verificar si country_id está presente en la solicitud
+         if (!$request->has('country_id')) {
+            $customerService->country_id = $customerService->country_id;
+        }
+
+        
+        if (!$customerService->save()) {
+            DB::rollBack();
+            Alert::error('Error', 'Error al actualizar registro.');
+            return redirect()->back();
+        }
+
+        
+        DB::commit();
+        Alert::success('Bien hecho!', 'Registro actualizado correctamente');
+        return redirect()->back();
+
+    }
+
+    public function editConfig($id) {
+        session::flash('tab','config');
+
+        $service= CustomerService::findOrFail($id);
+        $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
+        $anchosDeBanda = [
+            '1'  =>   'Carga',
+            '2'  =>  'Descarga'
+        ];
+        $anchoBanda = $service->ancho_de_banda;
+        Log::info($anchoBanda);
+        $tecnologias = [
+            '1'     =>  'Radio',
+            '2'     =>  'Fibra',
+            '3'     =>  'Satelital'
+        ];
+        $tecnologia = $service->tecnologia;
+        Log::info($tecnologia);
+
+        return view('modules.customers.services.partials.edit.configServiceEdit', compact(
+            'service',
+            'customerServicesFiles',
+            'anchosDeBanda',
+            'anchoBanda',
+            'tecnologias',
+            'tecnologia'
+        ));
+
+    }
+
+     public function updateConfig(Request $request, $id) {
+
+        DB::beginTransaction();
+        $customerService                            = CustomerService::findOrFail($id);
+        $customerService->ip                        = $request->ip;
+        $customerService->vlan                      = $request->vlan;
+        $customerService->mascara                   = $request->mascara;
+        $customerService->gateway                   = $request->gateway;
+        $customerService->mac                       = $request->mac;
+        $customerService->ancho_de_banda            = $request->ancho_de_banda;
+        $customerService->ip_vpn                    = $request->ip_vpn;
+        $customerService->tipo_vpn                  = $request->tipo_vpn;
+        $customerService->user_vpn                  = $request->user_vpn;
+        $customerService->password_vpn              = $request->password_vpn;
+        $customerService->user_tunel                = $request->user_tunel;
+        $customerService->id_tunel                  = $request->id_tunel;
+        $customerService->tecnologia                = $request->tecnologia;
+        $customerService->equipo                    = $request->equipo;
+        $customerService->modelo                    = $request->modelo;
+        $customerService->serial                    = $request->serial;
+        $customerService->activo_fijo               = $request->activo_fijo;
+
+        if (!$customerService->save()) {
+            DB::rollBack();
+            Alert::error('Error', 'Error al actualizar registro.');
+            return redirect()->back();
+        }
+
+         //guardar documentos
+         if ($request->hasFile('files')) {
+            Log::info("si hay archivos en el servicio");
+            $files = $request->file('files');
+            foreach ($files as $value) {
+                $fileService= new CustomerServiceFile();
+                // Obtener el archivo
+                $file = $value;
+                Log::info($file);
+                // Obtener el nombre original del archivo
+                $nameOriginal = $file->getClientOriginalName();
+                // Carpeta de destino
+                $destinationPath = public_path('storage/servicios/documentos');
+                // Generar un nombre de archivo único
+                $slugArchivo = 'documento_' . $customerService->id . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                // Mover el archivo a la carpeta de destino
+                $file->move($destinationPath, $slugArchivo);
+                // Definir la ruta del archivo
+                $path = 'servicios/documentos/' . $slugArchivo;
+                $fileService->name_original = strtolower($nameOriginal).'_'.uniqid();
+                $fileService->slug = strtolower($slugArchivo);
+                $fileService->path = $path;
+                $fileService->customers_services_id = $customerService->id;
+
+                if(!$fileService->save()) {
+                    Log::info("No se guardo el archivo");
+                    DB::rollBack();
+                    Alert::error('Error', 'Error al insertar el registro.');
+                    return redirect()->back();
+                }
+            }
+        }else {
+            Log::info("no hay archivos en el servicio");
+        }
+
+        DB::commit();
+        Alert::success('Bien hecho!', 'Registro actualizado correctamente');
+        return redirect()->back();
+        
+     }
 
 
     /**

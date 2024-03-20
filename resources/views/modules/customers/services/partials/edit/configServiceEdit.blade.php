@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'información del servicio')
+@section('title', 'Configuración de servicio')
 @section('content')
 
 	@component('componentes.card',[
         'shadow' => true,
-	    'title' => 'Editar servicio',
-	    'breadcrumb' => 'services/show',
+	    'title' => 'Editar configuración del servicio ' . $service->description,
+	    'breadcrumb' => 'services/show/config',
         'dataBreadcrumb' => ['id' => $service->id] ])
 
         {{-- datos personales--}}
@@ -14,17 +14,23 @@
             'icono'  => 'fas fa-info-circle',
             'title' => 'Datos personales'])
         @endcomponent --}}
-        <h4><strong>Información servicio</strong></h4>
+        <h4><strong>Configuración del servicio</strong></h4>
 
         <form method="POST"
-            action="{{ route('customers.services.update', $service->id) }}"
+            action="{{ route('customers.services.updateConfig', $service->id) }}"
+            enctype="multipart/form-data"
             id="formUpdate">
             @csrf()
             @method('PUT')
 
             {{-- formulario--}}
             <div class="card-border">
-                @include('modules.customers.services.partials.form', ['service' => $service])
+                @include('modules.customers.services.partials.formConfig', ['service' => $service])
+            </div>
+
+            <h4><strong>Documentos</strong></h4>
+            <div class="card-border">
+                @include('modules.customers.services.partials.documentsList', ['service' => $service])
             </div>
 
             {{-- acciones--}}

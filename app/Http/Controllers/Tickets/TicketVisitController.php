@@ -18,7 +18,7 @@ use App\Models\Employees\Employee;
 use App\Models\General\TypeDocument;
 use App\Models\Helpers;
 use App\Models\Tickets\TicketVisitFile;
-
+use App\Mail\VisitaTicketMail;
 
 class TicketVisitController extends Controller
 {
@@ -94,11 +94,34 @@ class TicketVisitController extends Controller
             Log::info("No hay archivos adjuntos");
         }
         
-        
-
         DB::commit();
         Alert::success('¡Éxito!', 'Registro insertado correctamente');
+
+        $this->sendVisitEmail($ticketVisit);
         return redirect()->back();
+    }
+
+    public function sendVisitEmail (TicketVisit $ticketVisit){
+
+        if($ticketVisit->visit_type === '1') {
+            Log::info("visita con instalacion propia");
+            
+            // Obtener todos los archivos adjuntos asociados con la visita del ticket
+               $archivosAdjuntos = $ticketVisit->ticketvisitfiles->pluck('path')->toArray();
+               $recipients = ['karennavas333@gmail.com', 'andreadeveloper18@gmail.com'];
+    
+               if (!empty($recipients)) {
+                   // Enviar el correo electrónico
+                   Mail::to($recipients)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos));
+                   Log::info("Si, se están enviando");
+               } else {
+                   Log::error('No hay destinatarios especificados para el correo electrónico.');
+               }
+
+            } else {
+                Log::info("Visita con instalacion tercerizada");
+            }
+
     }
 
     /**

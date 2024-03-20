@@ -9,3 +9,8 @@ Breadcrumbs::for('services/show', function ($trail, $data) {
     $trail->parent('services');
     $trail->push('Ver', route('customers.services.show.service', $data['id']));
 });
+
+Breadcrumbs::for('services/show/config', function ($trail, $data) {
+    $trail->parent('services');
+    $trail->push('Ver', route('customers.services.show.config', $data['id']));
+});

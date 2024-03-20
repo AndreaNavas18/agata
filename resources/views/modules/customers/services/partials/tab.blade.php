@@ -24,24 +24,37 @@
                 </a>
             </li>
         </ul>
-    <!-- Boton de editar -->
 
-    <div>
-        <a class="btn btn-success btn-sm mb-1 loading"
-            href="{{ route('customers.services.edit', $service->id) }}"
-            bd-toggle="tooltip"
-            bd-placement="top"
-            title="Editar">
-            <i class="fas fa-edit"></i>
-        </a>
-        {{-- <button 
-        type="button" 
-        class="btn btn-success"
-        dataUrl=""
-        >
-        Editar
-    </button> --}}
-    </div>
+        @if( Session::get('tab') == 'service' )
+            <!-- Boton de editar -->
+            <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('customers.services.edit', $service->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar Servicio">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+                {{-- <button 
+                type="button" 
+                class="btn btn-success"
+                dataUrl=""
+                >
+                Editar
+            </button> --}}
+            </div>
+        @elseif (Session::get('tab') == 'config')
+            <!-- Boton de editar -->
+            <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('customers.services.editConfig', $service->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar Configuración">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+            </div>
+        @endif
     </div>
 
 

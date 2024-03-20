@@ -158,16 +158,15 @@
                 data-width="100%"
                 required>
                 <option value="">--Seleccione--</option>
-                @foreach($typesInstalations as $keyTypeInstaltionRow => $typeInstaltionRow)
-                    <option value="{{ $keyTypeInstaltionRow }}"
-                    {{ ($keyTypeInstaltionRow == $service->installation_type) ? 'selected' : ''}}
-                    >
-                        {{ $typeInstaltionRow }}
-                    </option>
-                @endforeach
+                @foreach($typesInstalations as $typeInstalationKey => $typeInstalationRow)
+                <option value="{{ $typeInstalationKey }}" {{ (strtolower($typeInstalationRow) == strtolower($service->installation_type)) ? 'selected' : '' }}>
+                    {{ $typeInstalationRow }}
+                </option>
+            @endforeach
             </select>
         </div>
 
+        @if($typeInstalation == 'TERCEROS')
         <div class="col-md-4 col-sm-12 mb-3">
             @component('componentes.label', [
                 'title' => 'Proveedor',
@@ -178,7 +177,8 @@
                 name="provider_id"
                 id="provider_id"
                 data-width="100%"
-                disabled>
+                {{-- disabled --}}
+                >
                 <option value="">--Seleccione--</option>
                 @foreach($providers as $providerRow)
                     <option value="{{ $providerRow->id }}"
@@ -189,6 +189,7 @@
                 @endforeach
             </select>
         </div>
+        @endif
 
         {{-- @if($module=='providers') --}}
             <div class="col-md-4 col-sm-12 mb-3">
@@ -235,7 +236,9 @@
             <textarea type="text"
                 name="description"
                 id="description"
-                class="form-control"></textarea>
+                class="form-control">
+            {{$serviceDescription}}
+            </textarea>
         </div>
                 
 </div>
@@ -248,3 +251,6 @@
 <input type="hidden"
     id="rutaAjaxDepartments"
     value="{{ route('general.departments') }}">
+
+<input type="hidden" name="country_id" value="{{ $service->country_id }}">
+
