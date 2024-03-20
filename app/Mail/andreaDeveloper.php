@@ -71,6 +71,6 @@ class andreaDeveloper extends Mailable
     {
         return $this->view('emails/new_ticket')
                     ->subject('Notificaciones Stratecsa')
-                    ->from('stratecsa@outlook.es', 'Stratecsa');
+                    ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }
 }

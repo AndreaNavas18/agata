@@ -51,7 +51,7 @@ class VisitaTicketMail extends Mailable
     public function content()
      {
         return new Content(
-            view: 'emails/tickect_new',
+            view: 'emails/technical_service',
         );
     }
 
@@ -71,7 +71,7 @@ class VisitaTicketMail extends Mailable
 
         $mail = $this->subject($subject)
         ->view('emails/ticket_new')
-        ->from('stratecsa@outlook.es', 'Stratecsa')
+        ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa')
         ->with([
             'ticketVisit' => $this->ticketVisit,
         ]);

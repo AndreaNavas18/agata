@@ -71,6 +71,6 @@ class NewTicketClient extends Mailable
     {
         return $this->view('emails/clientTicketCreation')
                     ->subject('Notificaciones Stratecsa')
-                    ->from('stratecsa@outlook.es', 'Stratecsa');
+                    ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }
 }

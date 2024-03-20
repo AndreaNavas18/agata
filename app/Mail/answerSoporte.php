@@ -71,6 +71,6 @@ class answerSoporte extends Mailable
     {
         return $this->view('emails/soporte_replie')
                     ->subject('Nueva Respuesta de cliente - Stratecsa')
-                    ->from('stratecsa@outlook.es', 'Stratecsa');
+                    ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }
 }

@@ -71,6 +71,6 @@ class newAnswer extends Mailable
     {
         return $this->view('emails/new_replie')
                     ->subject('Respuesta Ticket Stratecsa')
-                    ->from('stratecsa@outlook.es', 'Stratecsa');
+                    ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }
 }

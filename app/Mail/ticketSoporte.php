@@ -71,6 +71,6 @@ class ticketSoporte extends Mailable
     {
         return $this->view('emails/supportTicketCreation')
                     ->subject('Notificaciones Stratecsa')
-                    ->from('stratecsa@outlook.es', 'Stratecsa');
+                    ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }
 }
