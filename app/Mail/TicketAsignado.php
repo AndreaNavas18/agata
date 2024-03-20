@@ -8,27 +8,24 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Tickets\TicketVisit;
+use App\Models\Tickets\Ticket;
 
-class VisitaTicketMail extends Mailable
+
+class TicketAsignado extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $ticketVisit;
-    public $archivosAdjuntos;
-    public $employees;
+    public $ticket;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(TicketVisit $ticketVisit, $archivosAdjuntos, $employees)
+    public function __construct(Ticket $ticket)
     {
         //
-        $this->ticketVisit = $ticketVisit;
-        $this->archivosAdjuntos = $archivosAdjuntos;
-        $this->employees = $employees;
+        $this->ticket = $ticket;
        
     }
 
@@ -53,7 +50,7 @@ class VisitaTicketMail extends Mailable
     public function content()
      {
         return new Content(
-            view: 'emails/technical_service',
+            view: 'emails/ticket_asignado',
         );
     }
 
@@ -69,26 +66,15 @@ class VisitaTicketMail extends Mailable
 
     public function build()
     {
-        $subject = 'Nueva visita técnica para el ticket #' . $this->ticketVisit->ticket_id;
+        $subject = 'Asignación de ticket' . $this->ticket->consecutive;
 
         $mail = $this->subject($subject)
-        ->view('emails/ticket_new')
+        ->view('emails/ticket_asignado')
         ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa')
         ->with([
-            'ticketVisit' => $this->ticketVisit,
-            'employees' => $this->employees,
+            'ticket' => $this->ticket,
         ]);
-
-        // Adjuntar cada archivo
-        foreach ($this->archivosAdjuntos as $archivoAdjunto) {
-            $file = public_path('storage/' . $archivoAdjunto); // Obtener la ruta completa del archivo
-            $fileName = basename($file); // Obtener el nombre del archivo
-            $mail->attach($file, [
-                'as' => $fileName, // Nombre del archivo adjunto
-            ]);
-        }
     
-
         return $mail;
     }
     

@@ -19,6 +19,7 @@ use App\Models\General\TypeDocument;
 use App\Models\Helpers;
 use App\Models\Tickets\TicketVisitFile;
 use App\Mail\VisitaTicketMail;
+use App\Models\Tickets\TicketVisitEmployeeFile;
 
 class TicketVisitController extends Controller
 {
@@ -93,15 +94,16 @@ class TicketVisitController extends Controller
         }else {
             Log::info("No hay archivos adjuntos");
         }
-        
+        $employees = $ticketVisit->employees;
+        Log::info($employees);
         DB::commit();
         Alert::success('¡Éxito!', 'Registro insertado correctamente');
 
-        $this->sendVisitEmail($ticketVisit);
+        $this->sendVisitEmail($ticketVisit, $employees);
         return redirect()->back();
     }
 
-    public function sendVisitEmail (TicketVisit $ticketVisit){
+    public function sendVisitEmail (TicketVisit $ticketVisit, $employees){
 
         if($ticketVisit->visit_type === '1') {
             Log::info("visita con instalacion propia");
@@ -112,7 +114,7 @@ class TicketVisitController extends Controller
     
                if (!empty($recipients)) {
                    // Enviar el correo electrónico
-                   Mail::to($recipients)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos));
+                   Mail::to($recipients)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos, $employees));
                    Log::info("Si, se están enviando");
                } else {
                    Log::error('No hay destinatarios especificados para el correo electrónico.');

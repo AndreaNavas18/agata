@@ -26,6 +26,7 @@ use App\Mail\newAnswer;
 use App\Mail\answerSoporte;
 use App\Mail\NewTicketClient;
 use App\Mail\ticketSoporte;
+use App\Mail\TicketAsignado;
 use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
@@ -975,9 +976,8 @@ class TicketController extends Controller
     }
 
     public function asignarAgente(Request $request, $id) {
-        DB::beginTransaction();
-        
-        try{
+            DB::beginTransaction();
+    
             $ticket = Ticket::findOrFail($id);
             // $positionsDepartmanets = EmployeePositionDepartment::get();
             // $employees = Employee::where('position_id', $request->employee_position_department_id)->get();
@@ -989,17 +989,19 @@ class TicketController extends Controller
             //imprimir en logs lo que llega por request 
             Log::info($request->employee_id);
             Log::info($request->employee_position_department_id);
-            $ticket->save();
+
+            if (!$ticket->save()) {
+                DB::rollBack();
+                Alert::error('Error', 'Error al asignar el agente.');
+                return redirect()->back();
+            }
             
             // Verificar si se asigno un agente al ticket
-            $this->sendEmailAgent($ticket, $request->input('employee_id'));
-
-            DB::commit();
-            Alert::success('Success!', 'Agente asignado correctamente');
-        }catch (\Exception $e){
-            DB::rollBack();
-            Alert::error('Error', 'Error al asignar el agente al ticket.');
-        }
+            
+        DB::commit();
+        Alert::success('Success!', 'Agente asignado correctamente');
+            
+        $this->sendEmailAgent($ticket, $request->input('employee_id'));
         return redirect()->back();
     }
 
@@ -1011,7 +1013,7 @@ class TicketController extends Controller
         // Verificar si el correo electrónico del agente no está vacío
         if (!empty($agentEmail)) {
             // Enviar correo electrónico al agente asignado
-            Mail::to($agentEmail)->send(new andreaDeveloper($ticket));
+            Mail::to($agentEmail)->send(new TicketAsignado($ticket));
         } else {
             // Manejar el caso en que el correo electrónico del agente esté vacío
             Log::error('No se ha especificado un correo electrónico para el agente asignado.');

@@ -27,14 +27,20 @@
 
         <p style="">
             @if (date('A') == 'AM')
-                Buena día
+                Buenos días
             @else
-                Buenas Tardes
+                Buenas tardes
             @endif
         </p>
 
         <p>
-            Solicitamos permisos para ingresar a la "ERT TULUA" en horas de la "mañana", necesitamos subir a revisar nuestros equipos.
+            Solicitamos permisos para ingresar a la "ERT TULUA" en horas de la 
+            @if (date('A') == 'AM')
+                mañana
+            @else
+                tarde
+            @endif
+            ,necesitamos subir a revisar nuestros equipos.
         </p>
 
         <p> Los datos del personal que realizará la actividad son:</p>
@@ -48,22 +54,26 @@
 
         <table border= "1px" style="border-collapse: collapse; text-align: center; border: solid 1px black;">
             <tr style="background-color: #11409b;color: white;text-align: center;height: 25px;">
+
                 <td>Nombre</td>
                 <td>Identificación</td>
                 <td>EPS</td>
                 <td>ARL</td>
                 <td>N° Celular</td>
                 <td>Cargo</td>
+                
             </tr>
+            @if($employees->count() > 0)
+                @foreach($employees as $employeeRow)
             <tr>
-                <td>Juan Manuel Pérez</td>
+                <td>{{ $employeeRow->short_name }}</td>
                 <td>123456789</td>
                 <td>Nueva EPS</td>
                 <td>Colseguros</td>
                 <td>987654321</td>
                 <td>Técnico</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td>María García </td>
                 <td>987654321</td>
                 <td>Salud Total</td>
@@ -78,7 +88,9 @@
                 <td>Seguros del Estado</td>
                 <td>456789012</td>
                 <td>Enfermero</td>
-            </tr>
+            </tr> --}}
+            @endforeach
+            @endif
         </table>
 
     </div>

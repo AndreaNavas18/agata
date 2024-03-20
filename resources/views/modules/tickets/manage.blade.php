@@ -158,16 +158,26 @@
         });
 
         $('.addAgent').on('click', function() {
-            var replieId = $(this).attr('data-replieId');
             $('#formAgent').trigger("reset");
-            $('#ticket_replie_id').val(replieId);
             $('#modalAgent').modal('show');
         });
 
+        $('form#formAgent').submit(function(e) {
+            e.preventDefault();
+            var $form = $('#formAgent')[0];
+            if ($form.checkValidity()) {
+                openLoader();
+                $form.submit();
+                console.log("Si me estoy enviando");
+            }
+            else {
+                closeLoader();
+                console.log("No me estoy enviando");
+            }
+        });
+
         $('.addPriority').on('click', function() {
-            var replieId = $(this).attr('data-replieId');
             $('#formPriority').trigger("reset");
-            $('#ticket_replie_id').val(replieId);
             $('#modalPriority').modal('show');
         });
 
@@ -560,6 +570,7 @@
                                             id="employee_position_department_id"
                                             required
                                             data-width="100%">
+                                            <option value="">--Seleccione--</option>
                                             @foreach($positionsDepartmanets as $positionDepartmanetList)
                                                 <option value="{{ $positionDepartmanetList->id }}"
                                                     {{ isset($ticket) &&
@@ -588,13 +599,12 @@
                                                         {{ isset($ticket) &&
                                                             $ticket->employee_id == $employeeRow->id
                                                             ? 'selected' : '' }}>
-                                                        {{ $employeeRow->full_name }}
+                                                        {{ $employeeRow->short_name }}
                                                     </option>
                                                 @endforeach
                                             @endisset
                                         </select>
                                     </div>
-                                    <input type="hidden" value="" name="ticket_replie_id" id="ticket_replie_id">
                                 </div>
                             </div>
                             <div class="modal-footer d-flex justify-content-center">
