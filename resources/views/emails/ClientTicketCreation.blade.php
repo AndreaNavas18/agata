@@ -1,14 +1,18 @@
 @extends('layouts.email')
 
 @section('information')
-<p style="text-align: justify;">
-    Estimado cliente, su ticket {{$ticket->consecutive}} ha sido creado para responder a su solicitud {{$ticket->ticket_issue }} del servicio {{$ticket->service->description}}. Estamos trabajando para atender su requerimiento y comunicarnos pronto.
 
-	
-</p>
-<p style="text-align: justify;">
-    Gracias por hacer uso de nuestra plataforma.
-</p>
+<div style="
+        padding-top: 20px;
+        padding-bottom: 15px;">
+        
+    <p style="text-align: justify;">
+        Estimado cliente, su ticket {{$ticket->consecutive}} ha sido creado para responder a su solicitud {{$ticket->ticket_issue }} del servicio {{$ticket->service->description}}. Estamos trabajando para atender su requerimiento y comunicarnos pronto.
+
+    </p>
+    <p style="text-align: justify;">Gracias por hacer uso de nuestra plataforma.</p>
+</div>
+
 @endsection
 
 @section('content')
