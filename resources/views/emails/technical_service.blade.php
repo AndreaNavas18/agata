@@ -40,7 +40,7 @@
             @else
                 tarde
             @endif
-            ,necesitamos subir a revisar nuestros equipos.
+            , necesitamos ir a revisar nuestros equipos.
         </p>
 
         <p> Los datos del personal que realizará la actividad son:</p>
@@ -67,28 +67,12 @@
                 @foreach($employees as $employeeRow)
             <tr>
                 <td>{{ $employeeRow->short_name }}</td>
-                <td>123456789</td>
-                <td>Nueva EPS</td>
-                <td>Colseguros</td>
-                <td>987654321</td>
-                <td>Técnico</td>
+                <td>{{$employeeRow->Identification}}</td>
+                <td>{{$employeeRow->eps->name}}</td>
+                <td>{{$employeeRow->arl->name}}</td>
+                <td>{{$employeeRow->cell_phone}}</td>
+                <td>>{{$employeeRow->position->name}}</td>
             </tr>
-            {{-- <tr>
-                <td>María García </td>
-                <td>987654321</td>
-                <td>Salud Total</td>
-                <td>Seguros Bolívar</td>
-                <td>123456789</td>
-                <td>Médico</td>
-            </tr>
-            <tr>
-                <td>Carlos Marcelo Gómez Fernandez</td>
-                <td>567890123</td>
-                <td>Sanitas</td>
-                <td>Seguros del Estado</td>
-                <td>456789012</td>
-                <td>Enfermero</td>
-            </tr> --}}
             @endforeach
             @endif
         </table>

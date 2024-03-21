@@ -1,30 +1,37 @@
+{{-- Este cuando soporte lo crea, le llega asoporte --}}
+
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
-<p style="
-padding-top: 20px;
-">
- {{-- Nueva respuesta a tickect Stratecsa, consecutivo --}}
- {{-- <span style="background-color: #c9fdc4">{{  $ticket->id }}</span> 🎉 --}}
- Estimado cliente, se le informa que una nueva respuesta se ha registrado para darle continuacion a el ticket
- {{ $ticket->consecutive }}, a continuacion los detalles.
+<p style="text-align: justify;">
+    Se ha creado un nuevo ticket, a continuación los detalles.
 </p>
-{{-- <p> --}}
-{{-- El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br> --}}
-{{-- El departamento de STRATECSA ha enviado la siguiente respuesta:<br> --}}
-
-{{-- {{ $ticketReply->replie  }} --}}
-{{-- </p> --}}
-
 @endsection
 
 
-@section('content')
 
-    <div style="
-        color: black;
-        padding: 20px 50px;
-        padding-bottom: 30px;">
+@section('content')
+    <div
+        style="
+            padding-left: 50px;
+            padding-right: 50px;
+            color: black;
+">
+
+        <div class="div-datos">
+            <span><b>Prioridad: {{ isset ($ticket->priority) ? $ticket->priority->name : 'N/A' }}   </b></span>
+            {{-- {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }} --}}
+        </div>
+
+        <div class="div-datos">
+            <span><b>Cliente: </b></span>
+            {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }}
+        </div>
+
+        <div class="div-datos">
+            <span><b>Numero de ticket o consecutivo:</b></span>
+            {{ isset ($ticket->consecutive) ? $ticket->consecutive : 'N/A'}}
+        </div>
 
         <div class="div-datos">
             <span><b>Asunto:</b></span>
@@ -32,25 +39,40 @@ padding-top: 20px;
         </div>
 
         <div class="div-datos">
-            <span><b>Motivo de solicitud:</b></span>
-            {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
+            <span><b>Descripcion del ticket:</b></span>
+            {{  isset($ticket->description) ? $ticket->description : 'N/A' }}
         </div>
-
+        
+        {{-- DEPARTAMENTO --}}
         <div class="div-datos">
-            <b>Estado tickect:</b>
-            <span class="badge {{ $ticket->state == 'Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
-                {{ $ticket->state }}
-            </span>
+            <span><b>Departamento:</b></span>
+            {{  isset($ticket->department) ? $ticket->department->name : 'N/A' }}
+        </div>
+        
+        <div class="div-datos">
+            <span><b>Agente asignado:</b></span>
+            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'No hay un agente asignado aún' }}
         </div>
 
+        {{-- FECHA --}}
+        
     </div>
-
-
-    {{-- <p>
-        <b>Prioridad tickect:</b>
-        <span class="badge {{ $ticket->priority->color }} rounded-pill">
-            {{ $ticket->priority->name }}
-        </span>
-    </p> --}}
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
