@@ -888,7 +888,6 @@ class TicketController extends Controller
 
                 if (!empty($recipients)) {
                     // Enviar el correo electrónico
-                    
                     foreach ($recipients as $recipient) {
                         //NUEVA PLANTILLA
                         Mail::to($recipient)->send(new answerSoporte($ticket));
@@ -901,7 +900,7 @@ class TicketController extends Controller
             } else {
                 // Si el usuario no tiene un customer_id, es un empleado
                 // Enviar correo al cliente
-                Log::info("Es un empleado elque respondio");
+                Log::info("Es un empleado el que respondio");
                 $clientEmails = explode(';', $ticket->emails_notification);
                 $recipients = array_filter($clientEmails);
                 // dd($recipients);

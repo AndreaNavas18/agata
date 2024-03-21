@@ -34,4 +34,8 @@ class TicketVisit extends BaseModel {
         return $this->hasMany(TicketVisitFile::class, 'ticket_visit_id');
     }
 
+    public function ticket() {
+        return $this->belongsTo(Ticket::class, 'ticket_id');
+    }
+
 }

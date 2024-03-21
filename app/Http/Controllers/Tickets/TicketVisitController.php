@@ -110,12 +110,23 @@ class TicketVisitController extends Controller
             
             // Obtener todos los archivos adjuntos asociados con la visita del ticket
                $archivosAdjuntos = $ticketVisit->ticketvisitfiles->pluck('path')->toArray();
-               $recipients = ['karennavas333@gmail.com', 'andreadeveloper18@gmail.com'];
-    
+               $clientEmails = explode(';', $ticketVisit->ticket->emails_notification);
+               $firstRecipients = array_filter($clientEmails);
+               $additionalEmails = ['karennavas333@gmail.com', 'andreadeveloper18@gmail.com'];
+               $recipients = array_merge($firstRecipients, $additionalEmails);
+               Log::info($recipients);
+               
                if (!empty($recipients)) {
-                   // Enviar el correo electrónico
-                   Mail::to($recipients)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos, $employees));
-                   Log::info("Si, se están enviando");
+
+                    foreach ($recipients as $recipient) {
+
+                        Mail::to($recipient)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos, $employees));
+                        Log::info("Si, se están enviando");
+                    }
+
+                //    Enviar el correo electrónico
+                //    Mail::to($recipients)->send(new VisitaTicketMail($ticketVisit, $archivosAdjuntos, $employees));
+                //    Log::info("Si, se están enviando");
                } else {
                    Log::error('No hay destinatarios especificados para el correo electrónico.');
                }
