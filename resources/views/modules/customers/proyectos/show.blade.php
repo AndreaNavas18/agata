@@ -67,5 +67,37 @@
                 </div>
             </div>
         </div>
+    {{-- Si el proyecto tiene asignados servicios, que los muestre --}}
+    @if($proyecto->customerServices->count() > 0)
+        @component('componentes.cardTitle',[
+            'shadow' => true,
+            'icono'  => 'fas fa-info-circle',
+            'title' => 'Servicios asignados'])
+        @endcomponent
+        <div class="card-border">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Servicio</th>
+                                <th>Tipo de servicio</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($proyecto->customerServices as $service)
+                                <tr>
+                                    <td>{{ $service->description }}</td>
+                                    <td>{{ $service->service->name }}</td>
+                                    <td>{{ $service->created_at }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    @endif
      @endcomponent
 @endsection

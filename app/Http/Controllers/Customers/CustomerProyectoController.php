@@ -22,7 +22,7 @@ class CustomerProyectoController extends Controller
 {
     public function indexAll() {
 
-        session::flash('tab','proyectos');
+        session::flash('tab','proyectosAll');
         $user = Auth()->user();
         $allowedRoles = [2, 3, 7, 8];
 
@@ -86,6 +86,7 @@ class CustomerProyectoController extends Controller
             $tabPanel='customerProyectosTabEdit';
             $typesServices=Service::get();
             $proyectos = Proyecto::paginate();
+
 
             return view('modules.customers.proyectos.index', compact(
                 'customers',
@@ -213,7 +214,7 @@ class CustomerProyectoController extends Controller
 
     public function show($id)
     {
-        session::flash('tab','proyectos');
+        session::flash('tab','showNormal');
         $customer= Customer::findOrFail($id);
         $customerServices= CustomerService::customerId($id)->paginate();
         $tabPanel='customerProyectosTabShow';
@@ -242,6 +243,9 @@ class CustomerProyectoController extends Controller
     }
 
     public function showProyecto($id) {
+
+        session::flash('tab','showProyecto');
+
         $proyecto= Proyecto::findOrFail($id);
 
         return view('modules.customers.proyectos.show', compact(

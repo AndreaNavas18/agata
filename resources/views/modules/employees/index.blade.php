@@ -80,11 +80,31 @@
             @slot('tbody')
                 @foreach($employees as $employee)
                     <tr>
-                        <td>{{ $employee->full_name }}</td>
-                        <td>{{ $employee->identification }}</td>
-                        <td>{{ $employee->cell_phone }}</td>
-                        <td>{{ $employee->address }}</td>
-                        <td>{{ $employee->position->name }}</td>
+                        <td>
+                            <a href="{{ route('employees.show', $employee->id) }}" style="color: #2e384d" >
+                            {{ $employee->full_name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('employees.show', $employee->id) }}" style="color: #2e384d" >
+                            {{ $employee->identification }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('employees.show', $employee->id) }}" style="color: #2e384d" >
+                            {{ $employee->cell_phone }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('employees.show', $employee->id) }}" style="color: #2e384d" >
+                            {{ $employee->address }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('employees.show', $employee->id) }}" style="color: #2e384d" >
+                            {{ $employee->position->name }}
+                            </a>
+                        </td>
                         <td>
                             <span class="badge {{ ($employee->state_id  == 1) ? 'bg-success' : 'bg-danger' }}">
                                 {{ $employee->state->name }}
@@ -92,13 +112,13 @@
                         </td>
                         <td>
                             @can('employees.show')
-                                <a class="btn btn-info btn-sm  mb-1  loading"
+                                {{-- <a class="btn btn-info btn-sm  mb-1  loading"
                                     href="{{ route('employees.show', $employee->id) }}"
                                     bs-bs-toggle="tooltip"
                                     bs-bs-placement="top"
                                     title="Ver detalles">
                                     <i class="far fa-eye"></i>
-                                </a>
+                                </a> --}}
                             @endcan
 
                             @can('employees.edit')

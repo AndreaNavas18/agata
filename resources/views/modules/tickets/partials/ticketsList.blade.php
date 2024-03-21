@@ -29,34 +29,63 @@
     
         @foreach($tickets as $ticket)
             <tr>
-                <td>{{ $ticket->consecutive }}</td>
+                <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                    {{ $ticket->consecutive }}
+                    </a>
+                </td>
 
-                <td>{{ $ticket->ticket_issue }}</td>
+                <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                    {{ $ticket->ticket_issue }}
+                    </a>
+                </td>
 
-                <td>{{ $ticket->date }}</td>
+                <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+
+                    {{ $ticket->date }}
+                    </a>
+                </td>
 
                 @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
-                    <td>{{ $ticket->customer ? $ticket->customer->name : '' }}</td>
+                    <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                        {{ $ticket->customer ? $ticket->customer->name : '' }}
+                    </a>
+                    </td>
                 @endif
 
                 <td>
                     {{-- {{ optional($ticket->service)->description }} --}}
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
                     {{ $ticket->service->description }}
+                    </a>
                 </td>
 
                 @if($provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
-                    <td>{{ $ticket->service->provider ? $ticket->service->provider->name : '---' }}</td>
-                    <td>{{  $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}</td>
+                    <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                        {{ $ticket->service->provider ? $ticket->service->provider->name : '---' }}
+                    </a>
+                    </td>
+                    <td>
+                    <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                        {{  $ticket->employee ? $ticket->employee->short_name : 'No hay agente asignado' }}
+                    </a>
+                    </td>
                     <td>
                         <span class="badge {{ $ticket->priority->color}}">
-                            {{ $ticket->priority->name}}
+                            <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->priority->name}}
+                            </a>
                         </span>
                     </td>
                 @endif
 
                 <td>
                     <span class="badge {{ ($ticket->state  == 'Abierto') ? 'bg-danger' : 'bg-success' }}">
-                        {{ $ticket->state}}
+                            {{ $ticket->state}}
                     </span>
                 </td>
 
@@ -65,7 +94,7 @@
                         @can('tickets.index')
                         @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
 
-                                <a class="btn btn-info btn-sm loading mb-1"
+                                {{-- <a class="btn btn-info btn-sm loading mb-1"
                                     href="{{ route('tickets.show', $ticket->id) }}"
                                     @if(isset($newTab) && $newTab)
                                         target="'_blank"
@@ -74,7 +103,7 @@
                                     bs-bs-placement="top"
                                     title="Ver">
                                     <i class="far fa-eye"></i>
-                                </a>
+                                </a> --}}
                                 @else
                                 <a class="btn btn-info btn-sm loading mb-1"
                                     href="{{ route('tickets.manage', $ticket->id) }}"

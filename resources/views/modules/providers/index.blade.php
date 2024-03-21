@@ -86,11 +86,30 @@
             @slot('tbody')
                 @foreach($providers as $provider)
                     <tr>
-                        <td>{{ $provider->name }}</td>
-                        <td>{{ $provider->identification }}</td>
-                        <td>{{ $provider->city->name }}</td>
-                        <td>{{ $provider->phone }}</td>
-                        <td>{{ $provider->address }}</td>
+                        <td>
+                            <a href="{{ route('providers.show', $provider->id) }}" style="color: #2e384d" >
+                            {{ $provider->name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('providers.show', $provider->id) }}" style="color: #2e384d" >
+                            {{ $provider->identification }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('providers.show', $provider->id) }}" style="color: #2e384d" >
+                            {{ $provider->city->name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('providers.show', $provider->id) }}" style="color: #2e384d" >
+                            {{ $provider->phone }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('providers.show', $provider->id) }}" style="color: #2e384d" >
+                                {{ $provider->address }}</td>
+                            </a>
                         <td>
                             <span class="badge {{ ($provider->state_id  == 1) ? 'bg-success' : 'bg-danger' }}">
                                 {{ $provider->state->name }}
@@ -98,13 +117,13 @@
                         </td>
                         <td>
                             @can('providers.show')
-                                <a class="btn btn-info btn-sm loading mb-1"
+                                {{-- <a class="btn btn-info btn-sm loading mb-1"
                                     href="{{ route('providers.show', $provider->id) }}"
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Ver">
                                     <i class="far fa-eye"></i>
-                                </a>
+                                </a> --}}
                             @endcan
 
                             @can('providers.edit')

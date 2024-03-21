@@ -61,7 +61,25 @@ class CustomerServiceController extends Controller
                 'Terceros'  =>'Terceros'
             ];
             $providers = Provider::get();
-            
+            $camposAdicionales = [
+                'ip',
+                'vlan',
+                'mascara',
+                'gateway',
+                'mac',
+                'ancho_de_banda',
+                'ip_vpn',
+                'tipo_vpn',
+                'user_vpn',
+                'password_vpn',
+                'user_tunel',
+                'id_tunel',
+                'tecnologia',
+                'equipo',
+                'modelo',
+                'serial',
+                'activo_fijo'
+            ];
 
 
             return view('modules.customers.services.index', compact(
@@ -76,6 +94,7 @@ class CustomerServiceController extends Controller
                 'proyectos',
                 'typesInstalations',
                 'providers',
+                'camposAdicionales'
             ));
         } else {
             

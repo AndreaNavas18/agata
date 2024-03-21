@@ -97,13 +97,30 @@
             @slot('tbody')
                 @foreach($customers as $customer)
                     <tr>
-                        <td>{{ $customer->name }}</td>
-                        <td>{{ $customer->identification }}</td>
-                        <td>{{ $customer->city->name }}</td>
-                        <td>{{ $customer->phone }}</td>
-                        <td>{{ $customer->address }}</td>
-
-
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="color: #2e384d" >
+                                {{ $customer->name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="color: #2e384d" >
+                                {{ $customer->identification }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="color: #2e384d" >
+                            {{ $customer->city->name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="color: #2e384d" >
+                            {{ $customer->phone }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ route('customers.show', $customer->id) }}" style="color: #2e384d" >
+                                {{ $customer->address }}</td>
+                            </a>
                         <td>
                             <span class="badge {{ ($customer->state_id  == 1) ? 'bg-success' : 'bg-danger' }}">
                                 {{ $customer->state->name }}
@@ -111,13 +128,13 @@
                         </td>
                         <td>
                             @can('customers.show')
-                                <a class="btn btn-info btn-sm mb-1 loading"
+                                {{-- <a class="btn btn-info btn-sm mb-1 loading"
                                     href="{{ route('customers.show', $customer->id) }}"
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Ver">
                                     <i class="far fa-eye"></i>
-                                </a>
+                                </a> --}}
                             @endcan
 
                             @can('customers.edit')

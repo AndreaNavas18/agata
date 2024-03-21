@@ -30,11 +30,37 @@
     @slot('tbody')
         @foreach($services as $service)
             <tr>
-                <td>{{ $service->stratecsa_id }}</td>
-                <td>{{ $service->otp }}</td>
-                <td>{{ $service->id_serviciocliente }}</td>
-                <td>{{ $service->proyecto ? $service->proyecto->name : ''}}</td>
-                <td>{{ $service->description }}</td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d" >
+                        {{ $service->stratecsa_id }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                    {{ $service->otp }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                    
+                    {{ $service->id_serviciocliente }}
+                </a>
+                
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                    
+                    {{ $service->proyecto ? $service->proyecto->name : ''}}
+                </a>
+                
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                    
+                    {{ $service->description }}
+                </a>
+                
+                </td>
                 @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                     @if($provider)
                         <td>{{ $service->provider ? $service->provider->name : '' }}</td>
@@ -48,7 +74,7 @@
                 <td>{{ $service->date_service }}</td>
                 @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <td>
-                    <span class="badge {{ ($service->state  == 'Activo') ? 'bg-success' : 'bg-danger' }}">
+                    <span class="badge {{ ($service->state  == 'Activo') ? 'bg-danger' : 'bg-success' }}">
                         {{ $service->state}}
                     </span>
                 </td>
@@ -57,29 +83,29 @@
                     <td>
                         @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                                 @can('services.index')
-                                    <a class="btn btn-info btn-sm loading mb-1"
+                                    {{-- <a class="btn btn-info btn-sm loading mb-1"
                                         @if( isset($viewShowService) && $viewShowService)
                                             href="{{ route('customers.services.show.service', $service->id) }}"
                                         @else
-                                        href="{{ route('customers.services.show.service', $service->id) }}"
+                                        href="{{ route('customers.services.show.service', $service->id) }}" --}}
 
                                             {{-- href="{{route($module.'.show', $service->id) }}" --}}
-                                        @endif
+                                        {{-- @endif
                                         bs-bs-toggle="tooltip"
                                         bs-bs-placement="top"
                                         title="Ver">
-                                        <i class="far fa-eye"></i>
-                                    </a>
+                                        <i class="far fa-eye"></i> --}}
+                                    {{-- </a> --}}
                                 @endcan
                                     
-                                    <button class="btn btn-success btn-sm editService mb-1"
+                                    {{-- <button class="btn btn-success btn-sm editService mb-1"
                                         bs-toggle="tooltip"
                                         bs-placement="top"
                                         title="Editar"
                                         dataUrl="{{ route($module.'.services.update',$service->id) }}"
                                         dataService="{{ $service }}">
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </button> --}}
 
                                     @can('services.destroy')
                                         <form class="d-inline frmDestroy mb-1"
