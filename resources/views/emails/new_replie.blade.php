@@ -1,68 +1,61 @@
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
-    <p style="text-align: justify;">
-        Estimado {{ $ticket->customer->name }}, le informamos que en base a su solicitud se ha creado un ticket. Estamos
-        trabajando para atender su requerimiento, nos comunicaremos con usted pronto.
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+        <p style="margin: 0;">
 
-    </p>
-    <p style="text-align: justify;">
-        A continuacion los detalles.
-    </p>
+            Estimado cliente, se le informa que una nueva respuesta se ha registrado para darle continuacion a el ticket
+            {{ $ticket->consecutive }}, a continuacion los detalles.
+
+        </p>
+    </div>
+
 @endsection
+
 
 @section('content')
-    <div style="
-            color: black;
-            padding: 20px 50px;
-">
+    <div style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
 
-        <div class="div-datos">
-            <span><b>Asunto:</b></span>
-            {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
-        </div>
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Asunto:</strong>
+            {{ isset($ticket->ticket_issue) ?  ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
+        </p>
+
+
+        {{-- DESCRIPCION --}}
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Descripción del ticket:</strong>
+            {{ isset($ticket->description) ? ucfirst(strtolower(strip_tags($ticket->description))) : 'N/A' }}
+        </p>
+
+        
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Estado tickect:</strong>
+            <span class="badge {{ $ticket->state == 'Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
+                {{ ucfirst(strtolower( $ticket->state)) }}
+            </span>
+        </p>
+
+        
+        {{-- DATE --}}
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Fecha:</strong>
+            {{ isset($ticket->date) ? $ticket->date : 'N/A' }}
+        </p>
         
 
-        {{-- MOTIVO SOLICITUD --}}
-        <div class="div-datos">
-            <span><b>Motivo de Solicitud: </b></span>
-            {{-- {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }} --}}
-        </div>
+        <p style="margin: 0;">
+            <strong>Respuesta:</strong>
+                    {{-- {{ $ticketReply->replie  }} --}}
 
-
-        {{-- DESCRIPCIÓN --}}
-        <div class="div-datos">
-            <span><b>Descripcion del ticket:</b></span>
-            {{ isset($ticket->description) ? strip_tags($ticket->description) : 'N/A' }}
-        </div>
-
-        {{-- IF EXISTE UN PROYECTO (EL PROYECTO) --}}
-
-        <div class="div-datos">
-            <span><b>Proyecto: </b></span>
-            {{-- {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }} --}}
-        </div>
-
-
-        {{-- SERVICIOS --}}
-
-        <div class="div-datos">
-            <span><b>Servicio:</b></span>
-            {{ isset($ticket->service) ? $ticket->service->description : 'N/A' }}
-        </div>
-
-
-
-        <div class="div-datos">
-            <span><b>Numero de ticket o consecutivo:</b></span>
-            {{ isset($ticket->consecutive) ? $ticket->consecutive : 'N/A' }}
-        </div>
-
-        {{-- FECHA --}}
-        <div class="div-datos">
-            <span><b>Fecha:</b></span>
-            {{ isset($ticket->created_at) ? $ticket->date : 'N/A' }}
-        </div>
+            {{-- {{ isset($ticket->replies) ? ucfirst(strtolower( $ticket->replies->replie)) : 'N/A' }} --}}
+        </p>
 
     </div>
+
 @endsection
+
+
+
+

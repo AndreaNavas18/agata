@@ -2,16 +2,13 @@
 
 
 @section('message')
-<div style="
-    padding: 15px 0px;
-" 
- >
-
-    <p style="">
+<div 
+style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+<p style="margin: 0;">
         Se ha registrado una nueva respuesta de un cliente
-        <span style="background-color: #c9fdc4">{{  $ticket->id }}> </span> 🎉
-    </p>
-    <p>
+    </p><br>
+
+    <p style="margin: 0;">
         {{-- El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br> --}}
         El cliente TAL ha enviado la siguiente respuesta:<br>
         
@@ -23,25 +20,21 @@
 
 
  @section('content')
- <div style="
- color: black;
- padding: 20px 50px;
- padding-bottom: 55px;">
+ <div style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
 
-<div class="div-datos">
-    <b>Estado tickect:</b>
-    <span class="badge {{ $ticket->state=='Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
-        {{ $ticket->state }}
-    </span>
+    <p style="margin: 0; margin-bottom: 16px;">
+        <strong>Estado tickect:</strong>
+        <span class="badge {{  $ticket->state=='Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
+            {{  ucfirst(strtolower($ticket->state)) }}
+        </span>
+    </p>
 
-</div>
-    <div class="div-datos">
-    <b>Prioridad tickect:</b>
-    <span class="badge {{ $ticket->priority->color }} rounded-pill">
-        {{ $ticket->priority->name }}
-    </span>
-</div>
-
+    <p style="margin: 0; margin-bottom: 16px;">
+        <strong>Prioridad tickect:</strong>
+        <span class="badge {{ $ticket->priority->color }} rounded-pill">
+            {{  ucfirst(strtolower($ticket->priority->name)) }}
+        </span>
+    </p>
 
 </div>
 @endsection
