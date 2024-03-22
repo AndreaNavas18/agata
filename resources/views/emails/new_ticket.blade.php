@@ -1,67 +1,63 @@
-
-
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
-<p style="
-padding-top: 20px;
-">
- {{-- Nueva respuesta a tickect Stratecsa, consecutivo --}}
- {{-- <span style="background-color: #c9fdc4">{{  $ticket->id }}</span> 🎉 --}}
- Estimado cliente, se le informa que una nueva respuesta se ha registrado para darle continuacion a el ticket
- {{ $ticket->consecutive }}, a continuacion los detalles.
-</p>
-{{-- <p> --}}
-{{-- El agente de soporte {{ $ticketReply->employee->short_name }} ha enviado la siguiente respuesta:<br> --}}
-{{-- El departamento de STRATECSA ha enviado la siguiente respuesta:<br> --}}
-
-{{-- {{ $ticketReply->replie  }} --}}
-{{-- </p> --}}
-
-@endsection
-
-
-@section('content')
-
-    <div style="
-        color: black;
-        padding: 20px 50px;
-        padding-bottom: 30px;">
-
-        <div class="div-datos">
-            <span><b>Asunto:</b></span>
-            {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
-        </div>
-
-        <div class="div-datos">
-            <span><b>Motivo de solicitud:</b></span>
-            {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
-        </div>
-
-        {{-- DESCRIPCION --}}
-        {{-- DATE --}}
-        {{-- DATE --}}
-
-        <div class="div-datos">
-            <b>Estado tickect:</b>
-            <span class="badge {{ $ticket->state == 'Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
-                {{ $ticket->state }}
-            </span>
-        </div>
-
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+        <p style="margin: 0;">Estimado COMUNICACION CELULAR
+            S.A COMCEL S.A, le informamos que en base a su
+            solicitud se ha creado un ticket. Estamos
+            trabajando para atender su requerimiento, nos
+            comunicaremos con usted pronto.</p> <br>
     </div>
 
+    <div
+    style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
+    <p style="margin: 0;">A continuación los detalles.
+    </p>
 
-    {{-- <p>
-        <b>Prioridad tickect:</b>
-        <span class="badge {{ $ticket->priority->color }} rounded-pill">
-            {{ $ticket->priority->name }}
-        </span>
-    </p> --}}
+</div>
 @endsection
 
+@section('content')
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Asunto:</strong>
+            {{ isset($ticket->ticket_issue) ?  ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
+        </p>
+
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Descripción del ticket:</strong>
+            {{ isset($ticket->description) ? ucfirst(strtolower(strip_tags($ticket->description))) : 'N/A' }}
+        </p>
+
+        @if ($ticket->service->proyecto)
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Proyecto:</strong>
+            {{$ticket->service->proyecto->name}}
+        </p> 
+        @endif
+       
+
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Servicio:</strong>
+            {{ isset($ticket->service) ? $ticket->service->description : 'N/A' }}
+
+        </p>
+
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Numero de ticket o consecutivo:</strong>
+            {{ isset($ticket->consecutive) ? $ticket->consecutive : 'N/A' }}
+        </p>
+
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Fecha:</strong>
+            {{ isset($ticket->date) ? $ticket->date : 'N/A' }}
+        </p>
 
 
+    </div>
+@endsection
 
 
 

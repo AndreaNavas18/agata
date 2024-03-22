@@ -1,18 +1,18 @@
-@extends('layouts.email')
+@extends('emails.layouts.email_stratecsa')
 
-@section('information')
+@section('message')
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
 
-<div style="
-        padding-top: 20px;
-        padding-bottom: 15px;">
-        
-    <p style="text-align: justify;">
-        Estimado cliente, su ticket {{$ticket->consecutive}} ha sido creado para responder a su solicitud {{$ticket->ticket_issue }} del servicio {{$ticket->service->description}}. Estamos trabajando para atender su requerimiento y comunicarnos pronto.
 
-    </p>
-    <p style="text-align: justify;">Gracias por hacer uso de nuestra plataforma.</p>
-</div>
+        <p style="margin: 0;">
+            Estimado cliente, su ticket {{ $ticket->consecutive }} ha sido creado para responder a su solicitud
+            {{ $ticket->ticket_issue }} del servicio {{ $ticket->service->description }}. Estamos trabajando para atender su
+            requerimiento y comunicarnos pronto.
 
+        </p>
+        <p style="margin: 0;">Gracias por hacer uso de nuestra plataforma.</p>
+    </div>
 @endsection
 
 @section('content')
@@ -39,5 +39,3 @@
 
     </div> --}}
 @endsection
-
-

@@ -67,7 +67,7 @@
                 @foreach($employees as $employeeRow)
             <tr>
                 <td>{{ $employeeRow->short_name }}</td>
-                <td>{{$employeeRow->Identification}}</td>
+                <td>{{$employeeRow->identification}}</td>
                 <td>{{$employeeRow->eps->name}}</td>
                 <td>{{$employeeRow->arl->name}}</td>
                 <td>{{$employeeRow->cell_phone}}</td>
