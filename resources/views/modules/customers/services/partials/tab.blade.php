@@ -24,29 +24,30 @@
                     </a>
                 </li>
         </ul>
-
-        @if( Session::get('tab') == 'service' )
-            <!-- Boton de editar el servicio -->
-            <div>
-                <a class="btn btn-success btn-sm mb-1 loading"
-                    href="{{ route('customers.services.edit', $service->id) }}"
-                    bd-toggle="tooltip"
-                    bd-placement="top"
-                    title="Editar Servicio">
-                    <i class="fas fa-edit"> Editar</i>
-                </a>
-            </div>
-        @elseif (Session::get('tab') == 'config')
-            <!-- Boton de editar la configuración-->
-            <div>
-                <a class="btn btn-success btn-sm mb-1 loading"
-                    href="{{ route('customers.services.editConfig', $service->id) }}"
-                    bd-toggle="tooltip"
-                    bd-placement="top"
-                    title="Editar Configuración">
-                    <i class="fas fa-edit"> Editar</i>
-                </a>
-            </div>
+        @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+            @if( Session::get('tab') == 'service' )
+                <!-- Boton de editar el servicio -->
+                <div>
+                    <a class="btn btn-success btn-sm mb-1 loading"
+                        href="{{ route('customers.services.edit', $service->id) }}"
+                        bd-toggle="tooltip"
+                        bd-placement="top"
+                        title="Editar Servicio">
+                        <i class="fas fa-edit"> Editar</i>
+                    </a>
+                </div>
+            @elseif (Session::get('tab') == 'config')
+                <!-- Boton de editar la configuración-->
+                <div>
+                    <a class="btn btn-success btn-sm mb-1 loading"
+                        href="{{ route('customers.services.editConfig', $service->id) }}"
+                        bd-toggle="tooltip"
+                        bd-placement="top"
+                        title="Editar Configuración">
+                        <i class="fas fa-edit"> Editar</i>
+                    </a>
+                </div>
+            @endif
         @endif
     </div>
 

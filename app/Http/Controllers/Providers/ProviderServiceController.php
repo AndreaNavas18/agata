@@ -45,6 +45,26 @@ class ProviderServiceController extends Controller
         $customers=Customer::get();
         $proyectos= Proyecto::get();
         $countries= Country::get();
+        $camposAdicionales = [
+            'ip',
+            'vlan',
+            'mascara',
+            'gateway',
+            'mac',
+            'ancho_de_banda',
+            'ip_vpn',
+            'tipo_vpn',
+            'user_vpn',
+            'password_vpn',
+            'user_tunel',
+            'id_tunel',
+            'tecnologia',
+            'equipo',
+            'modelo',
+            'serial',
+            'activo_fijo'
+        ];
+
 
         return view('modules.providers.edit', compact(
             'provider',
@@ -59,7 +79,8 @@ class ProviderServiceController extends Controller
             'typesServices',
             'customers',
             'proyectos',
-            'countries'
+            'countries',
+            'camposAdicionales'
         ));
     }
 

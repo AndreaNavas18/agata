@@ -64,5 +64,12 @@
             {{ isset($ticket->created_at) ? $ticket->date : 'N/A' }}
         </div>
 
+        <div class="div-datos">
+            <span><b>Respuesta:</b></span>
+            
+            {{ isset($lastReply->replie) ? $lastReply->replie : 'N/A' }}
+        </div>
+
+
     </div>
 @endsection

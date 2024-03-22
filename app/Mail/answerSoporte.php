@@ -9,22 +9,25 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Tickets\Ticket;
+use App\Models\Tickets\TicketReply;
 
 class answerSoporte extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $ticket;
+    public $ticketReply;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Ticket $ticket)
+    public function __construct(Ticket $ticket, TicketReply $ticketReply)
     {
         //
         $this->ticket = $ticket;
+        $this->ticketReply = $ticketReply;
 
     }
 

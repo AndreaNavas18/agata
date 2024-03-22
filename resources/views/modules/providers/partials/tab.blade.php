@@ -1,5 +1,5 @@
 <!-- Nav tabs -->
-<div class="tabs-menu ">
+<div class="tabs-menu d-flex justify-content-between align-items-center">
     <!-- Tabs -->
     <ul class="nav panel-tabs">
         <li class="nav-item">
@@ -48,8 +48,34 @@
             </a>
         </li> --}}
 
+        
     </ul>
-</div>
+    @can('providers.edit')
+        @if (Session::get('tab') == 'info')
+            <!-- Boton de editar la info -->
+            <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('providers.edit', $provider->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar info">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+            </div>
+        @elseif (Session::get('tab') == 'services')
+            <!-- Boton de editar los servicios -->
+            <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('providers.services.index', $provider->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar servicios">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+            </div>
+        @endif
+    @endcan
+    </div>
 
 
 

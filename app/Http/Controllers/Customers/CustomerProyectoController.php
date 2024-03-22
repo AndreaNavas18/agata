@@ -214,7 +214,7 @@ class CustomerProyectoController extends Controller
 
     public function show($id)
     {
-        session::flash('tab','showNormal');
+        session::flash('tab','proyectos');
         $customer= Customer::findOrFail($id);
         $customerServices= CustomerService::customerId($id)->paginate();
         $tabPanel='customerProyectosTabShow';

@@ -851,8 +851,9 @@ class TicketController extends Controller
         //         });
         //     }
         // }
-        // Verificar si se asigno un agente al ticket
+        // Le voy a pasar el ticket y la ultima respuesta
         $this->sendEmailAnswer($ticket);
+        // $this->sendEmailAnswer($ticket);
         DB::commit();
         Alert::success('¡Éxito!', 'Respuesta insertada correctamente');
         return redirect()->back();
@@ -890,7 +891,7 @@ class TicketController extends Controller
                     // Enviar el correo electrónico
                     foreach ($recipients as $recipient) {
                         //NUEVA PLANTILLA
-                        Mail::to($recipient)->send(new answerSoporte($ticket));
+                        Mail::to($recipient)->send(new answerSoporte($ticket, $lastReply));
                         Log::info("Si, se estan enviando");
                     }
                 }else {
@@ -910,7 +911,7 @@ class TicketController extends Controller
                     // Enviar el correo electrónico
                     
                     foreach ($recipients as $recipient) {
-                        Mail::to($recipient)->send(new newAnswer($ticket));
+                        Mail::to($recipient)->send(new newAnswer($ticket, $lastReply));
                         Log::info("Si, se estan enviando");
                     }
                 }else {

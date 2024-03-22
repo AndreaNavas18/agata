@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Empleados')
+@section('title', 'Servicios')
 @push('script')
 @endpush
 @section('content')
@@ -67,7 +67,7 @@
                         'required' => false])
                     @endcomponent
                     <div>
-                        {{  $service->proyecto->name ? $service->proyecto->name : 'No se especifico'}}
+                        {{  $service->proyecto?->name ? $service->proyecto->name : 'No se especifico'}}
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">

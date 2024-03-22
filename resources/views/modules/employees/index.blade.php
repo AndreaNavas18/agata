@@ -122,13 +122,13 @@
                             @endcan
 
                             @can('employees.edit')
-                                <a class="btn btn-success btn-sm  mb-1  loading"
+                                {{-- <a class="btn btn-success btn-sm  mb-1  loading"
                                     href="{{ route('employees.edit',$employee->id) }}"
                                     bs-toggle="tooltip"
                                     bs-placement="top"
                                         title="Editar empleado">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> --}}
                             @endcan
 
                             @can('employees.destroy')

@@ -138,14 +138,14 @@
                             @endcan
 
                             @can('customers.edit')
-                                <a class="btn btn-success btn-sm  mb-1 loading"
+                                {{-- <a class="btn btn-success btn-sm  mb-1 loading"
                                     href="{{ route('customers.edit',$customer->id)
                                     }}"
                                     data-toggle="tooltip"
                                     data-placement="top"
                                     title="Editar">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> --}}
                             @endcan
 
                             @can('customers.destroy')

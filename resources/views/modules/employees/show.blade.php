@@ -9,6 +9,23 @@
 	    'title' => 'Ver empleado '.$employee->short_name,
 	    'breadcrumb' => 'employees/show',
         'dataBreadcrumb' => ['id' =>$employee->id ] ])
+         
+        
+        @can('employees.edit')
+
+            <div class="d-flex justify-content-end" style="height: 20px; align-items:center;">
+                <!-- Boton de editar los tickets -->
+                <div>
+                    <a class="btn btn-success btn-sm mb-1 loading"
+                        href="{{ route('employees.edit', $employee->id) }}"
+                        bd-toggle="tooltip"
+                        bd-placement="top"
+                        title="Editar empleado">
+                        <i class="fas fa-edit"> Editar</i>
+                    </a>
+                </div>
+            </div>
+        @endcan
 
         {{-- contactos--}}
         @component('componentes.cardTitle',[

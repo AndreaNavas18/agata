@@ -16,7 +16,6 @@
 
         <!-- Acciones -->
         @slot('header')
-
             <a class="btn btn-primary btn-sm loading"
                 href="{{ route('params.general.proyectos') }}">
                 <i class="fas fa-sync-alt"></i> Refrescar

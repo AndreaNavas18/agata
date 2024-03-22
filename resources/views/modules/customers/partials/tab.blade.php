@@ -36,7 +36,7 @@
             </li>
             <li>
                 <a class="nav-link proyectos
-                    {{ (Session::get('tab') == 'showNormal' ? 'active' : '') }}
+                    {{ (Session::get('tab') == 'proyectos' ? 'active' : '') }}
                     loading"
                     href="{{ $urlProyectos }}">
                     <span class="d-block">
@@ -57,7 +57,7 @@
                 </a>
             </li>
     </ul>
-
+@can('customers.edit')
         @if( Session::get('tab') == 'info' )
             <!-- Boton de editar la información -->
             <div>
@@ -91,10 +91,30 @@
                     <i class="fas fa-edit"> Editar</i>
                 </a>
             </div>
-            {{-- AQUI QUEDE --}}
-        @elseif (Session::get('tab') == 'showNormal')
+        @elseif (Session::get('tab') == 'proyectos')
+            <!-- Boton de editar los proyectos -->
+            <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('customers.proyectos.index', $customer->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar proyectos">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+            </div>
         @elseif (Session::get('tab') == 'tickets')
+             <!-- Boton de editar los tickets -->
+             <div>
+                <a class="btn btn-success btn-sm mb-1 loading"
+                    href="{{ route('customers.tickets.edit', $customer->id) }}"
+                    bd-toggle="tooltip"
+                    bd-placement="top"
+                    title="Editar tickets">
+                    <i class="fas fa-edit"> Editar</i>
+                </a>
+            </div>
         @endif
+@endcan
     </div>
 
 
