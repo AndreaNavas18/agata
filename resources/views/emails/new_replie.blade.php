@@ -1,78 +1,68 @@
-{{-- Este cuando soporte lo crea, le llega asoporte --}}
-
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
-<p style="text-align: justify;">
-    Se ha creado un nuevo ticket, a continuación los detalles.
-</p>
+    <p style="text-align: justify;">
+        Estimado {{ $ticket->customer->name }}, le informamos que en base a su solicitud se ha creado un ticket. Estamos
+        trabajando para atender su requerimiento, nos comunicaremos con usted pronto.
+
+    </p>
+    <p style="text-align: justify;">
+        A continuacion los detalles.
+    </p>
 @endsection
 
-
-
 @section('content')
-    <div
-        style="
-            padding-left: 50px;
-            padding-right: 50px;
+    <div style="
             color: black;
+            padding: 20px 50px;
 ">
-
-        <div class="div-datos">
-            <span><b>Prioridad: {{ isset ($ticket->priority) ? $ticket->priority->name : 'N/A' }}   </b></span>
-            {{-- {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }} --}}
-        </div>
-
-        <div class="div-datos">
-            <span><b>Cliente: </b></span>
-            {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }}
-        </div>
-
-        <div class="div-datos">
-            <span><b>Numero de ticket o consecutivo:</b></span>
-            {{ isset ($ticket->consecutive) ? $ticket->consecutive : 'N/A'}}
-        </div>
 
         <div class="div-datos">
             <span><b>Asunto:</b></span>
             {{ isset($ticket->ticket_issue) ? $ticket->ticket_issue : 'N/A' }}
         </div>
+        
 
+        {{-- MOTIVO SOLICITUD --}}
+        <div class="div-datos">
+            <span><b>Motivo de Solicitud: </b></span>
+            {{-- {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }} --}}
+        </div>
+
+
+        {{-- DESCRIPCIÓN --}}
         <div class="div-datos">
             <span><b>Descripcion del ticket:</b></span>
-            {{  isset($ticket->description) ? $ticket->description : 'N/A' }}
+            {{ isset($ticket->description) ? strip_tags($ticket->description) : 'N/A' }}
         </div>
-        
-        {{-- DEPARTAMENTO --}}
+
+        {{-- IF EXISTE UN PROYECTO (EL PROYECTO) --}}
+
         <div class="div-datos">
-            <span><b>Departamento:</b></span>
-            {{  isset($ticket->department) ? $ticket->department->name : 'N/A' }}
+            <span><b>Proyecto: </b></span>
+            {{-- {{ isset ($ticket->customer) ? $ticket->customer->name : 'N/A' }} --}}
         </div>
-        
+
+
+        {{-- SERVICIOS --}}
+
         <div class="div-datos">
-            <span><b>Agente asignado:</b></span>
-            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'No hay un agente asignado aún' }}
+            <span><b>Servicio:</b></span>
+            {{ isset($ticket->service) ? $ticket->service->description : 'N/A' }}
+        </div>
+
+
+
+        <div class="div-datos">
+            <span><b>Numero de ticket o consecutivo:</b></span>
+            {{ isset($ticket->consecutive) ? $ticket->consecutive : 'N/A' }}
         </div>
 
         {{-- FECHA --}}
-        
+        <div class="div-datos">
+            <span><b>Fecha:</b></span>
+            {{ isset($ticket->created_at) ? $ticket->date : 'N/A' }}
+        </div>
+
     </div>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
