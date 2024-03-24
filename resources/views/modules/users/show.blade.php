@@ -29,11 +29,14 @@
 
         @component('componentes.table')
             @slot('thead')
+            @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
                 <th class="w-50">Roles</th>
+            @endif
                 <th class="w-50">Usuario desde</th>
             @endslot
             @slot('tbody')
                 <tr>
+                    @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
                     <td>
                         <ul>
                             @forelse($user->getRoleNames() as $rol)
@@ -43,6 +46,7 @@
                             @endforelse
                         </ul>
                     </td>
+                    @endif
                     <td>{{ \Carbon\Carbon::parse($user->created_at)->format('Y-m-d') }}</td>
                 </tr>
             @endslot

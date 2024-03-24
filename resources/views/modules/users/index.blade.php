@@ -88,7 +88,7 @@
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>Correo</th>
-                @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
+                @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
                     <th>Rol</th>
                 @endif
                 <th>Estado</th>
@@ -100,7 +100,7 @@
                         <td>{{ $usu->name }}</td>
                         <td>{{ $usu->last_name }}</td>
                         <td>{{ $usu->email }}</td>
-                        @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
+                        @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
                             <td>
                             @forelse($usu->getRoleNames() as $role)
                                     {{ $role }}
@@ -143,6 +143,7 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 @endcan
+                                @can('users.destroy')
                                     <form class="d-inline frmDestroy"
                                         action="{{ route('users.destroy', $usu->id) }}"
                                         method="POST">
@@ -156,6 +157,7 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
+                                @endcan
                         </td>
                     </tr>
                 @endforeach

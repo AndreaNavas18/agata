@@ -39,6 +39,11 @@ Route::middleware(['can:providers.index'])->namespace('Providers')->name('provid
 	Route::get('/proveedores/buscar', [ ProviderController::class, 'search' ])->name('search')
 		->middleware('can:providers.search');
 
+    Route::post('/proveedores/index/importar', [ ProviderController::class, 'import' ])->name('import');
+    
+    Route::post('/proveedores/index/importarcontactos', [ ProviderController::class, 'importContact' ])->name('import.contact');
+
+
 
     /**********************
     *--------- servicios

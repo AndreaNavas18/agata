@@ -211,6 +211,7 @@
             </div>
         </div>
 
+        @if($employee->name_contact_emergency !=null )
         @component('componentes.cardTitle',[
             'shadow' => true,
             'icono'  => 'fas fa-user',
@@ -264,7 +265,7 @@
                 </div>
             </div>
         </div>
-
+    @endif
         {{-- documentos--}}
         @component('componentes.cardTitle',[
             'shadow' => true,

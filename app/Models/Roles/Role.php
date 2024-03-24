@@ -12,9 +12,10 @@ class Role extends SpatieRole
         //Se hace el cambio para poder cambiar roles en la vista 
         return $query
         ->where( 'id' , '>' , 4 )
-        ->where('id', '<', 9)
         //Que no puedan crear usuarios administradores
-        ->where('id', '!=', 6);
+        ->where('id', '!=', 6)
+        //Que no puedan crear usuarios programadores
+        ->where('id', '!=', 9);
         
     }
 

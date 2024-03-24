@@ -20,6 +20,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Session;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProviderImport;
+use App\Imports\ProviderContactImport;
+use Illuminate\Support\Facades\Log;
+use App\Models\Helpers;
 
 class ProviderController extends Controller
 {
@@ -324,6 +329,44 @@ class ProviderController extends Controller
                 Alert::error('Error!', $th->getMessage());
                 return redirect()->back();
             }
+        }
+    }
+
+    public function import(Request $request)
+    {
+        if($request->hasFile('providerdocumento')){
+
+            $file = $request->file('providerdocumento');
+            Excel::import(new ProviderImport, $file);
+            Log::info("funcione, importe los proveedores");
+
+            Alert::success('Bien hecho!', 'Proveedor(es) importado(s) correctamente');
+            return redirect()->back();
+
+            
+        }else {
+            Alert::error('Error', 'Error al importar archivo.');
+            Log::info("no funcioneeee, con los proveedores");
+            return redirect()->back();
+        }
+    }
+
+    public function importContact(Request $request)
+    {
+        if($request->hasFile('providercontactdocumento')){
+
+            $file = $request->file('providercontactdocumento');
+            Excel::import(new ProviderContactImport, $file);
+            Log::info("funcione, importe los proveedores");
+
+            Alert::success('Bien hecho!', 'Contacto(s) de proveedor importado(s) correctamente');
+            return redirect()->back();
+
+            
+        }else {
+            Alert::error('Error', 'Error al importar archivo.');
+            Log::info("no funcioneeee, con los contactos de los proveedores");
+            return redirect()->back();
         }
     }
 }

@@ -16,6 +16,7 @@
 
         <!-- Acciones -->
         @slot('header')
+        <div>
             @can('providers.index')
                 <a class="btn btn-primary btn-sm loading mb-2"
                     href="{{ route('providers.index') }}">
@@ -36,8 +37,26 @@
                     href="{{ route('providers.create') }}">
                     <i class="fas fa-plus"></i> Crear
                 </a>
-            @endcan
 
+                <a class="btn btn-info btn-sm mb-2"
+                    data-toggle="collapse"
+                    href="#importar"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="importar">
+                    <i class="fas fa-light fa-file"></i> Importar
+                </a>
+
+                <a class="btn btn-orange btn-sm mb-2"
+                    data-toggle="collapse"
+                    href="#importarcontactos"
+                    role="button"
+                    aria-expanded="false"
+                    aria-controls="importarcontactos">
+                    <i class="fas fa-light fa-file"></i> Importar Contactos
+                </a>
+            @endcan
+        </div>
         @endslot
 
         <!-- Filtros -->
@@ -68,6 +87,26 @@
                             @endcomponent
                         </div>
                     </div>
+                </form>
+            </div>
+
+            <div class="collapse card-border" id="importar">
+                <form method="POST" id="frmImport" action="{{ route('providers.import') }}" enctype="multipart/form-data" >
+                    @csrf
+                    @include('modules.providers.partials.importProviders', [
+                        'provider' =>true,
+                        'customer' => true,
+                    ])
+                </form>
+            </div>
+
+            <div class="collapse card-border" id="importarcontactos">
+                <form method="POST" id="frmImport" action="{{ route('providers.import.contact') }}" enctype="multipart/form-data" >
+                    @csrf
+                    @include('modules.providers.partials.importContacts', [
+                        'provider' =>true,
+                        'customer' => true,
+                    ])
                 </form>
             </div>
         @endcan

@@ -66,7 +66,7 @@
                             required>
                     </div>
                 </div>
-                @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8, 10]))
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group">
                             @component('componentes.label', [
@@ -107,7 +107,7 @@
                     </div>
                 </div>
 
-                @if(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8)
+                @if(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 )
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group">
                             @component('componentes.label', [

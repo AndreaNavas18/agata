@@ -34,8 +34,14 @@ class UserController extends Controller
             return view('modules.users.index', compact('users', 'proyectos'));
 
         }else if (Gate::allows('users.index')) {
-            $users = User::paginate();
-            return view('modules.users.index', compact('users'));
+            $allowedRoles = [5,7,8,10,2,3];
+            if($user->role_id == 10){
+                $users = User::whereIn('role_id', $allowedRoles)->paginate();
+                return view('modules.users.index', compact('users'));
+            }else{
+                $users = User::paginate();
+                return view('modules.users.index', compact('users'));
+            }
         }
 
 
@@ -78,6 +84,8 @@ class UserController extends Controller
             $user->role_id=7;
             $user->customer_id=Auth()->user()->customer_id;
             $user->proyecto_id=$request->input('proyecto_id') ?? null;
+        }else if($userAuthenticated->role_id == 10) {
+            $user->role_id=5;
         }else {
             $user->role_id=$request->input('role_id');
         }

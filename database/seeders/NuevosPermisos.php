@@ -39,11 +39,27 @@ class NuevosPermisos extends Seeder
         //     }
         // }
 
-        $roleSoporte = Role::find(5);
+        // $roleSoporte = Role::find(5);
 
-            //Permisos dados el dia 11 de marzo del 2024 por seeder
-                $roleSoporte->givePermissionTo(['employees.index', 'employees.edit', 'employees.show', 'employees.search', 
-                'providers.index', 'providers.edit', 'providers.show', 'providers.search']);
+        //     //Permisos dados el dia 11 de marzo del 2024 por seeder
+        //         $roleSoporte->givePermissionTo(['employees.index', 'employees.edit', 'employees.show', 'employees.search', 
+        //         'providers.index', 'providers.edit', 'providers.show', 'providers.search']);
         
+        $roleDirectorSoporte = Role::find(10);
+
+        //Permisos dados el dia 23 de marzo del 2024 por seeder, pero el rol se creo en la vista
+            $roleDirectorSoporte->givePermissionTo(['users.my_profile', 'users.update_my_profile', 'customers.index', 
+            'customers.destroy', 'customers.search', 'customers.create', 'customers.edit', 'customers.contacts.destroy',
+            'customers.show', 'customers.users.index', 'customers.services.index', 'customers.services.search', 'customers.projects.index',
+            'customers.projects.search', 'customers.tickets.index', 'customers.tickets.search', 'customers.users.create',
+            'customers.users.edit', 'customers.services.create', 'customers.services.edit', 'customers.services.destroy',
+            'customers.services.show', 'customers.proyectos.create', 'customers.proyectos.edit', 'customers.proyectos.destroy',
+            'customers.proyectos.show', 'customers.proyectos.asignarServicio', 'customers.tickets.create', 'customers.tickets.edit',
+            'customers.tickets.destroy', 'customers.tickets.show', 'customers.tickets.manage', 'providers.index', 'providers.search', 
+            'providers.show', 'proyectos.index', 'proyectos.show', 'proyectos.edit', 'proyectos.destroy', 'services.index',
+            'services.create','services.edit','services.destroy','services.search','services.show','tickets.index','tickets.create',
+            'tickets.edit','tickets.destroy','tickets.search','tickets.show','tickets.manage']);
+
+            
     }
 }

@@ -285,6 +285,13 @@ class CustomerServiceController extends Controller
 
           
         // Verificar si el campo proyecto_id está presente y tiene un valor válido
+        // if($request->has('proyecto_id')){
+        //     if (is_numeric($request->proyecto_id)) {
+        //         $customerService->proyecto_id = $request->proyecto_id;
+        //     }else if ($request->proyecto_id === '') {
+        //         $customerService->proyecto_id = null;
+        //     }
+        // }
         if ($request->filled('proyecto_id') && is_numeric($request->proyecto_id)) {
             $customerService->proyecto_id = $request->proyecto_id;
         }
