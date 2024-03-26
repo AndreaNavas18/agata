@@ -66,7 +66,5 @@
             <strong>Fecha:</strong>
             {{ isset($ticket->date) ? $ticket->date : 'N/A' }}
         </p>
-        
-
     </div>
 @endsection
