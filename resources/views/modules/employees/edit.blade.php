@@ -1,6 +1,15 @@
 @extends('layouts.app')
 @section('title', 'Empleados')
+@push('script')
+	<script>
+		$('form.frmEliminar').submit(function(e) {
+			if (!confirm('¿Está seguro que desea eliminar este registro?')) { e.preventDefault(); }
+			else { openLoader(); }
+		});
+	</script>
+@endpush
 @section('content')
+
 
 	@component('componentes.card',[
         'shadow' => true,

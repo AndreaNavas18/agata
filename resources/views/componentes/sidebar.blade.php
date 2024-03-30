@@ -32,7 +32,7 @@
         </li>
     @endif
 
-    @if(auth()->user()->can('parametros.empleados.index') || auth()->user()->can('parametros.general.index'))
+    @if(auth()->user()->can('parametros.empleados.index') || auth()->user()->can('parametros.general.index') || auth()->user()->can('parametros.general.soporte'))
         <li class="slide">
             <a class="side-menu__item"  data-toggle="slide" href="#">
                 <i class="side-menu__icon fas fa-cog"></i>
@@ -96,6 +96,7 @@
             </a>
         </li>
     @endif
+    @if(auth()->user()->can('tickets.index'))
    
     <li>
         <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
@@ -103,7 +104,7 @@
             <span class="side-menu__label">Tickets</span>
         </a>
     </li>
-   
+   @endif
 
 </ul>
 

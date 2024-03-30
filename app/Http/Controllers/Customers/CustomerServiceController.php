@@ -784,4 +784,10 @@ class CustomerServiceController extends Controller
             'customerServicesFiles'
         ));
     }
+
+    public function downloadFile($id){
+        $file=CustomerServiceFile::findOrFail($id);
+        $path = public_path('storage/'.$file->path);
+        return response()->download($path);
+    }
 }

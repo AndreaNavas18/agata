@@ -83,7 +83,7 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     Route::put('/clientes/servicios/editarConfiguracion/{id}', [ CustomerServiceController::class, 'updateConfig' ])->name('services.updateConfig');
     //Ruta para importar servicios
     Route::post('/servicios/index/importar', [ CustomerServiceController::class, 'import' ])->name('services.import');
-
+    Route::get('/clientes/servicios/descargar/archivo/{id}', [ CustomerServiceController::class, 'downloadFile' ])->name('services.download.file');
 
     /**********************
     *--------- tickets

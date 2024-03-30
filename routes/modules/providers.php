@@ -32,7 +32,7 @@ Route::middleware(['can:providers.index'])->namespace('Providers')->name('provid
 		->middleware('can:providers.destroy');
 
 
-	Route::delete('/proveedores/contacto/eliminar/{id}', [ ProviderController::class, 'contactDestroy' ])->name('contacts.destroy')
+	Route::get('/proveedores/contacto/eliminar/{id}', [ ProviderController::class, 'contactDestroy' ])->name('contacts.destroy')
     ->where('id', '[0-9]+')
     ->middleware('can:customers.contacts.destroy');
 

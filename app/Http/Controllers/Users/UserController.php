@@ -34,12 +34,17 @@ class UserController extends Controller
             return view('modules.users.index', compact('users', 'proyectos'));
 
         }else if (Gate::allows('users.index')) {
+            //Roles que puede ver el director_soporte
             $allowedRoles = [5,7,8,10,2,3];
             if($user->role_id == 10){
                 $users = User::whereIn('role_id', $allowedRoles)->paginate();
                 return view('modules.users.index', compact('users'));
-            }else{
+            }else if($user->role_id == 9){
                 $users = User::paginate();
+                return view('modules.users.index', compact('users'));
+            }else{
+                //Que no se muestre el rol de programador a nadie, a excepcion del mismo
+                $users = User::where('role_id', '!=', 9)->paginate();
                 return view('modules.users.index', compact('users'));
             }
         }

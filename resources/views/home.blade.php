@@ -11,6 +11,7 @@
     <div class="notificaciones">
         @include('componentes.alerts')
     </div>
+    @can('tickets.show')
 
     <div class="row row-cards">
         <div class="col-md-4 col-sm-12">
@@ -65,6 +66,7 @@
             </div>
         </div><!-- col end -->
     </div>
+    @endcan
     <div class="row row-cards">
         <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
             <div class="card">

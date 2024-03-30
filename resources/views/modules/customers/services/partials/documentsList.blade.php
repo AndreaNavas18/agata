@@ -8,7 +8,11 @@
             @slot('tbody')
                 @foreach ($service->files as $file)
                     <tr>
-                        <td>{{ $file->name_original }}</td>
+                        <td>
+                            <a href="{{ route('customers.services.download.file', ['id' => $file->id]) }}" download>
+                                {{ $file->name_original }}
+                            </a>
+                        </td>
                         <td>
                             @if (in_array(strtolower(pathinfo($file->path, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
                                 <a href="{{ Storage::url($file->path) }}" target="_blank">

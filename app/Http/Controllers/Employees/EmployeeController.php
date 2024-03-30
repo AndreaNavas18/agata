@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Session;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -194,6 +196,7 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        // session::flash('tab','editEmployee');
         $employee= Employee::findOrFail($id);
         $arlsList=EmployeeArl::get();
         $epsList= EmployeeEps::get();
@@ -333,6 +336,36 @@ class EmployeeController extends Controller
             Helpers::MayusculaTextoCompleto($request->input('second_name')) . ' ' .
             Helpers::MayusculaTextoCompleto($request->input('surname')) . ' ' .
             Helpers::MayusculaTextoCompleto($request->input('second_surname'));
+    }
+
+    public function deleteFile($id){
+        try {
+            DB::beginTransaction();
+            $file=EmployeeFile::findOrFail($id);
+            if (!EmployeeFile::findOrFail($id)->delete()) {
+                DB::rollBack();
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
+
+    }
+
+    public function downloadFile($id){
+        $file=EmployeeFile::findOrFail($id);
+        $path = public_path('storage/'.$file->path);
+        return response()->download($path);
     }
 
 }

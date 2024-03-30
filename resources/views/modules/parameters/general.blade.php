@@ -92,7 +92,7 @@
                     </div>
                 </a>
             </div>
-
+    @can('parametros.general.soporte')
             <div class="col-md-4 col-lg-3 mb-3">
                 <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-success loading"
                     href="{{ route('params.general.types_priorities') }}">
@@ -106,7 +106,7 @@
                     </div>
                 </a>
             </div>
-
+    @endcan
             {{-- <div class="col-md-4 col-lg-3 mb-3">
                 <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-info loading"
                     href="{{ route('params.general.proyectos') }}">
