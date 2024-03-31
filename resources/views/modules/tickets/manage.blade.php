@@ -65,30 +65,23 @@
         var secs, mins, gethours;
 
         function startWatch() {
-        /* check if seconds is equal to 60 and add a +1
-            to minutes, and set seconds to 0 */
         if (seconds === 60) {
             seconds = 0;
             minutes = minutes + 1;
         }
 
-        /* i used the javascript tenary operator to format
-            how the minutes should look and add 0 to minutes if
-            less than 10 */
-        mins = minutes < 10 ? "0" + minutes  : minutes  ;
-        /* check if minutes is equal to 60 and add a +1
-            to hours set minutes to 0 */
+        mins = minutes < 10 ? "0" + minutes  : minutes;
+
         if (minutes === 60) {
             minutes = 0;
             hours = hours + 1;
         }
-        /* i used the javascript tenary operator to format
-            how the hours should look and add 0 to hours if less than 10 */
-        gethours = hours < 10 ? "0" + hours : hours ;
+
+        gethours = hours < 10 ? "0" + hours : hours;
+        // gethours = hours;
         secs = seconds < 10 ? "0" + seconds : seconds;
 
-
-        /* display the Count-Up Timer */
+\
         var clockHour = document.getElementById("clockHour");
         clockHour.innerHTML = gethours;
         //minutes
@@ -200,69 +193,38 @@
         });
     </script>
 
-    {{-- <script>
-        $(document).ready(function() {
-            $('#technicals\\[\\]').on('change', function() {
-                var employeeFiles = $(this).val();
-                if (employeeFiles && employeeFiles.length > 0) {
-                    $.ajax({
-                        url: '/get-employee-files',
-                        type: 'GET',
-                        data: { employeeIds: employeeFiles },
-                        success: function(response) {
-                            console.log(response);
-                            $('#selectArchivosDiv').show();
-                            $('#files').empty();
-                            response.forEach(function(employeeData) {
-                                var employeeName = employeeData.employeeName;
-                                var files = employeeData.files;
-                                files.forEach(function(filename) {
-                                    $('#files').append('<option value="' + filename + '">' + employeeName + ' - ' + filename + '</option>');
-                                });
-                            });
-                        }
-                    });
-                } else {
-                    $('#selectArchivosDiv').hide();
-                    $('#files').empty();
-                }
-            });
-        });
-
-    </script> --}}
-
     <script>
         $(document).ready(function() {
-    $('#technicals\\[\\]').on('change', function() {
-        var employeeFiles = $(this).val();
-        if (employeeFiles && employeeFiles.length > 0) {
-            $.ajax({
-                url: '/get-employee-files',
-                type: 'GET',
-                data: { employeeIds: employeeFiles },
-                success: function(response) {
-                    console.log(response);
-                    $('#selectArchivosDiv').show();
-                    $('#files').empty();
-                    response.forEach(function(employeeData) {
-                        var employeeName = employeeData.employeeName;
-                        var files = employeeData.files;
-                        console.log(files);
-                        for (var fileName in files) {
-                            if (files.hasOwnProperty(fileName)) {
-                                var fileId = files[fileName];
-                                $('#files').append('<option value="' + fileId + '">' + employeeName + ' - ' + fileName + '</option>');
+        $('#technicals\\[\\]').on('change', function() {
+            var employeeFiles = $(this).val();
+            if (employeeFiles && employeeFiles.length > 0) {
+                $.ajax({
+                    url: '/get-employee-files',
+                    type: 'GET',
+                    data: { employeeIds: employeeFiles },
+                    success: function(response) {
+                        console.log(response);
+                        $('#selectArchivosDiv').show();
+                        $('#files').empty();
+                        response.forEach(function(employeeData) {
+                            var employeeName = employeeData.employeeName;
+                            var files = employeeData.files;
+                            console.log(files);
+                            for (var fileName in files) {
+                                if (files.hasOwnProperty(fileName)) {
+                                    var fileId = files[fileName];
+                                    $('#files').append('<option value="' + fileId + '">' + employeeName + ' - ' + fileName + '</option>');
+                                }
                             }
-                        }
-                    });
-                }
-            });
-        } else {
-            $('#selectArchivosDiv').hide();
-            $('#files').empty();
-        }
+                        });
+                    }
+                });
+            } else {
+                $('#selectArchivosDiv').hide();
+                $('#files').empty();
+            }
+        });
     });
-});
     </script>
 
 
@@ -347,7 +309,7 @@
             </span>
         </div>
 
-        @if($ticket->priority_id==1)
+        @if($ticket->priority_id==1 && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <div class="col-md-4">
                 @include('modules.tickets.partials.clock')
             </div>

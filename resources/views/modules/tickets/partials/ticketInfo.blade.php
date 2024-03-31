@@ -93,6 +93,7 @@
                     {{ $ticket->state }}
                 </span>
             </td>
+            @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8])) 
             <td>
                  {{-- boton para cambiar el estado del ticket si esta cerrado a abierto  --}}
                  @if($ticket->state=='CERRADO')
@@ -105,6 +106,7 @@
                     </form>
                 @endif
             </td>
+            @endif
         </tr>
     </table>
 @endcomponent

@@ -11,10 +11,9 @@
 			else { openLoader(); }
 		});
 	</script>
-    <script>
+    {{-- <script>
         // Espera a que el DOM esté completamente cargado
         document.addEventListener("DOMContentLoaded", function() {
-            // Obtener todos los botones con la clase createforservice
             var buttons = document.querySelectorAll('.createforproyecto');
             
             // Iterar sobre cada botón
@@ -38,7 +37,8 @@
                 });
             });
         });
-</script>
+</script> --}}
+
 @endpush
 @section('content')
 	@component('componentes.card',
