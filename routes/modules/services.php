@@ -25,6 +25,8 @@ Route::namespace('Customers')->name('customers.')->group(function () {
     ->middleware('can:services.search');
 
     Route::get('/servicios/configuracion/show/{id}', [ CustomerServiceController::class, 'showConfig' ])->name('services.show.config');
+    
+    Route::put('/servicios/configuracion/show/{id}', [ CustomerServiceController::class, 'updateFile' ])->name('services.update.file');
 
     // Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
     // ->where('id', '[0-9]+')

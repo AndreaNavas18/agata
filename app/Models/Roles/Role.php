@@ -14,6 +14,8 @@ class Role extends SpatieRole
         ->where( 'id' , '>' , 4 )
         //Que no puedan crear usuarios administradores
         ->where('id', '!=', 6)
+        //Que no puedan crear usuarios director soporte
+        ->where('id', '!=', 10)
         //Que no puedan crear usuarios programadores
         ->where('id', '!=', 9);
         

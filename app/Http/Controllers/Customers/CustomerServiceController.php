@@ -591,7 +591,7 @@ class CustomerServiceController extends Controller
     }
 
     public function editConfig($id) {
-        session::flash('tab','config');
+        session::flash('tab','editconfig');
 
         $service= CustomerService::findOrFail($id);
         $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
@@ -776,7 +776,10 @@ class CustomerServiceController extends Controller
         session::flash('tab','config');
 
         $service= CustomerService::findOrFail($id);
-        $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
+        //Ordenarlos desde el mas reciente
+        $customerServicesFiles = CustomerServiceFile::orderBy('created_at', 'DESC')
+        ->where('customers_services_id', $id)
+        ->get();
 
 
         return view('modules.customers.services.partials.show.configService', compact(
@@ -790,4 +793,88 @@ class CustomerServiceController extends Controller
         $path = public_path('storage/'.$file->path);
         return response()->download($path);
     }
+
+    public function deleteFile($id){
+        try {
+            DB::beginTransaction();
+            $file=CustomerServiceFile::findOrFail($id);
+            if (!CustomerServiceFile::findOrFail($id)->delete()) {
+                DB::rollBack();
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
+
+    }
+
+    public function updateFile(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            // Obtener el archivo actual
+            $fileService = CustomerServiceFile::findOrFail($id);
+            Log::info("Este es el id que llega");
+            Log::info($id);
+            
+             // Eliminar el archivo existente del sistema de archivos
+             $filePath = public_path('storage/' . $fileService->path);
+             Log::info("Ruta del archivo a eliminar: " . $filePath);
+             if (file_exists($filePath)) {
+                 // Eliminar el archivo del sistema de archivos si es necesario
+                 unlink($filePath);
+                 $fileService->delete();
+             }
+             
+            // Obtener el nuevo archivo del formulario
+            if ($request->hasFile('file')) {
+                $newFile = $request->file('file');
+                $fileNew = new CustomerServiceFile();
+                $fileNew->customers_services_id = $fileService->customers_services_id;
+
+                $customerServiceId = $fileService->customers_services_id;
+
+                Log::info("customerIdService".$customerServiceId);
+
+                // Generar un nombre de archivo único
+                $slugArchivo = 'documento_' . $fileService->customers_services_id . '_' . uniqid() . '.' . $newFile->getClientOriginalExtension();
+                // Mover el nuevo archivo a la carpeta de destino
+                $newFile->move(public_path('storage/servicios/documentos'), $slugArchivo);
+                // Definir la ruta del nuevo archivo
+                $path = 'servicios/documentos/' . $slugArchivo;
+                // Actualizar la información del archivo en la base de datos
+                $fileNew->name_original = strtolower($newFile->getClientOriginalName()) . '_' . uniqid();
+                $fileNew->slug = strtolower($slugArchivo);
+                $fileNew->path = $path;
+
+                if(!$fileNew->save()) {
+                    DB::rollBack();
+                    Alert::error('Error', 'Error al insertar el registro.');
+                    return redirect()->back();
+                }
+
+            } else {
+                Log::info("No estoy guardando el archivo");
+            }
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro actualizado correctamente');
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Alert::error('Error', 'Ocurrió un error al actualizar el archivo');
+            return redirect()->back();
+        }
+    }
+    
 }
