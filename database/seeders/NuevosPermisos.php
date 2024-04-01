@@ -45,9 +45,14 @@ class NuevosPermisos extends Seeder
         //         $roleSoporte->givePermissionTo(['employees.index', 'employees.edit', 'employees.show', 'employees.search', 
         //         'providers.index', 'providers.edit', 'providers.show', 'providers.search']);
         
-        // $roleDirectorSoporte = Role::find(10);
+        
+        // $roleDirectorSoporte = Role::where('name', 'director_soporte')->first();
+        // if (!$roleDirectorSoporte) {
+        //     $roleDirectorSoporte = Role::create(['name' => 'director_soporte']);
+        // }
 
-        //Permisos dados el dia 23 de marzo del 2024 por seeder, pero el rol se creo en la vista
+
+        // Permisos dados el dia 23 de marzo del 2024 por seeder
             // $roleDirectorSoporte->givePermissionTo(['users.my_profile', 'users.update_my_profile', 'customers.index', 
             // 'customers.destroy', 'customers.search', 'customers.create', 'customers.edit', 'customers.contacts.destroy',
             // 'customers.show', 'customers.users.index', 'customers.services.index', 'customers.services.search', 'customers.projects.index',

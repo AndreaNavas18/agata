@@ -8,7 +8,7 @@
         'breadcrumb' => 'parameters/general'])
 
         <div class="row">
-
+    @can('parametros.empleados.index')
             <div class="col-md-4 col-lg-3 mb-3">
                 <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-secondary loading"
                     href="{{ route('params.general.countries') }}">
@@ -92,6 +92,7 @@
                     </div>
                 </a>
             </div>
+            @endcan
     @can('parametros.general.soporte')
             <div class="col-md-4 col-lg-3 mb-3">
                 <a class="font-weight-bold text-center py-3 h-100 w-100 btn btn-success loading"

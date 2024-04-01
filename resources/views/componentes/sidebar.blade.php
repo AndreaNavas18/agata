@@ -32,7 +32,8 @@
         </li>
     @endif
 
-    @if(auth()->user()->can('parametros.empleados.index') || auth()->user()->can('parametros.general.index') || auth()->user()->can('parametros.general.soporte'))
+    {{-- @if(auth()->user()->can('parametros.empleados.index') || auth()->user()->can('parametros.general.index')) --}}
+    @if (in_array(Auth()->user()->role_id, [1, 2, 3, 6, 7, 8, 9, 11]))
         <li class="slide">
             <a class="side-menu__item"  data-toggle="slide" href="#">
                 <i class="side-menu__icon fas fa-cog"></i>
@@ -51,7 +52,21 @@
             </ul>
         </li>
     @endif
-    
+    @if (in_array(Auth()->user()->role_id, [5, 10, 9]))
+    {{-- @if(auth()->user()->can('parametros.general.soporte')) --}}
+        <li class="slide">
+            <a class="side-menu__item"  data-toggle="slide" href="#">
+                <i class="side-menu__icon fa-brands fa-slack"></i>
+                <span class="side-menu__label">
+                    Parametros
+                </span>
+                <i class="angle fa fa-angle-right"></i>
+            </a>
+            <ul class="slide-menu">
+                <li><a class="slide-item loading" href="{{  route('params.general') }}"><span>General</span></a></li>
+            </ul>
+        </li>
+    @endif
     @if(auth()->user()->can('customers.index'))
         <li>
             <a class="side-menu__item loading" href="{{ route('customers.index') }}">
