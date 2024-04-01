@@ -1,21 +1,22 @@
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
-    <p style="text-align: justify;">
-        Hola equipo de soporte,
-    </p style="text-align: justify;">
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+        <p style="margin: 0; margin-bottom: 16px;">
+            Hola equipo de soporte,
+        </p>
+        <p style="margin: 0; margin-bottom: 16px;">
+            Este es un aviso de que hay un ticket de prioridad alta que no ha recibido respuesta:</p>
 
-    <p>Este es un aviso de que hay un ticket de prioridad alta que no ha recibido respuesta:</p>
+    </div>
 @endsection
 
 
 
 @section('content')
-    <div style="
-            padding-left: 50px;
-            padding-right: 50px;
-            color: black;
-">
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
 
         <p style="margin: 0; margin-bottom: 16px;">
             <strong>Prioridad:</strong>
@@ -25,7 +26,7 @@
 
         <p style="margin: 0; margin-bottom: 16px;">
             <strong>Cliente:</strong>
-            {{ isset($ticket->customer) ?$ticket->customer->name : 'N/A' }}
+            {{ isset($ticket->customer) ? $ticket->customer->name : 'N/A' }}
         </p>
 
 
@@ -52,7 +53,11 @@
         </div> --}}
     </div>
 
-    <div>
-        <p>Por favor, tomen las medidas necesarias para abordar este ticket lo antes posible.</p>
+    <br>
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+
+        <p>Por favor, tomen las medidas necesarias para abordar este ticket lo antes posible.
+        </p>
     </div>
 @endsection
