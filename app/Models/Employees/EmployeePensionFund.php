@@ -15,7 +15,7 @@ class EmployeePensionFund extends BaseModel {
 	* *************************************************************/
     public function scopeName($query, $name)
     {
-    	return $query->where('name', $name);
+        return $query->where('name', 'like', '%'.$name.'%');
     }
 
 }

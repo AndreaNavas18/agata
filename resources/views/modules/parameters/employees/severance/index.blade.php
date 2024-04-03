@@ -43,7 +43,8 @@
         <div class="collapse card-border" id="buscar">
             <form
                 method="GET"
-                id="formSearch">
+                id="formSearch"
+                action="{{ route('params.employees.severance.search') }}">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 mb-4">
                         <input class="form-control"

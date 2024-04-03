@@ -79,7 +79,7 @@ Breadcrumbs::for('parameters/employees/departments', function (BreadcrumbTrail $
 */
 Breadcrumbs::for('parameters/employees/pensions', function (BreadcrumbTrail $trail) {
     $trail->parent('parameters/employees');
-    $trail->push('Departamentos', route('params.employees.pensions'));
+    $trail->push('Pensiones', route('params.employees.pensions'));
 });
 
 

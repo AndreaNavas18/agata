@@ -200,11 +200,14 @@ class UserController extends Controller
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function buscar(Request $request)
+    public function search(Request $request)
     {
-        $users = User::with('employee');
+        // $users = User::with('employee');
+        $users = User::query();
+        
         if ($request->filled('name'))
-            $users->username(trim($request->input('name')));
+             $users->username(trim($request->input('name')));
+            
 
         if ($request->filled('status'))
             $users->status($request->input('status'));

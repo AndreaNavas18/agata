@@ -57,7 +57,7 @@ class EmployeeController extends Controller
         }
 
         if ($request->filled('identification')) {
-            $employees = $employees->name($request->identification);
+            $employees = $employees->identification($request->identification);
         }
 
         if ($request->action=='buscar') {
