@@ -4,7 +4,7 @@
         <th>OTP</th>
         <th>ID Servicio Cliente</th>
         <th>Proyecto - Contrato - Subcliente</th>
-        <th>Descripción</th>
+        <th>Nombre</th>
     @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         @if($provider)
             <th>Proveedor</th>
@@ -57,7 +57,7 @@
                 <td>
                     <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
                     
-                    {{ $service->description }}
+                    {{ $service->name }}
                 </a>
                 
                 </td>
