@@ -162,7 +162,7 @@
                         @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]) && isset($serviceId) && $serviceId == $serviceRow->id)
                             selected
                         @endif>
-                        {{ $serviceRow->description }}
+                        {{ $serviceRow->name }}
                     </option>
 
                         {{-- {{ isset($ticket) &&
