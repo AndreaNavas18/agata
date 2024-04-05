@@ -59,7 +59,7 @@
                 <td>
                     {{-- {{ optional($ticket->service)->description }} --}}
                     <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
-                    {{ $ticket->service->description }}
+                    {{ $ticket->service->name }}
                     </a>
                 </td>
 
