@@ -39,9 +39,9 @@
     <div class="col-md-3 col-sm-12 mb-4">
         <input class="form-control"
         type="text"
-        name="description"
-        placeholder="Descripción servicio"
-        value="{{ (isset($data['description'])) ? $data['description'] : '' }}">
+        name="name"
+        placeholder="Nombre servicio"
+        value="{{ (isset($data['name'])) ? $data['name'] : '' }}">
     </div>
     
 
