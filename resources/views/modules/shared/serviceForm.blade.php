@@ -73,20 +73,13 @@
 
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
-                        'title' => 'Nombre del servicio general',
+                        'title' => 'Nombre del servicio',
                         'required' => true])
                     @endcomponent
-                    <select class="form-control selectpicker"
-                        name="service_id"
-                        id="service_id"
-                        required>
-                        <option value="">--Seleccione--</option>
-                        @foreach($servicesList as $serviceRow)
-                            <option value="{{ $serviceRow->id }}">
-                                {{ $serviceRow->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <input type="text"
+                        name="name"
+                        id="name"
+                        class="form-control">
                 </div>
 
                 <div class="col-md-6 mb-4">
@@ -101,6 +94,24 @@
                         @foreach($proyectos as $proyectoRow)
                             <option value="{{ $proyectoRow->id }}">
                                 {{ $proyectoRow->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'Tipo de servicio',
+                        'required' => true])
+                    @endcomponent
+                    <select class="form-control selectpicker"
+                        name="service_id"
+                        id="service_id"
+                        required>
+                        <option value="">--Seleccione--</option>
+                        @foreach($servicesList as $serviceRow)
+                            <option value="{{ $serviceRow->id }}">
+                                {{ $serviceRow->name }}
                             </option>
                         @endforeach
                     </select>
