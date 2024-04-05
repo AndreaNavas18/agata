@@ -282,6 +282,7 @@ class CustomerServiceController extends Controller
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
         $customerService->department_id             = $request->department_id;
+        $customerService->name                      = $request->name;
 
           
         // Verificar si el campo proyecto_id está presente y tiene un valor válido
