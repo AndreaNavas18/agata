@@ -117,7 +117,7 @@
                         <tbody>
                             @foreach($proyecto->customerServices as $service)
                                 <tr>
-                                    <td>{{ $service->description }}</td>
+                                    <td>{{ $service->name }}</td>
                                     <td>{{ $service->service->name }}</td>
                                     <td>{{ $service->created_at }}</td>
                                     <td>

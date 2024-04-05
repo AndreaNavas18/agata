@@ -106,6 +106,18 @@
                     </select>
                 </div>
 
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'Nombre',
+                        'required' => true])
+                    @endcomponent
+                    <input type="text"
+                        name="nombre"
+                        id="nombre"
+                        class="form-control"
+                        required>
+                </div>
+
                 <div class="col-md-6 col-sm-12 mb-4">
                     @component('componentes.label', [
                         'title' => 'Pais',
