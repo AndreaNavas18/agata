@@ -284,7 +284,7 @@ class CustomerServiceController extends Controller
         $customerService->department_id             = $request->department_id;
         $customerService->name                      = $request->name;
 
-          
+
         // Verificar si el campo proyecto_id está presente y tiene un valor válido
         // if($request->has('proyecto_id')){
         //     if (is_numeric($request->proyecto_id)) {
@@ -492,6 +492,46 @@ class CustomerServiceController extends Controller
             return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
         }
     }
+
+        // Buscar Servicios
+
+        public function serviceSearch(Request $request)
+        {
+           
+            session::flash('tab','servicesshowSearch');
+            $servicesList = Service::get();
+             $customers= Customer::get();
+            $tabPanel='customerServicesTabShow';
+            $providers= Provider::get();
+            $proyectos= Proyecto::get();
+            $typesInstalations=['Propia','Terceros'];
+            $departments= Department::get();
+            $typesServices=Service::get();
+            $data=$request->all();
+            $countries= Country::get();
+            $camposAdicionales = [];
+            $customerServices= CustomerService::buscarServicio($data);
+            if ($request->action=='buscar') {
+                $customerServices = $customerServices->paginate();
+                return view('modules.customers.services.index', compact(
+                    'customers',
+                    'customerServices',
+                    'tabPanel',
+                    'providers',
+                    'typesInstalations',
+                    'departments',
+                    'typesServices',
+                    'data',
+                    'countries',
+                    'proyectos',
+                    'servicesList',
+                    'camposAdicionales'
+                ));
+            } else {
+                $customerServices = $customerServices->get();
+                return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
+            }
+        }
 
     public function edit($id) {
 

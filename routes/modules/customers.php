@@ -81,6 +81,11 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     Route::get('/clientes/servicios/editarConfiguracion/{id}', [ CustomerServiceController::class, 'editConfig' ])->name('services.editConfig');
 
     Route::put('/clientes/servicios/editarConfiguracion/{id}', [ CustomerServiceController::class, 'updateConfig' ])->name('services.updateConfig');
+    
+    //Ruta para buscar servicios
+    Route::get('servicios/index/buscar', [ CustomerServiceController::class, 'serviceSearch' ])->name('services.index.buscar');
+    
+    
     //Ruta para importar servicios
     Route::post('/servicios/index/importar', [ CustomerServiceController::class, 'import' ])->name('services.import');
     

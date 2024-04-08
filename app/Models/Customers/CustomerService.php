@@ -9,11 +9,12 @@ use App\Models\Providers\Provider;
 use App\Models\Tickets\Ticket;
 use App\Models\General\Proyecto;
 use App\Models\Customers\CustomerServiceFile;
+use Carbon\Carbon;
 
 class CustomerService extends BaseModel {
 
-	protected $table = 'customers_services';
-	protected $fillable = [
+    protected $table = 'customers_services';
+    protected $fillable = [
         'stratecsa_id',
         'id_serviciocliente',
         'otp',
@@ -31,7 +32,7 @@ class CustomerService extends BaseModel {
         'description',
         'state'
     ];
-	protected $guarded = [];
+    protected $guarded = [];
 
 
     /* *************************************************************
@@ -39,33 +40,68 @@ class CustomerService extends BaseModel {
 	* *************************************************************/
     public function scopeIdentification($query, $identification)
     {
-    	return $query->where('identification', 'like', '%'.$identification.'%');
+        return $query->where('identification', 'like', '%' . $identification . '%');
+    }
+
+    public function scopeDescription($query, $description)
+    {
+        return $query->where('description', 'like', '%' . $description . '%');
+    }
+
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', 'like', '%' . $name . '%');
     }
 
     public function scopeCustomerId($query, $customerId)
     {
-    	return $query->where('customer_id',$customerId);
+        return $query->where('customer_id',$customerId);
+    }
+
+    public function scopeProjectId($query, $projectId)
+    {
+        return $query->where('proyecto_id', $projectId);
     }
 
     public function scopeProviderId($query, $providerId)
     {
-    	return $query->where('provider_id',$providerId);
+        return $query->where('provider_id',$providerId);
     }
 
     public function scopeInstallationType($query, $installationtype)
     {
-    	return $query->where('installation_type',$installationtype);
+        return $query->where('installation_type',$installationtype);
     }
 
     public function scopeServiceId($query, $serviceId)
     {
-    	return $query->where('service_id',$serviceId);
+        return $query->where('service_id',$serviceId);
     }
 
     public function scopeCityId($query, $cityId)
     {
-    	return $query->where('city_id',$cityId);
+        return $query->where('city_id',$cityId);
     }
+
+    public function scopeDateBetween($query, $created_at, $updated_at)
+    {
+        $startDate = Carbon::parse($created_at)->startOfDay();
+        $endDate = Carbon::parse($updated_at)->endOfDay();
+
+        return $query->whereBetween('created_at', [$startDate, $endDate]);
+    }
+
+    public function scopeDateBetweenAndCurrent($query, $created_at)
+    {
+        return $query->whereDate('created_at', '>=', $created_at)
+            ->whereDate('created_at', '<=', Carbon::now());
+    }
+
+    public function scopeCreated_at($query, $created_at)
+    {
+        return $query->where('created_at', $created_at);
+    }
+
 
 
     /* *************************************************************
@@ -104,7 +140,7 @@ class CustomerService extends BaseModel {
 
     public function files()
     {
-        return $this->hasMany(CustomerServiceFile::class,'customers_services_id');
+        return $this->hasMany(CustomerServiceFile::class, 'customers_services_id');
     }
 
 
@@ -113,14 +149,15 @@ class CustomerService extends BaseModel {
 	 * funciones
 	* *************************************************************/
 
-    public static function buscar($data,$id,$tipo) {
-        if ($tipo=='customer') {
-            $customerServices= CustomerService::customerId($id);
+    public static function buscar($data, $id, $tipo)
+    {
+        if ($tipo == 'customer') {
+            $customerServices = CustomerService::customerId($id);
         } else {
-            $customerServices= CustomerService::providerId($id);
+            $customerServices = CustomerService::providerId($id);
         }
 
-        $customerServices= $customerServices->with(
+        $customerServices = $customerServices->with(
             'customer',
             'customer.typeDocument:id,name',
             'service',
@@ -129,38 +166,109 @@ class CustomerService extends BaseModel {
             'city.department',
         );
 
-        if (isset($data['start_date']) && !is_null($data['start_date']) &&
-            isset($data['final_date']) && !is_null($data['final_date'])) {
+        if ( isset($data['start_date']) && !is_null($data['start_date']) &&
+            isset($data['final_date']) && !is_null($data['final_date']))
+            {
             $customerServices = $customerServices->dateBetween($data['start_date'], $data['final_date']);
-        }
+            }
 
-        if (isset($data['description']) && !is_null($data['description']) ) {
+        if (isset($data['description']) && !is_null($data['description'])) {
             $customerServices = $customerServices->name($data['description']);
         }
 
-        if (isset($data['installation_type']) && !is_null($data['installation_type']) ) {
+        if (isset($data['installation_type']) && !is_null($data['installation_type'])) {
             $customerServices = $customerServices->InstallationType($data['installation_type']);
         }
 
-        if (isset($data['service_id']) && !is_null($data['service_id']) ) {
+        if (isset($data['service_id']) && !is_null($data['service_id'])) {
             $customerServices = $customerServices->serviceId($data['service_id']);
         }
 
-        if (isset($data['provider_id']) && !is_null($data['provider_id']) ) {
+        if (isset($data['provider_id']) && !is_null($data['provider_id'])) {
             $customerServices = $customerServices->providerId($data['provider_id']);
         }
 
-        if (isset($data['customer_id']) && !is_null($data['customer_id']) ) {
+        if (isset($data['customer_id']) && !is_null($data['customer_id'])) {
             $customerServices = $customerServices->customerId($data['customer_id']);
         }
 
-        if (isset($data['department_id']) && !is_null($data['department_id']) ) {
-            $customerServices = $customerServices->whereHas('city', function($q) use($data) {
-                return $q->where('general_cities.department_id',$data['department_id']);
+        if (isset($data['department_id']) && !is_null($data['department_id'])) {
+            $customerServices = $customerServices->whereHas('city', function ($q) use ($data) {
+                return $q->where('general_cities.department_id', $data['department_id']);
             });
         }
 
-        if (isset($data['city_id']) && !is_null($data['city_id']) ) {
+        if (isset($data['city_id']) && !is_null($data['city_id'])) {
+            $customerServices = $customerServices->cityId($data['city_id']);
+        }
+
+        return $customerServices;
+    }
+
+
+    //Buscar Servicio
+    public static function buscarServicio($data)
+    {
+
+        $customerServices = CustomerService::query();
+
+
+        $customerServices = $customerServices->with(
+            'customer',
+            'customer.typeDocument:id,name',
+            'service',
+            'provider:id,name',
+            'city',
+            'city.department',
+            'proyecto',
+        );
+
+        if (isset($data['start_date']) && !is_null($data['start_date'])) {
+            $customerServices = $customerServices->dateBetweenAndCurrent($data['start_date']);
+        }
+
+        if (
+            isset($data['start_date']) && !is_null($data['start_date']) &&
+            isset($data['final_date']) && !is_null($data['final_date'])
+        ) {
+            $customerServices = $customerServices->dateBetween($data['start_date'], $data['final_date']);
+        }
+
+        if (isset($data['proyecto_id']) && !is_null($data['proyecto_id'])) {
+            $customerServices = $customerServices->projectId($data['proyecto_id']);
+        }
+
+        if (isset($data['name']) && !is_null($data['name'])) {
+            $customerServices = $customerServices->name($data['name']);
+        }
+
+        if (isset($data['description']) && !is_null($data['description'])) {
+            $customerServices = $customerServices->description($data['description']);
+        }
+
+        if (isset($data['installation_type']) && !is_null($data['installation_type'])) {
+            $customerServices = $customerServices->InstallationType($data['installation_type']);
+        }
+
+        if (isset($data['service_id']) && !is_null($data['service_id'])) {
+            $customerServices = $customerServices->serviceId($data['service_id']);
+        }
+
+        if (isset($data['provider_id']) && !is_null($data['provider_id'])) {
+            $customerServices = $customerServices->providerId($data['provider_id']);
+        }
+
+        if (isset($data['customer_id']) && !is_null($data['customer_id'])) {
+            $customerServices = $customerServices->customerId($data['customer_id']);
+        }
+
+        if (isset($data['department_id']) && !is_null($data['department_id'])) {
+            $customerServices = $customerServices->whereHas('city', function ($q) use ($data) {
+                return $q->where('general_cities.department_id', $data['department_id']);
+            });
+        }
+
+        if (isset($data['city_id']) && !is_null($data['city_id'])) {
             $customerServices = $customerServices->cityId($data['city_id']);
         }
 
