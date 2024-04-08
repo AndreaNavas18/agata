@@ -355,13 +355,14 @@
                             'title' => ucfirst($campoAdicional),
                             'required' => false])
                         @endcomponent
-                        @if($campoAdicional == 'ancho_de_banda')
+                        {{-- @if($campoAdicional == 'ancho_de_banda')
                             <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
                                 <option value="">--Seleccione--</option>
                                 <option value="1">Carga</option>
                                 <option value="2">Descarga</option>
                             </select>
-                        @elseif($campoAdicional == 'tecnologia')
+                        @endif --}}
+                        @if($campoAdicional == 'tecnologia')
                             <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
                                 <option value="">--Seleccione--</option>
                                 <option value="1">Radio</option>

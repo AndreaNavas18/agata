@@ -131,7 +131,8 @@ class GeneralTypePriorityController extends Controller
     {
         $datos = GeneralTypesPriority::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
-        return view('modules.parameters.general.typePriorities.index', compact('datos','data'));
+        $prioritiesList = TicketPriority::all();
+        return view('modules.parameters.general.typePriorities.index', compact('datos','data', 'prioritiesList'));
     }
 
 }

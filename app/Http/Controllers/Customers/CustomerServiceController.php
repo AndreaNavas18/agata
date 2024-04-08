@@ -67,7 +67,8 @@ class CustomerServiceController extends Controller
                 'mascara',
                 'gateway',
                 'mac',
-                'ancho_de_banda',
+                'BW_Download',
+                'BW_upload',
                 'ip_vpn',
                 'tipo_vpn',
                 'user_vpn',
@@ -118,7 +119,8 @@ class CustomerServiceController extends Controller
                 'mascara',
                 'gateway',
                 'mac',
-                'ancho_de_banda',
+                'BW_Download',
+                'BW_upload',
                 'ip_vpn',
                 'tipo_vpn',
                 'user_vpn',
@@ -181,7 +183,8 @@ class CustomerServiceController extends Controller
                 'mascara',
                 'gateway',
                 'mac',
-                'ancho_de_banda',
+                'BW_Download',
+                'BW_upload',
                 'ip_vpn',
                 'tipo_vpn',
                 'user_vpn',
@@ -269,6 +272,7 @@ class CustomerServiceController extends Controller
      */
     public function store(Request $request ,$customerId=null)
     {
+
         DB::beginTransaction();
         $customerService                            = new CustomerService();
         $customerService->stratecsa_id              = $request->stratecsa_id;
@@ -323,8 +327,11 @@ class CustomerServiceController extends Controller
         if($request->filled('mac')) {
             $customerService->mac                       = $request->mac;
         }
-        if($request->filled('ancho_de_banda')) {
-            $customerService->ancho_de_banda            = $request->ancho_de_banda;
+        if($request->filled('BW_Download')) {
+            $customerService->BW_Download                 = $request->BW_Download;
+        }
+        if($request->filled('BW_upload')) {
+            $customerService->BW_upload                 = $request->BW_upload;
         }
         if($request->filled('ip_vpn')) {
             $customerService->ip_vpn                    = $request->ip_vpn;
@@ -459,11 +466,13 @@ class CustomerServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+     //Buscar servicio por cliente
     public function showSearch(Request $request,$customerId)
     {
-       
         session::flash('tab','servicesshowSearch');
         $customer= Customer::findOrFail($customerId);
+        $customers= Customer::get();
         $tabPanel='customerServicesTabShow';
         $providers= Provider::get();
         $proyectos= Proyecto::get();
@@ -472,11 +481,12 @@ class CustomerServiceController extends Controller
         $typesServices=Service::get();
         $data=$request->all();
         $countries= Country::get();
-        $customerServices= CustomerService::buscar($data,$customerId,'customer');
+        $customerServices= CustomerService::buscarServicio($data,$customerId,'customer');
         if ($request->action=='buscar') {
             $customerServices = $customerServices->paginate();
             return view('modules.customers.show', compact(
                 'customer',
+                'customers',
                 'customerServices',
                 'tabPanel',
                 'providers',
@@ -497,7 +507,6 @@ class CustomerServiceController extends Controller
 
         public function serviceSearch(Request $request)
         {
-           
             session::flash('tab','servicesshowSearch');
             $servicesList = Service::get();
              $customers= Customer::get();
@@ -510,7 +519,7 @@ class CustomerServiceController extends Controller
             $data=$request->all();
             $countries= Country::get();
             $camposAdicionales = [];
-            $customerServices= CustomerService::buscarServicio($data);
+            $customerServices= CustomerService::buscarServicio($data, $id=null, $tipo=null);
             if ($request->action=='buscar') {
                 $customerServices = $customerServices->paginate();
                 return view('modules.customers.services.index', compact(
@@ -532,6 +541,7 @@ class CustomerServiceController extends Controller
                 return (new CustomerServicesExport($customerServices))->download('Clientes_servicios.xlsx');
             }
         }
+        
 
     public function edit($id) {
 
@@ -560,7 +570,8 @@ class CustomerServiceController extends Controller
             'mascara',
             'gateway',
             'mac',
-            'ancho_de_banda',
+            'BW_Download',
+            'BW_upload',
             'ip_vpn',
             'tipo_vpn',
             'user_vpn',
@@ -636,12 +647,7 @@ class CustomerServiceController extends Controller
 
         $service= CustomerService::findOrFail($id);
         $customerServicesFiles = CustomerServiceFile::where('customers_services_id', $id)->get();
-        $anchosDeBanda = [
-            '1'  =>   'Carga',
-            '2'  =>  'Descarga'
-        ];
-        $anchoBanda = $service->ancho_de_banda;
-        Log::info($anchoBanda);
+
         $tecnologias = [
             '1'     =>  'Radio',
             '2'     =>  'Fibra',
@@ -653,8 +659,8 @@ class CustomerServiceController extends Controller
         return view('modules.customers.services.partials.edit.configServiceEdit', compact(
             'service',
             'customerServicesFiles',
-            'anchosDeBanda',
-            'anchoBanda',
+            // 'anchosDeBanda',
+            // 'anchoBanda',
             'tecnologias',
             'tecnologia'
         ));
@@ -670,7 +676,8 @@ class CustomerServiceController extends Controller
         $customerService->mascara                   = $request->mascara;
         $customerService->gateway                   = $request->gateway;
         $customerService->mac                       = $request->mac;
-        $customerService->ancho_de_banda            = $request->ancho_de_banda;
+        $customerService->BW_Download               = $request->BW_Download;
+        $customerService->BW_upload                 = $request->BW_upload;
         $customerService->ip_vpn                    = $request->ip_vpn;
         $customerService->tipo_vpn                  = $request->tipo_vpn;
         $customerService->user_vpn                  = $request->user_vpn;

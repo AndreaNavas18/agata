@@ -4,7 +4,7 @@
 
 	@component('componentes.card',[
         'shadow' => true,
-	    'title' => 'Editar configuración del servicio ' . $service->description,
+	    'title' => 'Editar configuración del servicio ' . $service->name,
 	    'breadcrumb' => 'services/show/config',
         'dataBreadcrumb' => ['id' => $service->id] ])
 
