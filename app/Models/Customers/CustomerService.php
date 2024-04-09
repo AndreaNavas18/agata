@@ -18,6 +18,7 @@ class CustomerService extends BaseModel {
         'stratecsa_id',
         'id_serviciocliente',
         'otp',
+        'name',
         'customer_id',
         'proyecto_id',
         'service_id',
@@ -30,7 +31,25 @@ class CustomerService extends BaseModel {
         'installation_type',
         'provider_id',
         'description',
-        'state'
+        'state',
+        'ip',
+        'vlan',
+        'mascara',
+        'gateway',
+        'mac',
+        'BW_Download',
+        'BW_upload',
+        'ip_vpn',
+        'tipo_vpn',
+        'user_vpn',
+        'password_vpn',
+        'user_tunel',
+        'id_tunel',
+        'tecnologia',
+        'equipo',
+        'modelo',
+        'serial',
+        'activo_fijo'
     ];
     protected $guarded = [];
 

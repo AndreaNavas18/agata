@@ -288,7 +288,7 @@ class CustomerServiceController extends Controller
         $customerService->department_id             = $request->department_id;
         $customerService->name                      = $request->name;
 
-
+        Log::info("Este es el tipo de instalacion: ".$request->installation_type);
         // Verificar si el campo proyecto_id está presente y tiene un valor válido
         // if($request->has('proyecto_id')){
         //     if (is_numeric($request->proyecto_id)) {
