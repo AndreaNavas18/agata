@@ -72,7 +72,18 @@
                             {{  $service->mac ? $service->mac : 'No se especifico' }}
                         </div>
                     </div>
+
                     <div class="col-md-4 mb-3">
+                        @component('componentes.label', [
+                            'title' => 'BW_Download',
+                            'required' => false])
+                        @endcomponent
+                        <div>
+                            {{  $service->BW_Download ? $service->BW_Download : 'No se especifico' }}
+                        </div>
+                    </div>
+
+                    {{-- <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Ancho de banda',
                             'required' => false])
@@ -80,28 +91,42 @@
                         <div>
                             {{  $service->ancho_de_banda ? $service->ancho_de_banda : 'No se especifico' }}
                         </div>
-                    </div>
+                    </div> --}}
             </div>
 
             <div class="row">
-                    <div class="col-md-4 mb-3">
-                        @component('componentes.label', [
-                            'title' => 'Ip vpn',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            {{ $service->ip_vpn ? $service->ip_vpn : 'No se especifico'}}
-                        </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'BW_upload',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->BW_upload ? $service->BW_upload : 'No se especifico' }}
                     </div>
-                    <div class="col-md-4 mb-3">
-                        @component('componentes.label', [
-                            'title' => 'Tipo vpn',
-                            'required' => false])
-                        @endcomponent
-                        <div>
-                            {{ $service->tipo_vpn ? $service->tipo_vpn : 'No se especifico'}}
-                        </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Ip vpn',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{ $service->ip_vpn ? $service->ip_vpn : 'No se especifico'}}
                     </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Tipo vpn',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{ $service->tipo_vpn ? $service->tipo_vpn : 'No se especifico'}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'User vpn',
@@ -111,9 +136,7 @@
                                 {{ $service->user_vpn ? $service->user_vpn : 'No se especifico'}}
                         </div>
                     </div>
-            </div>
 
-            <div class="row">
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Password vpn',
@@ -123,6 +146,7 @@
                             {{ $service->password_vpn ? $service->password_vpn : 'No se especifico'}}
                         </div>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'User tunel',
@@ -132,6 +156,9 @@
                             {{ $service->user_tunel ? $service->user_tunel : 'No se especifico'}}
                         </div>
                     </div>
+            </div>
+
+            <div class="row">
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Id tunel',
@@ -141,9 +168,6 @@
                             {{ $service->id_tunel ? $service->id_tunel : 'No se especifico'}}
                         </div>
                     </div>
-            </div>
-
-            <div class="row">
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Tecnología',
@@ -153,6 +177,7 @@
                             {{ $service->tecnologia ? $service->tecnologia : 'No se especifico'}}
                         </div>
                     </div>
+
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Equipo',
@@ -162,6 +187,9 @@
                             {{ $service->equipo ? $service->equipo : 'No se especifico'}}
                         </div>
                     </div>
+            </div>
+
+            <div class="row"> 
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Modelo',
@@ -171,9 +199,6 @@
                             {{ $service->modelo ? $service->modelo : 'No se especifico'}}
                         </div>
                     </div>
-            </div>
-
-            <div class="row">
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Serial',
@@ -183,6 +208,7 @@
                             {{ $service->serial ? $service->serial : 'No se especifico'}}
                         </div>
                     </div>
+                    
                     <div class="col-md-4 mb-3">
                         @component('componentes.label', [
                             'title' => 'Activo fijo',

@@ -14,6 +14,18 @@ class GeneralTypesPriority extends Model
         // Otros campos
     ];
 
+
+
+    /* *************************************************************
+	 * S C O P E S
+	* *************************************************************/
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', 'like', '%'.$name.'%');
+    }
+
+
+
     // Relaciones con otros modelos si es necesario
     public function ticketPriority()
     {
