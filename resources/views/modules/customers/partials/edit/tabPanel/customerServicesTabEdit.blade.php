@@ -26,7 +26,8 @@
         <form method="GET"
         action="{{route('customers.services.index.search', [
                 'customerId' => $customer->id])
-            }}">
+            }}"
+            id="formSearch">
             @include('modules.customers.partials.formFilter', [
                 'provider' =>true,
                 'customer' => false
