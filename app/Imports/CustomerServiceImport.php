@@ -66,7 +66,7 @@ class CustomerServiceImport implements ToModel, WithHeadingRow
                     Log::info("No llego ningun departamento");
                 }
 
-                $city = City::where('name', 'like', '%' . $row['nombre_ciudad'] . '%')->first();
+                $city = City::where('name', '=', $row['nombre_ciudad'])->first();
                 if($city) {
                     $cityId = $city->id;
                     Log::info("Si llego la ciudad");
