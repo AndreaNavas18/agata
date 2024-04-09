@@ -65,7 +65,7 @@ class ProviderController extends Controller
         }
 
         if ($request->filled('identification')) {
-            $providers = $providers->name($request->identification);
+            $providers = $providers->identification($request->identification);
         }
 
         if ($request->action=='buscar') {

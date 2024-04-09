@@ -211,6 +211,12 @@ class CustomerProyectoController extends Controller
                     // }
         }
 
+    public function projectSearch(Request $request){
+        $proyectos = Proyecto::name($request->input('proyecto_id'))->orderBy('name')->paginate();
+        $proyectosAll = Proyecto::get();
+        return view('modules.customers.proyectos.index',
+        compact('proyectos' , 'proyectosAll'));
+    }
 
     public function show($id)
     {

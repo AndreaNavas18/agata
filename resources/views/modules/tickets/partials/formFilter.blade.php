@@ -34,6 +34,8 @@
             name="priority_id"
             id="priority_id">
             <option value="">--Prioridad--</option>
+            {{-- @if(request('action') == 'buscar') --}}
+            {{-- @else --}}
             @foreach($priorities as $priority)
                 <option value="{{ $priority->id }}"
                     {{ isset($data['priority_id']) &&
@@ -41,6 +43,7 @@
                         ? 'selected' : '' }}>
                     {{ $priority->name }}
                 </option>
+            {{-- @endif --}}
             @endforeach
         </select>
     </div>

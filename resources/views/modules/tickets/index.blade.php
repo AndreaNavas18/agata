@@ -54,11 +54,12 @@
                     action="{{ route('tickets.search') }}"
                     method="GET"
                     id="formSearch">
-                    
                     @include('modules.tickets.partials.formFilter', [
                         'customer' => true,
                         'provider' => true,
                     ])
+                    {{-- Input oculto para mandar la accion de buscar --}}
+                    <input type="hidden" name="action" value="buscar">
                 </form>
             </div>
         @endcan

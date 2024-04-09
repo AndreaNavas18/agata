@@ -192,4 +192,13 @@ Route::namespace('Customers')->name('customers.')->group(function () {
     ->where('id', '[0-9]+')
     ->middleware('can:proyectos.index');
 
+    Route::get('/proyectos/buscar', [ CustomerProyectoController::class, 'projectSearch' ])->name('proyectos.search')
+    ->where('id', '[0-9]+')
+    ->middleware('can:proyectos.index');
+    
+    
+
+
+
+    
 });
