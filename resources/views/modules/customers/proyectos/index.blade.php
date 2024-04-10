@@ -49,7 +49,7 @@
         <div class="card-border">
             <div>
                 <a class="btn btn-primary btn-sm loading"
-                    href="">
+                    href="{{route('customers.proyectos.index.all')}}">
                     <i class="fas fa-sync-alt"></i> Refrescar
                 </a>
                 <a class="btn btn-info btn-sm"
@@ -63,7 +63,7 @@
 
             <!-- Filtros -->
             <div class="collapse card-border" id="buscar">
-                <form method="GET" id="frmBuscar" action="">
+                <form method="GET" id="frmBuscar" action="{{route('customers.proyectos.search')}}">
                     @include('modules.customers.partials.formFilter2', [
                         'provider' =>true,
                         'customer' => true,

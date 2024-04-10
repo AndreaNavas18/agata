@@ -8,7 +8,7 @@
 
 @component('componentes.table')
     @slot('thead')
-        <th>Consecutivo.</th>
+        <th>Consecutivo</th>
         <th>Titulo</th>
         <th>Fecha</th>
         @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
