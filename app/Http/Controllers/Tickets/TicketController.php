@@ -744,15 +744,21 @@ class TicketController extends Controller
         $timeActually = Carbon::now();
         DB::beginTransaction();
         //nueva respuesta
-        $ticketReply                    = new TicketReply();
-        $ticketReply->replie           = $request->replie;
-        $ticketReply->ticket_id         = $ticket->id;
-        $ticketReply->user_id                = Auth()->user()->id;
-       
-        if($request->state == 'Cerrado'){
-            $ticket->state_clock = 'Detenido';
-            $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
-            $ticket->datetime_clock     = $timeActually;
+        $ticketReply                        = new TicketReply();
+        $ticketReply->replie                = $request->replie;
+        $ticketReply->ticket_id             = $ticket->id;
+        $ticketReply->user_id               = Auth()->user()->id;
+
+       if($ticket->priority_id == 1){
+           if($request->state == 'Cerrado'){
+               $ticket->state_clock = 'Detenido';
+               $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+               $ticket->datetime_clock     = $timeActually;
+           }
+       }else {
+           if($request->state == 'Cerrado'){
+               $ticket->state = 'Cerrado';
+           }
         }
 
         if (!$ticketReply->save()) {
@@ -763,9 +769,11 @@ class TicketController extends Controller
 
         if($ticket->customer_id == Auth()->user()->customer_id) {
             Log::info("AQUI ESTAMOS REY" .$ticket->state_clock);
-            if($ticket->state_clock == 'DETENIDO'){
-                $ticket->state_clock        = 'CORRIENDO';
-                $ticket->datetime_clock     = $timeActually; 
+            if($ticket->priority_id == 1){
+                if($ticket->state_clock == 'DETENIDO'){
+                    $ticket->state_clock        = 'CORRIENDO';
+                    $ticket->datetime_clock     = $timeActually; 
+                }
             }
             $ticketReply->customer_id      = Auth()->user()->customer_id;
     
@@ -838,19 +846,6 @@ class TicketController extends Controller
                 }
             }
         }
-
-        //enviar correo al cliente
-        // $contactsTickets=CustomerContact::customerId($ticket->customer_id)
-        // ->typeContactId(1)
-        // ->get();
-
-        // if (count($contactsTickets)> 0) {
-        //     foreach ($contactsTickets as $key => $contact) {
-        //         Mail::send('emails.new_replie', compact('contact','ticket','ticketReply'), function($message) use ($contact,$ticket) {
-        //             $message->to($contact->email)->subject('Nueva respuesta ticket Stratecsa, consecutivo '.$ticket->id);
-        //         });
-        //     }
-        // }
         // Le voy a pasar el ticket y la ultima respuesta
         $this->sendEmailAnswer($ticket);
         // $this->sendEmailAnswer($ticket);
