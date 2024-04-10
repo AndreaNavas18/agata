@@ -416,10 +416,10 @@ class TicketController extends Controller
 
     public function sendEmail(Ticket $ticket, $emails)
     {
-        Mail::to(['plataformaagata@stratecsa.cloud', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
+        Mail::to(['soporte@stratecsa.com', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
         //Si fue el cliente quien creo el ticket, no va haber un empleado asigando y se enviaran dos series de correo distintas
         if (is_null($ticket->employee)) {
-            $agentEmail = 'plataformaagata@stratecsa.cloud';
+            $agentEmail = 'soporte@stratecsa.com';
 
             if (!empty($agentEmail) || !empty($emails)) {
 
@@ -874,7 +874,7 @@ class TicketController extends Controller
                     // Si hay un agente asignado, enviar correo al agente y a soporte
                    // Verificar si el correo electrónico del agente es válido
                    $employeeEmail = $ticket->employee->email;
-                   $supportEmail = 'plataformaagata@stratecsa.cloud';
+                   $supportEmail = 'soporte@stratecsa.com';
                    $validator = Validator::make(['email' => $employeeEmail], ['email' => 'email']);
 
                     if($validator->fails() || empty($employeeEmail)) {
@@ -884,7 +884,7 @@ class TicketController extends Controller
                     }
                 } else {
                     // Si no hay agente asignado, enviar correo únicamente a soporte
-                    $recipients = ['plataformaagata@stratecsa.cloud'];
+                    $recipients = ['soporte@stratecsa.com'];
                 }
 
                 if (!empty($recipients)) {

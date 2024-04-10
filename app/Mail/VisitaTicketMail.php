@@ -40,7 +40,7 @@ class VisitaTicketMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            to: 'plataformaagata@sratecsa.cloud',
+            to: 'soporte@stratecsa.com',
         );
 
     }
