@@ -58,7 +58,7 @@ function serachServicesCustomer(customerId) {
             $.each(customerServices, function(i,v) {
                 $('select#customer_service_id').append($('<option>', {
                     value: v.id,
-                    text : v.name
+                    text : 'ID ' + v.stratecsa_id + ' - OTP ' + v.otp +  ' - '  + v.name 
                 }));
             });
             $('select#customer_service_id').selectpicker('refresh');
