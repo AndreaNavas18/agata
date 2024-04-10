@@ -34,14 +34,14 @@ Route::namespace('Customers')->name('customers.')->group(function () {
 
     Route::get('/clientes/servicios/ver/buscar/{customerId}', [ CustomerServiceController::class, 'showSearch' ])->name('services.show.search')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:customers.services.edit');
 
     Route::post('/clientes/servicios/crear/{customerId?}',[ CustomerServiceController::class, 'store' ])->name('services.store')
-    ->middleware('can:customers_create');
+    ->middleware('can:services.create');
 
     Route::put('/clientes/servicios/editar/{id}', [ CustomerServiceController::class, 'update' ])->name('services.update')
     ->where('id', '[0-9]+')
-    ->middleware('can:customers_edit');
+    ->middleware('can:customers.services.edit');
 
 
 	Route::delete('/servicios/eliminar/{id}', [ CustomerServiceController::class, 'destroy' ])->name('services.destroy')
