@@ -46,7 +46,7 @@ Route::namespace('Customers')->name('customers.')->group(function () {
 
 	Route::delete('/servicios/eliminar/{id}', [ CustomerServiceController::class, 'destroy' ])->name('services.destroy')
     ->where('id', '[0-9]+')
-    ->middleware('can:servides.destroy');
+    ->middleware('can:services.destroy');
 
 
 
