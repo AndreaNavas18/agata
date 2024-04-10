@@ -53,101 +53,129 @@
 @push('script')
 <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 
-    <script>
-        /* initialization of different variables
-        to be used in Count-Up App*/
-        var clearTime;
-        var seconds = {{ $secondsClock }},
-        minutes = {{ $minutesClock }},
-        hours = {{ $hoursClock }};
-        var secs, mins, gethours;
+<script>
+    /* initialization of different variables
+    to be used in Count-Up App*/
+    var clearTime;
+    var seconds = {{ $secondsClock }},
+    minutes = {{ $minutesClock }},
+    hours = {{ $hoursClock }};
+    var secs, mins, gethours;
 
-        function startWatch() {
-        /* check if seconds is equal to 60 and add a +1
-            to minutes, and set seconds to 0 */
-        if (seconds === 60) {
-            seconds = 0;
-            minutes = minutes + 1;
+    function startWatch() {
+    if (seconds === 60) {
+        seconds = 0;
+        minutes = minutes + 1;
+    }
+
+    mins = minutes < 10 ? "0" + minutes  : minutes;
+
+    if (minutes === 60) {
+        minutes = 0;
+        hours = hours + 1;
+    }
+
+    gethours = hours < 10 ? "0" + hours : hours;
+    // gethours = hours;
+    secs = seconds < 10 ? "0" + seconds : seconds;
+
+
+    var clockHour = document.getElementById("clockHour");
+    clockHour.innerHTML = gethours;
+    //minutes
+    var clockMinute = document.getElementById("clockMinute");
+    clockMinute.innerHTML = mins;
+    //seconds
+    var clockSecond = document.getElementById("clockSecond");
+    clockSecond.innerHTML = secs;
+
+    /* call the seconds counter after displaying the Count-Up
+        and increment seconds by +1 to keep it counting */
+    seconds++;
+
+    /* call the setTimeout( ) to keep the Count-Up alive ! */
+    clearTime = setTimeout(startWatch, 1000);
+    }
+
+    window.addEventListener("load", function() {
+        startWatch();
+    });
+    /*********** End of Continue Button Operations *********/
+    $('#state').on('change', function() {
+        value= $(this).val();
+        if (value=='Cerrado') {
+            $('#state_clock').val('Detenido').prop('disabled', true);
+        } else {
+            $('#state_clock').prop('disabled', false);
         }
-
-        /* i used the javascript tenary operator to format
-            how the minutes should look and add 0 to minutes if
-            less than 10 */
-        mins = minutes < 10 ? "0" + minutes  : minutes  ;
-        /* check if minutes is equal to 60 and add a +1
-            to hours set minutes to 0 */
-        if (minutes === 60) {
-            minutes = 0;
-            hours = hours + 1;
-        }
-        /* i used the javascript tenary operator to format
-            how the hours should look and add 0 to hours if less than 10 */
-        gethours = hours < 10 ? "0" + hours : hours ;
-        secs = seconds < 10 ? "0" + seconds : seconds;
-
-
-        /* display the Count-Up Timer */
-        var clockHour = document.getElementById("clockHour");
-        clockHour.innerHTML = gethours;
-        //minutes
-        var clockMinute = document.getElementById("clockMinute");
-        clockMinute.innerHTML = mins;
-        //seconds
-        var clockSecond = document.getElementById("clockSecond");
-        clockSecond.innerHTML = secs;
-
-        /* call the seconds counter after displaying the Count-Up
-            and increment seconds by +1 to keep it counting */
-        seconds++;
-
-        /* call the setTimeout( ) to keep the Count-Up alive ! */
-        clearTime = setTimeout("startWatch( )", 1000);
-        }
-
-        window.addEventListener("load", function() {
-            startWatch();
-        });
-        /*********** End of Continue Button Operations *********/
-        $('#state').on('change', function() {
-            value= $(this).val();
-            if (value=='Cerrado') {
-                $('#state_clock').val('Detenido').prop('disabled', true);
-            } else {
-                $('#state_clock').prop('disabled', false);
-            }
-        })
-        $('.addVisit').on('click', function() {
-            var replieId = $(this).attr('data-replieId');
-            $('#formVisit').trigger("reset");
-            $('#ticket_replie_id').val(replieId);
-            $('#modalVisit').modal('show');
-        })
-        $('form#formVisit').submit(function(e) {
-            e.preventDefault();
-            var $form = $('#formVisit')[0];
-            if ($form.checkValidity()) {
-                openLoader();
-                $form.submit();
-            }
-            else {
-                closeLoader();
-            }
-        });
-        ClassicEditor
-    .create(document.querySelector('#editor'), {
-        // Configuración personalizada
-        // Aquí agregamos el height personalizado
-        height: '500px',
     })
-    .then(editor => {
-        console.log(editor);
-    })
-    .catch(error => {
-        console.error(error);
+   
+   
+    
+    ClassicEditor
+.create(document.querySelector('#editor'), {
+    // Configuración personalizada
+    // Aquí agregamos el height personalizado
+    height: '500px',
+})
+.then(editor => {
+    console.log(editor);
+})
+.catch(error => {
+    console.error(error);
+});
+</script>
+
+<script>
+    $('.addVisit').on('click', function() {
+        var replieId = $(this).attr('data-replieId');
+        $('#formVisit').trigger("reset");
+        $('#ticket_replie_id').val(replieId);
+        $('#modalVisit').modal('show');
+        console.log("Si me estoy mostrando");
+        console.log(replieId);
+    });
+
+    $('form#formVisit').submit(function(e) {
+        e.preventDefault();
+        var $form = $('#formVisit')[0];
+        if ($form.checkValidity()) {
+            openLoader();
+            $form.submit();
+        }
+        else {
+            closeLoader();
+        }
+    });
+
+    $('.addAgent').on('click', function() {
+        $('#formAgent').trigger("reset");
+        $('#modalAgent').modal('show');
+    });
+
+    $('form#formAgent').submit(function(e) {
+        e.preventDefault();
+        var $form = $('#formAgent')[0];
+        if ($form.checkValidity()) {
+            openLoader();
+            $form.submit();
+            console.log("Si me estoy enviando");
+        }
+        else {
+            closeLoader();
+            console.log("No me estoy enviando");
+        }
+    });
+
+    $('.addPriority').on('click', function() {
+        $('#formPriority').trigger("reset");
+        $('#modalPriority').modal('show');
     });
 
 
-    </script>
+
+</script>
+
 @endpush
 @section('content')
 

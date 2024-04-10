@@ -81,7 +81,7 @@
         // gethours = hours;
         secs = seconds < 10 ? "0" + seconds : seconds;
 
-\
+
         var clockHour = document.getElementById("clockHour");
         clockHour.innerHTML = gethours;
         //minutes
@@ -96,7 +96,7 @@
         seconds++;
 
         /* call the setTimeout( ) to keep the Count-Up alive ! */
-        clearTime = setTimeout("startWatch( )", 1000);
+        clearTime = setTimeout(startWatch, 1000);
         }
 
         window.addEventListener("load", function() {
