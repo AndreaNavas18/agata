@@ -84,7 +84,7 @@
                 @endif
 
                 <td>
-                    <span class="badge {{ ($ticket->state  == 'Abierto') ? 'bg-danger' : 'bg-success' }}">
+                    <span class="badge {{ ($ticket->state  == 'ABIERTO') ? 'bg-danger' : 'bg-success' }}">
                             {{ $ticket->state}}
                     </span>
                 </td>

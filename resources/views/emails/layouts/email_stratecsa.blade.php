@@ -33,7 +33,8 @@
 		}
 
 		p {
-			line-height: inherit
+			line-height: inherit;
+			color:#444a5b;
 		}
 
 		.desktop_hide,
