@@ -1,19 +1,16 @@
-{{-- Cuando le asigna un Ticket a un Agente --}}
-
 @extends('emails.layouts.email_stratecsa')
 
 @section('message')
     <div
         style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
+        <p style="margin: 0;">
 
+            Estimado cliente, se le informa que una nueva respuesta se ha registrado para darle continuacion a el ticket
+            {{ $ticket->consecutive }}, a continuacion los detalles.
 
-        <p style="text-align: justify;">
-            Se le ha asignado un nuevo ticket con el número {{ $ticket->id }}.
         </p>
-        <p>A continuacion los detalles:</p>
     </div>
 @endsection
-
 
 
 @section('content')
@@ -21,42 +18,39 @@
         style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
 
         <p style="margin: 0; margin-bottom: 16px;">
-            <span><b>Prioridad: {{ isset($ticket->priority) ? ucfirst(strtolower($ticket->priority->name)) : 'N/A' }}
-                </b></span>
-            {{-- {{ isset($ticket->service->installation_type) ? $ticket->service->installation_type : 'N/A' }} --}}
+            <strong>Asunto:</strong>
+            {{ isset($ticket->ticket_issue) ? ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
         </p>
 
-        <p style="margin: 0; margin-bottom: 16px;">
-            <span><b>Cliente: </b></span>
-            {{ isset($ticket->customer) ?  $ticket->customer->name : 'N/A' }}
-        </p>
 
+        {{-- DESCRIPCION --}}
         <p style="margin: 0; margin-bottom: 16px;">
-            <span><b>Numero de ticket o consecutivo:</b></span>
-            {{ isset($ticket->consecutive) ? $ticket->consecutive : 'N/A' }}
-        </p>
-
-        <p style="margin: 0; margin-bottom: 16px;">
-            <span><b>Asunto:</b></span>
-            {{ isset($ticket->ticket_issue) ?  ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
-        </p>
-
-        <p style="margin: 0; margin-bottom: 16px;">
-            <span><b>Descripcion del ticket:</b></span>
+            <strong>Descripción del ticket:</strong>
             {{ isset($ticket->description) ? ucfirst(strtolower(strip_tags($ticket->description))) : 'N/A' }}
         </p>
 
-        {{-- <div class="div-datos">
-            <span><b>Agente asignado:</b></span>
-            {{ isset($ticket->employee->short_name) ? $ticket->employee->short_name : 'No hay un agente asignado aún' }}
-        </div> --}}
-    </div>
-
-    <div 
-    style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
 
         <p style="margin: 0; margin-bottom: 16px;">
-            Por favor, toma las medidas necesarias para atender este ticket lo antes posible.
+            <strong>Estado tickect:</strong>
+            <span class="badge {{ $ticket->state == 'Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
+                {{ ucfirst(strtolower($ticket->state)) }}
+            </span>
         </p>
+
+
+        {{-- DATE --}}
+        <p style="margin: 0; margin-bottom: 16px;">
+            <strong>Fecha:</strong>
+            {{ isset($ticket->date) ? $ticket->date : 'N/A' }}
+        </p>
+
+
+        <div class="div-datos">
+            <span><b>Respuesta:</b></span>
+
+            {{ isset($lastReply->replie) ? ucfirst(strtolower($lastReply->replie)) : 'N/A' }}
+        </div>
+
+
     </div>
 @endsection
