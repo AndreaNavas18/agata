@@ -163,6 +163,7 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
 
     //Rutas AJAX
     Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');
+    Route::get('/obtener-proyectos', [CustomerProyectoController::class, 'getProyectos'])->name('ruta_para_obtener_proyectos');
 
      /**********************
     *--------- usuarios

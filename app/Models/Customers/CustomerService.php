@@ -10,6 +10,7 @@ use App\Models\Tickets\Ticket;
 use App\Models\General\Proyecto;
 use App\Models\Customers\CustomerServiceFile;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class CustomerService extends BaseModel {
 
@@ -244,6 +245,24 @@ class CustomerService extends BaseModel {
     }
 
 
+        //Obtener todos los servicios del cliente que pertenezcan a un proyecto
+    public function obtenerServiciosClienteProyecto($customer_id, $proyecto_id)
+    
+        {
+            if ($proyecto_id === "Null") {
+                Log::info($customer_id);
+                $servicesCustomer = CustomerService::where('customer_id', $customer_id)
+            ->whereNull('proyecto_id')
+            ->get();
+            }
+
+          else{  
+            $servicesCustomer = CustomerService::where('customer_id', $customer_id)
+                            ->where('proyecto_id', $proyecto_id)
+                            ->get();
+          }
+            return $servicesCustomer;
+        }   
 
 
     // public static function buscar($data, $id, $tipo)

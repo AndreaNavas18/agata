@@ -924,5 +924,5 @@ class CustomerServiceController extends Controller
             return redirect()->back();
         }
     }
-    
+
 }

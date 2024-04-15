@@ -448,11 +448,18 @@ class CustomerProyectoController extends Controller
 
         // Obtener la información necesaria del proyecto utilizando el ID
         $proyecto = Proyecto::findOrFail($proyectoSeleccionadoId);
-
+    
         // Log::info($proyectoSeleccionadoId);
         
         // Devuelve la información del proyecto en formato JSON
         return response()->json(['proyecto' => $proyecto, 'proyectoSeleccionadoId' => $proyectoSeleccionadoId]);
+    }
+
+    //Obtener todos los proyectos
+    public function getProyectos(){
+       $proyectos = Proyecto::get();
+
+       return response()->json($proyectos);
     }
 
 }

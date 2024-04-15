@@ -141,10 +141,49 @@
         </div>
     @endif
 
+    {{-- Proyectos del Cliente --}}
+
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
+            'title' => 'Proyecto',
+            'id' => 'project_id',
+            'required' => true])
+        @endcomponent
+
+        <select class="form-control
+            selectpicker"
+            name="project_id"
+            id="project_id"
+            required>
+            <option value="">--Seleccione--</option>
+            @if(isset($ticket) || in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                @foreach($serviceList as $serviceRow)
+                    <option value="{{ $serviceRow->id }}"
+                        @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)
+                            selected
+                        @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]) && isset($serviceId) && $serviceId == $serviceRow->id)
+                            selected
+                        @endif>
+                        {{ $serviceRow->name }}
+                    </option>
+
+                        {{-- {{ isset($ticket) &&
+                            $ticket->customer_service_id == $serviceRow->id
+                            ? 'selected' : '' }}>
+                        {{ $serviceRow->description }} --}}
+                    
+                @endforeach
+                
+            @endif
+            
+        </select>
+
+    </div>
+
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
             'title' => 'Servicio',
-            'id' => 'customer_service_id',
+            'id' => 'customer_service_project_id',
             'required' => true])
         @endcomponent
 
@@ -154,6 +193,7 @@
             id="customer_service_id"
             required>
             <option value="">--Seleccione--</option>
+            {{-- CAMBIAR LA VARIABLE PORQUE TRAE TODOS LOS SERVICIOS DEL CLIENTE NO FILTRADOS POR PROYECTOS --}}
             @if(isset($ticket) || in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 @foreach($serviceList as $serviceRow)
                     <option value="{{ $serviceRow->id }}"
@@ -253,7 +293,9 @@
 <input type="hidden"
     id="rutaAjax"
     data-url-employees="{{ route('tickets.employees.positions.departments') }}"
-    data-url-services="{{ route('tickets.customers.services') }}">
+    {{-- data-url-services="{{ route('tickets.customers.services') }}" --}}
+    data-url-projects="{{ route('customers.ruta_para_obtener_proyectos') }}"
+    data-url-services-project="{{ route('tickets.customers.servicesProject') }}">
     {{-- Scripts para tener formatos en las text areas de las descripciones de los tickets --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
     <script>

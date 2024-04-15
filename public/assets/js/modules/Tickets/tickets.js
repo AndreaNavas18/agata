@@ -36,26 +36,40 @@ $('#employee_position_department_id').change (function() {
 });
 
 /* Carga las jerarquías */
-$('#customer_id').on('change', function() {
-    var customerId = $(this).val();
-    serachServicesCustomer(customerId);
+
+$('#customer_id' ).on('change', function() {
+    var customerId =  $(this).val();
+    // serachServicesCustomer(customerId);
+    //Traer todos proyectos
+    serachProject();
+    
+
+    //Id del proyecto Seleccionado
+    $('#project_id' ).on('change', function() {
+        var projectId =  $(this).val();
+        serachServicesProjectCustomer(customerId, projectId);
+        
+    });
+    
 });
 
 
-function serachServicesCustomer(customerId) {
+//Traer los servicios del cliente que pertenecen a un proyecto seleccionado
+
+function serachServicesProjectCustomer(customerId, projectId) {
     openLoader();
-    ruta = $('input#rutaAjax').attr('data-url-services');
+    ruta = $('input#rutaAjax').attr('data-url-services-project');
     $.ajax({
         url: ruta,
         type: 'GET',
-        data: { customerId: customerId},
+        data: { customerId: customerId, projectId: projectId},
         beforeSend: function() {
             $('div.loader').addClass('is-active');
             $('select#customer_service_id').html('');
             $('select#customer_service_id').append('<option value="">--Seleccione--</option>');
         },
-        success: function(customerServices) {
-            $.each(customerServices, function(i,v) {
+        success: function(servicesCustomerProject) {
+            $.each(servicesCustomerProject, function(i,v) {
                 $('select#customer_service_id').append($('<option>', {
                     value: v.id,
                     text : 'ID ' + v.stratecsa_id + ' - OTP ' + v.otp +  ' - '  + v.name 
@@ -78,3 +92,77 @@ function serachServicesCustomer(customerId) {
 }
 
 
+
+// function serachServicesCustomer(customerId) {
+//     openLoader();
+//     ruta = $('input#rutaAjax').attr('data-url-services');
+//     $.ajax({
+//         url: ruta,
+//         type: 'GET',
+//         data: { customerId: customerId},
+//         beforeSend: function() {
+//             $('div.loader').addClass('is-active');
+//             $('select#customer_service_id').html('');
+//             $('select#customer_service_id').append('<option value="">--Seleccione--</option>');
+//         },
+//         success: function(customerServices) {
+//             $.each(customerServices, function(i,v) {
+//                 $('select#customer_service_id').append($('<option>', {
+//                     value: v.id,
+//                     text : 'ID ' + v.stratecsa_id + ' - OTP ' + v.otp +  ' - '  + v.name 
+//                 }));
+//             });
+//             $('select#customer_service_id').selectpicker('refresh');
+//             closeLoader();
+//         },
+//         error: function(e) {
+//             if (e.responseJSON !== undefined) {
+//                 if (e.responseJSON.error != null) {
+//                     alert(e.responseJSON.error);
+//                 }
+//             } else {
+//                 alert('Ocurrió un error al cargar las jerarquías.');
+//             }
+//             closeLoader();
+//         }
+//     });
+// }
+
+
+//MIS PRUEBAS AJAX
+
+function serachProject() {
+    openLoader();
+    ruta = $('input#rutaAjax').attr('data-url-projects');
+    $.ajax({
+        url: ruta,
+        type: 'GET',
+        // data: { customerId: customerId},
+        beforeSend: function() {
+            $('div.loader').addClass('is-active');
+            $('select#project_id').html('');
+            $('select#project_id').append('<option value="">--Seleccione--</option>');
+            $('select#project_id').append('<option value="Null">Sin Proyecto</option>');
+        },
+        success: function(proyectos) {
+            $.each(proyectos, function(i,v) {
+                $('select#project_id').append($('<option>', {
+                    value: v.id,
+                    text : v.name
+                }));
+            });
+            $('select#project_id').selectpicker('refresh');
+            closeLoader();
+        },
+        error: function(e) {
+            if (e.responseJSON !== undefined) {
+                if (e.responseJSON.error != null) {
+                    alert(e.responseJSON.error);
+                }
+            } else {
+                alert('Ocurrió un error al cargar las jerarquías.');
+            }
+            closeLoader();
+        }
+    });
+}
