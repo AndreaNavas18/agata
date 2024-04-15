@@ -27,6 +27,7 @@ use App\Mail\answerSoporte;
 use App\Mail\NewTicketClient;
 use App\Mail\ticketSoporte;
 use App\Mail\TicketAsignado;
+use App\Models\General\Proyecto;
 use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
@@ -272,9 +273,11 @@ class TicketController extends Controller
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $prioritiesList = GeneralTypesPriority::all();
             $serviceList = CustomerService::customerId(Auth()->user()->customer_id)->get();
+            $projectList = Proyecto::all();
         } else {
             $prioritiesList = TicketPriority::all();
             $serviceList = [];
+            $projectList = []; 
         }
         $date = Carbon::now()->format('Y-m-d');
         
@@ -289,7 +292,8 @@ class TicketController extends Controller
             'prioritiesList',
             // 'serviceArray',
             'serviceList',
-            'date'));
+            'date',
+            'projectList'));
         }
 
         return view('modules.tickets.create', compact(
@@ -298,7 +302,8 @@ class TicketController extends Controller
             'prioritiesList',
             // 'serviceArray',
             'serviceList',
-            'date'
+            'date',
+            'projectList'
         ));
     }
 
@@ -731,6 +736,17 @@ class TicketController extends Controller
     public function customerServices(Request $request)
     {
         return CustomerService::with('service')->customerId($request->customerId)->get();
+    }
+
+    
+    public function customerServicesProject(Request $request)
+    {
+        $customerId = $request->customerId;
+        $projectId = $request->projectId;
+        $customerService = new CustomerService();
+
+        $servicesCustomerProject  =  $customerService->obtenerServiciosClienteProyecto($customerId, $projectId);
+        return response()->json($servicesCustomerProject);
     }
 
     public function replyStore(Request $request, $id)
