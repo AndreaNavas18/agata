@@ -36,17 +36,27 @@ $('#employee_position_department_id').change(function () {
 });
 
 /* Carga las jerarquías */
+    var customerId = '';
+    var customerChanged = false;
 
-var customerId = '';
+    $('#customer_id').on('change', function () {
+        customerChanged = true;
+        customerId = $(this).val();
+    
+        $('select#customer_service_id').html('');
+        $('select#customer_service_id').append('<option value="">--Seleccione--</option>').selectpicker('refresh');
+        // serachServicesCustomer(customerId);
+        //Traer todos proyectos
+        // console.log('Cliente= ', customerId);
+        serachProject(customerId);
+    });
 
-$('#customer_id').on('change', function () {
-    customerId = $(this).val();
-    // serachServicesCustomer(customerId);
-    //Traer todos proyectos
-    // console.log('Cliente= ', customerId);
-    serachProject(customerId);
-
-});
+    //Cuando se edita, manda el id del cliente para que filtre los servicios con los proyectos.
+    $(document).ready(function() {
+        if (!customerChanged) {
+            customerId = $('#customer_id').val()
+        }
+    });
 
 
 // Id del proyecto Seleccionado

@@ -498,6 +498,7 @@ class TicketController extends Controller
         $customersList = Customer::get();
         $positionsDepartmanets = EmployeePositionDepartment::get();
         $prioritiesList = TicketPriority::get();
+        $projectsList = Proyecto::get();
         $serviceList = CustomerService::customerId($ticket->customer_id)->get();
         $employeesList = Employee::whereHas('position', function ($q) use ($ticket) {
             return $q->where('employees_positions.department_id', $ticket->employee_position_department_id);
@@ -510,7 +511,8 @@ class TicketController extends Controller
             'prioritiesList',
             'serviceList',
             'employeesList',
-            'date'
+            'date',
+            'projectsList'
         ));
     }
 

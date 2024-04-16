@@ -157,14 +157,11 @@
             required>
             <option value="">--Seleccione--</option>
             @if(isset($ticket) || in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
-                @foreach($serviceList as $serviceRow)
-                    <option value="{{ $serviceRow->id }}"
-                        @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)
-                            selected
-                        @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]) && isset($serviceId) && $serviceId == $serviceRow->id)
-                            selected
-                        @endif>
-                        {{ $serviceRow->name }}
+            <option value="Null" {{ (!isset($ticket) || $ticket->service->proyecto_id == null) ? 'selected' : '' }}>Sin proyecto</option>
+            @foreach($projectsList as $projectRow)
+                <option value="{{ $projectRow->id }}"
+                    {{ (isset($ticket) && $ticket->service->proyecto_id == $projectRow->id) ? 'selected' : '' }}>
+                        {{ $projectRow->name }}
                     </option>
 
                         {{-- {{ isset($ticket) &&
@@ -200,8 +197,9 @@
                         @if(isset($ticket) && $ticket->customer_service_id == $serviceRow->id)
                             selected
                         @elseif(in_array(Auth()->user()->role_id, [2, 3, 7, 8]) && isset($serviceId) && $serviceId == $serviceRow->id)
-                            selected
+                            selected 
                         @endif>
+                
                         {{ $serviceRow->name }}
                     </option>
 
