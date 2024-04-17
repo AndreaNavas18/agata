@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
-    /**
+    /**store
      * Muestra la página de listado de tickets.
      *
      * @return \Illuminate\View\View
@@ -273,11 +273,11 @@ class TicketController extends Controller
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $prioritiesList = GeneralTypesPriority::all();
             $serviceList = CustomerService::customerId(Auth()->user()->customer_id)->get();
-            $projectList = Proyecto::all();
+            $projectsList = Proyecto::all();
         } else {
             $prioritiesList = TicketPriority::all();
             $serviceList = [];
-            $projectList = []; 
+            $projectsList = []; 
         }
         $date = Carbon::now()->format('Y-m-d');
         
@@ -293,7 +293,7 @@ class TicketController extends Controller
             // 'serviceArray',
             'serviceList',
             'date',
-            'projectList'));
+            'projectsList'));
         }
 
         return view('modules.tickets.create', compact(
@@ -303,7 +303,7 @@ class TicketController extends Controller
             // 'serviceArray',
             'serviceList',
             'date',
-            'projectList'
+            'projectsList'
         ));
     }
 
