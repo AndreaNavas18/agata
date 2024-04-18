@@ -38,9 +38,11 @@ $('#employee_position_department_id').change(function () {
 /* Carga las jerarquías */
     var customerId = '';
     var customerChanged = false;
+    var projectChanged = false;
 
     $('#customer_id').on('change', function () {
         customerChanged = true;
+        projectChanged = true;
         customerId = $(this).val();
     
         $('select#customer_service_id').html('');
@@ -52,9 +54,17 @@ $('#employee_position_department_id').change(function () {
     });
 
     //Cuando se edita, manda el id del cliente para que filtre los servicios con los proyectos.
+   
+
     $(document).ready(function() {
         if (!customerChanged) {
             customerId = $('#customer_id').val()
+        }
+        projectId = $('#project_id').val();
+        if(!projectChanged && projectId!==undefined){
+             serachServicesProjectCustomer(customerId, projectId)
+
+
         }
     });
 
@@ -64,8 +74,10 @@ $('#project_id').on('change', function () {
     var projectId = $(this).val();
     // console.log('Proyecto= ', projectId);
     serachServicesProjectCustomer(customerId, projectId);
-
+    var x = ''
 });
+
+
 
 
 //Traer los servicios del cliente que pertenecen a un proyecto seleccionado
@@ -84,20 +96,39 @@ function serachServicesProjectCustomer(customerId, projectId) {
         url: ruta,
         type: 'GET',
         data: { customerId: customerId, projectId: projectId },
+        
         beforeSend: function () {
+            if(!projectChanged && projectId!==undefined){
+           
+            x = $('#customer_service_id').val()
+
+        }
             $('div.loader').addClass('is-active');
             $('select#customer_service_id').html('');
             $('select#customer_service_id').append('<option value="">--Seleccione--</option>');
+
         },
         success: function (servicesCustomerProject) {
             $.each(servicesCustomerProject, function (i, v) {
-                $('select#customer_service_id').append($('<option>', {
+                var option = $('<option>', {
                     value: v.id,
                     text: 'ID ' + v.stratecsa_id + ' - OTP ' + v.otp + ' - ' + v.name
-                }));
+                });
+            
+                // Verificar si el valor de la opción coincide con el valor seleccionado
+                if(!projectChanged && projectId!==undefined){
+                if (x == v.id) {
+                    option.prop('selected', true);
+                }
+            }
+            
+                $('select#customer_service_id').append(option);
             });
+            
             $('select#customer_service_id').selectpicker('refresh');
             closeLoader();
+            
+           
         },
         error: function (e) {
             if (e.responseJSON !== undefined) {
@@ -130,7 +161,7 @@ function serachProject(customerId) {
     $.ajax({
         url: ruta,
         type: 'GET',
-        // data: { customerId: customerId},
+        data: { customerId: customerId},
         beforeSend: function () {
             $('div.loader').addClass('is-active');
             $('select#project_id').html('');
@@ -143,6 +174,7 @@ function serachProject(customerId) {
                     value: v.id,
                     text: v.name
                 }));
+                // console.log(v);
             });
             $('select#project_id').selectpicker('refresh');
             closeLoader();
@@ -159,6 +191,60 @@ function serachProject(customerId) {
         }
     });
 }
+
+
+
+//PUEBAS
+
+
+// $(document).ready(function() {
+//     // Función autoejecutable
+//     (function serachServicesProjectCustomer() {
+//         var projectId = $('#project_id').val();
+        
+//         openLoader();
+
+       
+//             // Si el campo de búsqueda está vacío, limpiar la lista de opciones y salir de la función
+//             $('select#customer_service_id').html('');
+//             $('select#customer_service_id').append('<option value="">--Seleccione--</option>');
+//             $('select#customer_service_id').selectpicker('refresh');
+  
+
+//         var ruta = $('input#rutaAjax').attr('data-url-services-project');
+        
+//         $.ajax({
+//             url: ruta,
+//             type: 'GET',
+//             data: { customerId: customerId, projectId: projectId },
+//             beforeSend: function () {
+//                 $('div.loader').addClass('is-active');
+//                 $('select#customer_service_id').html('');
+//                 $('select#customer_service_id').append('<option value="">--Seleccione--</option>');
+//             },
+//             success: function (servicesCustomerProject) {
+//                 $.each(servicesCustomerProject, function (i, v) {
+//                     $('select#customer_service_id').append($('<option>', {
+//                         value: v.id,
+//                         text: 'ID ' + v.stratecsa_id + ' - OTP ' + v.otp + ' - ' + v.name
+//                     }));
+//                 });
+//                 $('select#customer_service_id').selectpicker('refresh');
+//                 closeLoader();
+//             },
+//             error: function (e) {
+//                 if (e.responseJSON !== undefined) {
+//                     if (e.responseJSON.error != null) {
+//                         alert(e.responseJSON.error);
+//                     }
+//                 } else {
+//                     alert('Ocurrió un error al cargar las jerarquías.');
+//                 }
+//                 closeLoader();
+//             }
+//         });
+//     })();
+// });
 
 
 
