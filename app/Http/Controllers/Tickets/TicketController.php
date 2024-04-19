@@ -43,10 +43,10 @@ class TicketController extends Controller
         $tickets = Ticket::query();
         $user = Auth::user();
         $customerServices = null;
-        $priorities = TicketPriority::all();
-        $customers = Customer::all();
-        $employees = Employee::all();
-        $providers = Provider::all();
+        $prioritiesAll = TicketPriority::all();
+        $customersAll = Customer::all();
+        $employeesAll = Employee::all();
+        $providersAll = Provider::all();
 
         // Verificar si el usuario tiene el rol con ID 2, 3, 7 o 8
         if($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -63,16 +63,16 @@ class TicketController extends Controller
                 'tickets', 
                 'customerServices', 
                 'states',
-                'priorities',
-                'customers',
-                'employees',
-                'providers'
+                'prioritiesAll',
+                'customersAll',
+                'employeesAll',
+                'providersAll'
             ));
 
         }else {
 
             $tickets = Ticket::orderBy('id', 'DESC')->paginate();
-            $priorities = TicketPriority::all();
+            $prioritiesAll = TicketPriority::all();
             $customers = Customer::all();
             $employees = Employee::all();
             $providers = Provider::all();
@@ -85,10 +85,10 @@ class TicketController extends Controller
             // Devolver la vista 'modules.tickets.index' con los datos necesarios
             return view('modules.tickets.index', compact(
                 'tickets',
-                'priorities',
-                'customers',
-                'employees',
-                'providers',
+                'prioritiesAll',
+                'customersAll',
+                'employeesAll',
+                'providersAll',
                 'states',
                 'customerServices',
             ));
@@ -110,6 +110,13 @@ class TicketController extends Controller
         $tickets = Ticket::query();
         // Obtener el usuario logueado
         $user = Auth::user();
+        //Todos los valores para pasarlos al Select
+        $prioritiesAll = TicketPriority::all();
+        $employeesAll = Employee::all();
+        $providersAll = Provider::all();
+        $customersAll = Customer::all();
+        $customerServiceAll = CustomerService::all();
+        
         
         // Verificar si el usuario tiene un cliente asociado
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -195,20 +202,22 @@ class TicketController extends Controller
                 $query->where('employee_id', $employeeId);
             }
 
-            if(!empty($customerId)) {
-                $query->where('customer_id', $customerId);
+            if (!empty($customerId)) {
+                $query->join('customers_services as cs', 'tickets.customer_service_id', '=', 'cs.id')
+                      ->where('cs.customer_id', $customerId);
             }
-
+            
             // Aplicar la búsqueda por servicio si se seleccionó
             if (!empty($customerServiceId)) {
                 $query->where('customer_service_id', $customerServiceId);
             }
-
+            
             if (!empty($providerId)) {
-                $query->join('customers_services as cs', 
-                'tickets.customer_service_id', '=', 'cs.id')
-              ->where('cs.provider_id', $providerId);
+                $query->join('customers_services as cs2', 'tickets.customer_service_id', '=', 'cs2.id')
+                      ->where('cs2.provider_id', $providerId);
             }
+            
+            
 
             // Aplicar la búsqueda por estado si se seleccionó
             if (!empty($selectedState)) {
@@ -244,6 +253,11 @@ class TicketController extends Controller
                 'tickets' => $tickets,
                 'data' => $data,
                 'states' => $states,
+                'prioritiesAll' => $prioritiesAll,
+                'employeesAll' => $employeesAll,
+                'providersAll' => $providersAll,
+                'customersAll' => $customersAll                
+
             ]);
 
             // return view('modules.tickets.index',
