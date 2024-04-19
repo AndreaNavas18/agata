@@ -25,7 +25,7 @@ $('#employee_position_department_id').change(function () {
         error: function (e) {
             closeLoader();
             if (e.responseJSON !== undefined) {
-                if (e.responseJSON.error != null) {
+                if (e.responseJSON.error !== null) {
                     alert(e.responseJSON.error);
                 }
             } else {
@@ -54,7 +54,7 @@ $('#employee_position_department_id').change(function () {
     });
 
     $('#customer_id').on('change', function () {
-    var idCustomer = $(this).val()
+        var idCustomer = $(this).val();
         serachServicesCustomer(idCustomer);
     });
     
@@ -64,13 +64,11 @@ $('#employee_position_department_id').change(function () {
 
     $(document).ready(function() {
         if (!customerChanged) {
-            customerId = $('#id_customer').val()
+           customerId = $('#id_customer').val();
         }
         projectId = $('#project_id').val();
         if(!projectChanged && projectId!==undefined){
-             serachServicesProjectCustomer(customerId, projectId)
-
-
+            serachServicesProjectCustomer(customerId, projectId);
         }
     });
 
@@ -80,7 +78,7 @@ $('#project_id').on('change', function () {
     var projectId = $(this).val();
     // console.log('Proyecto= ', projectId);
     serachServicesProjectCustomer(customerId, projectId);
-    var x = ''
+    var x = '';
 });
 
 
@@ -106,7 +104,7 @@ function serachServicesProjectCustomer(customerId, projectId) {
         beforeSend: function () {
             if(!projectChanged && projectId!==undefined){
            
-            x = $('#customer_service_id').val()
+            x = $('#customer_service_id').val();
 
         }
             $('div.loader').addClass('is-active');
@@ -138,7 +136,7 @@ function serachServicesProjectCustomer(customerId, projectId) {
         },
         error: function (e) {
             if (e.responseJSON !== undefined) {
-                if (e.responseJSON.error != null) {
+                if (e.responseJSON.error !== null) {
                     alert(e.responseJSON.error);
                 }
             } else {
@@ -187,7 +185,7 @@ function serachProject(customerId) {
         },
         error: function (e) {
             if (e.responseJSON !== undefined) {
-                if (e.responseJSON.error != null) {
+                if (e.responseJSON.error !== null) {
                     alert(e.responseJSON.error);
                 }
             } else {
@@ -223,7 +221,7 @@ function serachServicesCustomer(customerId) {
         },
         error: function(e) {
             if (e.responseJSON !== undefined) {
-                if (e.responseJSON.error != null) {
+                if (e.responseJSON.error !== null) {
                     alert(e.responseJSON.error);
                 }
             } else {
@@ -274,7 +272,7 @@ function serachServicesCustomer(customerId) {
 //             },
 //             error: function (e) {
 //                 if (e.responseJSON !== undefined) {
-//                     if (e.responseJSON.error != null) {
+//                     if (e.responseJSON.error !== null) {
 //                         alert(e.responseJSON.error);
 //                     }
 //                 } else {
