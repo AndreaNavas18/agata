@@ -109,7 +109,7 @@
             ])
             @endcomponent
             <select class="form-control
-                selectpicker" name="customer_id" id="customer_id" required>
+                selectpicker" name="customer_id" id="id_customer" required>
                 <option value="">--Seleccione--</option>
                 @foreach ($customersList as $customerRow)
                     <option value="{{ $customerRow->id }}"
@@ -137,7 +137,7 @@
 
         <select class="form-control
             selectpicker" name="project_id" id="project_id" required>
-            <option value="">--Seleccione---------------</option>
+            <option value="">--Seleccione--</option>
             @if (isset($ticket) || in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 {{-- <option value="Null"
                     {{ !isset($ticket) || $ticket->service->proyecto_id == null ? 'selected' : '' }}>Sin proyecto

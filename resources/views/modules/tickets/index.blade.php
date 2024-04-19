@@ -42,7 +42,7 @@
         @endslot
 
         <!-- Filtros -->
-        @can('tickets_ver')
+        @can('tickets.search')
             <!-- ocultos -->
             <input type="hidden"
                 id="rutaAjax"
