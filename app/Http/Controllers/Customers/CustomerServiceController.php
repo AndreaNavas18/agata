@@ -50,7 +50,7 @@ class CustomerServiceController extends Controller
             $cities = City::get();
             $countries = Country::get();
             $servicesList = Service::get();
-            $typesServices = Service::get();
+            $typesServices = Service::orderBy('name')->get();
             // Obtener los ids únicos de los proyectos asociados a los servicios del cliente
             $projectIds = $customerServices->pluck('proyecto_id')->unique();
             $proyectos = Proyecto::whereIn('id', $projectIds)->get();
@@ -109,9 +109,9 @@ class CustomerServiceController extends Controller
                 'Propia'    =>'Propia',
                 'Terceros'  =>'Terceros'
             ];
-            $providers = Provider::get();
+            $providers = Provider::orderBy('name')->get();
             $tabPanel='customerServicesTabEdit';
-            $typesServices=Service::get();
+            $typesServices=Service::orderBy('name')->get();
             $proyectos = Proyecto::get();
             $camposAdicionales = [
                 'ip',
@@ -474,11 +474,11 @@ class CustomerServiceController extends Controller
         $customer= Customer::findOrFail($customerId);
         $customers= Customer::get();
         $tabPanel='customerServicesTabShow';
-        $providers= Provider::get();
+        $providers= Provider::orderBy('name')->get();
         $proyectos= Proyecto::get();
         $typesInstalations=['Propia','Terceros'];
         $departments= Department::get();
-        $typesServices=Service::get();
+        $typesServices=Service::orderBy('name')->get();
         $data=$request->all();
         $countries= Country::get();
         $customerServices= CustomerService::buscarServicio($data,$customerId,'customer');
@@ -511,11 +511,11 @@ class CustomerServiceController extends Controller
             $servicesList = Service::get();
              $customers= Customer::get();
             $tabPanel='customerServicesTabShow';
-            $providers= Provider::get();
+            $providers= Provider::orderBy('name')->get();
             $proyectos= Proyecto::get();
             $typesInstalations=['Propia','Terceros'];
             $departments= Department::get();
-            $typesServices=Service::get();
+            $typesServices=Service::orderBy('name')->get();
             $data=$request->all();
             $countries= Country::get();
             $camposAdicionales = [];

@@ -77,6 +77,11 @@ $('#employee_position_department_id').change(function () {
 $('#project_id').on('change', function () {
     var projectId = $(this).val();
     // console.log('Proyecto= ', projectId);
+    var customer = $('input#id_customer').attr('data-id-customer');
+    //Si el que se autenticó es un cliente o usuario del cliente para mostrar los proyectos que tiene asociados
+    if (customer!== ''){
+        customerId= customer;
+    }
     serachServicesProjectCustomer(customerId, projectId);
     var x = '';
 });

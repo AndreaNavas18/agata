@@ -22,7 +22,7 @@
 		<link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
 
 		<!-- Custom scroll bar css-->
-		<link href="{{asset('assets/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
 
 		<!-- Sidemenu css -->
 		<link href="{{asset('assets/plugins/toggle-sidebar/full-sidemenu-dark.css')}}" rel="stylesheet" />
@@ -43,6 +43,25 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
 
         @stack('css')
+
+		{{-- JS para odenar las columnas de las tablas con flechas descendente y ascendente --}}
+		<style>
+			table tr th {
+			cursor: pointer;
+			}
+
+			.sorting {
+			background-color: #D4D4D4;
+			}
+
+			.asc:after {
+			content: ' ↑';
+			}
+
+			.desc:after {
+			content: " ↓";
+			}
+		</style>
 
 	</head>
 
@@ -376,6 +395,44 @@
                     else { openLoader(); }
                 });
             </script>
+			{{-- JS para odenar las columnas de las tablas con flechas descendente y ascendente --}}
+			<script>
+					$('th').click(function() {
+					var table = $(this).parents('table').eq(0)
+					var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+					this.asc = !this.asc
+					if (!this.asc) {
+					rows = rows.reverse()
+					}
+					for (var i = 0; i < rows.length; i++) {
+					table.append(rows[i])
+					}
+					setIcon($(this), this.asc);
+				})
+
+				function comparer(index) {
+					return function(a, b) {
+					var valA = getCellValue(a, index),
+						valB = getCellValue(b, index)
+					return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB)
+					}
+				}
+
+				function getCellValue(row, index) {
+					return $(row).children('td').eq(index).html()
+				}
+
+				function setIcon(element, asc) {
+					$("th").each(function(index) {
+					$(this).removeClass("sorting");
+					$(this).removeClass("asc");
+					$(this).removeClass("desc");
+					});
+					element.addClass("sorting");
+					if (asc) element.addClass("asc");
+					else element.addClass("desc");
+				}
+			</script>
         @stack('script')
 
 	</body>
