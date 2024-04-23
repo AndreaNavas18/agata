@@ -9,20 +9,33 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class newAnswer extends Mailable
+class webCorreo extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $formData;
+    public $nombre;
+    public $empresa;
+    public $pais;
+    public $provincia;
+    public $telefono;
+    public $correo;
+    public $asunto;
+    public $mensaje;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(array $formData)
+    public function __construct($nombre, $empresa, $pais, $provincia, $telefono, $correo, $asunto, $mensaje)
     {
-        $this->formData = $formData;
+        $this->nombre = $nombre;
+        $this->empresa = $empresa;
+        $this->pais = $pais;
+        $this->provincia = $provincia;
+        $this->telefono = $telefono;
+        $this->correo = $correo;
+        $this->asunto = $asunto;
+        $this->mensaje = $mensaje;
     }
 
     /**
@@ -69,7 +82,14 @@ class newAnswer extends Mailable
         return $this->view('emails/web_correo')
                     ->subject('Contacto por pagina web')
                     ->with([
-                        'formData' => $this->formData
+                        'nombre' => $this->nombre,
+                        'empresa' => $this->empresa,
+                        'pais' => $this->pais,
+                        'provincia' => $this->provincia,
+                        'telefono' => $this->telefono,
+                        'correo' => $this->correo,
+                        'asunto' => $this->asunto,
+                        'mensaje' => $this->mensaje
                     ])
                     ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa');
     }

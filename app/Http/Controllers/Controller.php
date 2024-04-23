@@ -15,15 +15,37 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function enviarCorreo(Request $request) {
+    public function enviarCorreo(Request $request){
+        $nombre         = $request->nombre;
+        $empresa        = $request->empresa;
+        $pais           = $request->pais;
+        $provincia      = $request->provincia;
+        $telefono       = $request->telefono;
+        $correo         = $request->correo;
+        $asunto         = $request->asunto;
+        $mensaje        = $request->mensaje;
 
-        Mail::to('karennavas333@gmail.com')->send(new webCorreo($request->all()));
+        Mail::to('karennavas333@gmail.com')->send(new webCorreo($nombre, $empresa, $pais, $provincia, $telefono, $correo, $asunto, $mensaje));
+        
+        Log::info("Si se envio el correo");
 
         return response()->json([
             'message' => 'Correo enviado'
         ]);
 
+
+    }
+
+    public function correo($request) {
+
+        Mail::to('karennavas333@gmail.com')->send(new webCorreo($request->all()));
+        
         Log::info("Si se envio el correo");
+
+        return response()->json([
+            'message' => 'Correo enviado'
+        ]);
+
 
     }
 }

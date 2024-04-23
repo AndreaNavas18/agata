@@ -19,8 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Agregar middleware global CORS
+
 Route::middleware('cors')->group(function () {
 
-    Route::post('/enviar-correo', [Controller::class, 'enviarCorreo'])->name('enviar-correo');
+    Route::get('/enviar-correo', [Controller::class, 'enviarCorreo'])->name('enviar-correo');
+    
 });
