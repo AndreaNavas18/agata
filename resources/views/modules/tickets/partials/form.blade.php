@@ -283,8 +283,14 @@
 
 {{-- inputs ocultos --}}
 <input type="hidden" id="rutaAjax" data-url-employees="{{ route('tickets.employees.positions.departments') }}"
-    {{-- data-url-services="{{ route('tickets.customers.services') }}" --}} data-url-projects="{{ route('customers.ruta_para_obtener_proyectos') }}"
+    {{-- data-url-services="{{ route('tickets.customers.services') }}" --}}
+    data-url-projects="{{ route('customers.ruta_para_obtener_proyectos') }}"
     data-url-services-project="{{ route('tickets.customers.servicesProject') }}">
+    {{--Obtener el id del suaurio autenticado para pasarlo al AJAX y así buscar todos  proyectos asociados a alguien servicio.--}}
+    <input type="hidden" id="id_customer" name="id_user" data-id-customer="{{ (in_array(Auth()->user()->role_id, [2, 3, 7, 8])) ? Auth()->user()->customer_id : '' }}">
+
+
+
 {{-- Scripts para tener formatos en las text areas de las descripciones de los tickets --}}
 <script src="https://cdn.ckeditor.com/ckeditor5/37.1.0/classic/ckeditor.js"></script>
 <script>

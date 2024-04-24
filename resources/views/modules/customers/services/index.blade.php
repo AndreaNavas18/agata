@@ -78,8 +78,8 @@
                     </a>
                 @endif
                 </div>
-
-            <!-- Filtros -->
+                
+                <!-- Filtros -->
             <div class="collapse card-border" id="buscar">
                 <form method="GET" id="frmBuscar" 
                 action="{{route('customers.services.index.buscar')}}">

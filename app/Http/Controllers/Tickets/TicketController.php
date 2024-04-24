@@ -44,9 +44,9 @@ class TicketController extends Controller
         $user = Auth::user();
         $customerServices = null;
         $prioritiesAll = TicketPriority::all();
-        $customersAll = Customer::all();
-        $employeesAll = Employee::all();
-        $providersAll = Provider::all();
+        $customersAll = Customer::orderBy('name')->get();
+        $employeesAll = Employee::orderBy('first_name')->get();
+        $providersAll = Provider::orderBy('name')->get();
 
         // Verificar si el usuario tiene el rol con ID 2, 3, 7 o 8
         if($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -112,9 +112,9 @@ class TicketController extends Controller
         $user = Auth::user();
         //Todos los valores para pasarlos al Select
         $prioritiesAll = TicketPriority::all();
-        $employeesAll = Employee::all();
-        $providersAll = Provider::all();
-        $customersAll = Customer::all();
+        $employeesAll = Employee::orderBy('first_name')->get();
+        $providersAll = Provider::orderBy('name')->get();
+        $customersAll = Customer::orderBy('name')->get();
         $customerServiceAll = CustomerService::all();
         
         
