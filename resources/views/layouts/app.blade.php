@@ -79,7 +79,9 @@
 					<div class="container-fluid">
 						<div class="d-flex">
 						    <a class="header-brand" href="{{ route('home') }}">
-								<img src="https://stratecsa.com/assets/images/logov3.png" class="header-brand-img main-logo img-fluid" alt="logo">
+								<img
+								src="{{ asset('assets/images/logo_stratecsa.png')}}"
+								class="header-brand-img main-logo img-fluid" alt="logo">
 							</a><!-- logo-->
 							<a aria-label="Hide Sidebar" class="app-sidebar__toggle" data-toggle="sidebar" href="#"></a>
 

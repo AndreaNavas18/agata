@@ -219,7 +219,11 @@
                 padding: 40px;
                 border-radius: 0 0 10px 10px;">
 
-            @include('componentes.alerts')
+                        <div class="col-12 mb-4">
+                            <img 
+                                src="{{ asset('assets/images/logo_stratecsa.png')}}"
+                                class="img-fluid logo">
+                        </div>
 
             <form method="POST" action="{{ route('authenticate') }}" class="formLoading">
                 @csrf
