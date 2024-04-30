@@ -17,34 +17,34 @@
         body {
             background-color: #f8f8f8;
         }
-
-        /* .logo {
+    
+        .logo {
             width: 100%;
             display: block;
             margin-left: auto;
             margin-right: auto;
             margin-bottom: 50px;
-        } */
-
-        /* .img-fondo {
+        }
+    
+        .img-fondo {
             background-image: url("{{ asset('assets/images/login.jpg') }}");
             background-repeat: no-repeat;
             background-size: cover;
             height: 100vh;
-        } */
-
+        }
+    
         /* Estilos para centrar contenido en dispositivos móviles */
         @media (max-width: 767px) {
             .form-content {
                 margin-top: 50%;
             }
         }
-
-
+    
+    
         body {
             margin: 0;
             padding: 0;
-            background: url('assets/images/fondo_login.png') no-repeat;
+            background: url(https://img.freepik.com/foto-gratis/trafico-urbano-paisaje-urbano_1359-1091.jpg?t=st=1714506613~exp=1714510213~hmac=bddc5e139f3880e47dcf4edd15d629e9fafb6ad8f0f231b00509c3fd97d49c86&w=740) no-repeat;
             height: 100vh;
             font-family: sans-serif;
             background-size: cover;
@@ -52,20 +52,20 @@
             background-position: center;
             overflow: hidden
         }
-
+    
         @media screen and (max-width: 600px; ) {
             body {
                 background-size: cover;
                 : fixed
             }
         }
-
+    
         #particles-js {
             height: 100%
         }
-
+    
         .loginBox {
-
+    
             display: flex;
             flex-direction: column;
             width: 350px;
@@ -79,20 +79,20 @@
             /* border: black solid; */
             transform: translate(-50%, -50%);
             /* border: none; */
-
+    
         }
-
-        /* .user {
+    
+        .user {
             margin: 0 auto;
             display: block;
             margin-bottom: 20px
-        } */
-
+        }
+    
         .loginBox input {
             width: 100%;
             margin-bottom: 20px
         }
-
+    
         .loginBox input[type="email"],
         .loginBox input[type="password"] {
             border: none;
@@ -105,29 +105,29 @@
             padding-left: 20px;
             box-sizing: border-box
         }
-
+    
         .loginBox input[type="email"]:hover,
         .loginBox input[type="password"]:hover {
             color: #1c2938;
             border: 1px solid #069bd7;
             box-shadow: 0 0 5px #069bd7, 0 0 10px , 0 0 15px rgba(196, 216, 13, 0.1)
         }
-
+    
         .loginBox input[type="email"]:focus,
         .loginBox input[type="password"]:focus {
             border-bottom: 2px solid #069bd7
         }
-
+    
         .inputBox {
             position: relative
         }
-
+    
         .inputBox span {
             position: absolute;
             top: 10px;
             color: #262626
         }
-
+    
         .loginBox button[type="submit"] {
             border: none;
             outline: none;
@@ -138,7 +138,7 @@
             border-radius: 20px;
             cursor: pointer
         }
-
+    
         .loginBox a {
             color: #262626;
             font-size: 14px;
@@ -147,23 +147,23 @@
             text-align: center;
             display: block
         }
-
+    
         a:hover {
             color: #1c2938
         }
-
+    
         p {
             color: #0000ff
         }
     </style>
     <script src="https://kit.fontawesome.com/f2b23d5285.js" crossorigin="anonymous"></script>
     <!-- Jquery js-->
-    <script src="{{ asset('assets/js/vendors/jquery-3.2.1.min.js')}}"></script>
-
+    <script src="{{ asset('assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
+    
     <!--Bootstrap.min js-->
-    <script src="{{ asset('assets/plugins/bootstrap/popper.min.js')}}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
-
+    <script src="{{ asset('assets/plugins/bootstrap/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    
     <script>
         $(window).on("load", function(e) {
             $("#global-loader").fadeOut("slow");
@@ -172,63 +172,60 @@
             $('.loading').click(function() {
                 $('#global-loader').show()
             });
+    
             function openLoader() {
                 $('#global-loader').show();
             }
-
+    
             function closeLoader() {
                 $('#global-loader').hide();
             }
-
+    
             $('form.formLoading').submit(function(e) {
                 e.preventDefault();
                 var $form = $('form')[0];
                 if ($form.checkValidity()) {
                     openLoader();
                     $form.submit();
-                }
-                else {
+                } else {
                     closeLoader();
                 }
             });
         });
-
-
-
     </script>
-</head>
-<body>
+    </head>
+    
+    <body>
+    
     <!--Global-Loader-->
     <div id="global-loader">
         <img src="{{ asset('assets/images/icons/loader.svg') }}" alt="loader">
     </div>
-
-    {{-- Ventana Login --}}
+    
     <div class="loginBox">
-        <div style="
+        <div class=""
+            style="
                 background-color: #1c2938;
                 padding: 40px;
                 border-radius: 10px 10px 0 0;">
             {{-- <h3>Agata</h3> --}}
             {{-- <img class="user" src=" {{ asset('assets/images/agata.png') }}"> --}}
             <img class="user" src=" {{ asset('assets/images/agatby-02.png') }}">
+    
         </div>
-
-        <div style="
+    
+        <div class=""
+            style="
                 background-color: white;
                 padding: 40px;
                 border-radius: 0 0 10px 10px;">
-
-                        <div class="col-12 mb-4">
-                            <img 
-                                src="{{ asset('assets/images/logo_stratecsa.png')}}"
-                                class="img-fluid logo">
-                        </div>
-
+    
+            @include('componentes.alerts')
+    
             <form method="POST" action="{{ route('authenticate') }}" class="formLoading">
                 @csrf
                 <div class="inputBox">
-
+    
                     <!-- email input -->
                     @component('componentes.label', [
                         'title' => 'Email',
@@ -236,31 +233,31 @@
                         'required' => true,
                     ])
                     @endcomponent
-
+    
                     <input id="email" type="email" class=" @error('email') is-invalid @enderror" name="email"
                         value="{{ old('email') }}" required autocomplete="email" autofocus required>
-
+    
                     @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-
-
+    
+    
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-
+    
                         @component('componentes.label', [
                             'title' => 'Contraseña',
                             'id' => 'password',
                             'required' => true,
                         ])
                         @endcomponent
-
+    
                         <input id="password" type="password"
                             class=" @error('password') is-invalid @enderror" name="password" required
                             autocomplete="current-password" required>
-
+    
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -268,7 +265,7 @@
                         @enderror
                     </div>
                 </div>
-
+    
                         <!-- Submit button -->
                 {{-- <input type="submit" name="" value="Login"> --}}
                 <button type="submit"
@@ -284,6 +281,6 @@
             </form>
         </div>
     </div>
-</body>
+    </body>
 
 </html>
