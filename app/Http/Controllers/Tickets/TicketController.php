@@ -365,10 +365,15 @@ class TicketController extends Controller
 
         }
 
+        //Formatear Descripcion antes de guardarla en la BD.
+        $descripcionLimpia = $request->description; 
+        // Reemplaza &nbsp; con espacios en blanco normales
+        $descripcionLimpia = str_replace('&nbsp;', ' ', $descripcionLimpia);
+
 
         // $ticket->priority_id                        = $request->priority_id;
         $ticket->state                              = 'Abierto';
-        $ticket->description                        = $request->description;
+        $ticket->description                        = $descripcionLimpia;
       
         // $ticket->send_email                         = $request->send_email;
         if ($request->filled('emails_notification')) {
