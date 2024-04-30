@@ -39,7 +39,7 @@
 @endif
 
 @if (session('error'))
-    <div class="alert alert-danger notificacion alert-dismissible fade show" role="alert">
+    <div class="alert alert-danger notificacion alert-dismissible fade show" role="alert" style="color: black">
 		<i class="fas fa-exclamation-triangle"></i>
         {{ session('error') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
