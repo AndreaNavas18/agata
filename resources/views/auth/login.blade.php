@@ -99,7 +99,6 @@
 
                         <div class="col-12 mb-4">
                             <img 
-                            {{-- src="https://stratecsa.com/assets/images/logov3.png" --}}
                                 src="{{ asset('assets/images/logo_stratecsa.png')}}"
                                 class="img-fluid logo">
                         </div>
