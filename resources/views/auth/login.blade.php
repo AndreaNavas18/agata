@@ -98,7 +98,9 @@
                     <div class="form-content col-sm-12 col-md-7 col-lg-4 offset-lg-1 align-self-center">
 
                         <div class="col-12 mb-4">
-                            <img src="https://stratecsa.com/assets/images/logov3.png"
+                            <img 
+                            {{-- src="https://stratecsa.com/assets/images/logov3.png" --}}
+                                src="{{ asset('assets/images/logo_stratecsa.png')}}"
                                 class="img-fluid logo">
                         </div>
 
