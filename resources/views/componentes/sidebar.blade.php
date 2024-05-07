@@ -121,6 +121,16 @@
     </li>
    @endif
 
+   @if(auth()->user()->can('commercial.show'))
+   
+    <li>
+        <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
+            <i class="side-menu__icon fas fa-ticket-alt"></i>
+            <span class="side-menu__label">Comercial</span>
+        </a>
+    </li>
+   @endif
+
 </ul>
 
 
