@@ -84,3 +84,9 @@ require base_path('routes/modulesBreadcrumbs/services.php');
 */
 require base_path('routes/modulesBreadcrumbs/proyectos.php');
 
+/*
+|-----------------------------------
+| comercial
+|-----------------------------------
+*/
+require base_path('routes/modulesBreadcrumbs/commercial.php');

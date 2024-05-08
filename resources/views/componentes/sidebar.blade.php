@@ -122,15 +122,21 @@
    @endif
 
    @if(auth()->user()->can('commercial.show'))
-   
-    <li>
-        <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
-            <i class="side-menu__icon fas fa-ticket-alt"></i>
-            <span class="side-menu__label">Comercial</span>
-        </a>
+    <li class="slide">
+       <a class="side-menu__item"  data-toggle="slide" href="#">
+           <i class="side-menu__icon fas fa-clipboard-check"></i>
+           <span class="side-menu__label">
+               Comercial
+           </span>
+           <i class="angle fa fa-angle-right"></i>
+       </a>
+       <ul class="slide-menu">
+           {{-- @can('permissions.index') --}}
+           <li><a class="slide-item loading"  href="{{ route('tariff.index') }}"><span>Tarifario</span></a></li>
+           {{-- @endcan --}}
+       </ul>
     </li>
-   @endif
-
+    @endif
 </ul>
 
 
