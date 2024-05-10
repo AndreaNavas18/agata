@@ -62,8 +62,34 @@
                 value="{{ $service->mac ? $service->mac : '' }}"
                 >
         </div>
+
+        <div class="col-md-4 col-sm-12 mb-3">
+            @component('componentes.label', [
+                'title' => 'BW_Download',
+                'required' => false])
+            @endcomponent
+            <input type="text"
+                name="BW_Download"
+                id="BW_Download"
+                class="form-control"
+                value="{{ $service->BW_Download ? $service->BW_Download : '' }}"
+                >
+        </div>
         
         <div class="col-md-4 col-sm-12 mb-3">
+            @component('componentes.label', [
+                'title' => 'BW_upload',
+                'required' => false])
+            @endcomponent
+            <input type="text"
+                name="BW_upload"
+                id="BW_upload"
+                class="form-control"
+                value="{{ $service->BW_upload ? $service->BW_upload : '' }}"
+                >
+        </div>
+        
+        {{-- <div class="col-md-4 col-sm-12 mb-3">
             @component('componentes.label', [
                 'title' => 'Ancho de banda',
                 'required' => false])
@@ -77,12 +103,12 @@
                     <option value="{{ $anchodeBandaKey }}" {{ ($anchodeBandaKey == $service->ancho_de_banda) ? 'selected' : '' }}>
                         {{ $anchodeBandaRow }}
                     </option>
-                @endforeach
+                @endforeach --}}
                     {{-- @foreach($anchosDeBanda as $anchodeBandaKey => $anchodeBandaRow)
                         <option> Key: {{ $anchodeBandaKey }}, Valor: {{ $anchodeBandaRow }}</option>
                     @endforeach --}}
-            </select>
-        </div>
+            {{-- </select>
+        </div> --}}
 
         <div class="col-md-4 col-sm-12 mb-3">
             @component('componentes.label', [

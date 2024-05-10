@@ -45,9 +45,14 @@ class NuevosPermisos extends Seeder
         //         $roleSoporte->givePermissionTo(['employees.index', 'employees.edit', 'employees.show', 'employees.search', 
         //         'providers.index', 'providers.edit', 'providers.show', 'providers.search']);
         
-        // $roleDirectorSoporte = Role::find(10);
+        
+        // $roleDirectorSoporte = Role::where('name', 'director_soporte')->first();
+        // if (!$roleDirectorSoporte) {
+        //     $roleDirectorSoporte = Role::create(['name' => 'director_soporte']);
+        // }
 
-        //Permisos dados el dia 23 de marzo del 2024 por seeder, pero el rol se creo en la vista
+
+        // Permisos dados el dia 23 de marzo del 2024 por seeder
             // $roleDirectorSoporte->givePermissionTo(['users.my_profile', 'users.update_my_profile', 'customers.index', 
             // 'customers.destroy', 'customers.search', 'customers.create', 'customers.edit', 'customers.contacts.destroy',
             // 'customers.show', 'customers.users.index', 'customers.services.index', 'customers.services.search', 'customers.projects.index',
@@ -61,23 +66,43 @@ class NuevosPermisos extends Seeder
             // 'tickets.edit','tickets.destroy','tickets.search','tickets.show','tickets.manage']);
 
         //Rol creado el dia 29 de marzo del 2024 por seeder, para el departamento administrativo
-        $roleSoporte = Role::find(5);
-        $roleDirectorSoporte = Role::find(10);
-        Permission::create(['name' => 'parametros.general.soporte', 'submodule_id' => 13])->syncRoles([$roleSoporte, $roleDirectorSoporte]);
+        // $roleSoporte = Role::find(5);
+        // $roleDirectorSoporte = Role::find(10);
+        // Permission::create(['name' => 'parametros.general.soporte', 'submodule_id' => 13])->syncRoles([$roleSoporte, $roleDirectorSoporte]);
         
         
-        $roleAdministrativo = Role::where('name', 'administrativo')->first();
-        if (!$roleAdministrativo) {
-            $roleAdministrativo = Role::create(['name' => 'administrativo']);
-        }
+        // $roleAdministrativo = Role::where('name', 'administrativo')->first();
+        // if (!$roleAdministrativo) {
+        //     $roleAdministrativo = Role::create(['name' => 'administrativo']);
+        // }
 
-        $roleAdministrativo->givePermissionTo(['parametros.empleados.index', 'parametros.general.index', 'customers.index', 'customers.create',
-        'customers.edit', 'customers.search', 'customers.contacts.destroy','customers.show','customers.users.index','customers.services.index',
-        'customers.services.search','customers.projects.index','customers.projects.search','customers.services.show','customers.proyectos.show',
-        'employees.index','employees.create','employees.edit','employees.destroy','employees.search','employees.show','providers.index',
-        'providers.create','providers.edit','providers.search','providers.show','proyectos.index','proyectos.show', 'services.index',
-        'services.search','services.show']);
+        // $roleAdministrativo->givePermissionTo(['parametros.empleados.index', 'parametros.general.index', 'customers.index', 'customers.create',
+        // 'customers.edit', 'customers.search', 'customers.contacts.destroy','customers.show','customers.users.index','customers.services.index',
+        // 'customers.services.search','customers.projects.index','customers.projects.search','customers.services.show','customers.proyectos.show',
+        // 'employees.index','employees.create','employees.edit','employees.destroy','employees.search','employees.show','providers.index',
+        // 'providers.create','providers.edit','providers.search','providers.show','proyectos.index','proyectos.show', 'services.index',
+        // 'services.search','services.show']);
         
+        //NUEVOS PERMISOS 07/05/2024//
+        $roleComercial = Role::find(12);
+        $roleAdmin = Role::find(1);
+        $roleAdministrador = Role::find(6);
+        $roleProgramador = Role::find(9);
+        Permission::create(['name' => 'commercial.index', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+        Permission::create(['name' => 'commercial.create', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+        Permission::create(['name' => 'commercial.edit', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+        Permission::create(['name' => 'commercial.destroy', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+        Permission::create(['name' => 'commercial.search', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+        Permission::create(['name' => 'commercial.show', 'submodule_id' => 528])->syncRoles([$roleComercial]);
+       
+        $roleComercial->givePermissionTo(['commercial.index', 'commercial.create', 'commercial.edit', 'commercial.destroy',
+        'commercial.search', 'commercial.show']);
+        $roleAdmin->givePermissionTo(['commercial.index', 'commercial.create', 'commercial.edit', 'commercial.destroy',
+        'commercial.search', 'commercial.show']);
+        $roleAdministrador->givePermissionTo(['commercial.index', 'commercial.create', 'commercial.edit', 'commercial.destroy',
+        'commercial.search', 'commercial.show']);
+        $roleProgramador->givePermissionTo(['commercial.index', 'commercial.create', 'commercial.edit', 'commercial.destroy',
+        'commercial.search', 'commercial.show']);
             
     }
 }

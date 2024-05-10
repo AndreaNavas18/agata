@@ -6,6 +6,9 @@
             name="proyecto_id"
             id="proyecto_filter_id">
             <option value="">--Proyecto--</option>
+            @if(request('action') == 'buscar')
+            {{$proyectos= $proyectosAll}}
+            @endif
             @foreach($proyectos as $proyectoRow)
                 <option value="{{ $proyectoRow->id }}"
                     {{ isset($data['proyecto_id']) &&

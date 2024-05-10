@@ -73,20 +73,13 @@
 
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
-                        'title' => 'Nombre del servicio general',
+                        'title' => 'Nombre del servicio',
                         'required' => true])
                     @endcomponent
-                    <select class="form-control selectpicker"
-                        name="service_id"
-                        id="service_id"
-                        required>
-                        <option value="">--Seleccione--</option>
-                        @foreach($servicesList as $serviceRow)
-                            <option value="{{ $serviceRow->id }}">
-                                {{ $serviceRow->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <input type="text"
+                        name="name"
+                        id="name"
+                        class="form-control">
                 </div>
 
                 <div class="col-md-6 mb-4">
@@ -101,6 +94,24 @@
                         @foreach($proyectos as $proyectoRow)
                             <option value="{{ $proyectoRow->id }}">
                                 {{ $proyectoRow->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    @component('componentes.label', [
+                        'title' => 'Tipo de servicio',
+                        'required' => true])
+                    @endcomponent
+                    <select class="form-control selectpicker"
+                        name="service_id"
+                        id="service_id"
+                        required>
+                        <option value="">--Seleccione--</option>
+                        @foreach($servicesList as $serviceRow)
+                            <option value="{{ $serviceRow->id }}">
+                                {{ $serviceRow->name }}
                             </option>
                         @endforeach
                     </select>
@@ -344,13 +355,14 @@
                             'title' => ucfirst($campoAdicional),
                             'required' => false])
                         @endcomponent
-                        @if($campoAdicional == 'ancho_de_banda')
+                        {{-- @if($campoAdicional == 'ancho_de_banda')
                             <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
                                 <option value="">--Seleccione--</option>
                                 <option value="1">Carga</option>
                                 <option value="2">Descarga</option>
                             </select>
-                        @elseif($campoAdicional == 'tecnologia')
+                        @endif --}}
+                        @if($campoAdicional == 'tecnologia')
                             <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $campoAdicional }}" data-width="100%">
                                 <option value="">--Seleccione--</option>
                                 <option value="1">Radio</option>

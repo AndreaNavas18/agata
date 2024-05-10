@@ -19,6 +19,11 @@ class Provider extends BaseModel {
     /* *************************************************************
 	 * S C O P E S
 	* *************************************************************/
+    public function scopeName($query, $name)
+    {
+    	return $query->where('name', 'like', '%'.$name.'%');
+    }
+
     public function scopeIdentification($query, $identification)
     {
     	return $query->where('identification', 'like', '%'.$identification.'%');

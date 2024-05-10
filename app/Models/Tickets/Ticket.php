@@ -24,8 +24,13 @@ class Ticket extends BaseModel {
         parent::boot();
 
         static::creating(function ($ticket) {
+
+            $lastConsecutive = static::orderBy('id', 'desc')->value('consecutive');
+            $lastConsecutiveNumber = (int) explode('-', $lastConsecutive)[2];
+            $nextConsecutiveNumber = $lastConsecutiveNumber + 1;
+
             // Generar el consecutivo
-            $ticket->consecutive = 'STR-' . now()->format('dmy') . '-' . (static::count() + 1);
+            $ticket->consecutive = 'STR-' . now()->format('dmy') . '-' . $nextConsecutiveNumber;
         });
     }
 

@@ -81,6 +81,11 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     Route::get('/clientes/servicios/editarConfiguracion/{id}', [ CustomerServiceController::class, 'editConfig' ])->name('services.editConfig');
 
     Route::put('/clientes/servicios/editarConfiguracion/{id}', [ CustomerServiceController::class, 'updateConfig' ])->name('services.updateConfig');
+    
+    //Ruta para buscar servicios
+    Route::get('servicios/index/buscar', [ CustomerServiceController::class, 'serviceSearch' ])->name('services.index.buscar');
+    
+    
     //Ruta para importar servicios
     Route::post('/servicios/index/importar', [ CustomerServiceController::class, 'import' ])->name('services.import');
     
@@ -158,6 +163,7 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
 
     //Rutas AJAX
     Route::get('/obtener-proyecto-seleccionado', [CustomerProyectoController::class, 'obtenerProyectoSeleccionado'])->name('ruta_para_obtener_proyecto_seleccionado');
+    Route::get('/obtener-proyectos', [CustomerProyectoController::class, 'getProyectos'])->name('ruta_para_obtener_proyectos');
 
      /**********************
     *--------- usuarios
@@ -187,4 +193,13 @@ Route::namespace('Customers')->name('customers.')->group(function () {
     ->where('id', '[0-9]+')
     ->middleware('can:proyectos.index');
 
+    Route::get('/proyectos/buscar', [ CustomerProyectoController::class, 'projectSearch' ])->name('proyectos.search')
+    ->where('id', '[0-9]+')
+    ->middleware('can:proyectos.index');
+    
+    
+
+
+
+    
 });

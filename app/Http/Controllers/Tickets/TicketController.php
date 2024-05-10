@@ -27,11 +27,12 @@ use App\Mail\answerSoporte;
 use App\Mail\NewTicketClient;
 use App\Mail\ticketSoporte;
 use App\Mail\TicketAsignado;
+use App\Models\General\Proyecto;
 use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
-    /**
+    /**store
      * Muestra la página de listado de tickets.
      *
      * @return \Illuminate\View\View
@@ -42,10 +43,10 @@ class TicketController extends Controller
         $tickets = Ticket::query();
         $user = Auth::user();
         $customerServices = null;
-        $priorities = TicketPriority::all();
-        $customers = Customer::all();
-        $employees = Employee::all();
-        $providers = Provider::all();
+        $prioritiesAll = TicketPriority::all();
+        $customersAll = Customer::orderBy('name')->get();
+        $employeesAll = Employee::orderBy('first_name')->get();
+        $providersAll = Provider::orderBy('name')->get();
 
         // Verificar si el usuario tiene el rol con ID 2, 3, 7 o 8
         if($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -62,16 +63,16 @@ class TicketController extends Controller
                 'tickets', 
                 'customerServices', 
                 'states',
-                'priorities',
-                'customers',
-                'employees',
-                'providers'
+                'prioritiesAll',
+                'customersAll',
+                'employeesAll',
+                'providersAll'
             ));
 
         }else {
 
             $tickets = Ticket::orderBy('id', 'DESC')->paginate();
-            $priorities = TicketPriority::all();
+            $prioritiesAll = TicketPriority::all();
             $customers = Customer::all();
             $employees = Employee::all();
             $providers = Provider::all();
@@ -84,10 +85,10 @@ class TicketController extends Controller
             // Devolver la vista 'modules.tickets.index' con los datos necesarios
             return view('modules.tickets.index', compact(
                 'tickets',
-                'priorities',
-                'customers',
-                'employees',
-                'providers',
+                'prioritiesAll',
+                'customersAll',
+                'employeesAll',
+                'providersAll',
                 'states',
                 'customerServices',
             ));
@@ -109,6 +110,13 @@ class TicketController extends Controller
         $tickets = Ticket::query();
         // Obtener el usuario logueado
         $user = Auth::user();
+        //Todos los valores para pasarlos al Select
+        $prioritiesAll = TicketPriority::all();
+        $employeesAll = Employee::orderBy('first_name')->get();
+        $providersAll = Provider::orderBy('name')->get();
+        $customersAll = Customer::orderBy('name')->get();
+        $customerServiceAll = CustomerService::all();
+        
         
         // Verificar si el usuario tiene un cliente asociado
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -194,20 +202,22 @@ class TicketController extends Controller
                 $query->where('employee_id', $employeeId);
             }
 
-            if(!empty($customerId)) {
-                $query->where('customer_id', $customerId);
+            if (!empty($customerId)) {
+                $query->join('customers_services as cs', 'tickets.customer_service_id', '=', 'cs.id')
+                      ->where('cs.customer_id', $customerId);
             }
-
+            
             // Aplicar la búsqueda por servicio si se seleccionó
             if (!empty($customerServiceId)) {
                 $query->where('customer_service_id', $customerServiceId);
             }
-
+            
             if (!empty($providerId)) {
-                $query->join('customers_services as cs', 
-                'tickets.customer_service_id', '=', 'cs.id')
-              ->where('cs.provider_id', $providerId);
+                $query->join('customers_services as cs2', 'tickets.customer_service_id', '=', 'cs2.id')
+                      ->where('cs2.provider_id', $providerId);
             }
+            
+            
 
             // Aplicar la búsqueda por estado si se seleccionó
             if (!empty($selectedState)) {
@@ -243,6 +253,11 @@ class TicketController extends Controller
                 'tickets' => $tickets,
                 'data' => $data,
                 'states' => $states,
+                'prioritiesAll' => $prioritiesAll,
+                'employeesAll' => $employeesAll,
+                'providersAll' => $providersAll,
+                'customersAll' => $customersAll                
+
             ]);
 
             // return view('modules.tickets.index',
@@ -272,9 +287,11 @@ class TicketController extends Controller
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
             $prioritiesList = GeneralTypesPriority::all();
             $serviceList = CustomerService::customerId(Auth()->user()->customer_id)->get();
+            $projectsList = Proyecto::all();
         } else {
             $prioritiesList = TicketPriority::all();
             $serviceList = [];
+            $projectsList = []; 
         }
         $date = Carbon::now()->format('Y-m-d');
         
@@ -289,7 +306,8 @@ class TicketController extends Controller
             'prioritiesList',
             // 'serviceArray',
             'serviceList',
-            'date'));
+            'date',
+            'projectsList'));
         }
 
         return view('modules.tickets.create', compact(
@@ -298,7 +316,8 @@ class TicketController extends Controller
             'prioritiesList',
             // 'serviceArray',
             'serviceList',
-            'date'
+            'date',
+            'projectsList'
         ));
     }
 
@@ -346,10 +365,15 @@ class TicketController extends Controller
 
         }
 
+        //Formatear Descripcion antes de guardarla en la BD.
+        $descripcionLimpia = $request->description; 
+        // Reemplaza &nbsp; con espacios en blanco normales
+        $descripcionLimpia = str_replace('&nbsp;', ' ', $descripcionLimpia);
+
 
         // $ticket->priority_id                        = $request->priority_id;
         $ticket->state                              = 'Abierto';
-        $ticket->description                        = $request->description;
+        $ticket->description                        = $descripcionLimpia;
       
         // $ticket->send_email                         = $request->send_email;
         if ($request->filled('emails_notification')) {
@@ -416,10 +440,10 @@ class TicketController extends Controller
 
     public function sendEmail(Ticket $ticket, $emails)
     {
-        Mail::to(['plataformaagata@stratecsa.cloud', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
+        Mail::to(['soporte@stratecsa.com', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
         //Si fue el cliente quien creo el ticket, no va haber un empleado asigando y se enviaran dos series de correo distintas
         if (is_null($ticket->employee)) {
-            $agentEmail = 'plataformaagata@stratecsa.cloud';
+            $agentEmail = 'soporte@stratecsa.com';
 
             if (!empty($agentEmail) || !empty($emails)) {
 
@@ -493,6 +517,7 @@ class TicketController extends Controller
         $customersList = Customer::get();
         $positionsDepartmanets = EmployeePositionDepartment::get();
         $prioritiesList = TicketPriority::get();
+        $projectsList = Proyecto::get();
         $serviceList = CustomerService::customerId($ticket->customer_id)->get();
         $employeesList = Employee::whereHas('position', function ($q) use ($ticket) {
             return $q->where('employees_positions.department_id', $ticket->employee_position_department_id);
@@ -505,7 +530,8 @@ class TicketController extends Controller
             'prioritiesList',
             'serviceList',
             'employeesList',
-            'date'
+            'date',
+            'projectsList'
         ));
     }
 
@@ -733,6 +759,17 @@ class TicketController extends Controller
         return CustomerService::with('service')->customerId($request->customerId)->get();
     }
 
+    
+    public function customerServicesProject(Request $request)
+    {
+        $customerId = $request->customerId;
+        $projectId = $request->projectId;
+        $customerService = new CustomerService();
+
+        $servicesCustomerProject  =  $customerService->obtenerServiciosClienteProyecto($customerId, $projectId);
+        return response()->json($servicesCustomerProject);
+    }
+
     public function replyStore(Request $request, $id)
     {
         if (!$request->filled('replie')) {
@@ -744,15 +781,21 @@ class TicketController extends Controller
         $timeActually = Carbon::now();
         DB::beginTransaction();
         //nueva respuesta
-        $ticketReply                    = new TicketReply();
-        $ticketReply->replie           = $request->replie;
-        $ticketReply->ticket_id         = $ticket->id;
-        $ticketReply->user_id                = Auth()->user()->id;
-       
-        if($request->state == 'Cerrado'){
-            $ticket->state_clock = 'Detenido';
-            $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
-            $ticket->datetime_clock     = $timeActually;
+        $ticketReply                        = new TicketReply();
+        $ticketReply->replie                = $request->replie;
+        $ticketReply->ticket_id             = $ticket->id;
+        $ticketReply->user_id               = Auth()->user()->id;
+
+       if($ticket->priority_id == 1){
+           if($request->state == 'Cerrado'){
+               $ticket->state_clock = 'Detenido';
+               $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+               $ticket->datetime_clock     = $timeActually;
+           }
+       }else {
+           if($request->state == 'Cerrado'){
+               $ticket->state = 'Cerrado';
+           }
         }
 
         if (!$ticketReply->save()) {
@@ -763,9 +806,11 @@ class TicketController extends Controller
 
         if($ticket->customer_id == Auth()->user()->customer_id) {
             Log::info("AQUI ESTAMOS REY" .$ticket->state_clock);
-            if($ticket->state_clock == 'DETENIDO'){
-                $ticket->state_clock        = 'CORRIENDO';
-                $ticket->datetime_clock     = $timeActually; 
+            if($ticket->priority_id == 1){
+                if($ticket->state_clock == 'DETENIDO'){
+                    $ticket->state_clock        = 'CORRIENDO';
+                    $ticket->datetime_clock     = $timeActually; 
+                }
             }
             $ticketReply->customer_id      = Auth()->user()->customer_id;
     
@@ -838,19 +883,6 @@ class TicketController extends Controller
                 }
             }
         }
-
-        //enviar correo al cliente
-        // $contactsTickets=CustomerContact::customerId($ticket->customer_id)
-        // ->typeContactId(1)
-        // ->get();
-
-        // if (count($contactsTickets)> 0) {
-        //     foreach ($contactsTickets as $key => $contact) {
-        //         Mail::send('emails.new_replie', compact('contact','ticket','ticketReply'), function($message) use ($contact,$ticket) {
-        //             $message->to($contact->email)->subject('Nueva respuesta ticket Stratecsa, consecutivo '.$ticket->id);
-        //         });
-        //     }
-        // }
         // Le voy a pasar el ticket y la ultima respuesta
         $this->sendEmailAnswer($ticket);
         // $this->sendEmailAnswer($ticket);
@@ -874,7 +906,7 @@ class TicketController extends Controller
                     // Si hay un agente asignado, enviar correo al agente y a soporte
                    // Verificar si el correo electrónico del agente es válido
                    $employeeEmail = $ticket->employee->email;
-                   $supportEmail = 'plataformaagata@stratecsa.cloud';
+                   $supportEmail = 'soporte@stratecsa.com';
                    $validator = Validator::make(['email' => $employeeEmail], ['email' => 'email']);
 
                     if($validator->fails() || empty($employeeEmail)) {
@@ -884,7 +916,7 @@ class TicketController extends Controller
                     }
                 } else {
                     // Si no hay agente asignado, enviar correo únicamente a soporte
-                    $recipients = ['plataformaagata@stratecsa.cloud'];
+                    $recipients = ['soporte@stratecsa.com'];
                 }
 
                 if (!empty($recipients)) {

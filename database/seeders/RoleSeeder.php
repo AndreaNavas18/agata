@@ -179,5 +179,8 @@ class RoleSeeder extends Seeder
         // Permission::create(['name' => 'tickets.show', 'submodule_id' => 1]);
         // Permission::create(['name' => 'tickets.manage', 'submodule_id' => 1]);
 
+        //Nuevo Rol COMERCIAL 07/05/2024
+        Role::create(['name' => 'comercial']);
+
     }
 }

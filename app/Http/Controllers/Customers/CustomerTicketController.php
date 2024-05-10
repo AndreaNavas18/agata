@@ -64,6 +64,7 @@ class CustomerTicketController extends Controller
         $providers= Provider::get();
         $states=['Abierto','Cerrado'];
         $data=$request->all();
+        $customerServices = CustomerService::get();
         $tickets= Ticket::buscar($data,$customerId,'customers');
         if ($request->action=='buscar') {
             $tickets = $tickets->paginate();
@@ -75,7 +76,8 @@ class CustomerTicketController extends Controller
                 'providers',
                 'states',
                 'tickets',
-                'data'
+                'data',
+                'customerServices'
             ));
         } else {
             $tickets = $tickets->get();

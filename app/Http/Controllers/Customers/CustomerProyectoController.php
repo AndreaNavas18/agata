@@ -211,6 +211,12 @@ class CustomerProyectoController extends Controller
                     // }
         }
 
+    public function projectSearch(Request $request){
+        $proyectos = Proyecto::name($request->input('proyecto_id'))->orderBy('name')->paginate();
+        $proyectosAll = Proyecto::get();
+        return view('modules.customers.proyectos.index',
+        compact('proyectos' , 'proyectosAll'));
+    }
 
     public function show($id)
     {
@@ -442,11 +448,37 @@ class CustomerProyectoController extends Controller
 
         // Obtener la información necesaria del proyecto utilizando el ID
         $proyecto = Proyecto::findOrFail($proyectoSeleccionadoId);
-
+    
         // Log::info($proyectoSeleccionadoId);
         
         // Devuelve la información del proyecto en formato JSON
         return response()->json(['proyecto' => $proyecto, 'proyectoSeleccionadoId' => $proyectoSeleccionadoId]);
     }
+
+    //Obtener todos los proyectos
+    public function getProyectos(Request $request){
+        $customerId = $request->customerId;
+        $customer = Customer::find($customerId);
+    
+        // Inicializar un array para almacenar los IDs de los proyectos
+        $proyectosIds = [];
+    
+        // Iterar sobre cada servicio de cliente
+        foreach ($customer->customerServices as $customerService) {
+            // Agregar el ID del proyecto asociado al array
+            $proyectosIds[] = $customerService->proyecto_id;
+        }
+    
+        // Eliminar los IDs de proyectos duplicados
+        $proyectosIdsUnicos = array_unique($proyectosIds);
+    
+        // Imprimir los IDs de los proyectos únicos en el registro
+        $proyectos = Proyecto::whereIn('id', $proyectosIdsUnicos)->get();
+        // Retornar los IDs de los proyectos únicos como respuesta JSON
+        // Log::info($proyectos);
+        return response()->json($proyectos);
+    }
+    
+
 
 }

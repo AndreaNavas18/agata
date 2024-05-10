@@ -130,7 +130,7 @@ class RoleController extends Controller
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function buscar(Request $request)
+    public function search(Request $request)
     {
         $roles = Role::where('name', 'like', '%'.trim($request->input('name')).'%')
             ->orderBy('name')

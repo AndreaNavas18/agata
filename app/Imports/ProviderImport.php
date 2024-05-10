@@ -17,7 +17,7 @@ class ProviderImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         //  Busca el ID del tipo de documento
-        $typeDocument = TypeDocument::where('name', 'like', '%' . $row['tipo_documento'] . '%')->first();
+        $typeDocument = TypeDocument::where('name', '=', $row['tipo_documento'])->first();
 
         // Busca el ID de la ciudad
         $city = City::where('name', '=', $row['nombre_ciudad'])->first();

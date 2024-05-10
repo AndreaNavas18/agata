@@ -34,13 +34,16 @@
             name="priority_id"
             id="priority_id">
             <option value="">--Prioridad--</option>
-            @foreach($priorities as $priority)
+            {{-- @if(request('action') == 'buscar') --}}
+            {{-- @else --}}
+            @foreach($prioritiesAll as $priority)
                 <option value="{{ $priority->id }}"
                     {{ isset($data['priority_id']) &&
                         $data['priority_id'] == $priority->id
                         ? 'selected' : '' }}>
                     {{ $priority->name }}
                 </option>
+            {{-- @endif --}}
             @endforeach
         </select>
     </div>
@@ -52,7 +55,7 @@
             name="employee_id"
             id="employee_id">
             <option value="">--Agente--</option>
-            @foreach($employees as $employee)
+            @foreach($employeesAll as $employee)
                 <option value="{{ $employee->id }}"
                     {{ isset($data['employee_id']) &&
                         $data['employee_id'] == $employee->id
@@ -71,7 +74,7 @@
                 name="provider_id"
                 id="provider_id">
                 <option value="">--Proveedor--</option>
-                @foreach($providers as $provider)
+                @foreach($providersAll as $provider)
                     <option value="{{ $provider->id }}"
                         {{ isset($data['provider_id']) &&
                             $data['provider_id'] == $provider->id
@@ -91,7 +94,7 @@
                 name="customer_id"
                 id="customer_id">
                 <option value="">--Cliente--</option>
-                @foreach($customers as $customer)
+                @foreach($customersAll as $customer)
                     <option value="{{ $customer->id }}"
                         {{ isset($data['customer_id']) &&
                             $data['customer_id'] == $customer->id
@@ -112,7 +115,12 @@
             <option value="">--Servicio--</option>
             @if(!is_null($customerServices))
                 @foreach($customerServices as $service)
-                    <option value="{{ $service->id }}">{{ $service->description }}</option>
+                    <option value="{{ $service->id }}"
+                        {{ isset($data['customer_service_id']) &&
+                        $data['customer_service_id'] == $service->id
+                        ? 'selected' : '' }}>
+                        {{ 'ID '. $service->stratecsa_id . '- OTP'. $service->otp .' - '. $service->name }}
+                    </option>
                 @endforeach
             @endif
         </select>

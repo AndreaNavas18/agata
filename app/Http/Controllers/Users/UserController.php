@@ -93,6 +93,7 @@ class UserController extends Controller
             $user->role_id=5;
         }else {
             $user->role_id=$request->input('role_id');
+            self::assignRole($user, $request->input('role_id'));
         }
 
         $user->name = $request->input('name');
@@ -101,7 +102,6 @@ class UserController extends Controller
         $user->password = bcrypt($request->input('password'));
         $user->status = 'Activo';
         $user->full_name=$request->input('name').' '.$request->input('last_name');
-        self::assignRole($user, $request->input('role_id'));
         if(!$user->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al guardar el registro.');
@@ -200,11 +200,14 @@ class UserController extends Controller
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function buscar(Request $request)
+    public function search(Request $request)
     {
-        $users = User::with('employee');
+        // $users = User::with('employee');
+        $users = User::query();
+        
         if ($request->filled('name'))
-            $users->username(trim($request->input('name')));
+             $users->username(trim($request->input('name')));
+            
 
         if ($request->filled('status'))
             $users->status($request->input('status'));
