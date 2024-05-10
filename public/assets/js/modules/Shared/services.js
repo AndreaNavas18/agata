@@ -24,12 +24,14 @@ $('.editService').on('click', function() {
     }
     $('select#provider_id').selectpicker('refresh');
     $('#description').val(service.description);
+    $('#name').val(service.name);
     $('#ip').val(service.ip);
     $('#vlan').val(service.vlan);
     $('#mascara').val(service.mascara);
     $('#gateway').val(service.gateway);
     $('#mac').val(service.mac);
-    $('#ancho_de_banda').val(service.ancho_de_banda);
+    $('#BW_Download').val(service.BW_Download);
+    $('#BW_upload').val(service.BW_upload);
     $('#ip_vpn').val(service.ip_vpn);
     $('#tipo_vpn').val(service.tipo_vpn);
     $('#user_vpn').val(service.user_vpn);

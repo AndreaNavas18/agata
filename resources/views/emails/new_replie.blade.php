@@ -10,16 +10,16 @@
 
         </p>
     </div>
-
 @endsection
 
 
 @section('content')
-    <div style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
+    <div
+        style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
 
         <p style="margin: 0; margin-bottom: 16px;">
             <strong>Asunto:</strong>
-            {{ isset($ticket->ticket_issue) ?  ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
+            {{ isset($ticket->ticket_issue) ? ucfirst(strtolower($ticket->ticket_issue)) : 'N/A' }}
         </p>
 
 
@@ -29,40 +29,28 @@
             {{ isset($ticket->description) ? ucfirst(strtolower(strip_tags($ticket->description))) : 'N/A' }}
         </p>
 
-        
+
         <p style="margin: 0; margin-bottom: 16px;">
             <strong>Estado tickect:</strong>
             <span class="badge {{ $ticket->state == 'Abierto' ? 'bg-danger' : 'bg-success' }} rounded-pill">
-                {{ ucfirst(strtolower( $ticket->state)) }}
+                {{ ucfirst(strtolower($ticket->state)) }}
             </span>
         </p>
 
-        
+
         {{-- DATE --}}
         <p style="margin: 0; margin-bottom: 16px;">
             <strong>Fecha:</strong>
             {{ isset($ticket->date) ? $ticket->date : 'N/A' }}
         </p>
-        
 
-        <p style="margin: 0;">
-            <strong>Respuesta:</strong>
-                    {{-- {{ $ticketReply->replie  }} --}}
-
-            {{-- {{ isset($ticket->replies) ? ucfirst(strtolower( $ticket->replies->replie)) : 'N/A' }} --}}
-        </p>
 
         <div class="div-datos">
             <span><b>Respuesta:</b></span>
-            
-            {{ isset($lastReply->replie) ? $lastReply->replie : 'N/A' }}
+
+            {{ isset($lastReply->replie) ? ucfirst(strtolower($lastReply->replie)) : 'N/A' }}
         </div>
 
 
     </div>
-
 @endsection
-
-
-
-

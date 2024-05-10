@@ -1,11 +1,11 @@
 <div class="card-border">
     <div>
         <a class="btn btn-primary btn-sm loading"
-            href="{{ route('customers.tickets.show', ['customerId', $customer->id]) }}">
+            href="{{ route('customers.tickets.show', [$customer->id]) }}">
             <i class="fas fa-sync-alt"></i> Refrescar
         </a>
         <a class="btn btn-info btn-sm"
-            data-bs-toggle="collapse"
+            data-toggle="collapse"
             href="#buscar"
             role="button"
             aria-expanded="false"

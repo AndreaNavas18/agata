@@ -54,6 +54,15 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     @component('componentes.label', [
+                        'title' => 'Nombre servicio',
+                        'required' => false])
+                    @endcomponent
+                    <div>
+                        {{  $service->name ? $service->name : 'No se especifico'}}
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    @component('componentes.label', [
                         'title' => 'Cliente',
                         'required' => false])
                     @endcomponent
@@ -72,7 +81,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     @component('componentes.label', [
-                        'title' => 'Servicio',
+                        'title' => 'Tipo servicio',
                         'required' => false])
                     @endcomponent
                     <div>

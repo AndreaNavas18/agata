@@ -24,3 +24,7 @@
             @include('modules.customers.partials.show.tabPanel.'.$tabPanel)
      @endcomponent
 @endsection
+
+<input type="hidden"
+    id="rutaAjaxDepartments"
+    value="{{ route('general.departments') }}">

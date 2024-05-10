@@ -12,6 +12,8 @@ $('#country_id, #country_id_filter').on('change', function() {
             $('select#department_id,select#department_id_filter').append('<option value="">--Seleccione--</option>');
         },
         success: function(customerServices) {
+            console.log("Primer carga")
+            console.log(customerServices);
             closeLoader();
             $.each(customerServices, function(i,v) {
                 $('select#department_id,select#department_id_filter').append($('<option>', {
@@ -22,8 +24,10 @@ $('#country_id, #country_id_filter').on('change', function() {
             $('select#department_id,select#department_id_filter').selectpicker('refresh');
         },
         error: function(e) {
+            console.log("error")
             closeLoader();
             if (e.responseJSON !== undefined) {
+                console.log("error 2")
                 if (e.responseJSON.error != null) {
                     alert(e.responseJSON.error);
                 }
@@ -48,6 +52,8 @@ $('#department_id, #department_id_filter').on('change', function() {
             $('select#city_id,select#city_id_filter').append('<option value="">--Seleccione--</option>');
         },
         success: function(customerServices) {
+            console.log("segunda carga")
+            console.log(customerServices);
             closeLoader();
             $.each(customerServices, function(i,v) {
                 $('select#city_id,select#city_id_filter').append($('<option>', {

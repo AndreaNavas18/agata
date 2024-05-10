@@ -123,6 +123,18 @@ Route::middleware(['auth'])->group(function () {
 	*/
 	require base_path('routes/modules/general.php');
 
+
+    /*
+	|-----------------------------------
+	| comercial
+	|-----------------------------------
+	*/
+	require base_path('routes/modules/commercial.php');
+
+
+
+
+
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 

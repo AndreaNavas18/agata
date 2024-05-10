@@ -73,7 +73,7 @@ class User extends Authenticatable
     public function scopeUsername($query, $nombre)
     {
         $nombre = mb_strtolower(trim($nombre));
-        return $query->where('username', 'like', '%'.$nombre.'%');
+        return $query->where('name', 'like', '%'.$nombre.'%');
     }
 
     public function scopeActive($query)

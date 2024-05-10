@@ -16,7 +16,7 @@ class Department extends BaseModel {
 	* *************************************************************/
     public function scopeName($query, $name)
     {
-    	return $query->where('name', $name);
+        return $query->where('name', 'like', '%'.$name.'%');
     }
 
     public function scopeCountryId($query, $countryId)
@@ -24,7 +24,7 @@ class Department extends BaseModel {
     	return $query->where('country_id', $countryId);
     }
 
-
+    
     public function Country()
     {
         return $this->belongsTo(Country::class, 'country_id');

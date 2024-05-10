@@ -3,8 +3,7 @@
 @section('message')
     <div
         style="color:#444a5b;direction:ltr;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:150%;text-align:justify;mso-line-height-alt:24px;">
-        <p style="margin: 0;">Estimado COMUNICACION CELULAR
-            S.A COMCEL S.A, le informamos que en base a su
+        <p style="margin: 0;">Estimado {{$ticket->customer->name}}, le informamos que en base a su
             solicitud se ha creado un ticket. Estamos
             trabajando para atender su requerimiento, nos
             comunicaremos con usted pronto.</p> <br>

@@ -59,6 +59,9 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
 
     Route::get('/tickets/obtener-clientes-servicios', [ TicketController::class, 'customerServices' ])->name('customers.services')
     ->middleware('can:tickets.index');
+	
+	Route::get('/tickets/obtener-clientes-servicios-proyecto', [ TicketController::class, 'customerServicesProject' ])->name('customers.servicesProject')
+    ->middleware('can:tickets.index');
 
     //visitas tecnicas
     Route::post('/tickets/visitas/crear/{ticketId}',[ TicketVisitController::class, 'store' ])->name('visits.store')

@@ -15,12 +15,21 @@
             </td>
         </tr>
         @endif
+        @if(isset($ticket->service->proyecto))
+        <tr class="border-bottom">
+            <td class="border-top-0">Proyecto</td>
+            <td class="text-right border-top-0">
+                <span>{{ $ticket->service->proyecto->name }}</span>
+            </td>
+        </tr>
+        @endif
         <tr class="border-bottom">
             <td>Descripcion Servicio</td>
             <td class="text-right">
                 <span> {{ $ticket->service->description }}</span>
             </td>
         </tr>
+        
         @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
             <tr class="border-bottom">
                 <td>Proveedor</td>

@@ -8,7 +8,7 @@
 
 @component('componentes.table')
     @slot('thead')
-        <th>Consecutivo.</th>
+        <th>Consecutivo</th>
         <th>Titulo</th>
         <th>Fecha</th>
         @if($customer && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
@@ -59,7 +59,7 @@
                 <td>
                     {{-- {{ optional($ticket->service)->description }} --}}
                     <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
-                    {{ $ticket->service->description }}
+                    {{ $ticket->service->name }}
                     </a>
                 </td>
 
@@ -84,7 +84,7 @@
                 @endif
 
                 <td>
-                    <span class="badge {{ ($ticket->state  == 'Abierto') ? 'bg-danger' : 'bg-success' }}">
+                    <span class="badge {{ ($ticket->state  == 'ABIERTO') ? 'bg-danger' : 'bg-success' }}">
                             {{ $ticket->state}}
                     </span>
                 </td>

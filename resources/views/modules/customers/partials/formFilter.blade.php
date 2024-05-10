@@ -39,9 +39,9 @@
     <div class="col-md-3 col-sm-12 mb-4">
         <input class="form-control"
         type="text"
-        name="description"
-        placeholder="Descripción servicio"
-        value="{{ (isset($data['description'])) ? $data['description'] : '' }}">
+        name="name"
+        placeholder="Nombre servicio"
+        value="{{ (isset($data['name'])) ? $data['name'] : '' }}">
     </div>
     
 
@@ -132,7 +132,7 @@
                 selectpicker"
                 name="department_id"
                 id="department_id_filter">
-                <option value="">--Departamento--</option>
+                {{-- <option value="">--Departamento--</option> --}}
             </select>
         </div>
     @endif
@@ -152,4 +152,8 @@
     <input type="hidden"
         id="rutaAjax"
         data-url-cities="{{ route('general.cities') }}">
+
+        <input type="hidden"
+        id="rutaAjaxDepartments"
+        value="{{ route('general.departments') }}">
 </div>
