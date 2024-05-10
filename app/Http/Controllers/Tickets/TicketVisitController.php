@@ -112,7 +112,7 @@ class TicketVisitController extends Controller
                $archivosAdjuntos = $ticketVisit->ticketvisitfiles->pluck('path')->toArray();
                $clientEmails = explode(';', $ticketVisit->ticket->emails_notification);
                $firstRecipients = array_filter($clientEmails);
-               $additionalEmails = ['karennavas333@gmail.com', 'andreadeveloper18@gmail.com'];
+               $additionalEmails = ['knavas@stratecsa.com', 'soporte@stratecsa.com'];
                $recipients = array_merge($firstRecipients, $additionalEmails);
                Log::info($recipients);
                

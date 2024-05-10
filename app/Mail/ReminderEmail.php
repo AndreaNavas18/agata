@@ -8,20 +8,25 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Address;
+use App\Models\Tickets\Ticket;
 
-class NewTicketCreatedMailable extends Mailable
+
+class ReminderEmail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $ticket;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Ticket $ticket)
     {
         //
+        $this->ticket = $ticket;
+       
     }
 
     /**
@@ -32,9 +37,9 @@ class NewTicketCreatedMailable extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('soportestratecsa@stratecsa.cloud', 'Stratecsa'),
-            subject: 'New Ticket Created - Stratecsa',
+            to: 'soportestratecsa@stratecsa.cloud',
         );
+
     }
 
     /**
@@ -43,11 +48,9 @@ class NewTicketCreatedMailable extends Mailable
      * @return \Illuminate\Mail\Mailables\Content
      */
     public function content()
-    {
+     {
         return new Content(
-            // view: 'emails.prueba',
-            view: 'emails.new_ticket',
-
+            view: 'emails/email_reminder',
         );
     }
 
@@ -58,6 +61,21 @@ class NewTicketCreatedMailable extends Mailable
      */
     public function attachments()
     {
-        return [];
+        // return [];
     }
+
+    public function build()
+    {
+        $subject = 'Se encontró un ticket sin respuesta' . $this->ticket->consecutive;
+
+        $mail = $this->subject($subject)
+        ->view('emails/email_reminder')
+        ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa')
+        ->with([
+            'ticket' => $this->ticket,
+        ]);
+    
+        return $mail;
+    }
+    
 }

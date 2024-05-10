@@ -5,6 +5,7 @@
             <span class="side-menu__label">Inicio</span>
         </a>
     </li>
+    
     @if(Auth()->check() && (Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8))
 
     <li class="slide">
@@ -20,11 +21,10 @@
         </ul>
     </li>
     @endif
-
     <li>
-        <a class="side-menu__item loading" href="{{ route('customers.proyectos.index.all') }}">
-            <i class="side-menu__icon fas fa-network-wired"></i>
-            <span class="side-menu__label"> Proyectos</span>
+        <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
+            <i class="side-menu__icon fas fa-ticket-alt"></i>
+            <span class="side-menu__label">Tickets</span>
         </a>
     </li>
 
@@ -36,14 +36,16 @@
             </a>
         </li>
     @endif
-    {{-- karen --}}
 
     <li>
-        <a class="side-menu__item loading" href="{{ route('tickets.index') }}">
-            <i class="side-menu__icon fas fa-ticket-alt"></i>
-            <span class="side-menu__label">Tickets</span>
+        <a class="side-menu__item loading" href="{{ route('customers.proyectos.index.all') }}">
+            <i class="side-menu__icon fas fa-network-wired"></i>
+            <span class="side-menu__label"> Proyectos</span>
         </a>
     </li>
+
+    
+
 </ul>
 
 

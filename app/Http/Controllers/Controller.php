@@ -25,7 +25,7 @@ class Controller extends BaseController
         $asunto         = $request->asunto;
         $mensaje        = $request->mensaje;
 
-        Mail::to('karennavas333@gmail.com')->send(new webCorreo($nombre, $empresa, $pais, $provincia, $telefono, $correo, $asunto, $mensaje));
+        Mail::to('knavas@stratecsa.com')->send(new webCorreo($nombre, $empresa, $pais, $provincia, $telefono, $correo, $asunto, $mensaje));
         
         Log::info("Si se envio el correo");
 
@@ -38,7 +38,7 @@ class Controller extends BaseController
 
     public function correo($request) {
 
-        Mail::to('karennavas333@gmail.com')->send(new webCorreo($request->all()));
+        Mail::to('knavas@stratecsa.com')->send(new webCorreo($request->all()));
         
         Log::info("Si se envio el correo");
 

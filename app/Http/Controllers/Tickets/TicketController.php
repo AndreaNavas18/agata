@@ -440,7 +440,7 @@ class TicketController extends Controller
 
     public function sendEmail(Ticket $ticket, $emails)
     {
-        Mail::to(['soporte@stratecsa.com', 'karennavas333@gmail.com'])->send(new ticketSoporte($ticket));
+        Mail::to(['soporte@stratecsa.com', 'knavas@stratecsa.com'])->send(new ticketSoporte($ticket));
         //Si fue el cliente quien creo el ticket, no va haber un empleado asigando y se enviaran dos series de correo distintas
         if (is_null($ticket->employee)) {
             $agentEmail = 'soporte@stratecsa.com';
