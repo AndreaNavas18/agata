@@ -32,20 +32,24 @@ class CheckTicketResponse extends Command
      */
     public function handle()
     {   
-        
-        $thirtyHoursAgo = Carbon::now()->subHours(30);
+        $twentyFourHoursAgo = Carbon::now()->subHours(24);
 
-        $tickets = Ticket::where('created_at', '<=', $thirtyHoursAgo)
-        ->whereDoesntHave('replies', function ($query) {
-            $query->where('created_at', '>=', Carbon::now()->subDay());
-        })
-        ->get();
+        $tickets = Ticket::whereDoesntHave('replies', function ($query) use ($twentyFourHoursAgo) {
+                            $query->where('created_at', '>=', $twentyFourHoursAgo);
+                        })
+                        ->get();
+
+        $ticketsToSendEmail = [];
 
         foreach ($tickets as $ticket) {
             $lastReply = $ticket->replies()->latest()->first();
             if ($lastReply && $lastReply->user->customer_id !== null) {
-            Mail::to('karennavas333@gmail.com')->send(new ReminderEmail($ticket));
+                $ticketsToSendEmail[] = $ticket;
             }
+        }
+
+        if (!empty($ticketsToSendEmail)) {
+            Mail::to('karennavas333@gmail.com')->send(new ReminderEmail($ticketsToSendEmail));
         }
 
         // return Command::SUCCESS;
