@@ -14,7 +14,13 @@ class PermisosSeeder extends Seeder
      *
      * @return void
      */
-    public function run(){}
+    public function run(){
+
+        $administrativo = Role::where('name', 'administrativo')->first();
+
+        $administrativo->givePermissionTo(['customers.services.create', 'customers.services.edit', 'customers.services.destroy', 'customers.services.show', 'customers.services.destroy', 'services.create', 'services.edit', 'services.destroy' ]);
+
+    }
     // {
     //     // app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -210,14 +216,6 @@ class PermisosSeeder extends Seeder
     //     Permission::create(['name' => 'tickets.search', 'submodule_id' => 1]);
     //     Permission::create(['name' => 'tickets.show', 'submodule_id' => 1]);
     //     Permission::create(['name' => 'tickets.manage', 'submodule_id' => 1]);
-
-
-
-
-
-
-
-
 
 
 
