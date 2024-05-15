@@ -5,6 +5,12 @@
             <span class="side-menu__label">Dashboard</span>
         </a>
     </li>
+    <li>
+        <a class="side-menu__item loading" href="{{  route('pqrs.index') }}">
+            <i class="side-menu__icon fa-regular fa-comments"></i>
+            <span class="side-menu__label">Pqrs</span>
+        </a>
+    </li>
     
     @if(auth()->user()->can('roles.index') || auth()->user()->can('submodules.index') || auth()->user()->can('users.index') )
         <li class="slide">
