@@ -15,17 +15,17 @@ class ReminderEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $ticket;
+    public $tickets;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Ticket $ticket)
+    public function __construct($tickets)
     {
         //
-        $this->ticket = $ticket;
+        $this->tickets = $tickets;
        
     }
 
@@ -66,13 +66,13 @@ class ReminderEmail extends Mailable
 
     public function build()
     {
-        $subject = 'Se encontró un ticket sin respuesta' . $this->ticket->consecutive;
+        $subject = 'Se encontraron tickets sin respuesta';
 
         $mail = $this->subject($subject)
         ->view('emails/email_reminder')
         ->from('soportestratecsa@stratecsa.cloud', 'Stratecsa')
         ->with([
-            'ticket' => $this->ticket,
+            'tickets' => $this->tickets,
         ]);
     
         return $mail;

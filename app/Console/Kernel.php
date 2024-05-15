@@ -16,7 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->command('tickets:check-response')->hourly();
+        $schedule->command('tickets:check-response')->dailyAt('15:25')->timezone('America/Bogota');
+    }
+    protected function scheduleTimezone()
+    {
+        return 'America/Bogota';
     }
 
     /**
