@@ -85,7 +85,7 @@
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
                         'title' => 'Proyecto - Contrato - Subcliente',
-                        'required' => true])
+                        'required' => false])
                     @endcomponent
                     <select class="form-control selectpicker"
                         name="proyecto_id"
@@ -170,25 +170,24 @@
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
                         'title' => 'Coordenadas Latitud',
-                        'required' => true])
+                        'required' => false])
                     @endcomponent
                     <input type="text"
                         name="latitude_coordinates"
                         id="latitude_coordinates"
-                        class="form-control"
-                        required>
+                        class="form-control">
                 </div>
 
                 <div class="col-md-6 mb-4">
                     @component('componentes.label', [
                         'title' => 'Coordenadas Longitud',
-                        'required' => true])
+                        'required' => false])
                     @endcomponent
                     <input type="text"
                         name="longitude_coordinates"
                         id="longitude_coordinates"
                         class="form-control"
-                        required>
+                        >
                 </div>
 
                 <div class="col-md-6 mb-4">
@@ -268,7 +267,7 @@
                 <div class="col-12 mb-4">
                     @component('componentes.label', [
                         'title' => 'Descripción del servicio',
-                        'required' => true])
+                        'required' => false])
                     @endcomponent
                     <textarea type="text"
                         name="description"
