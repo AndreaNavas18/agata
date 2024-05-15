@@ -1,41 +1,95 @@
 <div class="row">
     <div class="col-md-4 col-sm-12 mb-3">
         @component('componentes.label', [
-            'title' => 'Tipo de documento',
-            'id' => 'type_document_id',
+            'title' => 'Tipo de Servicio',
+            'id' => 'commercial_type_service_id',
             'required' => true])
         @endcomponent
         <select class="form-control
             selectpicker"
-            name="type_document_id"
-            id="type_document_id"
+            name="commercial_type_service_id[]"
+            id="commercial_type_service_id"
             required>
             <option value="">--Seleccione--</option>
-            @foreach($typesDocuments as $typeDocument)
-                <option value="{{ $typeDocument->id }}"
-                    {{ isset($employee) &&
-                        $employee->type_document_id  == $typeDocument->id
-                        ? 'selected' : '' }}>
-                    {{ $typeDocument->name }}
+            @foreach($typeServices as $typeService)
+                <option value="{{ $typeService->id }}"
+                    {{-- {{ isset($employee) &&
+                        $employee->type_document_id  == $typesService->id
+                        ? 'selected' : '' }} --}}
+                        >
+                    {{ $typeService->name }}
                 </option>
             @endforeach
         </select>
     </div>
+</div>
+<div class="row">
+        <div class="col-md-4 col-sm-12 mb-3">
+            @component('componentes.label', [
+                'title' => 'BW',
+                'id' => 'bandwidth_id',
+                'required' => true])
+            @endcomponent
+            <select class="form-control
+                selectpicker"
+                name="bandwidth_id[]"
+                id="bandwidth_id"
+                required>
+                <option value="">--Seleccione--</option>
+                @foreach($bandwidths as $bandwidth)
+                    <option value="{{ $bandwidth->id }}"
+                        {{-- {{ isset($employee) &&
+                            $employee->type_document_id  == $typesService->id
+                            ? 'selected' : '' }} --}}
+                            >
+                        {{ $bandwidth->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
     <div class="col-md-4 col-sm-12  mb-3">
         @component('componentes.label', [
-            'title' => 'Identificación',
-            'id' => 'identification',
+            'title' => 'Valor Recurrente',
+            'id' => 'recurring_value',
             'required' => true])
         @endcomponent
         <input type="number"
-            name="identification"
+            name="recurring_value[]"
             class="form-control"
-            value="{{ isset($employee) ? $employee->identification : '' }}"
+            {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
             required>
     </div>
 
     <div class="col-md-4 col-sm-12  mb-3">
+        @component('componentes.label', [
+            'title' => 'Meses',
+            'id' => 'months',
+            'required' => true])
+        @endcomponent
+        <input type="number"
+            name="months[]"
+            class="form-control"
+            {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
+            required>
+    </div>
+
+
+        <div class="col-md-4 col-sm-12  mb-3">
+            @component('componentes.label', [
+                'title' => 'Valor Mbps',
+                'id' => 'value_Mbps',
+                'required' => true])
+        @endcomponent
+        <input type="number"
+        name="value_Mbps[]"
+        class="form-control"
+        {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
+        required>
+    </div>
+</div>
+
+    {{-- <div class="col-md-4 col-sm-12  mb-3">
         @component('componentes.label', [
             'title' => 'Primer nombre',
             'id' => 'first_name',
@@ -337,5 +391,5 @@
             id="files"
             multiple>
     </div>
-</div>
+</div> --}}
 
