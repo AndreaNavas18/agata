@@ -42,6 +42,10 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
 
+		{{-- provisional para pruebas KL --}}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
         @stack('css')
 
 		{{-- JS para odenar las columnas de las tablas con flechas descendente y ascendente --}}
