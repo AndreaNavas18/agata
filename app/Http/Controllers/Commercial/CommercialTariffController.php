@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Commercial\CommercialBandwidth;
 use App\Models\Commercial\CommercialTariff;
 use App\Models\Commercial\CommercialTypeService;
+use App\Models\Employees\EmployeeArl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -14,25 +15,26 @@ class CommercialTariffController extends Controller
 {
     public function index(Request $request)
     {
-            // Devolver la vista 'modules.commercial.tariff.index' con los datos necesarios
+        // Devolver la vista 'modules.commercial.tariff.index' con los datos necesarios
 
-            $tariffs = CommercialTariff::all();
+        $tariffs = CommercialTariff::all();
 
-            return view('modules.commercial.tariff.index', compact('tariffs'));
-            
+        return view('modules.commercial.tariff.index', compact('tariffs'));
     }
 
     public function create()
-    {        
+    {
         $typeServices = CommercialTypeService::all();
         $bandwidths = CommercialBandwidth::all();
 
         return view('modules.commercial.tariff.create',
-                    compact('typeServices', 'bandwidths'));
+            compact('typeServices', 'bandwidths')
+        );
     }
 
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         // $tariff = new CommercialTariff();
         // $tariff->commercial_type_service_id = $request->commercial_type_service_id;
@@ -73,12 +75,19 @@ class CommercialTariffController extends Controller
         return redirect()->route('tariff.index')->with('tariff', $tariff);
     }
 
-    public function addCampos()
+    public function addFields()
     {
-    $typeServices = CommercialTypeService::all();
-    $bandwidths = CommercialBandwidth::all();
-    return view('modules/commercial/tariff/partials/form',
-    compact('typeServices', 'bandwidths'));
-}
 
+        $typeServices = CommercialTypeService::all();
+        $bandwidths = CommercialBandwidth::all();
+        return view(
+            'modules/commercial/tariff/partials/form',
+            compact('typeServices', 'bandwidths')
+        );
+    }
+
+    public function parameters(){
+        return view('modules/commercial/parameters/tariff');
+
+    }
 }

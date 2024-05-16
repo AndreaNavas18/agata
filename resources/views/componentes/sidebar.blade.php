@@ -37,6 +37,7 @@
             </ul>
         </li>
     @endif
+
     @if(auth()->user()->can('commercial.show'))
     <li class="slide">
        <a class="side-menu__item"  data-toggle="slide" href="#">
@@ -48,9 +49,12 @@
        </a>
        <ul class="slide-menu">
            {{-- @can('permissions.index') --}}
-           <li><a class="slide-item loading"  href="{{ route('tariff.index') }}"><span>Tarifario</span></a></li>
+           <li><a class="slide-item loading" href="{{ route('tariff.index') }}"><span>Tarifario</span></a></li>
            {{-- @endcan --}}
        </ul>
+       <ul class="slide-menu">
+        <li><a class="slide-item loading" href="{{ route('tariff.parameters') }}"><span>Parametros</span></a></li>
+        </ul>
     </li>
     @endif
 

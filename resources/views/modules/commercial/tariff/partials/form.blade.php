@@ -1,4 +1,5 @@
-<div class="row">
+<div class="container" style="margin-bottom: 20px">
+    <div class="row">
     <div class="col-md-4 col-sm-12 mb-3">
         @component('componentes.label', [
             'title' => 'Tipo de Servicio',
@@ -22,8 +23,7 @@
             @endforeach
         </select>
     </div>
-</div>
-<div class="row">
+
         <div class="col-md-4 col-sm-12 mb-3">
             @component('componentes.label', [
                 'title' => 'BW',
@@ -87,7 +87,19 @@
         {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
         required>
     </div>
+
 </div>
+</div>
+
+{{-- inputs ocultos --}}
+{{-- <div class="row">
+
+<div class="col-md-4 col-sm-12  mb-3">
+<h4 id="newTariff" >HOLAAAAAAA</h4>
+</div> --}}
+{{-- </div> --}}
+
+
 
     {{-- <div class="col-md-4 col-sm-12  mb-3">
         @component('componentes.label', [
