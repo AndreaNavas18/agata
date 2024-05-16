@@ -281,8 +281,8 @@ class CustomerServiceController extends Controller
         $customerService->service_id                = $request->service_id;
         $customerService->city_id                   = $request->city_id;
         $customerService->date_service              = $request->date_service;
-        $customerService->latitude_coordinates      = $request->latitude_coordinates;
-        $customerService->longitude_coordinates     = $request->longitude_coordinates;
+        
+       
         $customerService->installation_type         = $request->installation_type;
         $customerService->country_id                = $request->country_id;
         $customerService->department_id             = $request->department_id;
@@ -310,8 +310,17 @@ class CustomerServiceController extends Controller
             $customerService->customer_id           = $customerId;
         }
         $customerService->state                     = 'Activo';
-        $customerService->description               = $request->description;
 
+
+        if($request->filled('latitude_coordinates ')) {
+            $customerService->latitude_coordinates      = $request->latitude_coordinates;
+        }
+        if($request->filled('longitude_coordinates ')) {
+            $customerService->longitude_coordinates     = $request->longitude_coordinates;
+        }
+        if($request->filled('description')) {
+            $customerService->description               = $request->description;
+        }
         if($request->filled('ip')) {
             $customerService->ip                        = $request->ip;
         }
@@ -328,7 +337,7 @@ class CustomerServiceController extends Controller
             $customerService->mac                       = $request->mac;
         }
         if($request->filled('BW_Download')) {
-            $customerService->BW_Download                 = $request->BW_Download;
+            $customerService->BW_Download               = $request->BW_Download;
         }
         if($request->filled('BW_upload')) {
             $customerService->BW_upload                 = $request->BW_upload;

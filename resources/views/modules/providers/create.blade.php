@@ -32,7 +32,7 @@
                 'icono'  => 'fas fa-info-circle',
                 'title' => 'Datos personales'])
             @endcomponent
-            @include('modules.shared.infoPersonalForm')
+            @include('modules.shared.InfoPersonalForm')
 
             {{-- contactos--}}
             @component('componentes.cardTitle',[

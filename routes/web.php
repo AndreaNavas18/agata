@@ -131,6 +131,14 @@ Route::middleware(['auth'])->group(function () {
 	*/
 	require base_path('routes/modules/commercial.php');
 
+	
+    /*
+	|-----------------------------------
+	| pqrs
+	|-----------------------------------
+	*/
+	require base_path('routes/modules/pqrs.php');
+
 
 
 
