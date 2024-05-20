@@ -30,10 +30,10 @@
                     <i class="fas fa-search"></i> Buscar
                 </a>
 
-                <button class="btn btn-success btn-sm addService"
-                type="button"
-                dataUrl="{{ route('pqrs.store') }}">
+                <a class="btn btn-success btn-sm loading"
+                href="{{ route('pqrs.create') }}">
                 <i class="fas fa-plus"></i> Crear
+            </a>
             </button>
 
         @endslot

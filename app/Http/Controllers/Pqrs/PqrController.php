@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 use App\Models\Pqrs\Pqr;
+use App\Models\Employee\EmployeePositionDepartment;
+use App\Models\Employee\Employee;
+use App\Models\Tickets\Ticket;
 use Session;
 
 class PqrController extends Controller
@@ -19,9 +22,6 @@ class PqrController extends Controller
         return view('modules.pqrs.index', compact(
             'pqrs',
         ));
-
-       
-
     }
 
     
@@ -35,6 +35,14 @@ class PqrController extends Controller
 
     public function show($id)
     {
+    }
+
+    public function create() {
+        session::flash('tab','pqrs');
+        $pqrs = Pqr::all();
+        return view('modules.pqrs.create', compact(
+            'pqrs',
+        ));
     }
 
      /**
