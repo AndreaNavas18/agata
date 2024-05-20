@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Commercial\CommercialBandwidth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class CommercialBandwidthController extends Controller
@@ -52,7 +53,7 @@ class CommercialBandwidthController extends Controller
         DB::beginTransaction();
         $request->validate(['name' => 'required|max:100']);
         $bandwidth= new CommercialBandwidth();
-        $bandwidth->name= $request->name;
+        $bandwidth->name= $request->name . " Mbps";
         if (!$bandwidth->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');

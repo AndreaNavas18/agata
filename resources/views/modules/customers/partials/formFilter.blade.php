@@ -144,6 +144,26 @@
             <option value="">--Ciudad--</option>
         </select>
     </div>
+
+    <div class="col-md-3 col-sm-12 mb-4">
+        <input class="form-control"
+        type="number"
+        name="otp"
+        placeholder="OTP"
+        value="{{ (isset($data['otp'])) ? $data['otp'] : '' }}">
+    </div>
+
+    <div class="col-md-3 col-sm-12 mb-4">
+        <input class="form-control"
+        type="number"
+        name="id_stratecsa"
+        placeholder="Stratecsa ID"
+        value="{{ (isset($data['id_stratecsa'])) ? $data['id_stratecsa'] : '' }}">
+    </div>
+
+
+
+
     <div class="col-md-3 col-sm-12 mb-4 mt-2">
         @component('componentes.actions_filter')
         @endcomponent

@@ -14,9 +14,9 @@
             <option value="">--Seleccione--</option>
             @foreach($typeServices as $typeService)
                 <option value="{{ $typeService->id }}"
-                    {{-- {{ isset($employee) &&
-                        $employee->type_document_id  == $typesService->id
-                        ? 'selected' : '' }} --}}
+                    {{ isset($tariff) &&
+                        $tariff->comercialTypeService->id  == $typeService->id
+                        ? 'selected' : '' }}
                         >
                     {{ $typeService->name }}
                 </option>
@@ -38,9 +38,9 @@
                 <option value="">--Seleccione--</option>
                 @foreach($bandwidths as $bandwidth)
                     <option value="{{ $bandwidth->id }}"
-                        {{-- {{ isset($employee) &&
-                            $employee->type_document_id  == $typesService->id
-                            ? 'selected' : '' }} --}}
+                        {{ isset($tariff) &&
+                            $tariff->bandwidth->id  == $bandwidth->id
+                            ? 'selected' : '' }}
                             >
                         {{ $bandwidth->name }}
                     </option>
@@ -57,7 +57,7 @@
         <input type="number"
             name="recurring_value[]"
             class="form-control"
-            {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
+            value="{{ isset($tariff) ? $tariff->recurring_value : '' }}"
             required>
     </div>
 
@@ -70,7 +70,7 @@
         <input type="number"
             name="months[]"
             class="form-control"
-            {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
+            value="{{ isset($tariff) ? $tariff->months : '' }}"
             required>
     </div>
 
@@ -84,21 +84,12 @@
         <input type="number"
         name="value_Mbps[]"
         class="form-control"
-        {{-- value="{{ isset($employee) ? $employee->identification : '' }}" --}}
+        value="{{ isset($tariff) ? $tariff->value_Mbps : '' }}"
         required>
     </div>
 
 </div>
 </div>
-
-{{-- inputs ocultos --}}
-{{-- <div class="row">
-
-<div class="col-md-4 col-sm-12  mb-3">
-<h4 id="newTariff" >HOLAAAAAAA</h4>
-</div> --}}
-{{-- </div> --}}
-
 
 
     {{-- <div class="col-md-4 col-sm-12  mb-3">

@@ -103,6 +103,11 @@ class CustomerService extends BaseModel {
         return $query->where('city_id',$cityId);
     }
 
+    public function scopeStratecsaId($query, $stratecsaId)
+    {
+        return $query->where('stratecsa_id',$stratecsaId);
+    }
+
     public function scopeDateBetween($query, $date_service, $date_final)
     {
         $startDate = Carbon::parse($date_service)->startOfDay();
@@ -239,6 +244,11 @@ class CustomerService extends BaseModel {
 
         if (isset($data['city_id']) && !is_null($data['city_id'])) {
             $customerServices = $customerServices->cityId($data['city_id']);
+        }
+
+        if (isset($data['id_stratecsa']) && !is_null($data['id_stratecsa'])) {
+            $customerServices = $customerServices->stratecsaId($data['id_stratecsa']);
+            Log::info($data['id_stratecsa']);
         }
 
         return $customerServices;
