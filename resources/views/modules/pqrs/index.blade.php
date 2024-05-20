@@ -30,11 +30,11 @@
                     <i class="fas fa-search"></i> Buscar
                 </a>
 
-                <a class="btn btn-success btn-sm loading"
-                    href="{{ route('tickets.create') }}"
-                    >
-                    <i class="fas fa-plus"></i> Crear
-                </a>
+                <button class="btn btn-success btn-sm addService"
+                type="button"
+                dataUrl="{{ route('pqrs.store') }}">
+                <i class="fas fa-plus"></i> Crear
+            </button>
 
         @endslot
 
@@ -62,4 +62,10 @@
             'showActions' =>true,
         ])
 	@endcomponent
+
+     {{-- modal pqr--}}
+     @include('modules.pqrs.partials.pqrForm', [
+        'module' => 'pqrs',
+        'pqr' => true
+    ])
 @endsection
