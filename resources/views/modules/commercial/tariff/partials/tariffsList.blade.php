@@ -11,33 +11,33 @@
         @foreach($tariffs as $tariff)
             <tr>
                 <td>
-                    <a href="" style="color: #2e384d">
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
                     {{ $tariff->comercialTypeService->name }}
                     </a>
                 </td>
 
                 <td>
-                    <a href="" style="color: #2e384d">
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
                     {{ $tariff->bandwidth->name }}
                     </a>
                 </td>
 
                 <td>
-                    <a href="" style="color: #2e384d">
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
                     $ {{ $tariff->recurring_value }}
 
                     </a>
                 </td>
 
                 <td>
-                    <a href="" style="color: #2e384d">
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
                     {{ $tariff->months}}
 
                     </a>
                 </td>
 
                 <td>
-                    <a href="" style="color: #2e384d">
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
                     $ {{ $tariff->value_Mbps}}
 
                     </a>
@@ -50,53 +50,31 @@
                         @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8])) --}}
                         
                                 {{-- @else --}}
-                                <a class="btn btn-info btn-sm loading mb-1"
-                                    {{-- href="{{ route('tickets.manage', $ticket->id) }}" --}}
-                                    {{-- @if(isset($newTab) && $newTab)
-                                        target="'_blank"
-                                    @endif --}}
-                                    bs-bs-toggle="tooltip"
-                                    bs-bs-placement="top"
-                                    title="Ver">
-                                    <i class="far fa-eye"></i>
-                                </a>
+
                                 {{-- @endif --}}
 
                         {{-- @endcan --}}
 
                         {{-- @can('tickets.edit') --}}
                         {{-- @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8])) --}}
-                            <a class="btn btn-success btn-sm loading mb-1"
+                            {{-- <a class="btn btn-success btn-sm loading mb-1" --}}
                                 {{-- href="{{ route('tickets.edit',$ticket->id)}}" --}}
                                 {{-- @if(isset($newTab) && $newTab)
                                     target="'_blank"
                                 @endif --}}
-                                bs-toggle="tooltip"
+                                {{-- bs-toggle="tooltip"
                                 bs-placement="top"
                                 title="Editar">
                                 <i class="fas fa-edit"></i>
-                            </a>
+                            </a> --}}
                             {{-- @endif
                         @endcan --}}
 
-                        {{-- @can('tickets.edit') --}}
-                            <a class="btn btn-warning btn-sm loading mb-1"
-                                {{-- href="{{ route('tickets.manage',['id' => $ticket->id, 'action' => 'manage']) }}" --}}
-                                {{-- @if(isset($newTab) && $newTab)
-                                    target="'_blank"
-                                @endif --}}
-                                bs-toggle="tooltip"
-                                bs-placement="top"
-                                title="Gestionar ticket">
 
 
-                                <i class="fas fa-tools"></i>
-                            </a>
-                        {{-- @endcan --}}
-
-                        {{-- @can('tickets.destroy') --}}
+                        @can('commercial.destroy')
                             <form class="d-inline frmDestroy"
-                                {{-- action="{{ route('tickets.destroy', $ticket->id) }}" --}}
+                                action="{{ route('tariff.destroy', $tariff->id) }}"
                                 method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -108,7 +86,7 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
-                        {{-- @endcan --}}
+                        @endcan
                     </td>
                 {{-- @endif --}}
             </tr>

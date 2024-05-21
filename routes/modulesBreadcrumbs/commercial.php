@@ -7,12 +7,23 @@
 
 Breadcrumbs::for('comercial/tariff', function ($trail) {
     $trail->parent('home');
-    $trail->push('Comercial (Tarifario) ', route('tariff.index'));
+    $trail->push('Comercial (Tarificador) ', route('tariff.index'));
 });
 Breadcrumbs::for('commercial/tariff/crear', function ($trail) {
     $trail->parent('comercial/tariff');
     $trail->push('Crear', route('tariff.create'));
 });
+
+Breadcrumbs::for('commercial/tariff/show', function ($trail, $data) {
+    $trail->parent('comercial/tariff');
+    $trail->push('Ver', route('tariff.show', $data['id']));
+});
+
+Breadcrumbs::for('commercial/tariff/edit', function ($trail, $data) {
+    $trail->parent('comercial/tariff');
+    $trail->push('Editar', route('tariff.edit', $data['id']));
+});
+
 
 
 /*

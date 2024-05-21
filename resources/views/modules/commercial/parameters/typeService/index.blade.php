@@ -105,8 +105,8 @@
 
                                     {{-- editar --}}
                                     <form action="{{ route('tariff.params.service.update', $row->id) }}"
-                                        method="POST"
-                                        id="formUpdate">
+                                        method="POST">
+                                        {{-- id="formUpdate"> --}}
                                         @csrf
                                         @method('PUT')
 

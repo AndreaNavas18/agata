@@ -41,15 +41,15 @@
     @if(auth()->user()->can('commercial.show'))
     <li class="slide">
        <a class="side-menu__item"  data-toggle="slide" href="#">
-           <i class="side-menu__icon fas fa-clipboard-check"></i>
-           <span class="side-menu__label">
+            <i class="side-menu__icon fas fa-chart-bar"></i>
+            <span class="side-menu__label">
                Comercial
            </span>
            <i class="angle fa fa-angle-right"></i>
        </a>
        <ul class="slide-menu">
            {{-- @can('permissions.index') --}}
-           <li><a class="slide-item loading" href="{{ route('tariff.index') }}"><span>Tarifario</span></a></li>
+           <li><a class="slide-item loading" href="{{ route('tariff.index') }}"><span>Tarificador</span></a></li>
            {{-- @endcan --}}
        </ul>
        <ul class="slide-menu">

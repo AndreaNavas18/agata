@@ -23,6 +23,25 @@ Route::namespace('Commercial')->name('tariff.')->group(function () {
 
     Route::get('/tarifario/parametros',[CommercialTariffController::class, 'parameters' ])->name('parameters')
     ->middleware('can:commercial.create');
+
+    Route::delete('/tarifario/eliminar/{id}',[ CommercialTariffController::class, 'destroy' ])->name('destroy')
+    ->middleware('can:commercial.destroy')
+    ->where('id', '[0-9]+');
+
+    Route::get('/tarifario/show/{id}', [ CommercialTariffController::class, 'show' ])->name('show')
+    ->where('id', '[0-9]+')
+    ->middleware('can:commercial.show');
+
+    Route::get('/tarifario/editar/{id}', [ CommercialTariffController::class, 'edit' ])->name('edit')
+    ->where('id', '[0-9]+')
+    ->middleware('can:commercial.edit');
+
+    Route::put('/tarifario/editar/{id}', [ CommercialTariffController::class, 'update' ])->name('update')
+    ->where('id', '[0-9]+')
+    ->middleware('can:commercial.edit');
+
+    Route::get('/tarifario/buscar', [ CommercialTariffController::class, 'search' ])->name('search')
+    ->middleware('can:commercial.search');
 });
 
 

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tarifario')
+@section('title', 'Tarificador')
 @push('script')
     {{-- <script src="{{asset('assets/js/modules/Tickets/tickets.js')}}"></script> --}}
 	<script>
@@ -13,7 +13,7 @@
 @section('content')
 	@component('componentes.card',
 	['shadow' => true,
-	'title' => 'Tarifario',
+	'title' => 'Tarificador',
 	'breadcrumb' => 'comercial/tariff'])
         <!-- Acciones -->
         @slot('header')
@@ -51,13 +51,13 @@
 
             <div class="collapse card-border" id="buscar">
                 <form class="form-inline"
-                    {{-- action="{{ route('tickets.search') }}" --}}
+                    action="{{ route('tariff.search') }}"
                     method="GET"
                     id="formSearch">
-                    {{-- @include('modules.tickets.partials.formFilter', [
+                    @include('modules/commercial/tariff/partials/formFilter', [
                         'customer' => true,
                         'provider' => true,
-                    ]) --}}
+                    ])
                     {{-- Input oculto para mandar la accion de buscar --}}
                     <input type="hidden" name="action" value="buscar">
                 </form>
