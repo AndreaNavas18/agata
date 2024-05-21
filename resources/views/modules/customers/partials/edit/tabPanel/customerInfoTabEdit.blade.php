@@ -8,7 +8,7 @@
         {{-- datos personales--}}
         <h4><strong>Datos personales</strong></h4>
         <div class="card-border">
-            @include('modules.shared.infoPersonalForm', [
+            @include('modules.shared.InfoPersonalForm', [
                 'objeto' => $customer
             ])
         </div>

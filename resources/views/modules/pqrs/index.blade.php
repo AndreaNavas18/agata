@@ -31,10 +31,10 @@
                 </a>
 
                 <a class="btn btn-success btn-sm loading"
-                    href="{{ route('tickets.create') }}"
-                    >
-                    <i class="fas fa-plus"></i> Crear
-                </a>
+                href="{{ route('pqrs.create') }}">
+                <i class="fas fa-plus"></i> Crear
+            </a>
+            </button>
 
         @endslot
 
@@ -62,4 +62,10 @@
             'showActions' =>true,
         ])
 	@endcomponent
+
+     {{-- modal pqr--}}
+     @include('modules.pqrs.partials.pqrForm', [
+        'module' => 'pqrs',
+        'pqr' => true
+    ])
 @endsection

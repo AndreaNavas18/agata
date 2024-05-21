@@ -35,7 +35,7 @@
             @endcomponent
 
             <div class="card-border">
-                @include('modules.shared.infoPersonalForm')
+                @include('modules.shared.InfoPersonalForm')
             </div>
 
             {{-- contactos--}}
