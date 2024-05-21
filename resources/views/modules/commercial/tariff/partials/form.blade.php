@@ -56,6 +56,7 @@
         @endcomponent
         <input type="number"
             name="recurring_value[]"
+            id="recurring_value"
             class="form-control"
             value="{{ isset($tariff) ? $tariff->recurring_value : '' }}"
             required>
@@ -69,6 +70,7 @@
         @endcomponent
         <input type="number"
             name="months[]"
+            id="months"
             class="form-control"
             value="{{ isset($tariff) ? $tariff->months : '' }}"
             required>
@@ -83,6 +85,7 @@
         @endcomponent
         <input type="number"
         name="value_Mbps[]"
+        id="value_Mbps"
         class="form-control"
         value="{{ isset($tariff) ? $tariff->value_Mbps : '' }}"
         required>
