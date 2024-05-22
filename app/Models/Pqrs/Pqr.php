@@ -39,6 +39,33 @@ class Pqr extends Model
 
     public function tema()
     {
-        return $this->belongsTo(TemaPqr::class, 'ticket_id');
+        return $this->belongsTo(TemaPqr::class, 'tema_id');
     }
+
+    public function service()
+    {
+        return $this->belongsTo(CustomerService::class, 'service_id');
+    }
+
+    public function provider()
+    {
+        return $this->belongsTo(Provider::class, 'provider_id');
+    }
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Proyecto::class, 'project_id');
+    }
+
+    
 }

@@ -118,7 +118,7 @@
                                             @slot('body')
                                                 <div class="form-group mb-3">
                                                     @component('componentes.label', [
-                                                        'title' => 'Departmento',
+                                                        'title' => 'Pais',
                                                         'id' => 'country_id',
                                                         'required' => true])
                                                     @endcomponent

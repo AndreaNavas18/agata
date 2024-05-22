@@ -27,7 +27,17 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	Route::get('/pqrs/buscar', [ PqrController::class, 'pqrSearch' ])->name('search');
 
-	Route::get('/pqrs/temas/inicio', [ PqrController::class, 'indexTema' ])->name('index.tema');
+	Route::get('/pqrs/temas/index', [ PqrController::class, 'indexTema' ])->name('index.tema');
+
+	Route::get('/pqrs/temas/buscar', [ PqrController::class, 'SearchTema' ])->name('search.tema');
+
+	Route::delete('/pqrs/temas/eliminar/{id}', [ PqrController::class, 'destroyTema' ])->name('destroy.tema');
+
+	Route::put('/pqrs/temas/editar/{id}',[PqrController::class, 'updateTema'])->name('update.tema');
+
+	Route::post('/pqrs/temas/crear',[PqrController::class, 'storeTema'])->name('store.tema');
+
+
 
 
 });

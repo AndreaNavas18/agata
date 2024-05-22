@@ -37,11 +37,11 @@ class GeneralTypePriorityController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        $request->validate(['name' => 'required|max:100', 'ticket_priority_id' => 'required']);
+        $request->validate(['name' => 'required|max:100', 'id_ticket_priority' => 'required']);
         
         $typePriority= new GeneralTypesPriority();
         $typePriority->name= $request->name;
-        $typePriority->id_ticket_priority = $request->ticket_priority_id;
+        $typePriority->id_ticket_priority = $request->id_ticket_priority;
         
         if (!$typePriority->save()) {
             DB::rollBack();
@@ -66,9 +66,9 @@ class GeneralTypePriorityController extends Controller
 
         $request->validate(
             ['name' => 'required|max:100', 
-            'ticket_priority_id' => 'required']);
+            'id_ticket_priority' => 'required']);
         $name = $request->name;
-        $ticketPriorityId = $request->ticket_priority_id;
+        $ticketPriorityId = $request->id_ticket_priority;
 
         //validaciones
         $typePriority = GeneralTypesPriority::findOrFail($id);

@@ -131,15 +131,20 @@
                                                         required="">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="form-label">Tipo de prioridad</label>
+                                                    @component('componentes.label', [
+                                                        'title' => 'Tipo de prioridad',
+                                                        'id' => 'id_ticket_priority',
+                                                        'required' => true])
+                                                    @endcomponent
                                                     <select 
-                                                        class="form-control" 
-                                                        name="ticket_priority_id" 
-                                                        value="{{ $row->ticket_priority_id }}"
+                                                        class="form-control selectpicker" 
+                                                        name="id_ticket_priority" 
+                                                        id="id_ticket_priority"
                                                         required>
                                                         <option value="">Seleccione una prioridad</option>
                                                         @foreach($prioritiesList as $priority)
-                                                            <option value="{{ $priority->id }}" {{ $priority->id == $priority->ticket_priority_id ? 'selected' : '' }}>
+                                                            <option value="{{ $priority->id }}" 
+                                                                {{ $row->id_ticket_priority == $priority->id ? 'selected' : '' }}>
                                                                 {{ $priority->name }}
                                                             </option>
                                                         @endforeach
@@ -197,7 +202,7 @@
                 <div class="form-group">
                     <label class="form-label">Tipo de prioridad</label>
                     <select class="form-control"
-                        name="ticket_priority_id"
+                        name="id_ticket_priority"
                         required>
                         <option value="">Seleccione una prioridad</option>
                         @foreach($prioritiesList as $priority)

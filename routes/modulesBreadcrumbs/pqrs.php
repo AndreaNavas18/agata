@@ -15,3 +15,7 @@ Breadcrumbs::for('pqrs/crear', function ($trail) {
     $trail->push('Crear', route('pqrs.create'));
 });
 
+Breadcrumbs::for('pqrs/temas/index', function ($trail) {
+    $trail->parent('pqrs');
+    $trail->push('Crear Tema', route('pqrs.index.tema'));
+});
