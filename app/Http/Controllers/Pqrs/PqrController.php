@@ -51,10 +51,18 @@ class PqrController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request ,){
-        DB::beginTransaction();
-        session::flash('modal', 'modalProyecto');
-        $proyectos                                  = new Proyecto();
+    public function store(Request $request)
+    {
+        $user = Auth::user();
+
+        $pqr = new Pqr();
+        $pqr->created_by = $user->id;
+        $pqr->department = $request->department;
+        $pqr->issue = $request->issue;
+        $pqr->description = $request->description;
+        $pqr->status = 'Pendiente';
+
+        $proyectos                                 = new Proyecto();
         $proyectos->name                           = $request->name;
         $proyectos->description                    = $request->description;
         $proyectos->customer_id                    = $customerId;
@@ -120,6 +128,14 @@ class PqrController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function indexTema() {
+        session::flash('tab','temas');
+        $temas = Tema::all();
+        return view('modules.customers.temas.index', compact(
+            'temas',
+        ));
     }
 
 

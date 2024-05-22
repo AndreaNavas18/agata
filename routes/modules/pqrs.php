@@ -18,7 +18,7 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	Route::put('/pqrs/editar/{id}', [ PqrController::class, 'update' ])->name('update');
 
-    //EL EDITAR SE PODRA PARA CAMBIAR EL ESTADO DE LA PQR
+    //EL EDITAR SE PODRA PARA CAMBIAR EL ESTADO DE LA PQR (CERRAR SOLO DON JULIAN)
 	// Route::put('/PQRS/editar/{id}', [ PqrController::class, 'update' ])->name('update')
 	// 	->where('id', '[0-9]+');
 
@@ -26,6 +26,10 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 		->where('id', '[0-9]+');
 
 	Route::get('/pqrs/buscar', [ PqrController::class, 'pqrSearch' ])->name('search');
+
+	Route::get('/pqrs/temas/inicio', [ PqrController::class, 'indexTema' ])->name('index.tema');
+
+
 });
 
 

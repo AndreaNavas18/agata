@@ -57,15 +57,10 @@
                     <input type="hidden" name="action" value="buscar">
                 </form>
             </div>
-        <!-- Datos -->
-        @include('modules.pqrs.partials.pqrsList', [
-            'showActions' =>true,
-        ])
-	@endcomponent
-
-     {{-- modal pqr--}}
-     @include('modules.pqrs.partials.pqrForm', [
+     <!-- Datos -->
+     @include('modules.pqrs.partials.pqrsList', [
         'module' => 'pqrs',
         'pqr' => true
     ])
+	@endcomponent
 @endsection

@@ -5,6 +5,20 @@
             <span class="side-menu__label">Dashboard</span>
         </a>
     </li>
+    <li class="slide">
+        <a class="side-menu__item"  data-toggle="slide" href="#">
+            <i class="side-menu__icon fa-regular fa-comments"></i>
+            <span class="side-menu__label">
+                Pqrs
+            </span>
+            <i class="angle fa fa-angle-right"></i>
+        </a>
+        <ul class="slide-menu">
+            <li><a class="slide-item loading"  href="{{ route('pqrs.index') }}"><span>Pqrs</span></a></li>
+            <li><a class="slide-item loading"  href="{{ route('pqrs.index') }}"><span>Creación de temas</span></a></li>
+            <li><a class="slide-item loading" href="{{ route('pqrs.index') }}"><span>Pqrs cerrados</span></a></li>
+        </ul>
+    </li>
     <li>
         <a class="side-menu__item loading" href="{{  route('pqrs.index') }}">
             <i class="side-menu__icon fa-regular fa-comments"></i>
