@@ -17,6 +17,14 @@ class TemaPqr extends Model
         'department_id',
     ];
 
+    /* *************************************************************
+	 * S C O P E S
+	* *************************************************************/
+    public function scopeName($query, $name)
+    {
+        return $query->where('name', 'like', '%'.$name.'%');
+    }
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');

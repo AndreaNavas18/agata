@@ -29,7 +29,6 @@ class Pqr extends Model
         'status',
         'ticket_id',
     ];
-
     //Relaciones
 
     public function ticket()

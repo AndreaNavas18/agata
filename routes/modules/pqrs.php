@@ -37,6 +37,8 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	Route::post('/pqrs/temas/crear',[PqrController::class, 'storeTema'])->name('store.tema');
 
+	//rutas ajax
+	Route::get('/pqrs/obtener-temas', [ PqrController::class, 'temasPorDepartamento' ])->name('temas.departments');
 
 
 

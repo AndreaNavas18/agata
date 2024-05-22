@@ -13,6 +13,10 @@ use App\Models\Employees\EmployeePositionDepartment;
 use App\Models\Employees\Employee;
 use App\Models\Tickets\Ticket;
 use App\Models\Pqrs\TemaPqr;
+use App\Models\Customers\Customer;
+use App\Models\General\Proyecto;
+use App\Models\Customers\CustomerService;
+
 use Session;
 
 class PqrController extends Controller
@@ -41,9 +45,28 @@ class PqrController extends Controller
     public function create() {
         session::flash('tab','pqrs');
         $pqrs = Pqr::all();
+        $departmentList = EmployeePositionDepartment::all();
+        $temasList = TemaPqr::all();
+
+        $indexes = [
+            'tickets' => Ticket::all(),
+            'providers' => Provider::all(),
+            'employees' => Employee::all(),
+            'customers' => Customer::all(),
+            'projects' => Proyecto::all(),
+            'services' => CustomerService::all(),
+        ];
+
         return view('modules.pqrs.create', compact(
-            'pqrs',
+            'pqrs', 
+            'departmentList', 
+            'temasList',
+            'indexes',
         ));
+    }
+
+    public function temasPorDepartamento(Request $request){
+        return TemaPqr::where('department_id', $request->temaDepartmentId)->get();
     }
 
      /**
@@ -193,8 +216,8 @@ class PqrController extends Controller
     public function SearchTema(Request $request) {
         $datos = TemaPqr::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
-        $departmentsList = EmployeePositionDepartment::all();
-        return view('modules.pqrs.temas.index', compact('datos','data', 'departmentsList'));
+        $departmentList = EmployeePositionDepartment::all();
+        return view('modules.pqrs.temas.index', compact('datos','data', 'departmentList'));
 
     }
 
