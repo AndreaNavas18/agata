@@ -105,7 +105,13 @@ class CustomerService extends BaseModel {
 
     public function scopeStratecsaId($query, $stratecsaId)
     {
-        return $query->where('stratecsa_id',$stratecsaId);
+        return $query->where('stratecsa_id', 'like', '%' . $stratecsaId . '%');
+    }
+
+    
+    public function scopeOtp($query, $otp)
+    {
+        return $query->where('otp', 'like', '%' . $otp . '%');
     }
 
     public function scopeDateBetween($query, $date_service, $date_final)
@@ -248,7 +254,10 @@ class CustomerService extends BaseModel {
 
         if (isset($data['id_stratecsa']) && !is_null($data['id_stratecsa'])) {
             $customerServices = $customerServices->stratecsaId($data['id_stratecsa']);
-            Log::info($data['id_stratecsa']);
+        }
+
+        if (isset($data['otp']) && !is_null($data['otp'])) {
+            $customerServices = $customerServices->otp($data['otp']);
         }
 
         return $customerServices;

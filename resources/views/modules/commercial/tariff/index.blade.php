@@ -43,12 +43,6 @@
 
         <!-- Filtros -->
         @can('commercial.search')
-            <!-- ocultos -->
-            {{-- <input type="hidden"
-                id="rutaAjax"
-                data-url-employees="{{ route('tickets.employees.positions.departments') }}"
-                data-url-services="{{ route('tickets.customers.services') }}"> --}}
-
             <div class="collapse card-border" id="buscar">
                 <form class="form-inline"
                     action="{{ route('tariff.search') }}"
