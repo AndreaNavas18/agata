@@ -54,9 +54,12 @@ class CommercialTariffController extends Controller
             // Asigna los valores de los campos
             $tariff->commercial_type_service_id = $commercial_type_service_id;
             $tariff->bandwidth_id = $request->bandwidth_id[$key];
-            $tariff->recurring_value = $request->recurring_value[$key];
-            $tariff->months = $request->months[$key];
-            $tariff->value_Mbps = $request->value_Mbps[$key];
+            $tariff->recurring_value_12 = $request->recurring_value_12[$key];
+            $tariff->recurring_value_24 = $request->recurring_value_24[$key];
+            $tariff->recurring_value_36 = $request->recurring_value_36[$key];
+            $tariff->value_mbps_12 = $request->value_mbps_12[$key];
+            $tariff->value_mbps_24 = $request->value_mbps_24[$key];
+            $tariff->value_mbps_36 = $request->value_mbps_36[$key];
 
             // Guarda el objeto CommercialTariff en la base de datos
             $tariff->save();
@@ -154,18 +157,21 @@ class CommercialTariffController extends Controller
    public function update(Request $request, $id)
    {
        DB::beginTransaction();
-
+       
+       // Crea una nueva instancia de CommercialTariff
        $tariff = CommercialTariff::findOrFail($id);
-
+       
         // Itera sobre los valores de los campos
         foreach ($request->commercial_type_service_id as $key => $commercial_type_service_id) {
-            // Crea una nueva instancia de CommercialTariff
             // Asigna los valores de los campos
             $tariff->commercial_type_service_id = $commercial_type_service_id;
             $tariff->bandwidth_id = $request->bandwidth_id[$key];
-            $tariff->recurring_value = $request->recurring_value[$key];
-            $tariff->months = $request->months[$key];
-            $tariff->value_Mbps = $request->value_Mbps[$key];
+            $tariff->recurring_value_12 = $request->recurring_value_12[$key];
+            $tariff->recurring_value_24 = $request->recurring_value_24[$key];
+            $tariff->recurring_value_36 = $request->recurring_value_36[$key];
+            $tariff->value_mbps_12 = $request->value_mbps_12[$key];
+            $tariff->value_mbps_24 = $request->value_mbps_24[$key];
+            $tariff->value_mbps_36 = $request->value_mbps_36[$key];
 
             // Guarda el objeto CommercialTariff en la base de datos
             // $tariff->save();
