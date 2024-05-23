@@ -100,9 +100,10 @@ class PqrController extends Controller
         $departmentId = $request->department_id;
         $positions = EmployeePosition::where('department_id', $departmentId)->pluck('id');
         $employees = Employee::whereIn('position_id', $positions)->get();
-
-        return response()->json($employees);
+    
+        return $employees;
     }
+    
 
      /**
      * Store a newly created resource in storage.

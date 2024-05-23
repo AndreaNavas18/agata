@@ -75,7 +75,7 @@ $('#department_id').change(function () {
             },
             success: function (employees) {
                 closeLoader();
-                console.log('Empleados:', employees);  // Para depuración
+                console.log('Empleados:', employees); 
                 $.each(employees, function (i, employee) {
                     $('select#employee_id').append($('<option>', {
                         value: employee.id,
@@ -84,9 +84,9 @@ $('#department_id').change(function () {
                 });
                 $('select#employee_id').selectpicker('refresh');
             },
-            error: function (e) {
+            error: function (xhr, status, error) {
                 closeLoader();
-                console.log(e);  // Para depuración
+                console.log('Error al cargar los empleados:', error); 
                 alert('Ocurrió un error al cargar los empleados.');
             }
         });
