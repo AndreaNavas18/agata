@@ -47,49 +47,93 @@
                 @endforeach
             </select>
         </div>
-
+    </div>
+    
+    <div class="row">
     <div class="col-md-4 col-sm-12  mb-3">
         @component('componentes.label', [
-            'title' => 'Valor Recurrente',
-            'id' => 'recurring_value',
+            'title' => 'Valor Recurrente 12M',
+            'id' => 'recurring_value_12',
             'required' => true])
         @endcomponent
         <input type="number"
-            name="recurring_value[]"
+            name="recurring_value_12[]"
             id="recurring_value"
             class="form-control"
-            value="{{ isset($tariff) ? $tariff->recurring_value : '' }}"
+            value="{{ isset($tariff) ? $tariff->recurring_value_12 : '' }}"
             required>
     </div>
 
     <div class="col-md-4 col-sm-12  mb-3">
         @component('componentes.label', [
-            'title' => 'Meses',
-            'id' => 'months',
+            'title' => 'Valor Recurrente 24M',
+            'id' => 'recurring_value_24',
             'required' => true])
         @endcomponent
         <input type="number"
-            name="months[]"
-            id="months"
+            name="recurring_value_24[]"
+            id="recurring_value"
             class="form-control"
-            value="{{ isset($tariff) ? $tariff->months : '' }}"
+            value="{{ isset($tariff) ? $tariff->recurring_value_24 : '' }}"
             required>
     </div>
 
+    <div class="col-md-4 col-sm-12  mb-3">
+        @component('componentes.label', [
+            'title' => 'Valor Recurrente 36M',
+            'id' => 'recurring_value_36',
+            'required' => true])
+        @endcomponent
+        <input type="number"
+            name="recurring_value_36[]"
+            id="recurring_value_36"
+            class="form-control"
+            value="{{ isset($tariff) ? $tariff->recurring_value_36 : '' }}"
+            required>
+    </div>
+</div>
+<div class="row">
+        <div class="col-md-4 col-sm-12  mb-3">
+            @component('componentes.label', [
+                'title' => 'Valor Mbps 12M',
+                'id' => 'value_mbps_12',
+                'required' => true])
+            @endcomponent
+            <input type="number"
+                name="value_mbps_12[]"
+                id="value_mbps_12"
+                class="form-control"
+                value="{{ isset($tariff) ? $tariff->value_mbps_12 : '' }}"
+                required>
+        </div>
 
         <div class="col-md-4 col-sm-12  mb-3">
             @component('componentes.label', [
-                'title' => 'Valor Mbps',
-                'id' => 'value_Mbps',
+                'title' => 'Valor Mbps 24M',
+                'id' => 'value_mbps_24',
                 'required' => true])
-        @endcomponent
-        <input type="number"
-        name="value_Mbps[]"
-        id="value_Mbps"
-        class="form-control"
-        value="{{ isset($tariff) ? $tariff->value_Mbps : '' }}"
-        required>
-    </div>
+            @endcomponent
+            <input type="number"
+                name="value_mbps_24[]"
+                id="value_mbps_24"
+                class="form-control"
+                value="{{ isset($tariff) ? $tariff->value_mbps_24 : '' }}"
+                required>
+        </div>
+
+        <div class="col-md-4 col-sm-12  mb-3">
+            @component('componentes.label', [
+                'title' => 'Valor Mbps 36M',
+                'id' => 'value_mbps_36',
+                'required' => true])
+            @endcomponent
+            <input type="number"
+                name="value_mbps_36[]"
+                id="value_mbps_36"
+                class="form-control"
+                value="{{ isset($tariff) ? $tariff->value_mbps_36 : '' }}"
+                required>
+        </div>
 
 </div>
 </div>

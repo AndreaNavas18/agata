@@ -2,9 +2,12 @@
     @slot('thead')
         <th>Tipo de Servicio</th>
         <th>BW</th>
-        <th>Recurrencia</th>
-        <th>Meses</th>
-        <th>Valor por Mbps</th>
+        <th>Recurrencia 12M</th>
+        <th>Recurrencia 24M</th>
+        <th>Recurrencia 36M</th>
+        <th>Valor por Mbps 12M</th>
+        <th>Valor por Mbps 24M</th>
+        <th>Valor por Mbps 36M</th>
     @endslot
     @slot('tbody')
     
@@ -24,21 +27,41 @@
 
                 <td>
                     <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
-                    $ {{ $tariff->recurring_value }}
+                    $ {{ $tariff->recurring_value_12 }}
 
                     </a>
                 </td>
 
                 <td>
                     <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
-                    {{ $tariff->months}}
+                    $ {{ $tariff->recurring_value_24 }}
 
                     </a>
                 </td>
 
                 <td>
                     <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
-                    $ {{ $tariff->value_Mbps}}
+                    $ {{ $tariff->recurring_value_36 }}
+
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
+                    $ {{ $tariff->value_mbps_12}}
+
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
+                    $ {{ $tariff->value_mbps_24}}
+
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
+                    $ {{ $tariff->value_mbps_36}}
 
                     </a>
                 </td>
