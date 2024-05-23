@@ -30,7 +30,7 @@
     <div class="col-md-4 mb-3">
         <div class="form-group">
             @component('componentes.label', [
-                'title' => 'Departamento',
+                'title' => 'Área',
                 'id' => 'department_id',
                 'required' => true])
             @endcomponent
@@ -63,6 +63,18 @@
             <option value="">--Seleccione--</option>
         </select>
     </div>
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
+            'title' => 'Personal',
+            'id' => 'employee_id',
+            'required' => true,
+        ])
+        @endcomponent
+        <select class="form-control
+            selectpicker" name="employee_id" id="employee_id" required>
+            <option value="">--Seleccione--</option>
+        </select>
+    </div>
 </div>
 <div class="row">
 
@@ -74,7 +86,7 @@
 
     <div class="col-md-4 mb-3" id="show_indexes_container">
         <label for="show_indexes">¿Desea agregar algún index?</label>
-        <select class="form-control" id="show_indexes" name="show_indexes" required>
+        <select class="form-control selectpicker" id="show_indexes" name="show_indexes" required>
             <option value="">--Seleccione--</option>
             <option value="yes">Sí</option>
             <option value="no">No</option>
@@ -87,19 +99,18 @@
 </div>
 
 {{-- inputs ocultos --}}
-<input type="hidden" id="rutaAjax" data-url-temas="{{ route('pqrs.temas.departments') }}"
-    {{-- data-url-services="{{ route('pqrs.customers.services') }}" --}}>
+<input type="hidden" id="rutaAjax" data-url-temas="{{ route('pqrs.temas.departments') }}">
+<input type="hidden" id="rutaAjax" data-url-employee="{{ route('pqrs.employees.departments') }}">
+
 
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    // Escuchar el evento change en el select
     document.getElementById('show_indexes').addEventListener('change', function () {
         var selectedValue = this.value;
         var indexesComponent = document.getElementById('indexes_component');
         var showIndexesContainer = document.getElementById('show_indexes_container');
 
-        // Mostrar u ocultar el componente basado en la selección
         if (selectedValue === 'yes') {
             indexesComponent.style.display = 'block';
             showIndexesContainer.style.display = 'none';

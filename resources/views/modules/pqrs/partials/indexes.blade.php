@@ -1,68 +1,76 @@
-@foreach($indexes as $key => $index)
+@foreach($indexKeys as $key => $label)
     <div class="col-md-6 mb-4 inputCampoAdicional" id="{{ $key }}Input" style="display: none;">
         @component('componentes.label', [
-            'title' => ucfirst($index),
-            'required' => false])
+            'title' => $label,
+            'required' => false
+        ])
         @endcomponent
-        @if(in_array($key, ['tickets', 'providers', 'employees', 'customers', 'projects', 'services']))
-        <select class="form-control selectCampoAdicional" id="{{ $key }}Input" name="{{ $key }}" data-width="100%">
+        <select class="form-control selectpicker selectCampoAdicional" id="{{ $key }}Select" name="{{ rtrim($key, 's') }}_id" data-width="100%">
             <option value="">--Seleccione--</option>
-            @foreach($index as $item)
-                <option value="{{ $item->id }}">{{ $item->name }}</option>
-            @endforeach
+            @foreach($indexes[$key] as $item)
+            @php
+                switch($key) {
+                    case 'tickets':
+                        $displayName ='Consecutivo ' . $item->consecutive . ' - ' . ' Asunto ' . $item->ticket_issue;
+                        break;
+                    case 'services':
+                        $displayName = 'Otp ' . $item->otp . ' - ' . 'Id Stratecsa ' . $item->stratecsa_id . ' - ' . 'Id cliente ' . $item->id_serviciocliente . ' - ' . 'Nombre ' . $item->name;
+                        break;
+                    case 'employees':
+                        $displayName = 'C.C ' . $item->identification . ' - ' . 'Nombre ' . $item->full_name;
+                        break;
+                    case 'customers':
+                        $displayName = 'Identificación ' . $item->identification . ' - ' . 'Nombre ' . $item->name;
+                        break;
+                    case 'providers':
+                        $displayName = 'Identificación ' . $item->identification . ' - ' . 'Nombre ' . $item->name;
+                        break;
+                    default:
+                        $displayName = $item->name ?? 'Sin nombre';
+                }
+            @endphp
+            <option value="{{ $item->id }}">{{ $displayName }}</option>
+        @endforeach
         </select>
-        @else
-            {{-- Aquí puedes manejar otros tipos de campos adicionales --}}
-            <input type="text" name="{{ $key }}" class="form-control">
-        @endif
     </div>
 @endforeach
 
 <div class="col-12 mb-4">
-    <!-- Botón para agregar campo adicional -->
-    <button type="button" 
-    id="agregarCampo" 
-    class="btn btn-teal" 
-    >
-        Agregar index adicional
-    </button>
+    <button type="button" id="agregarCampo" class="btn btn-teal">Agregar index adicional</button>
 </div>
 
 <div class="col-12 mb-4" id="selectContenedor" style="display: none;">
     @component('componentes.label', [
         'title' => 'Añadir index',
-        'required' => true])
+        'required' => true
+    ])
     @endcomponent
-    <select class="form-control
-        selectpicker"
-        name="indexes[]"
-        data-width="100%"
-        id="indexes">
+    <select class="form-control selectpicker" name="indexes[]" data-width="100%" id="indexes">
         <option value="">--Seleccione--</option>
-        @foreach($indexes as $key => $index)
-            <option value="{{ $index }}" data-input="{{ $key }}">
-                {{-- Mostrar los campos con la primer letra en mayuscula --}}
-                {{ ucfirst($index) }}
-            </option>
+        @foreach($indexKeys as $key => $label)
+            <option value="{{ $key }}" data-input="{{ $key }}">{{ $label }}</option>
         @endforeach
     </select>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    // Escuchar el evento de cambio en el select de campos disponibles
+document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("indexes").addEventListener("change", function() {
-        // Obtener el valor seleccionado del select
         var selectedOption = this.options[this.selectedIndex];
         var inputId = selectedOption.getAttribute("data-input");
-        // Mostrar el input correspondiente al valor seleccionado
+        
         document.getElementById(inputId + "Input").style.display = "block";
-    });
 
-    // Escuchar el evento de clic en el botón "Agregar Campo"
-    document.getElementById("agregarCampo").addEventListener("click", function() {
-            // Mostrar el select de campos disponibles
-            document.getElementById("selectContenedor").style.display = "block";
-        });
+        setTimeout(() => {
+            this.value = "";
+            $(this).selectpicker('refresh');
+        }, 100);
     });
+    document.getElementById("agregarCampo").addEventListener("click", function() {
+        document.getElementById("selectContenedor").style.display = "block";
+        document.getElementById("agregarCampo").style.display = "none";
+
+
+    });
+});
 </script>

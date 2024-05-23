@@ -10,6 +10,8 @@ use App\Models\Providers\Provider;
 use App\Models\Employees\Employee;
 use App\Models\Customers\Customer;
 use App\Models\General\Proyecto;
+use App\Models\Users\User;
+use App\Models\Employees\EmployeePositionDepartment;
 
 class Pqr extends Model
 {
@@ -17,7 +19,7 @@ class Pqr extends Model
 
     protected $fillable = [
         'created_by',
-        'department',
+        'department_id',
         'tema_id',
         'service_id',
         'provider_id',
@@ -64,6 +66,16 @@ class Pqr extends Model
     public function project()
     {
         return $this->belongsTo(Proyecto::class, 'project_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(EmployeePositionDepartment::class, 'department_id');
     }
 
     

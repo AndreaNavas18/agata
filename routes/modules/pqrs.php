@@ -27,6 +27,12 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	Route::get('/pqrs/buscar', [ PqrController::class, 'pqrSearch' ])->name('search');
 
+	Route::get('/PQRS/gestionar/{id}', [ PqrController::class, 'manage' ])->name('manage');
+
+	/**
+	 * RUTAS PARA LOS TEMAS DE LOS PQRS
+	 */
+
 	Route::get('/pqrs/temas/index', [ PqrController::class, 'indexTema' ])->name('index.tema');
 
 	Route::get('/pqrs/temas/buscar', [ PqrController::class, 'SearchTema' ])->name('search.tema');
@@ -39,6 +45,8 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	//rutas ajax
 	Route::get('/pqrs/obtener-temas', [ PqrController::class, 'temasPorDepartamento' ])->name('temas.departments');
+	Route::get('/pqrs/obtener-empleados', [ PqrController::class, 'employeeByDepartment' ])->name('employees.departments');
+
 
 
 

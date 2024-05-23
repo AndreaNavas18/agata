@@ -2,7 +2,7 @@
 
 Breadcrumbs::for('pqrs', function ($trail) {
     $trail->parent('home');
-    $trail->push('Pqrs internos', route('pqrs.index'));
+    $trail->push('Pqrs', route('pqrs.index'));
 });
 
 Breadcrumbs::for('pqrs/show', function ($trail, $data) {

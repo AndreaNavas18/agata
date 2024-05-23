@@ -16,6 +16,7 @@ use App\Models\Pqrs\TemaPqr;
 use App\Models\Customers\Customer;
 use App\Models\General\Proyecto;
 use App\Models\Customers\CustomerService;
+use Illuminate\Support\Facades\Auth;
 
 use Session;
 
@@ -23,9 +24,24 @@ class PqrController extends Controller
 {
     public function index() {
         session::flash('tab','pqrs');
-        $pqrs = Pqr::all();
+        $pqrs = Pqr::orderBy('id', 'DESC')->paginate();
+        $tickets = Ticket::all();
+        $providers = Provider::all();
+        $employees = Employee::all();
+        $customers = Customer::all();
+        $projects = Proyecto::all();
+        $services = CustomerService::all();
+        $departments = EmployeePositionDepartment::all();
+
         return view('modules.pqrs.index', compact(
             'pqrs',
+            'tickets',
+            'providers',
+            'employees',
+            'customers',
+            'projects',
+            'services',
+            'departments',
         ));
     }
 
@@ -47,11 +63,19 @@ class PqrController extends Controller
         $pqrs = Pqr::all();
         $departmentList = EmployeePositionDepartment::all();
         $temasList = TemaPqr::all();
+        $employees = Employee::all();
+
+        $indexKeys = [
+            'tickets' => 'Tickets',
+            'providers' => 'Proveedores',
+            'customers' => 'Clientes',
+            'projects' => 'Proyectos',
+            'services' => 'Servicios',
+        ];
 
         $indexes = [
             'tickets' => Ticket::all(),
             'providers' => Provider::all(),
-            'employees' => Employee::all(),
             'customers' => Customer::all(),
             'projects' => Proyecto::all(),
             'services' => CustomerService::all(),
@@ -62,11 +86,17 @@ class PqrController extends Controller
             'departmentList', 
             'temasList',
             'indexes',
+            'indexKeys',
+            'employees',
         ));
     }
 
     public function temasPorDepartamento(Request $request){
         return TemaPqr::where('department_id', $request->temaDepartmentId)->get();
+    }
+
+    public function employeeByDepartment(Request $request){
+        return Employee::where('department_id', $request->employeeDepartment)->get();
     }
 
      /**
@@ -77,21 +107,33 @@ class PqrController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        // dd($request->all());
 
-        $pqr = new Pqr();
-        $pqr->created_by = $user->id;
-        $pqr->department = $request->department;
-        $pqr->issue = $request->issue;
-        $pqr->description = $request->description;
-        $pqr->status = 'Pendiente';
+        $user                   = Auth()->user();
+        $pqr                    = new Pqr();
+        $pqr->created_by        = $user->id;
+        $pqr->tema_id           = $request->tema_id;
+        $pqr->issue             = $request->issue;
+        $pqr->description       = $request->description;
+        $pqr->status            = 'Pendiente';
+        $pqr->department_id     = $request->department_id;
+        $pqr->employee_id       = $request->employee_id;
 
-        $proyectos                                 = new Proyecto();
-        $proyectos->name                           = $request->name;
-        $proyectos->description                    = $request->description;
-        $proyectos->customer_id                    = $customerId;
+        $indexKeys = [
+            'service_id',
+            'customer_id',
+            'provider_id',
+            'ticket_id',
+            'project_id'
+        ];
+    
+        foreach ($indexKeys as $key) {
+            if ($request->filled($key)) {
+                $pqr->$key = $request->$key;
+            }
+        }
         
-        if (!$proyectos->save()) {
+        if (!$pqr->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al insertar registro.');
             return redirect()->back();
@@ -99,13 +141,13 @@ class PqrController extends Controller
 
         DB::commit();
         Alert::success('Bien hecho!', 'Registro insertado correctamente');
-        return redirect()->back();
+        return redirect()->route('pqrs.index')->with('pqr', $pqr);
     }
 
     public function edit($id)
     {
-        session::flash('tab','proyectos');
-        $proyectos= Proyecto::findOrFail($id);
+        session::flash('tab','pqrs');
+        $pqrs= Pqr::findOrFail($id);
 
         return view('modules.customers.proyectos.edit', compact(
             'proyectos',
@@ -152,6 +194,31 @@ class PqrController extends Controller
                 return redirect()->back();
             }
         }
+    }
+
+    public function manage($id, Request $request) {
+        $pqr = Pqr::findOrFail($id);
+        $tickets = Ticket::all();
+        $providers = Provider::all();
+        $employees = Employee::all();
+        $customers = Customer::all();
+        $projects = Proyecto::all();
+        $services = CustomerService::all();
+        $departments = EmployeePositionDepartment::all();
+        $temas = TemaPqr::all();
+
+        return view('modules.pqrs.manage', compact(
+            'id',
+            'pqr',
+            'tickets',
+            'providers',
+            'employees',
+            'customers',
+            'projects',
+            'services',
+            'departments',
+            'temas',
+        ));
     }
 
     public function indexTema() {
