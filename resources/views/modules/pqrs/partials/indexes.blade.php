@@ -16,9 +16,6 @@
                     case 'services':
                         $displayName = 'Otp ' . $item->otp . ' - ' . 'Id Stratecsa ' . $item->stratecsa_id . ' - ' . 'Id cliente ' . $item->id_serviciocliente . ' - ' . 'Nombre ' . $item->name;
                         break;
-                    case 'employees':
-                        $displayName = 'C.C ' . $item->identification . ' - ' . 'Nombre ' . $item->full_name;
-                        break;
                     case 'customers':
                         $displayName = 'Identificación ' . $item->identification . ' - ' . 'Nombre ' . $item->name;
                         break;

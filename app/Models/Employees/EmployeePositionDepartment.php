@@ -19,6 +19,10 @@ class EmployeePositionDepartment extends BaseModel {
         return $query->where('name', 'like', '%'.$name.'%');
     }
 
+    public function positions() {
+        return $this->hasMany(EmployeePosition::class, 'department_id');
+    }
+
 }
 
 

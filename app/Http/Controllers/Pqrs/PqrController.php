@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Pqrs\Pqr;
 use App\Models\Employees\EmployeePositionDepartment;
 use App\Models\Employees\Employee;
+use App\Models\Employees\EmployeePosition;
 use App\Models\Tickets\Ticket;
 use App\Models\Pqrs\TemaPqr;
 use App\Models\Customers\Customer;
@@ -96,7 +97,11 @@ class PqrController extends Controller
     }
 
     public function employeeByDepartment(Request $request){
-        return Employee::where('department_id', $request->employeeDepartment)->get();
+        $departmentId = $request->department_id;
+        $positions = EmployeePosition::where('department_id', $departmentId)->pluck('id');
+        $employees = Employee::whereIn('position_id', $positions)->get();
+
+        return response()->json($employees);
     }
 
      /**
