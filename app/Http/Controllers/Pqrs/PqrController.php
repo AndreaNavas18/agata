@@ -18,6 +18,9 @@ use App\Models\Customers\Customer;
 use App\Models\General\Proyecto;
 use App\Models\Customers\CustomerService;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\pqrAsignacionMail;
+use Illuminate\Support\Facades\Mail;
+
 
 use Session;
 
@@ -97,11 +100,10 @@ class PqrController extends Controller
     }
 
     public function employeeByDepartment(Request $request){
-        $departmentId = $request->department_id;
-        $positions = EmployeePosition::where('department_id', $departmentId)->pluck('id');
-        $employees = Employee::whereIn('position_id', $positions)->get();
-    
-        return $employees;
+
+        return Employee::whereHas('position', function ($q) use ($request) {
+            return $q->where('employees_positions.department_id', $request->positionDepartmentId);
+        })->get();
     }
     
 
@@ -147,7 +149,34 @@ class PqrController extends Controller
 
         DB::commit();
         Alert::success('Bien hecho!', 'Registro insertado correctamente');
+        $this->sendEmail($pqr, $request->employee_id);
         return redirect()->route('pqrs.index')->with('pqr', $pqr);
+    }
+
+    public function sendEmail(Pqr $pqr, $employeeId) {
+        if(!empty($employeeId)) {
+            $agentEmail = Employee::find($employeeId)->email;
+
+            if (!empty($agentEmail)) {
+                // Enviar correo electrónico al agente asignado
+                $recipients = [$agentEmail, 'karennavas333@gmail.com'];
+                Mail::to($recipients)->send(new pqrAsignacionMail($pqr));
+            } 
+        }else {
+            //Enviar correo electronico a todos los agentes del departamento escogido
+            $departmentId = $pqr->department_id;
+            $employees = Employee::whereHas('position', function ($q) use ($departmentId) {
+                return $q->where('department_id', $departmentId);
+            })->get();
+
+            foreach ($employees as $employee) {
+                $agentEmail = $employee->email;
+                $recipients = [$agentEmail, 'karennavas333@gmail.com'];
+
+                Mail::to($recipients)->send(new pqrAsignacionMail($pqr));
+            }
+        }
+    
     }
 
     public function edit($id)

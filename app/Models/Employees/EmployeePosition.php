@@ -30,6 +30,11 @@ class EmployeePosition extends BaseModel {
         return $this->belongsTo(EmployeePositionDepartment::class, 'department_id');
     }
 
+    public function employees()
+    {
+        return $this->hasMany(Employee::class, 'position_id');
+    }
+
 }
 
 

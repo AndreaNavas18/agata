@@ -67,11 +67,10 @@
         @component('componentes.label', [
             'title' => 'Personal',
             'id' => 'employee_id',
-            'required' => true,
         ])
         @endcomponent
         <select class="form-control
-            selectpicker" name="employee_id" id="employee_id" required>
+            selectpicker" name="employee_id" id="employee_id">
             <option value="">--Seleccione--</option>
         </select>
     </div>
@@ -86,7 +85,7 @@
 
     <div class="col-md-4 mb-3" id="show_indexes_container">
         <label for="show_indexes">¿Desea agregar algún index?</label>
-        <select class="form-control selectpicker" id="show_indexes" name="show_indexes" required>
+        <select class="form-control selectpicker" id="show_indexes" name="show_indexes">
             <option value="">--Seleccione--</option>
             <option value="yes">Sí</option>
             <option value="no">No</option>
