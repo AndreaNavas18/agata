@@ -169,11 +169,12 @@ class PqrController extends Controller
                 return $q->where('department_id', $departmentId);
             })->get();
 
-            foreach ($employees as $employee) {
-                $agentEmail = $employee->email;
-                $recipients = [$agentEmail, 'karennavas333@gmail.com'];
+            $emails = $employees->pluck('email')->toArray();
+             // Añadir correo adicional
+            $emails[] = 'karennavas333@gmail.com';
 
-                Mail::to($recipients)->send(new pqrAsignacionMail($pqr));
+            if (!empty($emails)) {
+                Mail::to($emails)->send(new PqrAsignacionMail($pqr));
             }
         }
     
