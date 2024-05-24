@@ -16,7 +16,7 @@
         <ul class="slide-menu">
             <li><a class="slide-item loading"  href="{{ route('pqrs.index') }}"><span>Pqrs</span></a></li>
             <li><a class="slide-item loading"  href="{{ route('pqrs.index.tema') }}"><span>Creación de temas</span></a></li>
-            <li><a class="slide-item loading" href="{{ route('pqrs.index') }}"><span>Pqrs cerrados</span></a></li>
+            {{-- <li><a class="slide-item loading" href="{{ route('pqrs.index') }}"><span>Pqrs cerrados</span></a></li> --}}
         </ul>
     </li>
     
