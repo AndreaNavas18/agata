@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('pqrs', function (Blueprint $table) {
-            $table->string('tema_id')->nullable()->after('department');
+            $table->string('tema_id')->nullable()->after('department_id');
             $table->string('service_id')->nullable()->after('tema_id');
             $table->string('provider_id')->nullable()->after('service_id');
             $table->string('employee_id')->nullable()->after('provider_id');
