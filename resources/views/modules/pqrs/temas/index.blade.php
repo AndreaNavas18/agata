@@ -22,14 +22,14 @@
                 <i class="fas fa-sync-alt"></i> Refrescar
             </a>
 
-            <a class="btn btn-info btn-sm"
+            {{-- <a class="btn btn-info btn-sm"
                 data-toggle="collapse"
                 href="#buscar"
                 role="button"
                 aria-expanded="false"
                 aria-controls="buscar">
                 <i class="fas fa-search"></i> Buscar
-            </a>
+            </a> --}}
 
             <button class="btn btn-success btn-sm"
                 type="button"
