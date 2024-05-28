@@ -7,6 +7,7 @@ use App\Models\Permissions\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Submodules\Submodule;
+use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class SubmoduleController extends Controller
@@ -56,7 +57,10 @@ class SubmoduleController extends Controller
         DB::beginTransaction();
         $request->validate(['name' => 'required|string|max:100']);
         $name = $request->input('name');
+        Log::info( "Recibo: ".$id);
         $submodule = Submodule::findOrFail($id);
+        Log::info( $name);
+
         $submoduleNew = Submodule::where('name', $name)->first();
         if ($submoduleNew && $submoduleNew->name != $submodule->name)
             Alert::warning('Warning', 'The submodule '. $request->input('name') .' is already in use.');

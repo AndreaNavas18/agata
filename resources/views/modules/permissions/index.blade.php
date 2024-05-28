@@ -39,14 +39,14 @@
                         <i class="fas fa-search"></i> Buscar
                     </a>
                 @endcan
-                @can('permissions.create')
+                {{-- @can('permissions.create')
                     <button class="btn btn-success btn-sm"
                         type="button"
                         data-toggle="modal"
                         data-target="#modalCreate">
                         <i class="fas fa-plus"></i> Crear
                     </button>
-                @endcan
+                @endcan --}}
             @endslot
 
             <!-- Filtros -->
@@ -102,12 +102,13 @@
                                 <tr>
                                     <td>
                                         @can('permissions.index')
-                                            <a class="link-tabla"
+                                            {{-- <a class="link-tabla"
                                                 href="#"
                                                 data-toggle="modal"
                                                 data-target="#modalEdit{{ $perm->id }}">
                                                 {{ $perm->name }}
-                                            </a>
+                                            </a> --}}
+                                            {{ $perm->name }}
                                         @endcan
                                         @cannot('permissions.index')
                                             {{ $perm->name }}
@@ -118,7 +119,7 @@
                                         @can('permissions.index')
                                             <form action="{{ route('permissions.update', $perm->id) }}"
                                                 method="POST"
-                                                id="formUpdate">
+                                                id="formUpdate{{ $perm->id }}">
                                                 @csrf
                                                 @method('PUT')
 
