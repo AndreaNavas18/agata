@@ -50,18 +50,31 @@
     <li class="slide">
        <a class="side-menu__item"  data-toggle="slide" href="#">
             <i class="side-menu__icon fas fa-chart-bar"></i>
-            <span class="side-menu__label">
-               Comercial
-           </span>
+                <span class="side-menu__label">
+                Comercial
+            </span>
            <i class="angle fa fa-angle-right"></i>
        </a>
        <ul class="slide-menu">
-           {{-- @can('permissions.index') --}}
-           <li><a class="slide-item loading" href="{{ route('tariff.index') }}"><span>Tarificador</span></a></li>
-           {{-- @endcan --}}
+           <li>
+                <a class="slide-item loading" href="{{ route('tariff.index') }}">
+                    <span>Tarificador</span>
+                </a>
+            </li>
        </ul>
        <ul class="slide-menu">
-        <li><a class="slide-item loading" href="{{ route('tariff.parameters') }}"><span>Parametros</span></a></li>
+            <li>
+                <a class="slide-item loading" href="{{ route('tariff.parameters') }}">
+                    <span>Parametros</span>
+                </a>
+            </li>
+        </ul>
+        <ul class="slide-menu">
+            <li>
+                <a class="slide-item loading" href="{{ route('commercial.quotes.index') }}">
+                    <span>Cotizaciones</span>
+                </a>
+            </li>
         </ul>
     </li>
     @endif

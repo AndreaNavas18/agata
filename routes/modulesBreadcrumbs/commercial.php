@@ -48,4 +48,21 @@ Breadcrumbs::for('tariff/params/bandwidth', function ($trail) {
 });
 
 
+/*
+|------------------------------------------------------------------------------
+| --------------------------Cotizaciones---------------------------------------
+|------------------------------------------------------------------------------
+*/
+
+
+Breadcrumbs::for('quotes', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Quotes', route('commercial.quotes.index'));
+});
+
+Breadcrumbs::for('quotes/crear', function ($trail) {
+    $trail->parent('quotes');
+    $trail->push('Crear', route('commercial.quotes.create'));
+});
+
 

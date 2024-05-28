@@ -6,6 +6,7 @@
 use App\Http\Controllers\Commercial\CommercialBandwidthController;
 use App\Http\Controllers\Commercial\CommercialTariffController;
 use App\Http\Controllers\Commercial\CommercialTypeServiceController;
+use App\Http\Controllers\Commercial\CommercialQuoteController;
 
 //TARIFARIO//
 Route::namespace('Commercial')->name('tariff.')->group(function () {
@@ -78,4 +79,18 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('tari
     
     
 });
+
+Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('commercial.quotes.')->group(function () {
+
+    Route::get('/cotizaciones', [CommercialQuoteController::class, 'index'])->name('index');
+
+    Route::get('/cotizaciones/crear', [ CommercialQuoteController::class, 'create' ])->name('create')
+    ->middleware('can:commercial.create');
+
+    Route::post('/cotizaciones/crear',[ CommercialQuoteController::class, 'store' ])->name('store')
+    ->middleware('can:commercial.create');
+
+
+});
+
 
