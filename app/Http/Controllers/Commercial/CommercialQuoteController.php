@@ -13,12 +13,14 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Session;
 use PDPException;
 
 class CommercialQuoteController extends Controller
 {
     public function index(Request $request)
     {
+        session::flash('tab','quotes');
         $quotes = Quotes::orderBy('id', 'DESC')->paginate();
         $quotesTariffs = DetailsQuotesTariffs::all();
         $quotesSections = DetailsQuotesSection::all();
@@ -41,32 +43,34 @@ class CommercialQuoteController extends Controller
             DB::beginTransaction();
             
             // Datos de la cotización
-            $quote = new Quotes();
-            $quote->name = $request->name;
-            $quote->identification = $request->identification;
-            $quote->email = $request->email;
-            $quote->phone = $request->phone;
-            $quote->direction = $request->direction;
-            $quote->observation = $request->observation;
+            $quote                      = new Quotes();
+            $quote->issue               = $request->issue;
+            $quote->name                = $request->name;
+            $quote->identification      = $request->identification;
+            $quote->email               = $request->email;
+            $quote->phone               = $request->phone;
+            $quote->direction           = $request->direction;
+            $quote->observation         = $request->observation;
 
             $quote->save();
 
+            // dd($request->name_service, $request->bandwidth, $request->nrc_12, $request->nrc_24, $request->nrc_36, $request->mrc_12, $request->mrc_24, $request->mrc_36);
+
             // Datos de las tarifas
-            if ($request->has('name_service') && is_array($request->name_service)) {
-                foreach ($request->name_service as $index => $name_service) {
-                    dd($request->name_service, $request->bandwidth, $request->nrc_12, $request->nrc_24, $request->nrc_36, $request->mrc_12, $request->mrc_24, $request->mrc_36);
+            if ($request->has('name_service') && is_array($request->bandwidth)) {
+                foreach ($request->bandwidth as $index => $bandwidth) {
+                  \Log::info("si se lleno un nameservice");
                     
                     $tariffQuote = new DetailsQuotesTariffs();
-                    $tariffQuote->quote_id = $quote->id;
-                    $tariffQuote->name_service = $name_service;
-                    $tariffQuote->bandwidth = $request->bandwidth[$index];
-                    $tariffQuote->nrc_12 = $request->nrc_12[$index];
-                    $tariffQuote->nrc_24 = $request->nrc_24[$index];
-                    $tariffQuote->nrc_36 = $request->nrc_36[$index];
-                    $tariffQuote->mrc_12 = $request->mrc_12[$index];
-                    $tariffQuote->mrc_24 = $request->mrc_24[$index];
-                    $tariffQuote->mrc_36 = $request->mrc_36[$index];
-                   \Log::info("si se lleno un nameservice");
+                    $tariffQuote->quote_id              = $quote->id;
+                    $tariffQuote->name_service          = $request->name_service;
+                    $tariffQuote->bandwidth             = $bandwidth;
+                    $tariffQuote->nrc_12                = $request->nrc_12[$index];
+                    $tariffQuote->nrc_24                = $request->nrc_24[$index];
+                    $tariffQuote->nrc_36                = $request->nrc_36[$index];
+                    $tariffQuote->mrc_12                = $request->mrc_12[$index];
+                    $tariffQuote->mrc_24                = $request->mrc_24[$index];
+                    $tariffQuote->mrc_36                = $request->mrc_36[$index];
 
                    $tariffQuote->save();
                 }
@@ -86,23 +90,23 @@ class CommercialQuoteController extends Controller
                 foreach ($camposRelevantes as $campo) {
                     if ($request->has($campo) && is_array($request->$campo)) {
                         foreach ($request->$campo as $index => $valor) {
-                            $sectionQuote = new DetailsQuotesSection();
-                            $sectionQuote->quote_id = $quote->id;
-                            $sectionQuote->tramo = $request->tramo[$index];
-                            $sectionQuote->trayecto = $request->trayecto[$index];
-                            $sectionQuote->hilos = $request->hilos[$index];
-                            $sectionQuote->extremo_a = $request->extremo_a[$index];
-                            $sectionQuote->extremo_b = $request->extremo_b[$index];
-                            $sectionQuote->kms = $request->kms[$index];
-                            $sectionQuote->recurrente_mes = $request->recurrente_mes[$index];
-                            $sectionQuote->recurrente_12 = $request->recurrente_12[$index];
-                            $sectionQuote->recurrente_24 = $request->recurrente_24[$index];
-                            $sectionQuote->recurrente_36 = $request->recurrente_36[$index];
-                            $sectionQuote->tiempo = $request->tiempo[$index];
-                            $sectionQuote->valor_km_usd = $request->valor_km_usd[$index];
-                            $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index];
-                            $sectionQuote->valor_km_cop = $request->valor_km_cop[$index];
-                            $sectionQuote->valor_total = $request->valor_total[$index];
+                            $sectionQuote                       = new DetailsQuotesSection();
+                            $sectionQuote->quote_id             = $quote->id;
+                            $sectionQuote->tramo                = $request->tramo[$index];
+                            $sectionQuote->trayecto             = $request->trayecto[$index];
+                            $sectionQuote->hilos                = $request->hilos[$index];
+                            $sectionQuote->extremo_a            = $request->extremo_a[$index];
+                            $sectionQuote->extremo_b            = $request->extremo_b[$index];
+                            $sectionQuote->kms                  = $request->kms[$index];
+                            $sectionQuote->recurrente_mes       = $request->recurrente_mes[$index];
+                            $sectionQuote->recurrente_12        = $request->recurrente_12[$index];
+                            $sectionQuote->recurrente_24        = $request->recurrente_24[$index];
+                            $sectionQuote->recurrente_36        = $request->recurrente_36[$index];
+                            $sectionQuote->tiempo               = $request->tiempo[$index];
+                            $sectionQuote->valor_km_usd         = $request->valor_km_usd[$index];
+                            $sectionQuote->valor_total_iru_usd  = $request->valor_total_iru_usd[$index];
+                            $sectionQuote->valor_km_cop         = $request->valor_km_cop[$index];
+                            $sectionQuote->valor_total          = $request->valor_total[$index];
 
                             \Log::info("se lleno un tramo o trayecto");
             
@@ -160,6 +164,44 @@ class CommercialQuoteController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred while fetching the tariff details'], 500);
         }
+    }
+
+    public function manage($id, Request $request) {
+        $quote = Quotes::findOrFail($id);
+        $tariff = DetailsQuotesTariffs::where('quote_id', $id)->get();
+        $section = DetailsQuotesSection::where('quote_id', $id)->get();
+
+        return view('modules.commercial.quotes.manage', compact(
+          'quote',
+          'tariff',
+          'section'
+        ));
+    }
+
+    public function destroy($id) {
+        try {
+            DB::beginTransaction();
+            $quote = Quotes::findOrFail($id);
+            if (!$quote->delete()) {
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DetailsQuotesTariffs::where('quote_id', $id)->delete();
+            DetailsQuotesSection::where('quote_id', $id)->delete();
+
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
+
     }
 
 

@@ -65,4 +65,9 @@ Breadcrumbs::for('quotes/crear', function ($trail) {
     $trail->push('Crear', route('commercial.quotes.create'));
 });
 
+Breadcrumbs::for('quotes/manage', function ($trail, $data) {
+    $trail->parent('quotes');
+    $trail->push('Gestión', route('commercial.quotes.manage', $data['id']));
+});
+
 

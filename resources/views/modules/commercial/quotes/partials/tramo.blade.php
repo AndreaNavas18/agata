@@ -62,7 +62,7 @@
                 'id' => 'recurrente_mes',
             ])
             @endcomponent
-            <input type="number" name="recurrente_mes[]" class="form-control recurrente_mes" step="0.01" min="0">
+            <input type="number" name="recurrente_mes[]" class="form-control recurrente_mes decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -70,7 +70,7 @@
                 'id' => 'recurrente_12',
             ])
             @endcomponent
-            <input type="number" name="recurrente_12[]" class="form-control recurrente_12" step="0.01" min="0">
+            <input type="number" name="recurrente_12[]" class="form-control recurrente_12 decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -78,7 +78,7 @@
                 'id' => 'recurrente_24',
             ])
             @endcomponent
-            <input type="number" name="recurrente_24[]" class="form-control recurrente_24" step="0.01" min="0">
+            <input type="number" name="recurrente_24[]" class="form-control recurrente_24 decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -86,7 +86,7 @@
                 'id' => 'recurrente_36',
             ])
             @endcomponent
-            <input type="number" name="recurrente_36[]" class="form-control recurrente_36" step="0.01" min="0">
+            <input type="number" name="recurrente_36[]" class="form-control recurrente_36 decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -94,7 +94,7 @@
                 'id' => 'valor_km_usd',
             ])
             @endcomponent
-            <input type="number" name="valor_km_usd[]" class="form-control valor_km_usd" step="0.01" min="0">
+            <input type="number" name="valor_km_usd[]" class="form-control valor_km_usd decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -102,7 +102,7 @@
                 'id' => 'valor_total_iru_usd',
             ])
             @endcomponent
-            <input type="number" name="valor_total_iru_usd[]" class="form-control valor_total_iru_usd" step="0.01" min="0">
+            <input type="number" name="valor_total_iru_usd[]" class="form-control valor_total_iru_usd decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -110,7 +110,7 @@
                 'id' => 'valor_km_cop',
             ])
             @endcomponent
-            <input type="number" name="valor_km_cop[]" class="form-control valor_km_cop" step="0.01" min="0">
+            <input type="number" name="valor_km_cop[]" class="form-control valor_km_cop decimal" step="0.01" min="0">
         </div>
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
@@ -118,7 +118,7 @@
                 'id' => 'valor_total',
             ])
             @endcomponent
-            <input type="number" name="valor_total[]" class="form-control valor_total" step="0.01" min="0">
+            <input type="number" name="valor_total[]" class="form-control valor_total decimal" step="0.01" min="0">
         </div>
         <button type="button" class="btn btn-danger remove-tramo">Eliminar</button>
         <hr>

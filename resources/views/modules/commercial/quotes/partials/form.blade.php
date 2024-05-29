@@ -1,6 +1,15 @@
 <div class="row">
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
+            'title' => 'Asunto de la cotización',
+            'id' => 'issue',
+            'required' => true,
+        ])
+        @endcomponent
+        <input type="text" name="issue" class="form-control">
+    </div>
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
             'title' => 'Nombre',
             'id' => 'name',
             'required' => true,
@@ -86,10 +95,27 @@
     </div>
 
     @include('modules.commercial.quotes.partials.tramo')
-    
-
-
-    
-  
-     
+        
 </div>
+
+<script>
+    document.getElementById('quoteForm').addEventListener('submit', function(e) {
+        const decimalFields = document.querySelectorAll('.decimal');
+        let isValid = true;
+    
+        decimalFields.forEach(function(field) {
+            const value = parseFloat(field.value);
+            if (isNaN(value) || value < -999999.99 || value > 999999.99) {
+                isValid = false;
+                field.classList.add('is-invalid');
+                alert('El valor de ' + field.name + ' está fuera del rango permitido (-999999.99 a 999999.99).');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+    
+        if (!isValid) {
+            e.preventDefault(); // Evita el envío del formulario si hay un valor inválido
+        }
+    });
+    </script>

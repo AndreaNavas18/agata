@@ -90,6 +90,16 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
     Route::post('/cotizaciones/crear',[ CommercialQuoteController::class, 'store' ])->name('store')
     ->middleware('can:commercial.create');
 
+	Route::get('/cotizaciones/gestionar/{id}', [ CommercialQuoteController::class, 'manage' ])->name('manage');
+
+	Route::get('/cotizaciones/editar/{quoteId}', [ CommercialQuoteController::class, 'edit' ])->name('edit');
+
+    Route::put('/cotizaciones/editar/{id}', [ CommercialQuoteController::class, 'update' ])->name('update');
+
+	Route::delete('/cotizaciones/eliminar/{id}', [ CommercialQuoteController::class, 'destroy' ])->name('destroy');
+
+
+
 
 });
 // AJAX

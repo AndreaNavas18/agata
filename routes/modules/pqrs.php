@@ -27,7 +27,7 @@ Route::namespace('Pqrs')->name('pqrs.')->group(function () {
 
 	Route::get('/pqrs/buscar', [ PqrController::class, 'pqrSearch' ])->name('search');
 
-	Route::get('/PQRS/gestionar/{id}', [ PqrController::class, 'manage' ])->name('manage');
+	Route::get('/pqrs/gestionar/{id}', [ PqrController::class, 'manage' ])->name('manage');
 
 	/**
 	 * RUTAS PARA LOS TEMAS DE LOS PQRS
