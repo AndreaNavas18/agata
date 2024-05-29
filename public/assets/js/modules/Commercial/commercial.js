@@ -165,3 +165,19 @@ $(document).ready(function() {
     }
 });
 
+$(document).ready(function() {
+    $('#add-tramo').click(function() {
+        console.log("Botón 'Añadir otras opciones' clicado.");
+
+        var $template = $($('#tramo-template').html());
+        $('#tramos-container').append($template);
+        console.log("Template de tramo añadido al contenedor.");
+
+        // Añadir evento click para eliminar el grupo
+        $template.find('.remove-tramo').click(function() {
+            $(this).closest('.tramo-group').remove();
+        });
+    });
+});
+
+

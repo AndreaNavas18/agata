@@ -6,7 +6,7 @@
             'required' => true,
         ])
         @endcomponent
-        <input type="text" name="ticket_issue" class="form-control" required>
+        <input type="text" name="name" class="form-control" required>
     </div>
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
@@ -59,6 +59,15 @@
             </select>
     </div>
 
+    <div class="col-md-12 mb-3">
+        @component('componentes.label', [
+            'title' => 'Observaciones',
+            'id' => 'observation',
+        ])
+        @endcomponent
+        <textarea class="form-control" name="observation" id="observation" rows="7"></textarea>
+    </div>
+
     <div id="velocidades-container">
     </div>
     
@@ -67,9 +76,18 @@
     </div>
 
     @include('modules.commercial.quotes.partials.velocidad')
-    
 
     {{-- Details quotes section --}}
+    <div id="tramos-container">
+    </div>
+    
+    <div class="col-md-12 mb-3">
+        <button type="button" id="add-tramo" class="btn btn-primary">Añadir otras opciones</button>
+    </div>
+
+    @include('modules.commercial.quotes.partials.tramo')
+    
+
 
     
   
