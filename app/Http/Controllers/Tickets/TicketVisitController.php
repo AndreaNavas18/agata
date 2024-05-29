@@ -20,6 +20,7 @@ use App\Models\Helpers;
 use App\Models\Tickets\TicketVisitFile;
 use App\Mail\VisitaTicketMail;
 use App\Models\Tickets\TicketVisitEmployeeFile;
+use DateTime;
 
 class TicketVisitController extends Controller
 {
@@ -31,10 +32,17 @@ class TicketVisitController extends Controller
      */
     public function store(Request $request, $ticketId)
     {
+        // Log::info('AQUÍ ESTOY KAREN: '.$request->date ." ". $request->time);
+        $fechaHora = $request->date . " " . $request->time;
+        // Convierte la cadena de fecha y hora a un objeto DateTime
+        $dateTime = new DateTime($fechaHora);
+        // Formatea la fecha y hora en el formato adecuado para tu base de datos
+        $fechaHoraFormateada = $dateTime->format('Y-m-d H:i:s');
+
         $ticketVisit= new TicketVisit();
         $ticketVisit->ticket_id                             = $ticketId;
-        $ticketVisit->date                                  = $request->date;
-        $ticketVisit->time                                  = $request->time;
+        $ticketVisit->date                                  = $fechaHoraFormateada;
+        // $ticketVisit->time                                  = $request->time;
         $ticketVisit->description                           = $request->description;
         if($request->filled('ticket_replie_id')) {
             $ticketVisit->ticket_replie_id                  = $request->ticket_replie_id;

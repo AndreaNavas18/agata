@@ -181,7 +181,7 @@
                             'title' => 'Descripción ticket',
                             'required' => false])
                         @endcomponent
-                        <textarea disabled class="form-control">{{  $ticket->description }}</textarea>
+                        <textarea disabled class="form-control">{{ $descripcionSinHTML = strip_tags($ticket->description)}}</textarea>
                     </div>
                 </div>
             </div>

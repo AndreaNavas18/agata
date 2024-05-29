@@ -52,14 +52,20 @@
                     @endif
                     <div>
                         <b>Fecha:</b>
+                            @php
+                                $partes = explode(" ", $ticketVisit->date);
+                                $fecha = $partes[0];
+                                $hora = $partes[1];
+                            @endphp
                         <span class="ml-2">
-                            {{ $ticketVisit->date }}
+                            {{ $fecha }}
                         </span>
                     </div>
                     <div>
                         <b>Hora:</b>
                         <span class="ml-2">
-                            {{ $ticketVisit->time }}
+                            
+                            {{ $hora }}
                         </span>
                     </div>
                     {{-- Si hay archivos que los muestre --}}

@@ -174,7 +174,9 @@ class CustomerProyectoController extends Controller
 
             // Obtener los proyectos paginados
             $proyectos = $proyectos->paginate();
-
+            $proyectosAll =Proyecto::where('customer_id', $customerId);
+            $proyectosAll = $proyectosAll->paginate();
+            
             $customerServices= CustomerService::customerId($customerId)->paginate();
             $tabPanel='customerProyectosTabEdit';
             $cities= City::get();
@@ -199,9 +201,8 @@ class CustomerProyectoController extends Controller
                 'customerServices',
                 'typesServices',
                 'typesInstalations',
-                'countries'
-
-
+                'countries',
+                'proyectosAll'
             ));
 
             
