@@ -51,17 +51,30 @@ class CommercialQuoteController extends Controller
 
     public function obtenerDetallesTarifa(Request $request)
     {
-        $bandwidthId = $request->input('bandwidth');
-
-        $tarifa = CommercialTariff::where('bandwidth_id', $bandwidthId)->first();
-        return response()->json([
-            'recurring_value_12'    => $tarifa->recurring_value_12,
-            'recurring_value_24'    => $tarifa->recurring_value_24,
-            'recurring_value_36'    => $tarifa->recurring_value_36,
-            'value_mbps_12'         => $tarifa->value_mbps_12,
-            'value_mbps_24'         => $tarifa->value_mbps_24,
-            'value_mbps_36'         => $tarifa->value_mbps_36,
-        ]);
+        \Log::info('Bandwidth ID received: ' . $request->input('bandwidth_id'));
+        try {
+            $bandwidthId = $request->input('bandwidth_id');
+            if (!$bandwidthId) {
+                return response()->json(['error' => 'Bandwidth ID is required'], 400);
+            }
+    
+            $tarifa = CommercialTariff::where('bandwidth_id', $bandwidthId)->first();
+    
+            if (!$tarifa) {
+                return response()->json(['error' => 'No tariff found for the given bandwidth ID'], 404);
+            }
+    
+            return response()->json([
+                'recurring_value_12' => $tarifa->recurring_value_12,
+                'recurring_value_24' => $tarifa->recurring_value_24,
+                'recurring_value_36' => $tarifa->recurring_value_36,
+                'value_mbps_12' => $tarifa->value_mbps_12,
+                'value_mbps_24' => $tarifa->value_mbps_24,
+                'value_mbps_36' => $tarifa->value_mbps_36,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while fetching the tariff details'], 500);
+        }
     }
 
 

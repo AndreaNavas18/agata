@@ -68,7 +68,6 @@ $(document).ready(function() {
     });
 });
 
-
 $(document).ready(function() {
     // Almacenar los servicios disponibles globalmente para usarlos después
     var serviciosDisponibles = {};
@@ -125,13 +124,17 @@ $(document).ready(function() {
         console.log("Template añadido al contenedor.");
 
         // Actualizar el select de anchos de banda en el nuevo grupo
-        actualizarSelectsAnchosBanda(servicioId);
+        actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
 
         // Añadir evento change al nuevo select de anchos de banda
         $template.find('.bandwidth').change(function() {
             var bandwidthId = $(this).val();
             var $group = $(this).closest('.velocidad-group');
             console.log("Ancho de banda seleccionado:", bandwidthId);
+
+            if (!bandwidthId) {
+                return;
+            }
 
             $.ajax({
                 url: '/obtener-detalles-tarifa',
@@ -157,9 +160,19 @@ $(document).ready(function() {
             $(this).closest('.velocidad-group').remove();
         });
 
-        // Actualizar el plugin selectpicker
-        $template.find('.selectpicker').selectpicker('refresh');
-        console.log("Selectpicker refrescado.");
+        // Inicializar el plugin selectpicker en el nuevo select
+        $template.find('.selectpicker').selectpicker();
+        console.log("Selectpicker inicializado para el nuevo elemento.");
     });
+
+    // Función para actualizar un select individual de anchos de banda
+    function actualizarSelectIndividual($select, servicioId) {
+        $select.empty();
+        $select.append($('<option>').text('--Seleccione--').attr('value', ''));
+        $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+            $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+        });
+        $select.selectpicker('refresh');
+    }
 });
 
