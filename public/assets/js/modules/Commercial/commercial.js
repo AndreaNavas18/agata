@@ -69,10 +69,8 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    // Almacenar los servicios disponibles globalmente para usarlos después
     var serviciosDisponibles = {};
 
-    // Cargar los anchos de banda cuando se seleccione un servicio
     $('#name_service').change(function() {
         var servicioId = $(this).val();
 
@@ -85,9 +83,7 @@ $(document).ready(function() {
             type: 'GET',
             data: { servicio_id: servicioId },
             success: function(response) {
-                // Guardar los anchos de banda disponibles globalmente
                 serviciosDisponibles[servicioId] = response;
-                // Actualizar todos los selects de anchos de banda
                 actualizarSelectsAnchosBanda(servicioId);
                 console.log("Anchos de banda cargados:", response);
             },
@@ -97,7 +93,6 @@ $(document).ready(function() {
         });
     });
 
-    // Función para actualizar los selects de anchos de banda
     function actualizarSelectsAnchosBanda(servicioId) {
         $('.bandwidth').each(function() {
             var $select = $(this);
@@ -110,7 +105,6 @@ $(document).ready(function() {
         });
     }
 
-    // Añadir nueva velocidad (Mbps)
     $('#add-velocidad').click(function() {
         console.log("Botón 'Añadir otra velocidad (Mbps)' clicado.");
         var servicioId = $('#name_service').val();
@@ -123,10 +117,8 @@ $(document).ready(function() {
         $('#velocidades-container').append($template);
         console.log("Template añadido al contenedor.");
 
-        // Actualizar el select de anchos de banda en el nuevo grupo
         actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
 
-        // Añadir evento change al nuevo select de anchos de banda
         $template.find('.bandwidth').change(function() {
             var bandwidthId = $(this).val();
             var $group = $(this).closest('.velocidad-group');
@@ -155,17 +147,14 @@ $(document).ready(function() {
             });
         });
 
-        // Añadir evento click para eliminar el grupo
         $template.find('.remove-velocidad').click(function() {
             $(this).closest('.velocidad-group').remove();
         });
 
-        // Inicializar el plugin selectpicker en el nuevo select
         $template.find('.selectpicker').selectpicker();
         console.log("Selectpicker inicializado para el nuevo elemento.");
     });
 
-    // Función para actualizar un select individual de anchos de banda
     function actualizarSelectIndividual($select, servicioId) {
         $select.empty();
         $select.append($('<option>').text('--Seleccione--').attr('value', ''));
