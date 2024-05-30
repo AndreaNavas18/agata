@@ -105,7 +105,7 @@
                                 <td>
                                     <form action="{{ route('submodules.update', $submodule->id) }}"
                                         method="POST"
-                                        id="formUpdate">
+                                        id="formUpdate{{ $submodule->id }}">
                                         @csrf
                                         @method('PUT')
 

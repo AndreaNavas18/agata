@@ -240,11 +240,33 @@ class CustomerServiceController extends Controller
         $data=$request->all();
         $countries= Country::get();
         $proyectos= Proyecto::get();
-        $customerServices= CustomerService::buscar($data,$customerId,'customer');
+        $customers = Customer::all();
+        $camposAdicionales = [
+            'ip',
+            'vlan',
+            'mascara',
+            'gateway',
+            'mac',
+            'BW_Download',
+            'BW_upload',
+            'ip_vpn',
+            'tipo_vpn',
+            'user_vpn',
+            'password_vpn',
+            'user_tunel',
+            'id_tunel',
+            'tecnologia',
+            'equipo',
+            'modelo',
+            'serial',
+            'activo_fijo'
+        ];
+        $customerServices= CustomerService::buscarServicio($data,$customerId,'customer');
         if ($request->action=='buscar') {
             $customerServices = $customerServices->paginate();
             return view('modules.customers.edit', compact(
                 'customer',
+                'customers',
                 'departments',
                 'cities',
                 'tabPanel',
@@ -255,7 +277,8 @@ class CustomerServiceController extends Controller
                 'data',
                 'typesServices',
                 'countries',
-                'proyectos'
+                'proyectos',
+                'camposAdicionales'
             ));
         } else {
             $customerServices = $customerServices->get();

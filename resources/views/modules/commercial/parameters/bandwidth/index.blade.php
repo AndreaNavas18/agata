@@ -169,14 +169,31 @@
 
             @slot('body')
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label class="form-label">Nombre</label>
                     <input type="text"
                         name="name"
                         class="form-control"
                         id="validationCustom01"
                         required>
+                </div> --}}
+
+                <div class="form-group">
+                    <label class="form-label">Número</label>
+                    <div class="input-group">
+                        <input type="number"
+                            name="name"
+                            class="form-control"
+                            id="validationCustom01"
+                            inputmode="numeric"
+                            required>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2" disabled>Mbps</span>
+                        </div>
+                    </div>
                 </div>
+    
+
 
             @endslot
 

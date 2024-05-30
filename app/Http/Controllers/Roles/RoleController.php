@@ -122,6 +122,8 @@ class RoleController extends Controller
         }
         DB::commit();
         Alert::success('¡Éxito!', 'Registro eliminado exitosamente');
+
+        return redirect()->back();
     }
 
     /**
