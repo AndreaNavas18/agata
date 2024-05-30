@@ -167,14 +167,10 @@ class CommercialQuoteController extends Controller
     }
 
     public function manage($id, Request $request) {
-        $quote = Quotes::findOrFail($id);
-        $tariff = DetailsQuotesTariffs::where('quote_id', $id)->get();
-        $section = DetailsQuotesSection::where('quote_id', $id)->get();
+        $quote = Quotes::with(['tariffs.tariff', 'sections'])->findOrFail($id);
 
         return view('modules.commercial.quotes.manage', compact(
           'quote',
-          'tariff',
-          'section'
         ));
     }
 

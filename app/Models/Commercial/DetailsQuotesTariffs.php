@@ -4,6 +4,8 @@ namespace App\Models\Commercial;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Commercial\Quotes;
+use App\Models\Commercial\CommercialTariff;
 
 class DetailsQuotesTariffs extends Model
 {
@@ -24,5 +26,10 @@ class DetailsQuotesTariffs extends Model
     public function quote()
     {
         return $this->belongsTo(Quotes::class, 'quote_id');
+    }
+
+    public function tariff()
+    {
+        return $this->belongsTo(CommercialTariff::class, 'name_service');
     }
 }

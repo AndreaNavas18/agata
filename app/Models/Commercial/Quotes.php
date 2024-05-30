@@ -25,7 +25,7 @@ class Quotes extends Model
         return $this->hasMany(DetailsQuotesTariffs::class, 'quote_id');
     }
 
-    public function section() {
+    public function sections() {
         return $this->hasMany(DetailsQuotesSection::class, 'quote_id');
     }
 

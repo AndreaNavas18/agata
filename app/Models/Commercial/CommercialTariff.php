@@ -60,6 +60,10 @@ class CommercialTariff extends Model
         return $this->belongsTo(CommercialBandwidth::class, 'bandwidth_id');
     }
 
+    public function detailsQuoteTariff() {
+        return $this->hasMany(DetailsQuotesTariffs::class, 'name_service');
+    }
+
 
 
     /* *************************************************************

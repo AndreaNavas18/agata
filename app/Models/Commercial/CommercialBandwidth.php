@@ -20,4 +20,8 @@ class CommercialBandwidth extends Model
     {
     	return $query->where('name', 'like', '%'.$name.'%');
     }
+    
+    public function tariffs() {
+        return $this->hasMany(DetailsQuotesTariffs::class, 'bandwidth');
+    }
 }

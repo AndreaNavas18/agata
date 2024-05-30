@@ -21,5 +21,11 @@ class CommercialTypeService extends Model
     	return $query->where('name', 'like', '%'.$name.'%');
     }
 
+    
+    public function bandwidth()
+    {
+        return $this->belongsTo(CommercialBandwidth::class, 'bandwidth');
+    }
+
 
 }

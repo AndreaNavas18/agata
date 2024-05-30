@@ -55,7 +55,41 @@
                             {{ $quote->direction }}
                         </div>
                     </div>
-
+                               
+                </div>
+            </div>
+                    @foreach ($quote->tariffs as $tariff)
+                    <div class="card-border">
+                        <div class="row">
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Nombre del servicio',])
+                                @endcomponent
+                                <div>
+                                    {{ $tariff->tariff->service->name }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Velocidad (Mbps)',])
+                                @endcomponent
+                                <div>
+                                    {{ $tariff->tariff->bandwidth->name }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'NRC 12 Meses',])
+                                @endcomponent
+                                <div>
+                                    {{ $tariff->nrc_12 ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="card-border">
+                        <div class="row">
 
                     <div class="col-md-12 mb-4">
                         @component('componentes.label', [
@@ -64,9 +98,9 @@
                         @endcomponent
                         <textarea disabled class="form-control">{{  $quote->observation }}</textarea>
                     </div>
-                   
-                </div>
-            </div>
+                        </div>
+                    </div>
+        
         </div>
      @endcomponent
 @endsection
