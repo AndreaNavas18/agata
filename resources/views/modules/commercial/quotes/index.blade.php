@@ -45,7 +45,7 @@
 
             <div class="collapse card-border" id="buscar">
                 <form class="form-inline"
-                    action="{{ route('commercial.quotes.index') }}"
+                    action="{{ route('commercial.quotes.search') }}"
                     method="GET"
                     id="formSearch">
                     @include('modules.commercial.quotes.partials.formFilter', [

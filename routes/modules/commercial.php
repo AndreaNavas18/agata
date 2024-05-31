@@ -98,7 +98,7 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 
 	Route::delete('/cotizaciones/eliminar/{id}', [ CommercialQuoteController::class, 'destroy' ])->name('destroy');
 
-
+	Route::get('/cotizaciones/buscar', [ CommercialQuoteController::class, 'search' ])->name('search');
 
 
 });

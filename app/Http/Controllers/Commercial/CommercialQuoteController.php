@@ -87,32 +87,29 @@ class CommercialQuoteController extends Controller
             }
 
             if ($seccionesPresentes) {
-                foreach ($camposRelevantes as $campo) {
-                    if ($request->has($campo) && is_array($request->$campo)) {
-                        foreach ($request->$campo as $index => $valor) {
-                            $sectionQuote                       = new DetailsQuotesSection();
-                            $sectionQuote->quote_id             = $quote->id;
-                            $sectionQuote->tramo                = $request->tramo[$index];
-                            $sectionQuote->trayecto             = $request->trayecto[$index];
-                            $sectionQuote->hilos                = $request->hilos[$index];
-                            $sectionQuote->extremo_a            = $request->extremo_a[$index];
-                            $sectionQuote->extremo_b            = $request->extremo_b[$index];
-                            $sectionQuote->kms                  = $request->kms[$index];
-                            $sectionQuote->recurrente_mes       = $request->recurrente_mes[$index];
-                            $sectionQuote->recurrente_12        = $request->recurrente_12[$index];
-                            $sectionQuote->recurrente_24        = $request->recurrente_24[$index];
-                            $sectionQuote->recurrente_36        = $request->recurrente_36[$index];
-                            $sectionQuote->tiempo               = $request->tiempo[$index];
-                            $sectionQuote->valor_km_usd         = $request->valor_km_usd[$index];
-                            $sectionQuote->valor_total_iru_usd  = $request->valor_total_iru_usd[$index];
-                            $sectionQuote->valor_km_cop         = $request->valor_km_cop[$index];
-                            $sectionQuote->valor_total          = $request->valor_total[$index];
+                $cantidadSecciones = count($request->tramo);
+                for ($index = 0; $index < $cantidadSecciones; $index++) {
+                    $sectionQuote = new DetailsQuotesSection();
+                    $sectionQuote->quote_id = $quote->id;
+                    $sectionQuote->tramo = $request->tramo[$index] ?? null;
+                    $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
+                    $sectionQuote->hilos = $request->hilos[$index] ?? null;
+                    $sectionQuote->extremo_a = $request->extremo_a[$index] ?? null;
+                    $sectionQuote->extremo_b = $request->extremo_b[$index] ?? null;
+                    $sectionQuote->kms = $request->kms[$index] ?? null;
+                    $sectionQuote->recurrente_mes = $request->recurrente_mes[$index] ?? null;
+                    $sectionQuote->recurrente_12 = $request->recurrente_12[$index] ?? null;
+                    $sectionQuote->recurrente_24 = $request->recurrente_24[$index] ?? null;
+                    $sectionQuote->recurrente_36 = $request->recurrente_36[$index] ?? null;
+                    $sectionQuote->tiempo = $request->tiempo[$index] ?? null;
+                    $sectionQuote->valor_km_usd = $request->valor_km_usd[$index] ?? null;
+                    $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
+                    $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
+                    $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
 
-                            \Log::info("se lleno un tramo o trayecto");
-            
-                            $sectionQuote->save();
-                        }
-                    }
+                    \Log::info("Se llenó un tramo o trayecto");
+
+                    $sectionQuote->save();
                 }
             }
 
@@ -167,10 +164,14 @@ class CommercialQuoteController extends Controller
     }
 
     public function manage($id, Request $request) {
-        $quote = Quotes::with(['tariffs.tariff', 'sections'])->findOrFail($id);
+        $quote = Quotes::findOrFail($id);
+        $tariff = DetailsQuotesTariffs::where('quote_id', $id)->get();
+        $section = DetailsQuotesSection::where('quote_id', $id)->get();
+        $services = CommercialTypeService::all();
+        $bandwidths = CommercialBandwidth::all();
 
         return view('modules.commercial.quotes.manage', compact(
-          'quote',
+          'quote', 'tariff', 'section', 'services', 'bandwidths'
         ));
     }
 
@@ -198,6 +199,35 @@ class CommercialQuoteController extends Controller
             }
         }
 
+    }
+
+    public function search(Request $request)
+    {
+        $issue = strtolower($request->input('issue'));
+        $name = $request->input('name');
+        $identification = $request->input('identification');
+
+        $query = Quotes::query();
+
+        // Aplicar la búsqueda por asunto si se proporcionó
+        if (!empty($issue)) {
+            $query->where('issue', 'LIKE', "%$issue%");
+        }
+        
+        // Aplicar la búsqueda por nombre si se proporcionó
+        if (!empty($name)) {
+            $query->where('name', 'LIKE', "%$name%");
+        }
+
+        // Aplicar la búsqueda por identificación si se proporcionó
+        if (!empty($identification)) {
+            $query->where('identification', 'LIKE', "%$identification%");
+        }
+
+        $quotes = $query->paginate();
+        $data = $request->all();
+
+        return view('modules.commercial.quotes.index', compact('quotes', 'data'));
     }
 
 

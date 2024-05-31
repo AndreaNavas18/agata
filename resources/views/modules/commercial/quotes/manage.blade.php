@@ -58,7 +58,7 @@
                                
                 </div>
             </div>
-                    @foreach ($quote->tariffs as $tariff)
+                    @foreach ($tariff as $tariffItem)
                     <div class="card-border">
                         <div class="row">
                             <div class="col-md-3 mb-4">
@@ -66,7 +66,7 @@
                                     'title' => 'Nombre del servicio',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariff->tariff->service->name }}
+                                    {{ $services->firstWhere('id', $tariffItem->name_service)->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -74,7 +74,7 @@
                                     'title' => 'Velocidad (Mbps)',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariff->tariff->bandwidth->name }}
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -82,7 +82,23 @@
                                     'title' => 'NRC 12 Meses',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariff->nrc_12 ?? 'No se especificó' }}
+                                    {{ $tariffItem->nrc_12 ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'NRC 24 Meses',])
+                                @endcomponent
+                                <div>
+                                    {{ $tariffItem->nrc_24 ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'NRC 36 Meses',])
+                                @endcomponent
+                                <div>
+                                    {{ $tariffItem->nrc_36 ?? 'No se especificó' }}
                                 </div>
                             </div>
                         </div>
@@ -90,17 +106,145 @@
                     @endforeach
                     <div class="card-border">
                         <div class="row">
-
-                    <div class="col-md-12 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Observacion',
-                            'required' => false])
-                        @endcomponent
-                        <textarea disabled class="form-control">{{  $quote->observation }}</textarea>
-                    </div>
+                            <div class="col-md-12 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Observacion',
+                                    'required' => false])
+                                @endcomponent
+                                <textarea disabled class="form-control">{{  $quote->observation }}</textarea>
+                            </div>
                         </div>
                     </div>
-        
+                    @if($section->isNotEmpty())
+                        @foreach ($section as $sectionItem)
+                        <div class="card-border">
+                            <div class="row">
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Tramo',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->tramo ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Trayecto',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->trayecto ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Hilos',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->hilos ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Extremo A',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->extremo_a ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Extremo B',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->extremo_b ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Kms',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->kms ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Recurrente mensual',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->recurrente_mes ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Recurrente 12 meses',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->recurrente_12 ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Recurrente 24 meses',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->recurrente_24 ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Recurrente 36 meses',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->recurrente_36 ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Tiempo',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $sectionItem->tiempo ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Vr KM/par USD',])
+                                    @endcomponent
+                                    <div>
+                                       $ {{ $sectionItem->valor_km_usd ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Vr total IRU USD',])
+                                    @endcomponent
+                                    <div>
+                                       $ {{ $sectionItem->valor_total_iru_usd ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Vr Km/par COP',])
+                                    @endcomponent
+                                    <div>
+                                       $ {{ $sectionItem->valor_km_cop ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Valor total',])
+                                    @endcomponent
+                                    <div>
+                                       $ {{ $sectionItem->valor_total ?? 'No se especificó' }}
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        @endforeach
+                    @endif
         </div>
      @endcomponent
 @endsection
