@@ -21,15 +21,15 @@ return new class extends Migration
             $table->text('extremo_a')->nullable();
             $table->text('extremo_b')->nullable();
             $table->bigInteger('kms')->nullable();
-            $table->decimal('recurrente_mes')->nullable();
-            $table->decimal('recurrente_12')->nullable();
-            $table->decimal('recurrente_24')->nullable();
-            $table->decimal('recurrente_36')->nullable();
+            $table->bigInteger('recurrente_mes')->nullable();
+            $table->bigInteger('recurrente_12')->nullable();
+            $table->bigInteger('recurrente_24')->nullable();
+            $table->bigInteger('recurrente_36')->nullable();
             $table->string('tiempo')->nullable();
-            $table->decimal('valor_km_usd')->nullable();
-            $table->decimal('valor_total_iru_usd')->nullable();
-            $table->decimal('valor_km_cop')->nullable();
-            $table->decimal('valor_total')->nullable();
+            $table->bigInteger('valor_km_usd')->nullable();
+            $table->bigInteger('valor_total_iru_usd')->nullable();
+            $table->bigInteger('valor_km_cop')->nullable();
+            $table->bigInteger('valor_total')->nullable();
             $table->timestamps();
         });
     }
