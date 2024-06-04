@@ -53,6 +53,16 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
+                        <a class="btn btn-success btn-sm loading mb-1"
+                            href="{{ route('commercial.quotes.edit',$quote->id)}}"
+                            @if(isset($newTab) && $newTab)
+                                target="'_blank"
+                            @endif
+                            bs-toggle="tooltip"
+                            bs-placement="top"
+                            title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
                     </td>
                 @endif
             </tr>

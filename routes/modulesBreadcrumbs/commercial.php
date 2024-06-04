@@ -70,4 +70,10 @@ Breadcrumbs::for('quotes/manage', function ($trail, $data) {
     $trail->push('Gestión', route('commercial.quotes.manage', $data['id']));
 });
 
+Breadcrumbs::for('quotes/edit', function ($trail, $data) {
+    $trail->parent('quotes');
+    $trail->push('Editar', route('commercial.quotes.edit', $data['id']));
+});
+
+
 

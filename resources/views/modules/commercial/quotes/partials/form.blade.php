@@ -6,7 +6,7 @@
             'required' => true,
         ])
         @endcomponent
-        <input type="text" name="issue" class="form-control">
+        <input type="text" name="issue" class="form-control" value="{{ isset($quote) ? $quote->issue : '' }}">
     </div>
     <div class="col-md-6 mb-3">
         @component('componentes.label', [

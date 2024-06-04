@@ -230,5 +230,24 @@ class CommercialQuoteController extends Controller
         return view('modules.commercial.quotes.index', compact('quotes', 'data'));
     }
 
+    public function edit ($id) {
+        $quote = Quotes::with(['tariffs.tariff', 'sections'])->findOrFail($id);
+        // $tariffs = $quote->tariffs;
+        // $selectedService = $quote->tariffs->first()->tariff->comercialTypeService;
+        // $bandwidths = $selectedService->bandwidths;
+
+
+        $tarifas = CommercialTariff::all();
+        $servicios = CommercialTypeService::all();
+        $bandwidths = CommercialBandwidth::all();
+
+        return view('modules.commercial.quotes.edit', compact(
+            'quote',
+            'tarifas',
+            'servicios',
+            'bandwidths'
+        ));
+    }
+
 
 }

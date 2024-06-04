@@ -109,7 +109,7 @@
 
                                     @can('services.destroy')
                                         <form class="d-inline frmDestroy mb-1"
-                                            action="{{ route($module.'.services.destroy', $service->id) }}"
+                                            action="{{ route($module.'.destroy', $service->id) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
