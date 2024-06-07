@@ -44,32 +44,33 @@ $(document).ready(function() {
 
 });
 
-$(document).ready(function() {
-    $('#name_service').change(function() {
-        var servicioId = $(this).val();
-        $.ajax({
-            url: '/obtener-anchos-de-banda',
-            type: 'GET',
-            data: {
-                servicio_id: servicioId
-            },
-            success: function(response) {
-                $('#bandwidth').empty();
-                $('#bandwidth').append($('<option>').text('--Seleccione--').attr('value', ''));
-                $.each(response, function(index, bandwidth) {
-                    $('#bandwidth').append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
-                });
-                $('#bandwidth').selectpicker('refresh');
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-});
+// $(document).ready(function() {
+//     $('#name_service').change(function() {
+//         var servicioId = $(this).val();
+//         $.ajax({
+//             url: '/obtener-anchos-de-banda',
+//             type: 'GET',
+//             data: {
+//                 servicio_id: servicioId
+//             },
+//             success: function(response) {
+//                 $('#bandwidth').empty();
+//                 $('#bandwidth').append($('<option>').text('--Seleccione--').attr('value', ''));
+//                 $.each(response, function(index, bandwidth) {
+//                     $('#bandwidth').append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+//                 });
+//                 $('#bandwidth').selectpicker('refresh');
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error(error);
+//             }
+//         });
+//     });
+// });
 
 $(document).ready(function() {
     var serviciosDisponibles = {};
+    var servicioSeleccionado = $('#name_service').val();
 
     $('#name_service').change(function() {
         var servicioId = $(this).val();
@@ -91,6 +92,7 @@ $(document).ready(function() {
                 console.error("Error al obtener anchos de banda:", error);
             }
         });
+        servicioSeleccionado = servicioId;
     });
 
     function actualizarSelectsAnchosBanda(servicioId) {
@@ -107,8 +109,12 @@ $(document).ready(function() {
 
     $('#add-velocidad').click(function() {
         console.log("Botón 'Añadir otra velocidad (Mbps)' clicado.");
-        var servicioId = $('#name_service').val();
-        if (!servicioId) {
+        // var servicioId = $('#name_service').val();
+        // if (!servicioId) {
+        //     alert('Seleccione un servicio primero.');
+        //     return;
+        // }
+        if (!servicioSeleccionado) {
             alert('Seleccione un servicio primero.');
             return;
         }
@@ -117,7 +123,8 @@ $(document).ready(function() {
         $('#velocidades-container').append($template);
         console.log("Template añadido al contenedor.");
 
-        actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
+        // actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
+        actualizarSelectIndividual($template.find('.bandwidth'), servicioSeleccionado);
 
         $template.find('.bandwidth').change(function() {
             var bandwidthId = $(this).val();
@@ -163,6 +170,8 @@ $(document).ready(function() {
         });
         $select.selectpicker('refresh');
     }
+
+    actualizarSelectsAnchosBanda(servicioSeleccionado);
 });
 
 $(document).ready(function() {

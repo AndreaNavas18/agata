@@ -58,7 +58,7 @@
         ])
         @endcomponent
         <select class="form-control
-            selectpicker" name="name_service" id="name_service" required>
+            selectpicker" name="name_service" id="name_service" disabled>
             <option value="">--Seleccione--</option>
             @foreach ($servicios as $servicioRow)
             <option value="{{ $servicioRow->id }}" {{ $quote->tariffs->isNotEmpty() && $servicioRow->id == $quote->tariffs->first()->tariff->commercial_type_service_id ? 'selected' : '' }}>
@@ -78,6 +78,9 @@
     </div>
 
     <div id="velocidades-container">
+                    {{-- @php
+                        dd($bandwidths);
+                    @endphp --}}
         @foreach($quote->tariffs as $tariff)
             <div class="velocidad-group row">
                 <div class="col-md-6 mb-3">
@@ -87,7 +90,7 @@
                     ])
                     @endcomponent
                     <select class="form-control
-                    selectpicker bandwidth" name="bandwidth[]" required>
+                    selectpicker bandwidth" name="bandwidth[]">
                         <option value="">--Seleccione--</option>
                         @foreach ($bandwidths as $bandRow)
                             <option value="{{ $bandRow->id }}" {{ $tariff->tariff->bandwidth_id == $bandRow->id ? 'selected' : '' }}>
