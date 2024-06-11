@@ -100,6 +100,8 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 
 	Route::get('/cotizaciones/buscar', [ CommercialQuoteController::class, 'search' ])->name('search');
 
+    Route::get('/quotes/{id}/export', [ CommercialQuoteController::class, 'export' ])->name('export');
+
 
 });
 // AJAX

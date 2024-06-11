@@ -44,41 +44,11 @@ $(document).ready(function() {
 
 });
 
-// $(document).ready(function() {
-//     $('#name_service').change(function() {
-//         var servicioId = $(this).val();
-//         $.ajax({
-//             url: '/obtener-anchos-de-banda',
-//             type: 'GET',
-//             data: {
-//                 servicio_id: servicioId
-//             },
-//             success: function(response) {
-//                 $('#bandwidth').empty();
-//                 $('#bandwidth').append($('<option>').text('--Seleccione--').attr('value', ''));
-//                 $.each(response, function(index, bandwidth) {
-//                     $('#bandwidth').append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
-//                 });
-//                 $('#bandwidth').selectpicker('refresh');
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error(error);
-//             }
-//         });
-//     });
-// });
-
 $(document).ready(function() {
     var serviciosDisponibles = {};
-    var servicioSeleccionado = $('#name_service').val();
 
-    $('#name_service').change(function() {
-        var servicioId = $(this).val();
-
-        if (!servicioId) {
-            return;
-        }
-
+    // Función para cargar las velocidades mediante Ajax
+    function cargarVelocidades(servicioId) {
         $.ajax({
             url: '/obtener-anchos-de-banda',
             type: 'GET',
@@ -92,29 +62,34 @@ $(document).ready(function() {
                 console.error("Error al obtener anchos de banda:", error);
             }
         });
-        servicioSeleccionado = servicioId;
-    });
-
-    function actualizarSelectsAnchosBanda(servicioId) {
-        $('.bandwidth').each(function() {
-            var $select = $(this);
-            $select.empty();
-            $select.append($('<option>').text('--Seleccione--').attr('value', ''));
-            $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
-                $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
-            });
-            $select.selectpicker('refresh');
-        });
     }
+
+    // Función para cargar las velocidades al abrir el formulario de edición
+    function cargarVelocidadesIniciales() {
+        var servicioId = $('#name_service').val();
+        if (servicioId) {
+            cargarVelocidades(servicioId);
+        }
+    }
+
+    // Cargar las velocidades iniciales al abrir el formulario de edición
+    cargarVelocidadesIniciales();
+
+    // Evento change para el campo de selección de servicios
+    $('#name_service').change(function() {
+        var servicioId = $(this).val();
+        if (servicioId) {
+            cargarVelocidades(servicioId);
+        } else {
+            $('.bandwidth').empty();
+            $('.bandwidth').selectpicker('refresh');
+        }
+    });
 
     $('#add-velocidad').click(function() {
         console.log("Botón 'Añadir otra velocidad (Mbps)' clicado.");
-        // var servicioId = $('#name_service').val();
-        // if (!servicioId) {
-        //     alert('Seleccione un servicio primero.');
-        //     return;
-        // }
-        if (!servicioSeleccionado) {
+        var servicioId = $('#name_service').val();
+        if (!servicioId) {
             alert('Seleccione un servicio primero.');
             return;
         }
@@ -123,8 +98,7 @@ $(document).ready(function() {
         $('#velocidades-container').append($template);
         console.log("Template añadido al contenedor.");
 
-        // actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
-        actualizarSelectIndividual($template.find('.bandwidth'), servicioSeleccionado);
+        actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
 
         $template.find('.bandwidth').change(function() {
             var bandwidthId = $(this).val();
@@ -158,21 +132,46 @@ $(document).ready(function() {
             $(this).closest('.velocidad-group').remove();
         });
 
+        // Inicializar el selectpicker para el nuevo elemento
         $template.find('.selectpicker').selectpicker();
         console.log("Selectpicker inicializado para el nuevo elemento.");
     });
 
+      // Función para actualizar todos los selects de ancho de banda
+      function actualizarSelectsAnchosBanda(servicioId) {
+        $('.bandwidth').each(function() {
+            var $select = $(this);
+            $select.empty();
+            $select.append($('<option>').text('--Seleccione--').attr('value', ''));
+            $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+                $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+            });
+            $select.selectpicker('refresh');
+        });
+    }
+
+    // Función para actualizar el campo de selección de ancho de banda individualmente
     function actualizarSelectIndividual($select, servicioId) {
         $select.empty();
         $select.append($('<option>').text('--Seleccione--').attr('value', ''));
         $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
             $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
         });
-        $select.selectpicker('refresh');
+        // $select.selectpicker('refresh');
     }
+    
+    // $('.selectpicker').selectpicker();
 
-    actualizarSelectsAnchosBanda(servicioSeleccionado);
+    // function inicializarSelectsEnEdicion() {
+    //     var servicioId = $('#name_service').val();
+    //     if (servicioId) {
+    //         actualizarSelectsAnchosBanda(servicioId);
+    //     }
+    // }
+
+    // inicializarSelectsEnEdicion();
 });
+
 
 $(document).ready(function() {
     $('#add-tramo').click(function() {

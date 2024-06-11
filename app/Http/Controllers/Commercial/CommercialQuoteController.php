@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Commercial\QuoteExport;
 use PDPException;
 
 class CommercialQuoteController extends Controller
@@ -231,23 +233,46 @@ class CommercialQuoteController extends Controller
     }
 
     public function edit ($id) {
-        $quote = Quotes::with(['tariffs.tariff', 'tariffs.tariff.bandwidth', 'sections'])->findOrFail($id);
-        // $tariffs = $quote->tariffs;
-        // $selectedService = $quote->tariffs->first()->tariff->comercialTypeService;
-        // $bandwidths = $selectedService->bandwidths;
-
-
+        $quote = Quotes::with(['tariffs.tariff', 'tariffs.bandwidth', 'sections'])->findOrFail($id);
         $tarifas = CommercialTariff::all();
         $servicios = CommercialTypeService::all();
+
+        if ($quote->tariffs->isNotEmpty()) {
+            $servicioId = $quote->tariffs->first()['name_service'];
+        } else {
+            $servicioId = null;
+        }
+        
         $bandwidths = CommercialBandwidth::all();
+        $bandwidthIds = $quote->tariffs->map(function($detailsQuoteTariff) {
+            return $detailsQuoteTariff->bandwidth;
+            })->toArray();
+            
+    
+        // dd($bandwidthIds);
         // dd($bandwidths);
         // dd($bandwidths, $quote->tariffs);
         return view('modules.commercial.quotes.edit', compact(
             'quote',
             'tarifas',
             'servicios',
-            'bandwidths'
+            'bandwidths',
+            'bandwidthIds',
+            'servicioId'
         ));
+    }
+
+    public function update(Request $request, $id){
+
+    }
+
+    public function export($id)
+    {
+        $quote = Quotes::findOrFail($id);
+       
+        $export = new QuoteExport($quote);
+    
+        return Excel::download($export, 'cotizacion.xlsx');
     }
 
 

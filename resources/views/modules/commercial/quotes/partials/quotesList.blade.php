@@ -63,6 +63,13 @@
                             title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
+                        <a class="btn btn-primary btn-sm mb-1"
+                            href="{{ route('commercial.quotes.export', $quote->id) }}"
+                            bs-toggle="tooltip"
+                            bs-placement="top"
+                            title="Exportar Cotización">
+                            <i class="fas fa-download"></i> Exportar
+                        </a>
                     </td>
                 @endif
             </tr>

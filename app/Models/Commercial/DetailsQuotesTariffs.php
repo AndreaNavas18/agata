@@ -30,6 +30,11 @@ class DetailsQuotesTariffs extends Model
 
     public function tariff()
     {
-        return $this->belongsTo(CommercialTariff::class, 'name_service');
+        return $this->belongsTo(CommercialTariff::class, 'name_service', 'id');
+    }
+
+    public function bandwidth()
+    {
+        return $this->belongsTo(CommercialBandwidth::class, 'bandwidth', 'id');
     }
 }

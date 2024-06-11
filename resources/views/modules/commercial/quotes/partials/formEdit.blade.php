@@ -58,13 +58,15 @@
         ])
         @endcomponent
         <select class="form-control
-            selectpicker" name="name_service" id="name_service" disabled>
+            selectpicker" name="name_service" id="name_service" 
+            disabled
+            >
             <option value="">--Seleccione--</option>
             @foreach ($servicios as $servicioRow)
-            <option value="{{ $servicioRow->id }}" {{ $quote->tariffs->isNotEmpty() && $servicioRow->id == $quote->tariffs->first()->tariff->commercial_type_service_id ? 'selected' : '' }}>
+            <option value="{{ $servicioRow->id }}" {{ $servicioRow->id == $servicioId ? 'selected' : '' }}>
                 {{ $servicioRow->name }}
             </option>
-            @endforeach
+        @endforeach
         </select>
     </div>
 
@@ -89,16 +91,14 @@
                         'id' => 'bandwidth',
                     ])
                     @endcomponent
-                    <select class="form-control
-                    selectpicker bandwidth" name="bandwidth[]">
+                    <select class="form-control selectpicker" name="bandwidth[]">
                         <option value="">--Seleccione--</option>
                         @foreach ($bandwidths as $bandRow)
-                            <option value="{{ $bandRow->id }}" {{ $tariff->tariff->bandwidth_id == $bandRow->id ? 'selected' : '' }}>
+                            <option value="{{ $bandRow->id }}" {{ $tariff->bandwidth == $bandRow->id ? 'selected' : '' }}>
                                 {{ $bandRow->name }}
                             </option>
                         @endforeach
                     </select>
-                   
                 </div>
         
                 <div class="col-md-6 mb-3">
@@ -299,23 +299,9 @@
         
 </div>
 
-{{-- <script>
-    $(document).ready(function () {
-        // Añadir velocidad
-        $('#add-velocidad').click(function () {
-            var velocidadTemplate = $('#velocidad-template').html();
-            $('#velocidades-container').append(velocidadTemplate);
-        });
-
-        // Añadir tramo
-        $('#add-tramo').click(function () {
-            var tramoTemplate = $('#tramo-template').html();
-            $('#tramos-container').append(tramoTemplate);
-        });
-
-        // Eliminar velocidad
-        $(document).on('click', '.remove-velocidad', function () {
-            $(this).closest('.velocidad-group').remove();
-        });
+<script>
+    $(document).ready(function() {
+        console.log('recarrrrrrgando')
+        $('.bandwidth').selectpicker('refresh');
     });
-</script> --}}
+</script>
