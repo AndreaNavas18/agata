@@ -31,8 +31,11 @@ class Cors
 
         $response = $next($request);
 
-        foreach ($headers as $key => $value) {
-            $response->header($key, $value);
+        // Verificar si la respuesta es del tipo correcto
+        if (method_exists($response, 'header')) {
+            foreach ($headers as $key => $value) {
+                $response->header($key, $value);
+            }
         }
 
         return $response;

@@ -16,6 +16,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Commercial\QuoteExport;
+use App\Exports\Commercial\SectionsExport;
 use PDPException;
 
 class CommercialQuoteController extends Controller
@@ -268,9 +269,17 @@ class CommercialQuoteController extends Controller
 
     public function export($id)
     {
-        $quote = Quotes::findOrFail($id);
+        // $quote = Quotes::findOrFail($id);
+        // $bandwidths = CommercialBandwidth::all();
        
-        $export = new QuoteExport($quote);
+        // $export = new QuoteExport($quote, $bandwidths);
+    
+        // return Excel::download($export, 'cotizacion.xlsx');
+
+        $quote = Quotes::findOrFail($id);
+        // $bandwidths = CommercialBandwidth::all();
+       
+        $export = new SectionsExport($quote);
     
         return Excel::download($export, 'cotizacion.xlsx');
     }
