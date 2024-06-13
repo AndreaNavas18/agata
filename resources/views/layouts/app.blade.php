@@ -22,7 +22,7 @@
 		<link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
 
 		<!-- Custom scroll bar css-->
-    <link href="{{asset('assets/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
+    	<link href="{{asset('assets/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
 
 		<!-- Sidemenu css -->
 		<link href="{{asset('assets/plugins/toggle-sidebar/full-sidemenu-dark.css')}}" rel="stylesheet" />

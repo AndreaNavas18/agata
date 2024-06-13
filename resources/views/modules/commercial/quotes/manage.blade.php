@@ -49,6 +49,14 @@
                     </div>
                     <div class="col-md-3 mb-4">
                         @component('componentes.label', [
+                            'title' => 'Ciudad',])
+                        @endcomponent
+                        <div>
+                            {{ $quote->city }}
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        @component('componentes.label', [
                             'title' => 'Dirección',])
                         @endcomponent
                         <div>

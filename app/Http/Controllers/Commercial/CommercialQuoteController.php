@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Commercial\QuoteExport;
 use App\Exports\Commercial\SectionsExport;
+use App\Exports\Commercial\QuoteCompleteExport;
+use App\Exports\Commercial\QuoteFormalComplete;
 use PDPException;
 
 class CommercialQuoteController extends Controller
@@ -52,6 +54,7 @@ class CommercialQuoteController extends Controller
             $quote->identification      = $request->identification;
             $quote->email               = $request->email;
             $quote->phone               = $request->phone;
+            $quote->city                = $request->city;
             $quote->direction           = $request->direction;
             $quote->observation         = $request->observation;
 
@@ -130,10 +133,14 @@ class CommercialQuoteController extends Controller
     {
         $servicioId = $request->input('servicio_id');
 
-        $bandwidthIds = CommercialTariff::where('commercial_type_service_id', $servicioId)
-                                        ->pluck('bandwidth_id');
+        // $bandwidthIds = CommercialTariff::where('commercial_type_service_id', $servicioId)
+        //                                 ->pluck('bandwidth_id');
 
-        $bandwidths = CommercialBandwidth::whereIn('id', $bandwidthIds)->get();
+        // $bandwidths = CommercialBandwidth::whereIn('id', $bandwidthIds)->get();
+
+        $bandwidths = CommercialBandwidth::whereHas('tariffs', function ($query) use ($servicioId) {
+            $query->where('commercial_type_service_id', $servicioId);
+        })->get();
 
         return response()->json($bandwidths);
     }
@@ -165,6 +172,9 @@ class CommercialQuoteController extends Controller
             return response()->json(['error' => 'An error occurred while fetching the tariff details'], 500);
         }
     }
+
+
+
 
     public function manage($id, Request $request) {
         $quote = Quotes::findOrFail($id);
@@ -269,19 +279,26 @@ class CommercialQuoteController extends Controller
 
     public function export($id)
     {
-        // $quote = Quotes::findOrFail($id);
-        // $bandwidths = CommercialBandwidth::all();
-       
-        // $export = new QuoteExport($quote, $bandwidths);
-    
-        // return Excel::download($export, 'cotizacion.xlsx');
-
         $quote = Quotes::findOrFail($id);
-        // $bandwidths = CommercialBandwidth::all();
+        $bandwidths = CommercialBandwidth::all();
+        $typeservices = CommercialTypeService::all();
        
-        $export = new SectionsExport($quote);
+        $export = new QuoteCompleteExport($quote, $bandwidths, $typeservices);
     
-        return Excel::download($export, 'cotizacion.xlsx');
+        return Excel::download($export, 'cotizacion_informal.xlsx');
+
+    }
+
+    public function exportFormal($id)
+    {
+        $quote = Quotes::findOrFail($id);
+        $bandwidths = CommercialBandwidth::all();
+        $typeservices = CommercialTypeService::all();
+       
+        $export = new QuoteFormalComplete($quote, $bandwidths, $typeservices);
+    
+        return Excel::download($export, 'cotizacion_formal.xlsx');
+
     }
 
 

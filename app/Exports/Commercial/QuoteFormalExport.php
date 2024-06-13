@@ -23,83 +23,93 @@ use PhpOffice\PhpSpreadsheet\Style\Font;
 use App\Models\Commercial\DetailsQuotesTariffs;
 use App\Models\Commercial\CommercialTariff;
 
-class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, WithColumnWidths, ShouldAutoSize, WithStyles, WithTitle
+class QuoteFormalExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting, WithColumnWidths, ShouldAutoSize, WithStyles, WithTitle
 {
     use Exportable;
 
     private $quote;
     protected $bandwidths;
+    protected $typeservices;
+    private $itemCounter = 1;
 
-    public function __construct($quote, $bandwidths)
+    public function __construct($quote, $bandwidths, $typeservices)
     {
         $this->quote = $quote;
         $this->bandwidths = $bandwidths;
+        $this->typeservices = $typeservices;
     }
 
     public function collection()
     {
-        return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        ->with(['bandwidth'])
-        ->get();
+        // return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
+        // ->with(['bandwidth', 'tariff.comercialTypeService'])
+        // ->get();
     }
 
    
     public function map($row): array
-    {
-        // $bandwidthName = $row->bandwidth->name ?? 'N/A';
-        // dd($bandwidthName);
+    {   
+        // $bandwidthName = 'N/A'; 
+        // $typeServiceName = 'N/A';
 
-        $bandwidthName = 'N/A'; 
+        // // dd($row->bandwidth, $row->name_service);
 
-        foreach ($this->bandwidths as $bandRow) {
-            if ($bandRow->id == $row->bandwidth) {
-                $bandwidthName = $bandRow->name;
-                break; 
-            }
-        }
+        // foreach ($this->bandwidths as $bandRow) {
+        //     if ($bandRow->id == $row->bandwidth) {
+        //         $bandwidthName = $bandRow->name;
+        //         break; 
+        //     }
+        // }
 
-        return [
-            $bandwidthName,
-            $row->nrc_12,
-            $row->nrc_24,
-            $row->nrc_36,
-            $row->mrc_12,
-            $row->mrc_24,
-            $row->mrc_36,
-        ];
+        
+        // foreach ($this->typeservices as $typeRow) {
+        //     if ($typeRow->id == $row->tariff->name_service) {
+        //         $typeServiceName = $typeRow->name;
+        //         break; 
+        //         }
+        //         }
+        // // dd($bandwidthName, $typeServiceName);
+                
+        // return [
+        //     $this->itemCounter++,
+        //     $typeServiceName,
+        //     $bandwidthName,
+        //     $row->mrc_12,
+        //     $row->mrc_24,
+        //     $row->mrc_36
+        // ];
+        
     }
 
     public function headings(): array
     {
-        return [
-            'Velocidad (mbps)',
-            'NRC 12 Meses',
-            'NRC 24 Meses',
-            'NRC 36 Meses',
-            'MRC 12 Meses',
-            'MRC 24 Meses',
-            'MRC 36 Meses',
-
-        ];
+        // return [
+        //     'ITEM',
+        //     'SERVICIO',
+        //     'CAPACIDAD',
+        //     'RECURRENTE 12 MESES',
+        //     'RECURRENTE 24 MESES',
+        //     'RECURRENTE 36 MESES',
+        // ];
     }
 
     public function styles(Worksheet $sheet)
     {
-
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
 
         // Estilo para la primera fila (A1:G1)
-        $sheet->getStyle('A1:G1')->applyFromArray([
+         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font' => [
                 'bold' => true,
-                'color' => ['rgb' => 'FFFFFF'],
+                'color' => ['rgb' => 'FFFFFF'],  // Color blanco
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => [
-                    'rgb' => '297ff0',  // Color azul claro en formato RGB
+                    'rgb' => '195DA1',  // Color azul claro en formato RGB
                 ],
+
             ],
         ]);
 
@@ -110,6 +120,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
         for ($row = 2; $row <= $lastRow; $row++) {
             $sheet->getRowDimension($row)->setRowHeight(30);
         }
+
         $sheet->getStyle('A1:' . $lastColumn . $lastRow)->applyFromArray([
             'borders' => [
                 'allBorders' => [
@@ -121,38 +132,35 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
 
         return [];
     }
-    
 
-    
     public function columnFormats(): array
     {
         return [
-            'A' => NumberFormat::FORMAT_TEXT,
-            'B' => '"$"#,##0',
-            'C' => '"$"#,##0',
+            'A' => NumberFormat::FORMAT_NUMBER,
+            'B' => NumberFormat::FORMAT_TEXT,
+            'C' => NumberFormat::FORMAT_TEXT,
             'D' => '"$"#,##0',
             'E' => '"$"#,##0',
             'F' => '"$"#,##0',
-            'G' => '"$"#,##0',
             ];
     }
-            
+
     public function columnWidths(): array
     {
         return [
-            'A' => 20,
-            'B' => 16,
-            'C' => 16,
-            'D' => 16,
-            'E' => 16,
-            'F' => 16,
-            'G' => 16,
-            ];
+            'A' => 10,
+            'B' => 30,
+            'C' => 20,
+            'D' => 20,
+            'E' => 20,
+            'F' => 20,
+        ];
     }
+
                     
     public function title(): string
     {
-        return 'Valores Cotización';
+        return 'Cotización Formal';
     }
     
 }

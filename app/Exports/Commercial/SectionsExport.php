@@ -10,25 +10,37 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
+
+use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
+class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithTitle
 {
     use Exportable;
 
     protected $quote;
+    protected $filteredColumns;
 
     public function __construct(Quotes $quote)
     {
         $this->quote = $quote;
+        $this->filteredColumns = $this->filterColumns();
     }
 
     public function collection()
     {
-        // return DetailsQuotesSection::where('quote_id', $this->quote->id)->get();
-        return DetailsQuotesSection::select(
+        return DetailsQuotesSection::select($this->filteredColumns)
+        ->where('quote_id', $this->quote->id)
+        ->get();
+        
+    }
+
+    private function filterColumns()
+    {
+        $columns = [
             'tramo',
             'trayecto',
             'hilos',
@@ -43,69 +55,86 @@ class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             'valor_km_usd',
             'valor_total_iru_usd',
             'valor_km_cop',
-            'valor_total'
-        )
-        ->where('quote_id', $this->quote->id)
-        ->get();
+            'valor_total',
+        ];
+
+        $filteredColumns = [];
+        foreach ($columns as $column) {
+            if (!empty(DetailsQuotesSection::where('quote_id', $this->quote->id)->value($column))) {
+                $filteredColumns[] = $column;
+            }
+        }
+
+        return $filteredColumns;
     }
 
     public function map($row): array
     {
-        return [
-            $row->tramo,
-            $row->trayecto,
-            $row->hilos,
-            $row->extremo_a,
-            $row->extremo_b,
-            $row->kms,
-            $row->recurrente_mes,
-            $row->recurrente_12,
-            $row->recurrente_24,
-            $row->recurrente_36,
-            $row->tiempo,
-            $row->valor_km_usd,
-            $row->valor_total_iru_usd,
-            $row->valor_km_cop,
-            $row->valor_total,
-        ];
+        $data = [];
+        foreach ($this->filteredColumns as $column) {
+            $data[] = $row->$column ?? '';
+        }
+        return $data;
     }
   
 
     public function headings(): array
    {
-        return [
-            'Tramo',
-            'Trayecto',
-            'Hilos',
-            'Extremo A',
-            'Extremo B',
-            'Kms',
-            'Recurrente Mes',
-            'Recurrente 12',
-            'Recurrente 24',
-            'Recurrente 36',
-            'Tiempo',
-            'Valor Km USD',
-            'Valor Total IRU USD',
-            'Valor Km COP',
-            'Valor Total',
+    $headings = [];
+    $columnNames = [
+            'tramo' => 'Tramo',
+            'trayecto' => 'Trayecto',
+            'hilos' => 'Hilos',
+            'extremo_a' => 'Extremo A',
+            'extremo_b' => 'Extremo B',
+            'kms' => 'Kms',
+            'recurrente_mes' => 'Recurrente Mes',
+            'recurrente_12' => 'Recurrente 12',
+            'recurrente_24' => 'Recurrente 24',
+            'recurrente_36' => 'Recurrente 36',
+            'tiempo' => 'Tiempo',
+            'valor_km_usd' => 'Valor Km USD',
+            'valor_total_iru_usd' => 'Valor Total IRU USD',
+            'valor_km_cop' => 'Valor Km COP',
+            'valor_total' => 'Valor Total',
         ];
+
+        foreach ($this->filteredColumns as $column) {
+            $headings[] = $columnNames[$column];
+        }
+
+        return $headings;
    }
+
 
     public function styles(Worksheet $sheet)
     {
+        $lastRow = $sheet->getHighestRow();
+        $lastColumn = $sheet->getHighestColumn();
+
         // Estilo para la primera fila (A1:G1)
-        $sheet->getStyle('A1:O1')->applyFromArray([
+         $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],  // Color blanco
+            ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => [
-                    'rgb' => '297ff0',  // Color azul claro en formato RGB
+                    'rgb' => '195DA1',  // Color azul claro en formato RGB
                 ],
+
             ],
         ]);
 
-        $lastRow = $sheet->getHighestRow();
-        $lastColumn = $sheet->getHighestColumn();
+        for ($row = 1; $row <= $lastRow; $row++) {
+            $sheet->getRowDimension($row)->setRowHeight(20);
+        }
+
+        for ($row = 2; $row <= $lastRow; $row++) {
+            $sheet->getRowDimension($row)->setRowHeight(30);
+        }
+
         $sheet->getStyle('A1:' . $lastColumn . $lastRow)->applyFromArray([
             'borders' => [
                 'allBorders' => [

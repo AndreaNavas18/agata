@@ -43,6 +43,14 @@
     </div>
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
+            'title' => 'Ciudad',
+            'id' => 'city',
+        ])
+        @endcomponent
+        <input type="text" name="city" class="form-control" value="{{ $quote->city }}">
+    </div>
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
             'title' => 'Dirección',
             'id' => 'direction',
         ])

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Commercial\Quotes;
 use App\Models\Commercial\CommercialTariff;
+use App\Models\Commercial\CommercialBandwidth;
+use App\Models\Commercial\CommercialTypeService;
 
 class DetailsQuotesTariffs extends Model
 {

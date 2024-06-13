@@ -102,6 +102,9 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 
     Route::get('/quotes/{id}/export', [ CommercialQuoteController::class, 'export' ])->name('export');
 
+    Route::get('/quotes/{id}/export-formal', [ CommercialQuoteController::class, 'exportFormal' ])->name('export.formal');
+
+
 
 });
 // AJAX

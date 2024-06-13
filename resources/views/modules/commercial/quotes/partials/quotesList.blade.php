@@ -11,7 +11,6 @@
         <th>Asunto</th>
         <th>Nombre</th>
         <th>Teléfono</th>
-        <th>Servicio</th>
         @if($showActions)
             <th></th>
         @endif
@@ -67,8 +66,15 @@
                             href="{{ route('commercial.quotes.export', $quote->id) }}"
                             bs-toggle="tooltip"
                             bs-placement="top"
-                            title="Exportar Cotización">
-                            <i class="fas fa-download"></i> Exportar
+                            title="Exportar Cotización Informal">
+                            <i class="fas fa-download"></i> Exportar Informal
+                        </a>
+                        <a class="btn btn-secondary btn-sm mb-1"
+                            href="{{ route('commercial.quotes.export.formal', $quote->id) }}"
+                            bs-toggle="tooltip"
+                            bs-placement="top"
+                            title="Exportar Cotización Formal">
+                            <i class="fas fa-download"></i> Exportar Formal
                         </a>
                     </td>
                 @endif

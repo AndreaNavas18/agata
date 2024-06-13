@@ -97,6 +97,7 @@ $(document).ready(function() {
         var $template = $($('#velocidad-template').html());
         $('#velocidades-container').append($template);
         console.log("Template añadido al contenedor.");
+        //
 
         actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
 
@@ -171,6 +172,8 @@ $(document).ready(function() {
 
     // inicializarSelectsEnEdicion();
 });
+
+
 
 
 $(document).ready(function() {
