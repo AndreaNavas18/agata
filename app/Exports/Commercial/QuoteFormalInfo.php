@@ -43,7 +43,7 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
         ->get()
         ->map(function ($item) {
             $item->direction = $this->quote->direction;
-            // $item->email = $this->quote->email; 
+            $item->city = $this->quote->city; 
             return $item;
         });
     }
@@ -72,7 +72,7 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
             $typeServiceName,
             $bandwidthName,
             $row->direction,
-
+            $row->city
         ];
         
     }
@@ -85,6 +85,7 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
             'SERVICIO',
             'CAPACIDAD',
             'DIRECCIÓN',
+            'CIUDAD'
         ];
    }
 
@@ -95,7 +96,7 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
             'B' => 20,
             'C' => 20,
             'D' => 23,
-            'E' => 15, // Ancho mayor para la columna de Observación
+            'E' => 15,
         ];
     }
 
@@ -134,6 +135,10 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
                 ],
             ],
         ]);
+
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setVertical('center');
+
 
         return [];
     }

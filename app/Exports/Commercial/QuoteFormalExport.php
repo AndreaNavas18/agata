@@ -41,56 +41,52 @@ class QuoteFormalExport implements FromCollection, WithHeadings, WithMapping, Wi
 
     public function collection()
     {
-        // return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        // ->with(['bandwidth', 'tariff.comercialTypeService'])
-        // ->get();
+        return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
+        ->with(['bandwidth', 'tariff'])
+        ->get();
     }
 
    
     public function map($row): array
-    {   
-        // $bandwidthName = 'N/A'; 
-        // $typeServiceName = 'N/A';
+    {  
+        $bandwidthName = 'N/A'; 
+        $typeServiceName = 'N/A';
 
-        // // dd($row->bandwidth, $row->name_service);
+        foreach ($this->bandwidths as $bandRow) {
+            if ($bandRow->id == $row->bandwidth) {
+                $bandwidthName = $bandRow->name;
+                break; 
+            }
+        }
 
-        // foreach ($this->bandwidths as $bandRow) {
-        //     if ($bandRow->id == $row->bandwidth) {
-        //         $bandwidthName = $bandRow->name;
-        //         break; 
-        //     }
-        // }
+        foreach ($this->typeservices as $typeRow) {
+            if ($typeRow->id == $row->tariff->commercial_type_service_id) {
+                $typeServiceName = $typeRow->name;
+                break; 
+            }
+        }
 
-        
-        // foreach ($this->typeservices as $typeRow) {
-        //     if ($typeRow->id == $row->tariff->name_service) {
-        //         $typeServiceName = $typeRow->name;
-        //         break; 
-        //         }
-        //         }
-        // // dd($bandwidthName, $typeServiceName);
-                
-        // return [
-        //     $this->itemCounter++,
-        //     $typeServiceName,
-        //     $bandwidthName,
-        //     $row->mrc_12,
-        //     $row->mrc_24,
-        //     $row->mrc_36
-        // ];
+        return [
+            $this->itemCounter++,
+            $typeServiceName,
+            $bandwidthName,
+            $row->mrc_12,
+            $row->mrc_24,
+            $row->mrc_36,
+        ];
         
     }
 
     public function headings(): array
     {
-        // return [
-        //     'ITEM',
-        //     'SERVICIO',
-        //     'CAPACIDAD',
-        //     'RECURRENTE 12 MESES',
-        //     'RECURRENTE 24 MESES',
-        //     'RECURRENTE 36 MESES',
-        // ];
+        return [
+            'ITEM',
+            'SERVICIO',
+            'CAPACIDAD',
+            'RECURRENTE 12 MESES',
+            'RECURRENTE 24 MESES',
+            'RECURRENTE 36 MESES',
+        ];
     }
 
     public function styles(Worksheet $sheet)
@@ -129,6 +125,10 @@ class QuoteFormalExport implements FromCollection, WithHeadings, WithMapping, Wi
                 ],
             ],
         ]);
+
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setVertical('center');
+
 
         return [];
     }

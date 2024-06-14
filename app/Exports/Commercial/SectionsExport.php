@@ -144,6 +144,10 @@ class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             ],
         ]);
 
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setVertical('center');
+
+
         return [];
     }
 

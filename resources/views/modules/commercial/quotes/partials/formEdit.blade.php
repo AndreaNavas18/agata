@@ -78,13 +78,15 @@
         </select>
     </div>
 
+    {{-- <input type="hidden" name="name_service" value="{{ $quote->tariffs->tariff->name_service }}"> --}}
+
     <div class="col-md-12 mb-3">
         @component('componentes.label', [
             'title' => 'Observaciones',
             'id' => 'observation',
         ])
         @endcomponent
-        <textarea class="form-control" name="observation" id="observation" rows="7" value="{{ $quote->observation }}"></textarea>
+        <textarea class="form-control" name="observation" rows="7" >{{ $quote->observation }}</textarea>
     </div>
 
     <div id="velocidades-container">

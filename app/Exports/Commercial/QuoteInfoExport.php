@@ -88,7 +88,7 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
                 'startColor' => [
-                    'rgb' => 'FF8B01',  // Color azul claro en formato RGB
+                    'rgb' => '195DA1',  // Color azul claro en formato RGB
                 ],
             ],
         ]);
@@ -109,6 +109,9 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
                 ],
             ],
         ]);
+
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setVertical('center');
 
         return [];
     }

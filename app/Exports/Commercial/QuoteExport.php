@@ -119,6 +119,10 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
             ],
         ]);
 
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setHorizontal('center');
+        $sheet->getStyle('A1:' . $lastColumn . $lastRow)->getAlignment()->setVertical('center');
+
+
         return [];
     }
     
