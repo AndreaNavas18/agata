@@ -17,9 +17,9 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('commercial_type_service_id')->nullable();
             $table->unsignedBigInteger('bandwidth_id')->nullable();
-            $table->unsignedBigInteger('recurring_value')->nullable();
+            $table->unsignedBigInteger('recurring_value_12')->nullable();
             $table->integer('months')->nullable();
-            $table->unsignedBigInteger('value_Mbps')->nullable();
+            $table->unsignedBigInteger('value_mbps_12')->nullable();
 
 
             $table->foreign('bandwidth_id')

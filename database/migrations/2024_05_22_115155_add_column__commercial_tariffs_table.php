@@ -17,10 +17,10 @@ return new class extends Migration
         Schema::table('commercial_tariffs', function (Blueprint $table) {
 
          // Cambiar el nombre del campo recurring_value a recurring_value_12
-         $table->renameColumn('recurring_value', 'recurring_value_12');
+        //  $table->renameColumn('recurring_value', 'recurring_value_12');
             
-         // Cambiar el nombre del campo value_Mbps a value_mbps_12
-         $table->renameColumn('value_Mbps', 'value_mbps_12');
+        //  // Cambiar el nombre del campo value_Mbps a value_mbps_12
+        //  $table->renameColumn('value_Mbps', 'value_mbps_12');
         });
 }
 
@@ -33,8 +33,8 @@ return new class extends Migration
     {
         Schema::table('commercial_tariffs', function (Blueprint $table) {
             // Revertir los cambios en el método down
-            $table->renameColumn('recurring_value_12', 'recurring_value');
-            $table->renameColumn('value_mbps_12', 'value_Mbps');
+            // $table->renameColumn('recurring_value_12', 'recurring_value');
+            // $table->renameColumn('value_mbps_12', 'value_Mbps');
         });
     }
 };
