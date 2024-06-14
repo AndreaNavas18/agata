@@ -7,7 +7,7 @@
             ])
             @endcomponent
             <select class="form-control
-            selectpicker bandwidth" name="bandwidth[]" required>
+            selectpicker bandwidth" name="bandwidth[]" id="bandwidth" required>
                 <option value="">--Seleccione--</option>
             </select>
         </div>

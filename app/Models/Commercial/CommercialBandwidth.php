@@ -21,5 +21,9 @@ class CommercialBandwidth extends Model
     {
     	return $query->where('name', 'like', '%'.$name.'%');
     }
+
+    public function tariffs() {
+        return $this->hasMany(CommercialTariff::class, 'bandwidth_id');
+    }
     
 }

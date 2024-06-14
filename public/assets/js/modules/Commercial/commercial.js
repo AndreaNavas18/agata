@@ -101,12 +101,12 @@ $(document).ready(function() {
 
         actualizarSelectIndividual($template.find('.bandwidth'), servicioId);
 
-        $template.find('.bandwidth').change(function() {
+        $template.find('#bandwidth').change(function() {
             var bandwidthId = $(this).val();
             var $group = $(this).closest('.velocidad-group');
             console.log("Ancho de banda seleccionado:", bandwidthId);
-
             if (!bandwidthId) {
+                limpiarCampos($group);
                 return;
             }
 
@@ -115,7 +115,6 @@ $(document).ready(function() {
                 type: 'GET',
                 data: { bandwidth_id: bandwidthId },
                 success: function(response) {
-                    console.log("Detalles de tarifa recibidos:", response);
                     $group.find('.nrc_12').val(response.recurring_value_12);
                     $group.find('.nrc_24').val(response.recurring_value_24);
                     $group.find('.nrc_36').val(response.recurring_value_36);
@@ -138,9 +137,19 @@ $(document).ready(function() {
         console.log("Selectpicker inicializado para el nuevo elemento.");
     });
 
+    // Función para limpiar los campos de una velocidad
+    function limpiarCampos($group) {
+        $group.find('.nrc_12').val('');
+        $group.find('.nrc_24').val('');
+        $group.find('.nrc_36').val('');
+        $group.find('.mrc_12').val('');
+        $group.find('.mrc_24').val('');
+        $group.find('.mrc_36').val('');
+    }
+
       // Función para actualizar todos los selects de ancho de banda
       function actualizarSelectsAnchosBanda(servicioId) {
-        $('.bandwidth').each(function() {
+        $('#bandwidth').each(function(elemento) {
             var $select = $(this);
             $select.empty();
             $select.append($('<option>').text('--Seleccione--').attr('value', ''));
@@ -149,6 +158,7 @@ $(document).ready(function() {
             });
             $select.selectpicker('refresh');
         });
+        $('#bandwidth').change();
     }
 
     // Función para actualizar el campo de selección de ancho de banda individualmente
