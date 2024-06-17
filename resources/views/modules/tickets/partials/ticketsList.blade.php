@@ -19,11 +19,24 @@
             <th> Proveedor</th>
             <th>Asignado</th>
             <th>Prioridad</th>
+            <th>Otra Prioridad</th>
+           
+            <th>Tiempo</th>
+            <th>Fecha y Hora</th>
+            <th>Estado Tiempo</th>
+            <th>Enviar Email</th>
+            <th>Email Notificaciones</th>
         @endif
+    
+        
         <th>Estado</th>
+
+
         @if($showActions)
-            <th></th>
+            <th></th> 
         @endif
+
+
     @endslot
     @slot('tbody')
     
@@ -81,6 +94,41 @@
                             </a>
                         </span>
                     </td>
+                    <td>
+                        <span class="badge {{ $ticket->priority->color}}">
+                            <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->other_priority}}
+                            </a>
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->time_clock}}
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                            {{ $ticket->datetime_clock}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->state_clock}}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->send_email}}
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="{{ route('tickets.manage', $ticket->id) }}" style="color: #2e384d">
+                                {{ $ticket->emails_notification}}
+                        </a>
+                    </td>
+    
                 @endif
 
                 <td>
@@ -88,6 +136,9 @@
                             {{ $ticket->state}}
                     </span>
                 </td>
+
+
+                
 
                 @if($showActions)
                     <td>

@@ -1,5 +1,16 @@
 @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
 <div class="row">
+
+
+    <div class="col-md-3 col-sm-12 mb-3">
+        <input class="form-control mr-2"
+        type="text"
+        name="consecutive"
+        placeholder="Consecutivo"
+        value="{{ (isset($data['consecutive'])) ? $data['consecutive'] : '' }}">
+    </div>
+
+
     <div class="col-md-3 col-sm-12 mb-3">
         <input type="text"
             class="form-control fecha"
@@ -143,6 +154,74 @@
             @endforeach
         </select>
     </div>
+
+    @if($provider && !in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+    
+    <div class="col-md-3 col-sm-12 mb-3">
+        <input class="form-control mr-2"
+        type="text"
+        name="time_clock"
+        placeholder="TIEMPO - HH:MM:SS"
+        pattern="\d+:[0-5][0-9]:[0-5][0-9]"
+        title="Formato: HH:MM:SS"
+        value="{{ (isset($data['time_clock'])) ? $data['time_clock'] : '' }}">
+    </div>
+    
+    
+    <div class="col-md-3 col-sm-12 mb-3">
+        <select class="form-control
+            selectpicker"
+            data-width="100%"
+            name="state_clock"
+            id="state_clock">
+            <option value="">--Estado Tiempo--</option>
+            @php
+            $estados = ['Corriendo', 'Detenido',];
+            @endphp
+            @foreach($estados as $estado)
+                <option value="{{ $estado }}"
+                    {{ isset($data['state_clock']) &&
+                        $data['state_clock'] == $estado
+                        ? 'selected' : '' }}>
+                    {{ $estado }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    
+
+    <div class="col-md-3 col-sm-12 mb-3">
+        <select class="form-control
+            selectpicker"
+            data-width="100%"
+            name="send_email"
+            id="send_email">
+            <option value="">--Email enviado--</option>
+            @php
+            $enviados = ['Si', 'No',];
+            @endphp
+            @foreach($enviados as $enviado)
+                <option value="{{ $enviado }}"
+                    {{ isset($data['send_email']) &&
+                        $data['send_email'] == $enviado
+                        ? 'selected' : '' }}>
+                    {{ $enviado }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-3 col-sm-12 mb-3">
+        <input class="form-control mr-2"
+        type="text"
+        name="email_notification"
+        placeholder="Email de Notificaciones"
+        value="{{ (isset($data['email_notification'])) ? $data['email_notification'] : '' }}">
+    </div>
+
+
+    
+    @endif
 
     <div class="col-md-3 col-sm-12 mb-4 mt-2">
         @component('componentes.actions_filter')
