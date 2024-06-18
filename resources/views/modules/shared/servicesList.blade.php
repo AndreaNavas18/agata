@@ -1,10 +1,16 @@
 @component('componentes.table')
     @slot('thead')
-        <th>Stratecsa ID</th>
-        <th>OTP</th>
+    @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+    <th>Stratecsa ID</th>
+    <th>OTP</th>
+    @endif
         <th>ID Servicio Cliente</th>
         <th>Proyecto - Contrato - Subcliente</th>
         <th>Nombre</th>
+        @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+        <th>Descripción</th>
+        @endif
+
     @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
         @if($provider)
             <th>Proveedor</th>
@@ -14,9 +20,36 @@
         @endif
     @endif
         <th>Tipo de servicio</th>
+
+        @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+        <th>Pais</th>
+        <th>Departamento</th>
+        @endif
+
         <th>Ciudad</th>
         <th>Fecha</th>
     @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+        <th>Latitud de cordenadas</th>
+        <th>Longitud de cordenadas</th>
+        <th>Tipo Instalación</th>
+        <th>IP</th>
+        <th>vlan</th>
+        <th>Mascara</th>
+        <th>Gateway</th>
+        <th>MAC</th>
+        <th>BW_Download</th>
+        <th>Bw_upload</th>
+        <th>Ip_vpn</th>
+        <th>Tipo vpn</th>
+        <th>User vpn</th>
+        <th>Password vpn</th>
+        <th>User tunel</th>
+        <th>Id Tunel</th>
+        <th>Tecnología</th>
+        <th>Equipo</th>
+        <th>Modelo</th>
+        <th>Serial</th>
+        <th>Activo Fijo</th>
         <th>Estado</th>
     @endif
         @if ($showActions)
@@ -30,6 +63,7 @@
     @slot('tbody')
         @foreach($services as $service)
             <tr>
+                @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
                 <td>
                     <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d" >
                         {{ $service->stratecsa_id }}
@@ -40,6 +74,7 @@
                     {{ $service->otp }}
                     </a>
                 </td>
+                @endif
                 <td>
                     <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
                     
@@ -62,22 +97,167 @@
                 
                 </td>
                 @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                    
+                    {{ $service->description }}
+                </a>
+                
+                </td>
+
                     @if($provider)
-                        <td>{{ $service->provider ? $service->provider->name : '' }}</td>
+                    
+                        <td>
+                            <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+
+                            {{ $service->provider ? $service->provider->name : '' }}
+                        </td>
                     @endif
                     @if($customer)
-                        <td>{{ $service->customer->name }}</td>
+                        <td>
+                            <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                                {{ $service->customer->name }}
+                            </a>
+                        </td>
                     @endif
                 @endif
-                <td>{{ $service->service->name }}</td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->service->name }}
+                    </a>
+                </td>
+
+                @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->country->name }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->department->name }}
+                    </a>
+                </td>
+                @endif
+
                 <td>{{ $service->city->name }}</td>
+
+
                 <td>{{ $service->date_service }}</td>
                 @if (!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->latitude_coordinates }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->longitude_coordinates }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->installation_type }}
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->ip }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->vlan }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->mascara }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->gateway }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->mac }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->BW_Download }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->Bw_upload }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->ip_vpn }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->tipo_vpn }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->user_vpn }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->password_vpn }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->user_tunel }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->id_tunel }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->tecnologia }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->equipo }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->modelo }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->serial }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('customers.services.show.service', $service->id) }}" style="color: #2e384d">
+                        {{ $service->activo_fijo }}
+                    </a>
+                </td>
                 <td>
                     <span class="badge {{ ($service->state  == 'Activo') ? 'bg-danger' : 'bg-success' }}">
                         {{ $service->state}}
                     </span>
                 </td>
+
                 @endif
                 @if ($showActions)
                     <td>

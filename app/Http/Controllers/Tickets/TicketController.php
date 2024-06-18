@@ -182,6 +182,16 @@ class TicketController extends Controller
             
             $selectedState = $request->input('state');
 
+            $consecutive = $request->input('consecutive');
+
+            $time_clock = $request->input('time_clock');
+
+            $state_clock = $request->input('state_clock');
+
+            $send_email = $request->input('send_email');
+
+            $email_notification = $request->input('email_notification');
+
             // Obtener las fechas de inicio y fin del request
             $startDate = $request->input('start_date');
             $finalDate = $request->input('final_date');
@@ -223,6 +233,28 @@ class TicketController extends Controller
             if (!empty($selectedState)) {
                 $query->where('state', $selectedState);
             }
+
+            if (!empty($consecutive)) {
+                $query->where('consecutive', 'LIKE', "%$consecutive%");
+            }
+
+            if (!empty($time_clock)) {
+                $query->where('time_clock', $time_clock);
+            }
+
+            if (!empty($state_clock)) {
+                $query->where('state_clock', $state_clock);
+            }
+
+            if (!empty($send_email)) {
+                $query->where('send_email', $send_email);
+            }
+
+            if (!empty($email_notification)) {
+                $query->where('emails_notification', 'LIKE', "%$email_notification%");
+            }
+
+
 
             // Condición para filtrar por fecha si se proporcionan las fechas de inicio y fin
             if (!empty($startDate) && !empty($finalDate)) {

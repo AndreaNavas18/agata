@@ -147,7 +147,7 @@
 
     <div class="col-md-3 col-sm-12 mb-4">
         <input class="form-control"
-        type="number"
+        type="text"
         name="otp"
         placeholder="OTP"
         value="{{ (isset($data['otp'])) ? $data['otp'] : '' }}">
@@ -155,7 +155,7 @@
 
     <div class="col-md-3 col-sm-12 mb-4">
         <input class="form-control"
-        type="number"
+        type="text"
         name="id_stratecsa"
         placeholder="Stratecsa ID"
         value="{{ (isset($data['id_stratecsa'])) ? $data['id_stratecsa'] : '' }}">

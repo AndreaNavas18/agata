@@ -84,6 +84,12 @@ class Ticket extends BaseModel {
             return $query->where('state', $state );
         }
 
+        public function scopeConsecutive($query, $consecutive )
+        {
+            return $query->where('consecutive', 'LIKE', '%"'.$consecutive.'%' );
+        }
+
+
 
     /* *************************************************************
 	 * relaciones
@@ -183,6 +189,10 @@ class Ticket extends BaseModel {
 
         if (isset($data['state']) && !is_null($data['state']) ) {
             $tickets = $tickets->state($data['state']);
+        }
+
+        if (isset($data['consecutive']) && !is_null($data['consecutive']) ) {
+            $tickets = $tickets->state($data['consecutive']);
         }
 
         return $tickets;
