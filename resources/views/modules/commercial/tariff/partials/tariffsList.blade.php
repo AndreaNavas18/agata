@@ -2,12 +2,12 @@
     @slot('thead')
         <th>Tipo de Servicio</th>
         <th>BW</th>
-        <th>Recurrencia 12M</th>
-        <th>Recurrencia 24M</th>
-        <th>Recurrencia 36M</th>
-        <th>Valor por Mbps 12M</th>
-        <th>Valor por Mbps 24M</th>
-        <th>Valor por Mbps 36M</th>
+        <th>MRC 12 MESES</th>
+        <th>MRC 24 MESES</th>
+        <th>MRC 36 MESES</th>
+        <th>NRC 12 MESES</th>
+        <th>NRC 24 MESES</th>
+        <th>NRC 36 MESES</th>
     @endslot
     @slot('tbody')
     

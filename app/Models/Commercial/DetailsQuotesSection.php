@@ -11,6 +11,7 @@ class DetailsQuotesSection extends Model
 
     protected $fillable = [
         'quote_id',
+        'name_service',
         'tramo',
         'trayecto',
         'hilos',
@@ -31,5 +32,10 @@ class DetailsQuotesSection extends Model
     public function quote()
     {
         return $this->belongsTo(Quotes::class, 'quote_id');
+    }
+
+    public function tariff()
+    {
+        return $this->belongsTo(CommercialTariff::class, 'name_service', 'id');
     }
 }

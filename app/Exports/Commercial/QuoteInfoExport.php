@@ -84,6 +84,7 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
          $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([
             'font' => [
                 'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
             ],
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,

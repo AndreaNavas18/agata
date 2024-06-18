@@ -63,6 +63,7 @@
                             {{ $quote->direction }}
                         </div>
                     </div>
+
                                
                 </div>
             </div>
@@ -90,7 +91,7 @@
                                     'title' => 'NRC 12 Meses',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->nrc_12 ?? 'No se especificó' }}
+                                    {{ $tariffItem->nrc_12 ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -98,7 +99,7 @@
                                     'title' => 'NRC 24 Meses',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->nrc_24 ?? 'No se especificó' }}
+                                    {{ $tariffItem->nrc_24 ?? 'N/A' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -106,7 +107,7 @@
                                     'title' => 'NRC 36 Meses',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->nrc_36 ?? 'No se especificó' }}
+                                    {{ $tariffItem->nrc_36 ?? 'N/A' }}
                                 </div>
                             </div>
                         </div>
@@ -127,6 +128,14 @@
                         @foreach ($section as $sectionItem)
                         <div class="card-border">
                             <div class="row">
+                                <div class="col-md-3 mb-4">
+                                    @component('componentes.label', [
+                                        'title' => 'Servicio',])
+                                    @endcomponent
+                                    <div>
+                                        {{ $services->firstWhere('id', $sectionItem->name_service)->name ?? 'No se especificó' }}
+                                    </div>
+                                </div>
                                 <div class="col-md-3 mb-4">
                                     @component('componentes.label', [
                                         'title' => 'Tramo',])
@@ -180,7 +189,7 @@
                                         'title' => 'Recurrente mensual',])
                                     @endcomponent
                                     <div>
-                                        {{ $sectionItem->recurrente_mes ?? 'No se especificó' }}
+                                        {{ $sectionItem->recurrente_mes ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -188,7 +197,7 @@
                                         'title' => 'Recurrente 12 meses',])
                                     @endcomponent
                                     <div>
-                                        {{ $sectionItem->recurrente_12 ?? 'No se especificó' }}
+                                        {{ $sectionItem->recurrente_12 ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -196,7 +205,7 @@
                                         'title' => 'Recurrente 24 meses',])
                                     @endcomponent
                                     <div>
-                                        {{ $sectionItem->recurrente_24 ?? 'No se especificó' }}
+                                        {{ $sectionItem->recurrente_24 ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -204,7 +213,7 @@
                                         'title' => 'Recurrente 36 meses',])
                                     @endcomponent
                                     <div>
-                                        {{ $sectionItem->recurrente_36 ?? 'No se especificó' }}
+                                        {{ $sectionItem->recurrente_36 ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -220,7 +229,7 @@
                                         'title' => 'Vr KM/par USD',])
                                     @endcomponent
                                     <div>
-                                       $ {{ $sectionItem->valor_km_usd ?? 'No se especificó' }}
+                                       $ {{ $sectionItem->valor_km_usd ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -228,7 +237,7 @@
                                         'title' => 'Vr total IRU USD',])
                                     @endcomponent
                                     <div>
-                                       $ {{ $sectionItem->valor_total_iru_usd ?? 'No se especificó' }}
+                                       $ {{ $sectionItem->valor_total_iru_usd ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -236,7 +245,7 @@
                                         'title' => 'Vr Km/par COP',])
                                     @endcomponent
                                     <div>
-                                       $ {{ $sectionItem->valor_km_cop ?? 'No se especificó' }}
+                                       $ {{ $sectionItem->valor_km_cop ?? 'N/A' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -244,7 +253,7 @@
                                         'title' => 'Valor total',])
                                     @endcomponent
                                     <div>
-                                       $ {{ $sectionItem->valor_total ?? 'No se especificó' }}
+                                       $ {{ $sectionItem->valor_total ?? 'N/A' }}
                                     </div>
                                 </div>
 

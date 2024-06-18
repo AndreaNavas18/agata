@@ -72,6 +72,12 @@ class CommercialTariff extends Model
          return $this->hasMany(DetailsQuotesTariffs::class, 'bandwidth', 'id');
      }
 
+     public function sectionByNameService()
+     {
+         return $this->hasMany(DetailsQuotesSection::class, 'name_service', 'id');
+     }
+ 
+
 
 
     /* *************************************************************

@@ -143,6 +143,11 @@ class CommercialQuoteController extends Controller
             $query->where('commercial_type_service_id', $servicioId);
         })->get();
 
+        if ($bandwidths->isEmpty()) {
+            $bandwidths = DetailsQuotesSection::where('name_service', $servicioId)->get();
+            return response()->json(['type' => 'tramos', 'data' => $tramos]);
+        }
+
         return response()->json($bandwidths);
     }
 
@@ -250,7 +255,7 @@ class CommercialQuoteController extends Controller
         if ($quote->tariffs->isNotEmpty()) {
             $servicioId = $quote->tariffs->first()['name_service'];
         } else {
-            $servicioId = null;
+            $servicioId = $quote->sections->first()['name_service'];
         }
         
         $bandwidths = CommercialBandwidth::all();
