@@ -28,7 +28,25 @@ class PqrController extends Controller
 {
     public function index() {
         session::flash('tab','pqrs');
-        $pqrs = Pqr::orderBy('id', 'DESC')->paginate();
+
+        $user = Auth()->user();
+        $departmentId = $user->department_id;
+        $userRoleId = $user->rol_id;
+
+        if($userRoleId == 9){
+            $pqrs = Pqr::orderBy('id', 'DESC')->paginate();
+        }else {
+            $pqrsCreatedByUser = Pqr::where('created_by', $user->id);
+            $pqrsAssignedToUser = Pqr::where('employee_id', $user->id);
+            $pqrsByDepartment = Pqr::where('department_id', $departmentId)
+            ->whereNull('employee_id');
+
+            $pqrs = $pqrsCreatedByUser->union($pqrsAssignedToUser)
+                                  ->union($pqrsByDepartment)
+                                  ->orderBy('id', 'DESC')
+                                  ->paginate();
+        }
+        
         $tickets = Ticket::all();
         $providers = Provider::all();
         $employees = Employee::all();
