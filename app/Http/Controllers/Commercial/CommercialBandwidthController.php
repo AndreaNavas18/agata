@@ -8,16 +8,46 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\General\Department;
+use App\Models\General\City;
 
 class CommercialBandwidthController extends Controller
 {
     public function index(){
         $bandwidths = CommercialBandwidth::orderBy('name')->paginate();
+        $departments = Department::orderBy('name')->get();
+        $cities = City::orderBy('name')->get();
 
-        return view('modules/commercial/parameters/bandwidth/index', compact('bandwidths'));
+        return view('modules/commercial/parameters/bandwidth/index', compact('bandwidths', 'departments', 'cities'));
 
     }
 
+    public function obtenerCiudades($department_id)
+    {
+        $cities = City::where('department_id', $department_id)->get();
+        return response()->json($cities);
+    }
+
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+        $request->validate(['name' => 'required|max:100']);
+        $bandwidth= new CommercialBandwidth();
+        $bandwidth->name= $request->name . " MBPS";
+        $bandwidth->department_id= $request->department_id;
+        $bandwidth->city_id= $request->city_id;
+
+
+        if (!$bandwidth->save()) {
+            DB::rollBack();
+            Alert::error('Error', 'Error al insertar registro.');
+            return redirect()->back();
+        }
+
+        DB::commit();
+        Alert::success('¡Éxito!', 'Registro insertado correctamente');
+        return redirect()->back();
+    }
 
     public function update(Request $request, $id)
     {
@@ -25,6 +55,8 @@ class CommercialBandwidthController extends Controller
         DB::beginTransaction();
         $request->validate(['name' => 'required|max:100']);
         $name = $request->input('name');
+        $department = $request->input('department_id');
+        $city = $request->input('city_id');
 
         //validaciones
         $bandwidth = CommercialBandwidth::findOrFail($id);
@@ -36,6 +68,9 @@ class CommercialBandwidthController extends Controller
         }
 
         $bandwidth->name = $name;
+        $bandwidth->department_id = $department;
+        $bandwidth->city_id = $city;
+
         if (!$bandwidth->save()) {
             DB::rollBack();
             Alert::error('Error', 'Error al actualizar registro.');
@@ -47,24 +82,6 @@ class CommercialBandwidthController extends Controller
      }
 
      
-
-    public function store(Request $request)
-    {
-        DB::beginTransaction();
-        $request->validate(['name' => 'required|max:100']);
-        $bandwidth= new CommercialBandwidth();
-        $bandwidth->name= $request->name . " Mbps";
-        if (!$bandwidth->save()) {
-            DB::rollBack();
-            Alert::error('Error', 'Error al insertar registro.');
-            return redirect()->back();
-        }
-        DB::commit();
-        Alert::success('¡Éxito!', 'Registro insertado correctamente');
-        return redirect()->back();
-    }
-
-
     public function destroy($id)
     {
         try {

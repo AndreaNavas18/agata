@@ -44,7 +44,7 @@ Breadcrumbs::for('tariff/params/typeService', function ($trail) {
 
 Breadcrumbs::for('tariff/params/bandwidth', function ($trail) {
     $trail->parent('tariff/params');
-    $trail->push('Banda Ancha ', route('tariff.params.bandwidth.index'));
+    $trail->push('Anchos de Banda ', route('tariff.params.bandwidth.index'));
 });
 
 

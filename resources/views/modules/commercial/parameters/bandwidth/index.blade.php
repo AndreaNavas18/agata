@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'BANDA ANCHA')
+@section('title', 'ANCHOS DE BANDA')
 @push('script')
 	<script>
 		$('form.frmEliminar').submit(function(e) {
@@ -7,11 +7,13 @@
 			else { openLoader(); }
 		});
 	</script>
+    <script src="{{asset('assets/js/modules/Commercial/cities.js')}}"></script>
+
 @endpush
 @section('content')
 	@component('componentes.card', [
         'shadow' => true,
-        'title' => 'Banda Ancha',
+        'title' => 'Anchos de banda',
         'breadcrumb' => 'tariff/params/bandwidth'])
 
         <!-- Acciones -->
@@ -71,6 +73,8 @@
                 @component('componentes.table')
                     @slot('thead')
                         <th>Nombre</th>
+                        <th>Departamento</th>
+                        <th>Ciudad</th>
                         <th></th>
                     @endslot
                     @slot('tbody')
@@ -80,7 +84,12 @@
                                     {{ $row->name }}
                                 </td>
                                 <td>
-
+                                    {{ $row->department->name }}
+                                </td>
+                                <td>
+                                    {{ $row->city->name }}
+                                </td>
+                                <td>
                                     {{-- acciones --}}
                                     <button class="btn btn-success btn-sm"
                                         type="button"
@@ -112,7 +121,7 @@
 
                                         @component('componentes.modal', [
                                             'id' => 'modalEditar'. $row->id,
-                                            'title' => 'Editar Banda Ancha',
+                                            'title' => 'Editar Ancho de banda',
                                             'btnCancel' => true])
 
                                             @slot('body')
@@ -125,6 +134,54 @@
                                                         value="{{ $row->name }}"
                                                         required="">
                                                 </div>
+
+                                                <div class="form-group mb-3">
+                                                    @component('componentes.label', [
+                                                        'title' => 'Departmento',
+                                                        'id' => 'department_id_{{ $row->id }}',
+                                                        'required' => false])
+                                                    @endcomponent
+                                                    <select class="form-control
+                                                        selectpicker"
+                                                        name="department_id"
+                                                        id="department_id_{{ $row->id }}"
+                                                        data-city-select-id="city_id_{{ $row->id }}"
+                                                        data-container="body"
+                                                        data-title="--Seleccione--"
+                                                        required>
+                                                        <option value="">--Seleccione--</option>
+                                                        @foreach($departments as $department)
+                                                            <option value="{{ $department->id }}"  
+                                                                {{ $row->department_id == $department->id ? 'selected' : ''  }}>
+                                                                {{ $department->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                
+                                                <div class="form-group mb-3">
+                                                    @component('componentes.label', [
+                                                        'title' => 'Ciudad',
+                                                        'required' => false])
+                                                    @endcomponent
+                                                    <select class="form-control
+                                                        selectpicker"
+                                                        data-width="100%"
+                                                        data-container="body"
+                                                        name="city_id"
+                                                        data-selected-city-id="{{ $row->city_id }}"
+                                                        id="city_id_{{ $row->id }}"
+                                                        required>
+                                                        <option value="">--Seleccione--</option>
+                                                        @foreach($cities as $city)
+                                                        <option value="{{ $city->id }}"  
+                                                            {{ $row->city_id == $city->id ? 'selected' : ''  }}>
+                                                            {{ $city->name }}
+                                                        </option>
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+
 
                                             @endslot
 
@@ -164,7 +221,7 @@
 
         @component('componentes.modal', [
             'id' => 'modalCrear',
-            'title' => 'Nueva Banca Ancha',
+            'title' => 'Nuevo Ancho de Banda',
             'btnCancel' => true])
 
             @slot('body')
@@ -179,7 +236,7 @@
                 </div> --}}
 
                 <div class="form-group">
-                    <label class="form-label">Número</label>
+                    <label class="form-label">Velocidad</label>
                     <div class="input-group">
                         <input type="number"
                             name="name"
@@ -192,9 +249,45 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Departmento',
+                        'id' => 'department_id_create',
+                        'required' => false])
+                    @endcomponent
+                    <select class="form-control
+                        selectpicker"
+                        name="department_id"
+                        id="department_id_create"
+                        data-container="body"
+                        data-title="--Seleccione--"
+                        required>
+                        <option value="">--Seleccione--</option>
+                        @foreach($departments as $department)
+                            <option value="{{ $department->id }}">
+                                {{ $department->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Ciudad',
+                        'required' => false])
+                    @endcomponent
+                    <select class="form-control
+                        selectpicker"
+                        data-width="100%"
+                        data-container="body"
+                        name="city_id"
+                        id="city_id_create"
+                        required>
+                        <option value="">--Seleccione--</option>
+                    </select>
+                </div>
     
-
-
             @endslot
 
             @slot('footer')

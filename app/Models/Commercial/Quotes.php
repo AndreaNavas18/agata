@@ -13,11 +13,11 @@ class Quotes extends Model
     protected $table = 'quotes';
     protected $fillable = [
         'issue',
+        'consecutive',
         'name',
         'identification',
         'email',
         'phone',
-        'direction',
         'observation'
     ];
 

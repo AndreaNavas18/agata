@@ -17,6 +17,7 @@ class DetailsQuotesTariffs extends Model
         'quote_id',
         'name_service',
         'bandwidth',
+        'address',
         'nrc_12',
         'nrc_24',
         'nrc_36',
