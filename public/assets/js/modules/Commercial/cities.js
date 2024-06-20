@@ -1,32 +1,66 @@
 // $(document).ready(function() {
-//     $('#department_id').on('change', function() {
-//         var departmentId = $(this).val();
+//     // Función para cargar ciudades
+//     function loadCities(departmentId, citySelectId, selectedCityId = null) {
 //         if (departmentId) {
 //             $.ajax({
 //                 url: '/obtener-ciudades/' + departmentId,
 //                 type: 'GET',
 //                 dataType: 'json',
 //                 success: function(data) {
-//                     $('#city_id').empty();
-//                     $('#city_id').append('<option value="">--Seleccione--</option>');
+//                     var citySelect = $('#' + citySelectId);
+//                     citySelect.empty();
+//                     citySelect.append('<option value="">--Seleccione--</option>');
 //                     $.each(data, function(key, value) {
-//                         $('#city_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+//                         citySelect.append('<option value="' + value.id + '"' + (value.id == selectedCityId ? ' selected' : '') + '>' + value.name + '</option>');
 //                     });
-//                     $('#city_id').selectpicker('refresh');
+//                     citySelect.selectpicker('refresh');
 //                 },
 //                 error: function(xhr, status, error) {
 //                     console.error('Error:', error);
 //                 }
 //             });
 //         } else {
-//             $('#city_id').empty();
-//             $('#city_id').append('<option value="">--Seleccione--</option>');
-//             $('#city_id').selectpicker('refresh');
+//             var citySelect = $('#' + citySelectId);
+//             citySelect.empty();
+//             citySelect.append('<option value="">--Seleccione--</option>');
+//             citySelect.selectpicker('refresh');
 //         }
-//     });
+//     }
+
+//     // Función para manejar la creación
+//     function handleCreate() {
+//         $('#department_id_create').on('change', function() {
+//             var departmentId = $(this).val();
+//             var citySelectId = 'city_id_create';
+//             loadCities(departmentId, citySelectId);
+//         });
+//     }
+
+//     // Función para manejar la edición
+//     function handleEdit() {
+//         $('[id^=department_id_]').each(function() {
+//             var departmentId = $(this).val();
+//             var citySelectId = $(this).data('city-select-id');
+//             var selectedCityId = $('#' + citySelectId).data('selected-city-id');
+//             if (selectedCityId) {
+//                 loadCities(departmentId, citySelectId, selectedCityId);
+//             }
+
+//             $(this).on('change', function() {
+//                 departmentId = $(this).val();
+//                 citySelectId = $(this).data('city-select-id');
+//                 loadCities(departmentId, citySelectId);
+//             });
+//         });
+//     }
+
+//     // Llamar las funciones correspondientes
+//     handleCreate();
+//     handleEdit();
 // });
 
 $(document).ready(function() {
+    // Funcion para cargar ciudades según el departamento
     function loadCities(departmentId, citySelectId, selectedCityId = null) {
         if (departmentId) {
             $.ajax({
@@ -40,34 +74,52 @@ $(document).ready(function() {
                     $.each(data, function(key, value) {
                         citySelect.append('<option value="' + value.id + '"' + (value.id == selectedCityId ? ' selected' : '') + '>' + value.name + '</option>');
                     });
-                    citySelect.selectpicker('refresh');
+                    citySelect.val(selectedCityId); // Establecer el valor seleccionado
+                    citySelect.selectpicker('refresh');  // Refrescar el selectpicker después de cargar las opciones
+                    console.log('si entrouuu');
                 },
                 error: function(xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
         } else {
+            console.log('No hay nada seleccionado');
             var citySelect = $('#' + citySelectId);
             citySelect.empty();
             citySelect.append('<option value="">--Seleccione--</option>');
             citySelect.selectpicker('refresh');
         }
     }
+ // Función para manejar la creación
+    function handleCreate() {
+        $('#department_id_create').on('change', function() {
+            var departmentId = $(this).val();
+            var citySelectId = 'city_id_create';
+            loadCities(departmentId, citySelectId);
+        });
+    }
 
-    // Evento change para cualquier select de departamento
-    $(document).on('change', '[id^=department_id]', function() {
-        var departmentId = $(this).val();
-        var citySelectId = $(this).data('city-select-id');
-        loadCities(departmentId, citySelectId);
-    });
+    // Función para manejar la edición
+    function handleEdit() {
+        $('[id^=department_id_]').each(function() {
+            var departmentId = $(this).val();
+            var citySelectId = $(this).data('city-select-id');
+            var selectedCityId = $('#' + citySelectId).data('selected-city-id');
+            if (selectedCityId) {
+                loadCities(departmentId, citySelectId, selectedCityId);
+            }
 
-    // Cargar ciudades en la edición al cargar la página
-    $('[id^=department_id]').each(function() {
-        var departmentId = $(this).val();
-        var citySelectId = $(this).data('city-select-id');
-        var selectedCityId = $('#' + citySelectId).data('selected-city-id');
-        if (selectedCityId) {
-            loadCities(departmentId, citySelectId, selectedCityId);
-        }
-    });
+            $(this).on('change', function() {
+                departmentId = $(this).val();
+                citySelectId = $(this).data('city-select-id');
+                loadCities(departmentId, citySelectId);
+            });
+        });
+    }
+
+    // Llamar las funciones correspondientes
+    handleCreate();
+    handleEdit();
 });
+
+

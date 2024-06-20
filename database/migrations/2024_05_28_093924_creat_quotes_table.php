@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('direction')->nullable();
-            $table->string('observation')->nullable();
+            // CREAR LA OBSERVACION CON TIPO LONGTEXT
+            // $table->string('observation')->nullable();
             $table->timestamps();
         });
     }

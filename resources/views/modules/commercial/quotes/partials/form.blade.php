@@ -41,22 +41,6 @@
         @endcomponent
         <input type="text" name="phone" class="form-control">
     </div>
-    <div class="col-md-6 mb-3">
-        @component('componentes.label', [
-            'title' => 'Ciudad',
-            'id' => 'city',
-        ])
-        @endcomponent
-        <input type="text" name="city" class="form-control">
-    </div>
-    <div class="col-md-6 mb-3">
-        @component('componentes.label', [
-            'title' => 'Dirección',
-            'id' => 'direction',
-        ])
-        @endcomponent
-        <input type="text" name="direction" class="form-control">
-    </div>
 
     {{-- Details quotes tariffs --}}
     <div class="col-md-6 mb-3">
@@ -78,11 +62,18 @@
 
     <div class="col-md-12 mb-3">
         @component('componentes.label', [
-            'title' => 'Observaciones',
+            'title' => 'Condiciones',
             'id' => 'observation',
         ])
         @endcomponent
-        <textarea class="form-control" name="observation" id="observation" rows="7"></textarea>
+        <textarea class="form-control" name="observation" id="observation" rows="7">
+        Los valores no incluyen IVA.
+        Pre viabilidad sujeta a visita en sitio.
+        En caso de requerir obra civil no se incluye.
+        Medio de entrega radio enlace.
+        No incluye servicios de colocación.
+        Tiempo de implementación 45 días calendario.
+        </textarea>
     </div>
 
     <div id="velocidades-container">

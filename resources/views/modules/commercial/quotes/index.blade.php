@@ -36,30 +36,18 @@
                 </a>
         @endslot
 
-        <!-- Filtros -->
-            <!-- ocultos -->
-            {{-- <input type="hidden"
-                id="rutaAjax"
-                data-url-employees="{{ route('tickets.employees.positions.departments') }}"
-                data-url-services="{{ route('tickets.customers.services') }}"> --}}
-
             <div class="collapse card-border" id="buscar">
                 <form class="form-inline"
                     action="{{ route('commercial.quotes.search') }}"
                     method="GET"
                     id="formSearch">
-                    @include('modules.commercial.quotes.partials.formFilter', [
-                        // 'customer' => true,
-                        // 'provider' => true,
-                    ])
+                    @include('modules.commercial.quotes.partials.formFilter')
                     {{-- Input oculto para mandar la accion de buscar --}}
                     <input type="hidden" name="action" value="buscar">
                 </form>
             </div>
         <!-- Datos -->
         @include('modules.commercial.quotes.partials.quotesList', [
-            // 'customer' => true,
-            // 'provider' => true,
             'showActions' =>true,
         ])
 	@endcomponent

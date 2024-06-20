@@ -1,7 +1,7 @@
 @component('componentes.table')
     @slot('thead')
         <th>Tipo de Servicio</th>
-        <th>BW</th>
+        <th>ANCHOS DE BANDA</th>
         <th>MRC 12 MESES</th>
         <th>MRC 24 MESES</th>
         <th>MRC 36 MESES</th>
@@ -21,7 +21,7 @@
 
                 <td>
                     <a href="{{ route('tariff.show',$tariff->id)}}" style="color: #2e384d">
-                    {{ $tariff->bandwidth->name }}
+                    {{ $tariff->bandwidth->name . ' ' . '-' . ' ' . $tariff->bandwidth->city->name}}
                     </a>
                 </td>
 

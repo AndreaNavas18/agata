@@ -8,6 +8,7 @@
 
 @component('componentes.table')
     @slot('thead')
+        <th>Consecutivo</th>
         <th>Asunto</th>
         <th>Nombre</th>
         <th>Teléfono</th>
@@ -19,6 +20,12 @@
     
         @foreach($quotes as $quote)
             <tr>
+                <td>
+                    <a href="{{ route('commercial.quotes.manage', $quote->id) }}" style="color: #2e384d">
+                    {{ $quote->consecutive }}
+                    </a>
+                </td>
+
                 <td>
                     <a href="{{ route('commercial.quotes.manage', $quote->id) }}" style="color: #2e384d">
                     {{ $quote->issue }}

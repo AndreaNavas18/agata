@@ -21,6 +21,29 @@ class Quotes extends Model
         'observation'
     ];
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($quote) {
+
+            $lastConsecutive = static::orderBy('id', 'desc')->value('consecutive');
+            
+            if ($lastConsecutive) {
+                $lastConsecutiveNumber = (int) explode('-', $lastConsecutive)[2];
+            } else {
+
+                $lastConsecutiveNumber = 9999; 
+            }
+            $nextConsecutiveNumber = $lastConsecutiveNumber + 1;
+
+            // Generar el consecutivo
+            $quote->consecutive = 'ST-' . $nextConsecutiveNumber;
+        });
+    }
+
+
     public function tariffs() {
         return $this->hasMany(DetailsQuotesTariffs::class, 'quote_id');
     }

@@ -42,7 +42,7 @@
                             $tariff->bandwidth->id  == $bandwidth->id
                             ? 'selected' : '' }}
                             >
-                        {{ $bandwidth->name }}
+                        {{ $bandwidth->name . ' ' . '-' . ' ' . $bandwidth->city->name }}
                     </option>
                 @endforeach
             </select>

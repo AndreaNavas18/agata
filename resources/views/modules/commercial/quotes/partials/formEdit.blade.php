@@ -82,7 +82,7 @@
 
     <div class="col-md-12 mb-3">
         @component('componentes.label', [
-            'title' => 'Observaciones',
+            'title' => 'Condiciones',
             'id' => 'observation',
         ])
         @endcomponent
@@ -109,6 +109,15 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    @component('componentes.label', [
+                        'title' => 'Dirección | Coordenadas',
+                        'id' => 'address',
+                    ])
+                    @endcomponent
+                    <input type="text" name="address[]" class="form-control address" value="{{ $tariff->address }}">
                 </div>
         
                 <div class="col-md-6 mb-3">

@@ -17,6 +17,14 @@
                 <div class="row">
                     <div class="col-md-3 mb-4">
                         @component('componentes.label', [
+                            'title' => 'Consecutivo',])
+                        @endcomponent
+                        <div>
+                            {{ $quote->consecutive }}
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        @component('componentes.label', [
                             'title' => 'Asunto',])
                         @endcomponent
                         <div>
@@ -46,25 +54,7 @@
                         <div>
                             {{ $quote->phone }}
                         </div>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Ciudad',])
-                        @endcomponent
-                        <div>
-                            {{ $quote->city }}
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-4">
-                        @component('componentes.label', [
-                            'title' => 'Dirección',])
-                        @endcomponent
-                        <div>
-                            {{ $quote->direction }}
-                        </div>
-                    </div>
-
-                               
+                    </div>                               
                 </div>
             </div>
                     @foreach ($tariff as $tariffItem)
@@ -76,6 +66,31 @@
                                 @endcomponent
                                 <div>
                                     {{ $services->firstWhere('id', $tariffItem->name_service)->name ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Departamento',])
+                                @endcomponent
+                                <div>
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->department->name ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Ciudad',])
+                                @endcomponent
+                                <div>
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->city->name ?? 'No se especificó' }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                @component('componentes.label', [
+                                    'title' => 'Dirección | Coordenadas',])
+                                @endcomponent
+                                <div>
+                                    {{-- {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->city->name ?? 'No se especificó' }} --}}
+                                    {{ $tariffItem->address ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -117,7 +132,7 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 @component('componentes.label', [
-                                    'title' => 'Observacion',
+                                    'title' => 'Condiciones',
                                     'required' => false])
                                 @endcomponent
                                 <textarea disabled class="form-control">{{  $quote->observation }}</textarea>

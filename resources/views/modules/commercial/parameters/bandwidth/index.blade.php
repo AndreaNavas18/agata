@@ -115,86 +115,78 @@
                                     {{-- editar --}}
                                     <form action="{{ route('tariff.params.bandwidth.update', $row->id) }}"
                                         method="POST">
-                                        {{-- id="formUpdate"> --}}
-                                        @csrf
-                                        @method('PUT')
-
-                                        @component('componentes.modal', [
-                                            'id' => 'modalEditar'. $row->id,
-                                            'title' => 'Editar Ancho de banda',
-                                            'btnCancel' => true])
-
-                                            @slot('body')
-
-                                                <div class="form-group">
-                                                    <label class="form-label">Nombre</label>
-                                                    <input type="text"
-                                                        name="name"
-                                                        class="form-control"
-                                                        value="{{ $row->name }}"
-                                                        required="">
-                                                </div>
-
-                                                <div class="form-group mb-3">
-                                                    @component('componentes.label', [
-                                                        'title' => 'Departmento',
-                                                        'id' => 'department_id_{{ $row->id }}',
-                                                        'required' => false])
-                                                    @endcomponent
-                                                    <select class="form-control
-                                                        selectpicker"
-                                                        name="department_id"
-                                                        id="department_id_{{ $row->id }}"
-                                                        data-city-select-id="city_id_{{ $row->id }}"
-                                                        data-container="body"
-                                                        data-title="--Seleccione--"
-                                                        required>
-                                                        <option value="">--Seleccione--</option>
-                                                        @foreach($departments as $department)
-                                                            <option value="{{ $department->id }}"  
-                                                                {{ $row->department_id == $department->id ? 'selected' : ''  }}>
-                                                                {{ $department->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                
-                                                <div class="form-group mb-3">
-                                                    @component('componentes.label', [
-                                                        'title' => 'Ciudad',
-                                                        'required' => false])
-                                                    @endcomponent
-                                                    <select class="form-control
-                                                        selectpicker"
-                                                        data-width="100%"
-                                                        data-container="body"
-                                                        name="city_id"
-                                                        data-selected-city-id="{{ $row->city_id }}"
-                                                        id="city_id_{{ $row->id }}"
-                                                        required>
-                                                        <option value="">--Seleccione--</option>
-                                                        @foreach($cities as $city)
-                                                        <option value="{{ $city->id }}"  
-                                                            {{ $row->city_id == $city->id ? 'selected' : ''  }}>
-                                                            {{ $city->name }}
-                                                        </option>
-                                                    @endforeach
-                                                    </select>
-                                                </div>
-
-
-                                            @endslot
-
-                                            @slot('footer')
-                                                <button class="btn btn-primary btn-sm"
-                                                    type="submit">
-                                                    <i class="fas fa-save"></i>
-                                                    Actualizar
-                                                </button>
-                                            @endslot
-
-                                        @endcomponent
-                                    </form>
+                                      @csrf
+                                      @method('PUT')
+                                  
+                                      @component('componentes.modal', [
+                                          'id' => 'modalEditar'. $row->id,
+                                          'title' => 'Editar Ancho de banda',
+                                          'btnCancel' => true])
+                                  
+                                          @slot('body')
+                                  
+                                              <div class="form-group">
+                                                  <label class="form-label">Nombre</label>
+                                                  <input type="text"
+                                                         name="name"
+                                                         class="form-control"
+                                                         value="{{ $row->name }}"
+                                                         required="">
+                                              </div>
+                                  
+                                              <div class="form-group mb-3">
+                                                  @component('componentes.label', [
+                                                      'title' => 'Departmento',
+                                                      'id' => 'department_id_{{ $row->id }}',
+                                                      'required' => false])
+                                                  @endcomponent
+                                                  <select class="form-control
+                                                      selectpicker"
+                                                      name="department_id"
+                                                      id="department_id_{{ $row->id }}"
+                                                      data-city-select-id="city_id_{{ $row->id }}"
+                                                      data-container="body"
+                                                      data-title="--Seleccione--"
+                                                      required>
+                                                      <option value="">--Seleccione--</option>
+                                                      @foreach($departments as $department)
+                                                          <option value="{{ $department->id }}"  
+                                                              {{ $row->department_id == $department->id ? 'selected' : ''  }}>
+                                                              {{ $department->name }}
+                                                          </option>
+                                                      @endforeach
+                                                  </select>
+                                              </div>
+                                                                  
+                                              <div class="form-group mb-3">
+                                                  @component('componentes.label', [
+                                                      'title' => 'Ciudad',
+                                                      'required' => false])
+                                                  @endcomponent
+                                                  <select class="form-control
+                                                      "
+                                                      data-width="100%"
+                                                      data-container="body"
+                                                      name="city_id"
+                                                      data-selected-city-id="{{ $row->city_id }}"
+                                                      id="city_id_{{ $row->id }}"
+                                                      >
+                                                      <option value="">--Seleccione--</option>
+                                                  </select>
+                                              </div>
+                                  
+                                          @endslot
+                                  
+                                          @slot('footer')
+                                              <button class="btn btn-primary btn-sm"
+                                                      type="submit">
+                                                  <i class="fas fa-save"></i>
+                                                  Actualizar
+                                              </button>
+                                          @endslot
+                                  
+                                      @endcomponent
+                                  </form>
 
                                 </td>
                             </tr>
@@ -217,87 +209,78 @@
     <form action="{{ route('tariff.params.bandwidth.store') }}"
         method="POST"
         id="formStore">
-        @csrf
+    @csrf
 
-        @component('componentes.modal', [
-            'id' => 'modalCrear',
-            'title' => 'Nuevo Ancho de Banda',
-            'btnCancel' => true])
+    @component('componentes.modal', [
+        'id' => 'modalCrear',
+        'title' => 'Nuevo Ancho de Banda',
+        'btnCancel' => true])
 
-            @slot('body')
+        @slot('body')
 
-                {{-- <div class="form-group">
-                    <label class="form-label">Nombre</label>
-                    <input type="text"
-                        name="name"
-                        class="form-control"
-                        id="validationCustom01"
-                        required>
-                </div> --}}
-
-                <div class="form-group">
-                    <label class="form-label">Velocidad</label>
-                    <div class="input-group">
-                        <input type="number"
+            <div class="form-group">
+                <label class="form-label">Velocidad</label>
+                <div class="input-group">
+                    <input type="number"
                             name="name"
                             class="form-control"
                             id="validationCustom01"
                             inputmode="numeric"
                             required>
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2" disabled>Mbps</span>
-                        </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2" disabled>Mbps</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group mb-3">
-                    @component('componentes.label', [
-                        'title' => 'Departmento',
-                        'id' => 'department_id_create',
-                        'required' => false])
-                    @endcomponent
-                    <select class="form-control
-                        selectpicker"
-                        name="department_id"
-                        id="department_id_create"
-                        data-container="body"
-                        data-title="--Seleccione--"
-                        required>
-                        <option value="">--Seleccione--</option>
-                        @foreach($departments as $department)
-                            <option value="{{ $department->id }}">
-                                {{ $department->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="form-group mb-3">
+                @component('componentes.label', [
+                    'title' => 'Departmento',
+                    'id' => 'department_id_create',
+                    'required' => false])
+                @endcomponent
+                <select class="form-control
+                    selectpicker"
+                    name="department_id"
+                    id="department_id_create"
+                    data-container="body"
+                    data-title="--Seleccione--"
+                    required>
+                    <option value="">--Seleccione--</option>
+                    @foreach($departments as $department)
+                        <option value="{{ $department->id }}">
+                            {{ $department->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                <div class="form-group mb-3">
-                    @component('componentes.label', [
-                        'title' => 'Ciudad',
-                        'required' => false])
-                    @endcomponent
-                    <select class="form-control
-                        selectpicker"
-                        data-width="100%"
-                        data-container="body"
-                        name="city_id"
-                        id="city_id_create"
-                        required>
-                        <option value="">--Seleccione--</option>
-                    </select>
-                </div>
+            <div class="form-group mb-3">
+                @component('componentes.label', [
+                    'title' => 'Ciudad',
+                    'required' => false])
+                @endcomponent
+                <select class="form-control
+                    selectpicker"
+                    data-width="100%"
+                    data-container="body"
+                    name="city_id"
+                    id="city_id_create"
+                    required>
+                    <option value="">--Seleccione--</option>
+                </select>
+            </div>
     
-            @endslot
+        @endslot
 
-            @slot('footer')
-                <button class="btn btn-primary btn-sm"
+        @slot('footer')
+            <button class="btn btn-primary btn-sm"
                     type="submit">
-                    <i class="fas fa-save"></i>
-                    Guardar
-                </button>
-            @endslot
-        @endcomponent
-    </form>
+                <i class="fas fa-save"></i>
+                Guardar
+            </button>
+        @endslot
+    @endcomponent
+</form>
 
 @endsection

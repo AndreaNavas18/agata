@@ -54,8 +54,6 @@ class CommercialQuoteController extends Controller
             $quote->identification      = $request->identification;
             $quote->email               = $request->email;
             $quote->phone               = $request->phone;
-            $quote->city                = $request->city;
-            $quote->direction           = $request->direction;
             $quote->observation         = $request->observation;
 
             $quote->save();
@@ -71,6 +69,7 @@ class CommercialQuoteController extends Controller
                     $tariffQuote->quote_id              = $quote->id;
                     $tariffQuote->name_service          = $request->name_service;
                     $tariffQuote->bandwidth             = $bandwidth;
+                    $tariffQuote->address               = $request->address[$index] ?? null;
                     $tariffQuote->nrc_12                = $request->nrc_12[$index];
                     $tariffQuote->nrc_24                = $request->nrc_24[$index];
                     $tariffQuote->nrc_36                = $request->nrc_36[$index];
@@ -289,8 +288,6 @@ class CommercialQuoteController extends Controller
             $quote->identification = $request->identification;
             $quote->email = $request->email;
             $quote->phone = $request->phone;
-            $quote->direction = $request->direction;
-            $quote->city = $request->city;
             $quote->observation = $request->observation;
 
             $quote->save();
@@ -306,24 +303,26 @@ class CommercialQuoteController extends Controller
                     if ($tariffQuote) {
                         // Actualizar tarifas existentes
                         $tariffQuote->name_service = $tariffQuote->name_service;
-                        $tariffQuote->nrc_12 = $request->nrc_12[$index];
-                        $tariffQuote->nrc_24 = $request->nrc_24[$index];
-                        $tariffQuote->nrc_36 = $request->nrc_36[$index];
-                        $tariffQuote->mrc_12 = $request->mrc_12[$index];
-                        $tariffQuote->mrc_24 = $request->mrc_24[$index];
-                        $tariffQuote->mrc_36 = $request->mrc_36[$index];
+                        $tariffQuote->address       = $request->address[$index] ?? null;
+                        $tariffQuote->nrc_12        = $request->nrc_12[$index];
+                        $tariffQuote->nrc_24        = $request->nrc_24[$index];
+                        $tariffQuote->nrc_36        = $request->nrc_36[$index];
+                        $tariffQuote->mrc_12        = $request->mrc_12[$index];
+                        $tariffQuote->mrc_24        = $request->mrc_24[$index];
+                        $tariffQuote->mrc_36        = $request->mrc_36[$index];
                     } else {
                         // Crear nuevas tarifas
-                        $tariffQuote = new DetailsQuotesTariffs();
-                        $tariffQuote->quote_id = $quote->id;
-                        $tariffQuote->name_service = $tariffQuote->name_service;
-                        $tariffQuote->bandwidth = $bandwidth;
-                        $tariffQuote->nrc_12 = $request->nrc_12[$index];
-                        $tariffQuote->nrc_24 = $request->nrc_24[$index];
-                        $tariffQuote->nrc_36 = $request->nrc_36[$index];
-                        $tariffQuote->mrc_12 = $request->mrc_12[$index];
-                        $tariffQuote->mrc_24 = $request->mrc_24[$index];
-                        $tariffQuote->mrc_36 = $request->mrc_36[$index];
+                        $tariffQuote                            = new DetailsQuotesTariffs();
+                        $tariffQuote->quote_id                  = $quote->id;
+                        $tariffQuote->name_service              = $tariffQuote->name_service;
+                        $tariffQuote->bandwidth                 = $bandwidth;
+                        $tariffQuote->address                   = $request->address[$index] ?? null;
+                        $tariffQuote->nrc_12                    = $request->nrc_12[$index];
+                        $tariffQuote->nrc_24                    = $request->nrc_24[$index];
+                        $tariffQuote->nrc_36                    = $request->nrc_36[$index];
+                        $tariffQuote->mrc_12                    = $request->mrc_12[$index];
+                        $tariffQuote->mrc_24                    = $request->mrc_24[$index];
+                        $tariffQuote->mrc_36                    = $request->mrc_36[$index];
                     }
 
                     $tariffQuote->save();

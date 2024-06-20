@@ -153,9 +153,17 @@ $(document).ready(function() {
             var $select = $(this);
             $select.empty();
             $select.append($('<option>').text('--Seleccione--').attr('value', ''));
-            $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+
+            var sortedBandwidths = serviciosDisponibles[servicioId].sort(function(a, b) {
+                return a.id - b.id;
+            });
+
+            $.each(sortedBandwidths, function(index, bandwidth) {
                 $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
             });
+            // $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+            //     $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+            // });
             $select.selectpicker('refresh');
         });
         $('#bandwidth').change();
@@ -165,22 +173,20 @@ $(document).ready(function() {
     function actualizarSelectIndividual($select, servicioId) {
         $select.empty();
         $select.append($('<option>').text('--Seleccione--').attr('value', ''));
-        $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+
+        var sortedBandwidths = serviciosDisponibles[servicioId].sort(function(a, b) {
+            return a.id - b.id;
+        });
+
+        $.each(sortedBandwidths, function(index, bandwidth) {
             $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
         });
-        // $select.selectpicker('refresh');
+
+        // $.each(serviciosDisponibles[servicioId], function(index, bandwidth) {
+        //     $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+        // });
     }
     
-    // $('.selectpicker').selectpicker();
-
-    // function inicializarSelectsEnEdicion() {
-    //     var servicioId = $('#name_service').val();
-    //     if (servicioId) {
-    //         actualizarSelectsAnchosBanda(servicioId);
-    //     }
-    // }
-
-    // inicializarSelectsEnEdicion();
 });
 
 

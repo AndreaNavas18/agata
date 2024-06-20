@@ -14,6 +14,15 @@
 
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
+                'title' => 'Dirección | Coordenadas',
+                'id' => 'address',
+            ])
+            @endcomponent
+            <input type="text" name="address[]" class="form-control address">
+        </div>
+
+        <div class="col-md-6 mb-3">
+            @component('componentes.label', [
                 'title' => 'NRC 12 Meses',
                 'id' => 'nrc_12',
             ])
