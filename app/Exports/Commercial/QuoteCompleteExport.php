@@ -26,18 +26,14 @@ class QuoteCompleteExport implements WithMultipleSheets
         $sheets = [];
 
         
+        $sheets[] = new QuoteInfoExport($this->quote);
+
         // Agrego la cotizacion
         if ($this->quote->tariffs()->exists()) {
             $sheets[] = new QuoteExport($this->quote, $this->bandwidths);
         }
 
-        // Agrego la info
-        $sheets[] = new QuoteInfoExport($this->quote);
-
-        // Agrego las secciones 
-        if ($this->quote->sections()->exists()) {
-            $sheets[] = new SectionsExport($this->quote);
-        }
+        $sheets[] = new QuoteFormalInfo($this->quote, $this->bandwidths, $this->typeservices);
 
         return $sheets;
     }

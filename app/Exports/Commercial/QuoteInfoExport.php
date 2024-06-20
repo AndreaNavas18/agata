@@ -38,12 +38,12 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
     public function map($row): array
     {
         return [
+            $row->consecutive,
             $row->issue,
             $row->name,
             $row->identification,
             $row->email,
             $row->phone,
-            $row->direction,
             $row->observation
         ];
     }
@@ -52,26 +52,26 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
     public function headings(): array
    {
         return [
+            'Consecutivo',
             'Asunto',
             'Nombre',
             'Identificación',
             'Correo',
             'Teléfono',
-            'Dirección',
-            'Observación'
+            'Condiciones'
         ];
    }
 
    public function columnWidths(): array
     {
         return [
-            'A' => 25,
-            'B' => 20,
+            'A' => 20,
+            'B' => 25,
             'C' => 20,
             'D' => 23,
             'E' => 15,
             'F' => 15,
-            'G' => 50,  // Ancho mayor para la columna de Observación
+            'G' => 60,  // Ancho mayor para la columna de Observación
         ];
     }
 
@@ -119,6 +119,6 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
 
     public function title(): string
     {
-        return 'Cotización información';
+        return 'Información cotización';
     }
 }

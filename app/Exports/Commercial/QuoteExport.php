@@ -156,7 +156,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
                     
     public function title(): string
     {
-        return 'Valores Cotización';
+        return 'Cotización';
     }
     
 }

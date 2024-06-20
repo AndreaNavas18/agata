@@ -39,11 +39,11 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
     public function collection()
     {
         return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        ->with(['bandwidth', 'tariff'])
+        ->with(['bandwidth', 'tariff', 'bandwidth.department', 'bandwidth.city'])
         ->get()
         ->map(function ($item) {
-            $item->direction = $this->quote->direction;
-            $item->city = $this->quote->city; 
+            $item->bandwidth_department_name = $item->bandwidth->department->name;
+            $item->bandwidth_city_name = $item->bandwidth->city->name;
             return $item;
         });
     }
@@ -71,8 +71,9 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
             $this->itemCounter++,
             $typeServiceName,
             $bandwidthName,
-            $row->direction,
-            $row->city
+            $row->bandwidth_department_name,
+            $row->bandwidth_city_name,
+            $row->address,
         ];
         
     }
@@ -84,8 +85,9 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
             'ITEM',
             'SERVICIO',
             'CAPACIDAD',
-            'DIRECCIÓN',
-            'CIUDAD'
+            'DEPARTAMENTO',
+            'CIUDAD',
+            'DIRECCIÓN | COORDENADAS',
         ];
    }
 
@@ -94,9 +96,9 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
         return [
             'A' => 25,
             'B' => 20,
-            'C' => 20,
-            'D' => 23,
-            'E' => 15,
+            'C' => 23,
+            'D' => 20,
+            'E' => 25,
         ];
     }
 
@@ -145,6 +147,6 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
 
     public function title(): string
     {
-        return 'Cotización formal información';
+        return 'Items';
     }
 }
