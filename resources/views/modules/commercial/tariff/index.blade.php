@@ -39,6 +39,15 @@
                 </a>
             @endcan 
 
+            <a class="btn btn-secondary btn-sm"
+                data-toggle="collapse"
+                href="#importar"
+                role="button"
+                aria-expanded="false"
+                aria-controls="importar">
+                <i class="fas fa-light fa-file"></i> Importar
+            </a>
+
         @endslot
 
         <!-- Filtros -->
@@ -57,6 +66,12 @@
                 </form>
             </div>
         @endcan
+        <div class="collapse card-border" id="importar">
+            <form method="POST" id="frmImport" action="{{ route('commercial.tariff.import') }}" enctype="multipart/form-data" >
+                @csrf
+                @include('modules.commercial.tariff.partials.import')
+            </form>
+        </div>
         <!-- Datos -->
         @include('modules.commercial.tariff.partials.tariffsList', [
             'customer' => true,

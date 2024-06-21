@@ -69,19 +69,12 @@
                             title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a class="btn btn-primary btn-sm mb-1"
+                        <a class="btn btn-secondary btn-sm mb-1"
                             href="{{ route('commercial.quotes.export', $quote->id) }}"
                             bs-toggle="tooltip"
                             bs-placement="top"
-                            title="Exportar Cotización Informal">
-                            <i class="fas fa-download"></i> Exportar Informal
-                        </a>
-                        <a class="btn btn-secondary btn-sm mb-1"
-                            href="{{ route('commercial.quotes.export.formal', $quote->id) }}"
-                            bs-toggle="tooltip"
-                            bs-placement="top"
-                            title="Exportar Cotización Formal">
-                            <i class="fas fa-download"></i> Exportar Formal
+                            title="Exportar Cotización">
+                            <i class="fas fa-download"></i> Exportar
                         </a>
                     </td>
                 @endif

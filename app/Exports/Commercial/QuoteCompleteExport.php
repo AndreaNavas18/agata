@@ -35,6 +35,10 @@ class QuoteCompleteExport implements WithMultipleSheets
 
         $sheets[] = new QuoteFormalInfo($this->quote, $this->bandwidths, $this->typeservices);
 
+        if ($this->quote->sections()->exists()) {
+            $sheets[] = new SectionsExport($this->quote);
+        }
+
         return $sheets;
     }
 

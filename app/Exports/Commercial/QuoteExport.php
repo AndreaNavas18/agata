@@ -89,6 +89,16 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
 
+         // Convertir el contenido de todas las celdas a mayúsculas
+         for ($row = 1; $row <= $lastRow; ++$row) {
+            for ($col = 'A'; $col !== $lastColumn; ++$col) {
+                $cellValue = $sheet->getCell($col . $row)->getValue();
+                if (!is_null($cellValue)) { // Verificar si la celda no está vacía
+                    $sheet->getCell($col . $row)->setValue(strtoupper($cellValue));
+                }
+            }
+        }
+
         // Estilo para la primera fila (A1:G1)
         $sheet->getStyle('A1:G1')->applyFromArray([
             'font' => [

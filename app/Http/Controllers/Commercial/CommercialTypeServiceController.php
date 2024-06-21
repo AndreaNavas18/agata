@@ -7,6 +7,10 @@ use App\Models\Commercial\CommercialTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
+use App\Imports\CommercialServicesImport;
+
 
 class CommercialTypeServiceController extends Controller
 {
@@ -90,6 +94,25 @@ class CommercialTypeServiceController extends Controller
         $typeServices = CommercialTypeService::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
         return view('modules/commercial/parameters/typeService/index', compact('typeServices','data'));    
+    }
+
+    public function import(Request $request)
+    {
+        if($request->hasFile('commercialservicedocumento')){
+
+            $file = $request->file('commercialservicedocumento');
+            Excel::import(new CommercialServicesImport, $file);
+            Log::info("funcione, importe los tipos de servicio");
+
+            Alert::success('Bien hecho!', 'Tipos de servicio importado(s) correctamente');
+            return redirect()->back();
+
+            
+        }else {
+            Alert::error('Error', 'Error al importar archivo.');
+            Log::info("no funcioneeee");
+            return redirect()->back();
+        }
     }
 
 }

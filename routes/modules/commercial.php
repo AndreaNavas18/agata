@@ -102,15 +102,24 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 
     Route::get('/quotes/{id}/export', [ CommercialQuoteController::class, 'export' ])->name('export');
 
-    Route::get('/quotes/{id}/export-formal', [ CommercialQuoteController::class, 'exportFormal' ])->name('export.formal');
-
-
-
 });
+
 // AJAX
 Route::get('/obtener-anchos-de-banda', [CommercialQuoteController::class, 'obtenerAnchosDeBanda']);
 Route::get('/obtener-detalles-tarifa', [CommercialQuoteController::class, 'obtenerDetallesTarifa']);
 Route::get('/obtener-ciudades/{department_id}', [CommercialBandwidthController::class, 'obtenerCiudades']);
+
+Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('commercial.')->group(function () {
+
+    Route::post('/bandwidth/index/importar', [ CommercialBandwidthController::class, 'import' ])->name('bandwidth.import');
+    
+    Route::post('/typeservice/index/importar', [ CommercialTypeServiceController::class, 'import' ])->name('typeservice.import');
+
+    Route::post('/tarifa/index/importar', [ CommercialTariffController::class, 'import' ])->name('tariff.import');
+
+
+
+});
 
 
 

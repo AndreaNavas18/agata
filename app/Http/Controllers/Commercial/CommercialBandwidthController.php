@@ -7,9 +7,11 @@ use App\Models\Commercial\CommercialBandwidth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\General\Department;
 use App\Models\General\City;
+use App\Imports\BandwidthImport;
 
 class CommercialBandwidthController extends Controller
 {
@@ -109,6 +111,25 @@ class CommercialBandwidthController extends Controller
         $bandwidths = CommercialBandwidth::name($request->input('name'))->orderBy('name')->paginate();
         $data = $request->all();
         return view('modules/commercial/parameters/bandwidth/index', compact('bandwidths','data'));    
+    }
+
+    public function import(Request $request)
+    {
+        if($request->hasFile('bandwidthdocumento')){
+
+            $file = $request->file('bandwidthdocumento');
+            Excel::import(new BandwidthImport, $file);
+            Log::info("funcione, importe los bandwidths");
+
+            Alert::success('Bien hecho!', 'Anchos de banda importado(s) correctamente');
+            return redirect()->back();
+
+            
+        }else {
+            Alert::error('Error', 'Error al importar archivo.');
+            Log::info("no funcioneeee");
+            return redirect()->back();
+        }
     }
 
 }

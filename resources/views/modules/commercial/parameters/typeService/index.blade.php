@@ -38,6 +38,15 @@
                 <i class="fas fa-plus"></i> Crear
             </button>
 
+            <a class="btn btn-secondary btn-sm"
+                data-toggle="collapse"
+                href="#importar"
+                role="button"
+                aria-expanded="false"
+                aria-controls="importar">
+                <i class="fas fa-light fa-file"></i> Importar
+            </a>
+
         @endslot
 
         <!-- Filtros -->
@@ -62,6 +71,13 @@
                         </button>
                     </div>
                 </div>
+            </form>
+        </div>
+
+        <div class="collapse card-border" id="importar">
+            <form method="POST" id="frmImport" action="{{ route('commercial.typeservice.import') }}" enctype="multipart/form-data" >
+                @csrf
+                @include('modules.commercial.parameters.typeService.import')
             </form>
         </div>
 

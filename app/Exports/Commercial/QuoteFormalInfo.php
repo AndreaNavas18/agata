@@ -4,6 +4,7 @@ namespace App\Exports\Commercial;
 
 use App\Models\Commercial\Quotes;
 use App\Models\Commercial\DetailsQuotesTariffs;
+use App\Models\Commercial\CommercialBandwidth;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -39,11 +40,12 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
     public function collection()
     {
         return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        ->with(['bandwidth', 'tariff', 'bandwidth.department', 'bandwidth.city'])
+        ->with(['bandwidth', 'tariff'])
         ->get()
         ->map(function ($item) {
-            $item->bandwidth_department_name = $item->bandwidth->department->name;
-            $item->bandwidth_city_name = $item->bandwidth->city->name;
+            $bandwidth = CommercialBandwidth::with(['department', 'city'])->find($item->bandwidth);
+            $item->bandwidth_department_name = optional($bandwidth->department)->name ?? 'N/A';
+            $item->bandwidth_city_name = optional($bandwidth->city)->name ?? 'N/A';
             return $item;
         });
     }
@@ -106,6 +108,20 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
     {
         $lastRow = $sheet->getHighestRow();
         $lastColumn = $sheet->getHighestColumn();
+
+        // Obtener el rango completo de celdas que contienen datos
+        $cellRange = 'A1:' . $lastColumn . $lastRow;
+        $cells = $sheet->rangeToArray($cellRange);
+    
+        // Convertir todos los valores a mayúsculas
+        foreach ($cells as $rowIndex => $row) {
+            foreach ($row as $colIndex => $value) {
+                $cells[$rowIndex][$colIndex] = strtoupper($value);
+            }
+        }
+    
+        // Escribir los valores convertidos de nuevo en la hoja
+        $sheet->fromArray($cells, null, 'A1');
 
         // Estilo para la primera fila (A1:G1)
          $sheet->getStyle('A1:' . $lastColumn . '1')->applyFromArray([

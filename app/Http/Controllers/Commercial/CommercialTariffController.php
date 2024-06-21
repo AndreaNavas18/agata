@@ -11,6 +11,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
+use App\Imports\TariffImport;
 
 class CommercialTariffController extends Controller
 {
@@ -190,8 +193,8 @@ class CommercialTariffController extends Controller
 
        //Busqueda funcional para las tarifas
 
-       public function search(Request $request) {
-
+       public function search(Request $request) 
+       {
             $data=$request->all();
 
             $typeServices = CommercialTypeService::all();
@@ -206,8 +209,24 @@ class CommercialTariffController extends Controller
                 'bandwidths',
                 'data'
                 ));
-
         }
-   
 
+        public function import(Request $request)
+        {
+            if($request->hasFile('tariffdocumento')){
+
+                $file = $request->file('tariffdocumento');
+                Excel::import(new TariffImport, $file);
+                Log::info("funcione, importe las tarifas");
+
+                Alert::success('Bien hecho!', 'Tarifas importada(s) correctamente');
+                return redirect()->back();
+
+                
+            }else {
+                Alert::error('Error', 'Error al importar archivo.');
+                Log::info("no funcioneeee");
+                return redirect()->back();
+            }
+        }
 }

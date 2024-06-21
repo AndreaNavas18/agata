@@ -427,20 +427,10 @@ class CommercialQuoteController extends Controller
         $typeservices = CommercialTypeService::all();
        
         $export = new QuoteCompleteExport($quote, $bandwidths, $typeservices);
-    
-        return Excel::download($export, 'cotizacion_informal.xlsx');
 
-    }
-
-    public function exportFormal($id)
-    {
-        $quote = Quotes::findOrFail($id);
-        $bandwidths = CommercialBandwidth::all();
-        $typeservices = CommercialTypeService::all();
-       
-        $export = new QuoteFormalComplete($quote, $bandwidths, $typeservices);
+        $consecutive = $quote->consecutive;
     
-        return Excel::download($export, 'cotizacion_formal.xlsx');
+        return Excel::download($export, 'cotizacion_'.$consecutive.'.xlsx');
 
     }
 
