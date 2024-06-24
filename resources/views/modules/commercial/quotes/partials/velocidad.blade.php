@@ -1,5 +1,5 @@
 <template id="velocidad-template" >
-    <div class="velocidad-group row">
+    <div class="velocidad-group row" style="margin-left:10px">
         <div class="col-md-6 mb-3">
             @component('componentes.label', [
                 'title' => 'Ancho de banda (Mbps)',
@@ -69,7 +69,7 @@
             @endcomponent
             <input type="number" name="mrc_36[]" class="form-control mrc_36 decimal">
         </div>
-        <button type="button" class="btn btn-danger remove-velocidad">Eliminar</button>
+        <button type="button" class="btn btn-danger remove-velocidad" style="margin-left:10px;margin-bottom:30px">Eliminar</button>
         <hr>
     </div>
 </template>

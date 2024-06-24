@@ -76,6 +76,13 @@
                 </a>
             </li>
         </ul>
+        <ul class="slide-menu">
+            <li>
+                <a class="slide-item loading" href="{{ route('commercial.orderService.index') }}">
+                    <span>Orden de servicio</span>
+                </a>
+            </li>
+        </ul>
     </li>
     @endif
 

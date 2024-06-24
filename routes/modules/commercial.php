@@ -7,6 +7,7 @@ use App\Http\Controllers\Commercial\CommercialBandwidthController;
 use App\Http\Controllers\Commercial\CommercialTariffController;
 use App\Http\Controllers\Commercial\CommercialTypeServiceController;
 use App\Http\Controllers\Commercial\CommercialQuoteController;
+use App\Http\Controllers\Commercial\CommercialOrderServiceController;
 
 //TARIFARIO//
 Route::namespace('Commercial')->name('tariff.')->group(function () {
@@ -117,7 +118,9 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 
     Route::post('/tarifa/index/importar', [ CommercialTariffController::class, 'import' ])->name('tariff.import');
 
+    //Orden de servicio rutas
 
+    Route::get('/ordenes-servicio', [CommercialOrderServiceController::class, 'index'])->name('orderService.index');
 
 });
 

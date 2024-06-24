@@ -1,6 +1,14 @@
 <div class="row">
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
+            'title' => 'Consecutivo',
+            'id' => 'consecutive',
+        ])
+        @endcomponent
+        <input type="text" name="consecutive" class="form-control" value="{{ $quote->consecutive }}" disabled>
+    </div>
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
             'title' => 'Asunto de la cotización',
             'id' => 'issue',
             'required' => true,
@@ -16,6 +24,22 @@
         ])
         @endcomponent
         <input type="text" name="name" class="form-control" value="{{ $quote->name }}" required>
+    </div>
+    <div class="col-md-6 mb-3">
+        @component('componentes.label', [
+            'title' => 'Tipo de identificación',
+            'id' => 'type_document_id',
+        ])
+        @endcomponent
+        <select class="form-control
+            selectpicker" name="type_document_id" id="type_document_id">
+            <option value="">--Seleccione--</option>
+            @foreach ($typeDocuments as $typeDocumentRow)
+            <option value="{{ $typeDocumentRow->id }}" {{ $typeDocumentRow->id == $quote->type_document_id ? 'selected' : '' }}>
+                {{ $typeDocumentRow->name }}
+            </option>
+            @endforeach
+        </select>
     </div>
     <div class="col-md-6 mb-3">
         @component('componentes.label', [
@@ -40,22 +64,6 @@
         ])
         @endcomponent
         <input type="text" name="phone" class="form-control" value="{{ $quote->phone }}">
-    </div>
-    <div class="col-md-6 mb-3">
-        @component('componentes.label', [
-            'title' => 'Ciudad',
-            'id' => 'city',
-        ])
-        @endcomponent
-        <input type="text" name="city" class="form-control" value="{{ $quote->city }}">
-    </div>
-    <div class="col-md-6 mb-3">
-        @component('componentes.label', [
-            'title' => 'Dirección',
-            'id' => 'direction',
-        ])
-        @endcomponent
-        <input type="text" name="direction" class="form-control" value="{{ $quote->direction }}">
     </div>
 
     {{-- Details quotes tariffs --}}

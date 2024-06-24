@@ -31,13 +31,18 @@ class Quotes extends Model
             $lastConsecutive = static::orderBy('id', 'desc')->value('consecutive');
             
             if ($lastConsecutive) {
-                $lastConsecutiveNumber = (int) explode('-', $lastConsecutive)[2];
+                $parts = explode('-', $lastConsecutive);
+                if (count($parts) >= 3) {
+                    $lastConsecutiveNumber = (int) $parts[2];
+                } else {
+                    $lastConsecutiveNumber = 0;
+                }
             } else {
-
-                $lastConsecutiveNumber = 9999; 
+                $lastConsecutiveNumber = 9999;
             }
+    
             $nextConsecutiveNumber = $lastConsecutiveNumber + 1;
-
+    
             // Generar el consecutivo
             $quote->consecutive = 'ST-' . $nextConsecutiveNumber;
         });

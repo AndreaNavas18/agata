@@ -120,7 +120,7 @@
             @endcomponent
             <input type="number" name="valor_total[]" class="form-control valor_total decimal" step="0.01" min="0">
         </div>
-        <button type="button" class="btn btn-danger remove-tramo">Eliminar</button>
+        <button type="button" class="btn btn-danger remove-tramo" style="width:80px,height:50px">Eliminar</button>
         <hr>
     </div>
 </template>

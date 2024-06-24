@@ -19,6 +19,7 @@ use App\Exports\Commercial\QuoteExport;
 use App\Exports\Commercial\SectionsExport;
 use App\Exports\Commercial\QuoteCompleteExport;
 use App\Exports\Commercial\QuoteFormalComplete;
+use App\Models\General\TypeDocument;
 use PDPException;
 
 class CommercialQuoteController extends Controller
@@ -37,10 +38,10 @@ class CommercialQuoteController extends Controller
     {
         $tarifas = CommercialTariff::all();
         $servicios = CommercialTypeService::all();
+        $typeDocuments = TypeDocument::all();
 
-        return view('modules.commercial.quotes.create', compact('tarifas', 'servicios'));
+        return view('modules.commercial.quotes.create', compact('tarifas', 'servicios', 'typeDocuments'));
     }
-
 
     public function store(Request $request)
     {
@@ -48,42 +49,38 @@ class CommercialQuoteController extends Controller
             DB::beginTransaction();
             
             // Datos de la cotización
-            $quote                      = new Quotes();
-            $quote->issue               = $request->issue;
-            $quote->name                = $request->name;
-            $quote->identification      = $request->identification;
-            $quote->email               = $request->email;
-            $quote->phone               = $request->phone;
-            $quote->observation         = $request->observation;
-
+            $quote = new Quotes();
+            $quote->issue = $request->issue;
+            $quote->name = $request->name;
+            $quote->type_document_id = $request->type_document_id;
+            $quote->identification = $request->identification;
+            $quote->email = $request->email;
+            $quote->phone = $request->phone;
             $quote->save();
 
-            // dd($request->name_service, $request->bandwidth, $request->nrc_12, $request->nrc_24, $request->nrc_36, $request->mrc_12, $request->mrc_24, $request->mrc_36);
-
-            // Datos de las tarifas
-            if ($request->has('name_service') && is_array($request->bandwidth)) {
-                foreach ($request->bandwidth as $index => $bandwidth) {
-                  \Log::info("si se lleno un nameservice");
-                    
+            // Guardar detalles de tarifas por cada servicio y ancho de banda
+            if ($request->has('name_service') && is_array($request->name_service)) {
+                foreach ($request->name_service as $index => $nameService) {
                     $tariffQuote = new DetailsQuotesTariffs();
-                    $tariffQuote->quote_id              = $quote->id;
-                    $tariffQuote->name_service          = $request->name_service;
-                    $tariffQuote->bandwidth             = $bandwidth;
-                    $tariffQuote->address               = $request->address[$index] ?? null;
-                    $tariffQuote->nrc_12                = $request->nrc_12[$index];
-                    $tariffQuote->nrc_24                = $request->nrc_24[$index];
-                    $tariffQuote->nrc_36                = $request->nrc_36[$index];
-                    $tariffQuote->mrc_12                = $request->mrc_12[$index];
-                    $tariffQuote->mrc_24                = $request->mrc_24[$index];
-                    $tariffQuote->mrc_36                = $request->mrc_36[$index];
-
-                   $tariffQuote->save();
+                    $tariffQuote->quote_id = $quote->id;
+                    $tariffQuote->name_service = $nameService;
+                    $tariffQuote->bandwidth = $request->bandwidth[$index];
+                    $tariffQuote->address = $request->address[$index] ?? null;
+                    $tariffQuote->observation = $request->observation[$index] ?? null;
+                    $tariffQuote->nrc_12 = $request->nrc_12[$index];
+                    $tariffQuote->nrc_24 = $request->nrc_24[$index];
+                    $tariffQuote->nrc_36 = $request->nrc_36[$index];
+                    $tariffQuote->mrc_12 = $request->mrc_12[$index];
+                    $tariffQuote->mrc_24 = $request->mrc_24[$index];
+                    $tariffQuote->mrc_36 = $request->mrc_36[$index];
+                    $tariffQuote->save();
                 }
             }
 
+            // Guardar detalles de secciones si están presentes
             $camposRelevantes = ['tramo', 'trayecto'];
-
             $seccionesPresentes = false;
+
             foreach ($camposRelevantes as $campo) {
                 if ($request->has($campo) && is_array($request->$campo)) {
                     $seccionesPresentes = true;
@@ -93,10 +90,11 @@ class CommercialQuoteController extends Controller
 
             if ($seccionesPresentes) {
                 $cantidadSecciones = count($request->tramo);
+
                 for ($index = 0; $index < $cantidadSecciones; $index++) {
                     $sectionQuote = new DetailsQuotesSection();
                     $sectionQuote->quote_id = $quote->id;
-                    $sectionQuote->name_service = $request->name_service;
+                    $sectionQuote->name_service = $request->name_service[$index];
                     $sectionQuote->tramo = $request->tramo[$index] ?? null;
                     $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
                     $sectionQuote->hilos = $request->hilos[$index] ?? null;
@@ -112,22 +110,110 @@ class CommercialQuoteController extends Controller
                     $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
                     $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
                     $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
-
-                    \Log::info("Se llenó un tramo o trayecto");
-
+                    $sectionQuote->observation = $request->observation[$index] ?? null;
                     $sectionQuote->save();
                 }
             }
 
             DB::commit();
-            Alert::success('Bien hecho!', 'Registro insertado correctamente');
-            return redirect()->route('commercial.quotes.index');
+            return redirect()->route('commercial.quotes.index')
+                ->with('success', 'Registro insertado correctamente');
         } catch (PDPException $e) {
             DB::rollBack();
-            Alert::error('Error', 'Error al insertar registro.');
-            return redirect()->back();
+            Log::error('Error al insertar registro: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al insertar registro.');
         }
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+            
+    //         // Datos de la cotización
+    //         $quote                      = new Quotes();
+    //         $quote->issue               = $request->issue;
+    //         $quote->name                = $request->name;
+    //         $quote->type_document_id    = $request->type_document_id;
+    //         $quote->identification      = $request->identification;
+    //         $quote->email               = $request->email;
+    //         $quote->phone               = $request->phone;
+
+    //         $quote->save();
+
+    //         // dd($request->name_service, $request->bandwidth, $request->nrc_12, $request->nrc_24, $request->nrc_36, $request->mrc_12, $request->mrc_24, $request->mrc_36);
+
+    //         // Datos de las tarifas
+    //         if ($request->has('name_service') && is_array($request->bandwidth)) {
+    //             foreach ($request->bandwidth as $index => $bandwidth) {
+    //               \Log::info("si se lleno un nameservice");
+                    
+    //                 $tariffQuote = new DetailsQuotesTariffs();
+    //                 $tariffQuote->quote_id              = $quote->id;
+    //                 $tariffQuote->name_service          = $request->name_service[$index];
+    //                 $tariffQuote->bandwidth             = $bandwidth;
+    //                 $tariffQuote->address               = $request->address[$index] ?? null;
+    //                 $tariffQuote->observation           = $request->observation[$index] ?? null;
+    //                 $tariffQuote->nrc_12                = $request->nrc_12[$index];
+    //                 $tariffQuote->nrc_24                = $request->nrc_24[$index];
+    //                 $tariffQuote->nrc_36                = $request->nrc_36[$index];
+    //                 $tariffQuote->mrc_12                = $request->mrc_12[$index];
+    //                 $tariffQuote->mrc_24                = $request->mrc_24[$index];
+    //                 $tariffQuote->mrc_36                = $request->mrc_36[$index];
+
+    //                $tariffQuote->save();
+    //             }
+    //         }
+
+    //         $camposRelevantes = ['tramo', 'trayecto'];
+
+    //         $seccionesPresentes = false;
+    //         foreach ($camposRelevantes as $campo) {
+    //             if ($request->has($campo) && is_array($request->$campo)) {
+    //                 $seccionesPresentes = true;
+    //                 break;
+    //             }
+    //         }
+
+    //         if ($seccionesPresentes) {
+    //             $cantidadSecciones = count($request->tramo);
+    //             for ($index = 0; $index < $cantidadSecciones; $index++) {
+    //                 $sectionQuote = new DetailsQuotesSection();
+    //                 $sectionQuote->quote_id = $quote->id;
+    //                 $sectionQuote->name_service = $request->name_service[$index];
+    //                 $sectionQuote->tramo = $request->tramo[$index] ?? null;
+    //                 $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
+    //                 $sectionQuote->hilos = $request->hilos[$index] ?? null;
+    //                 $sectionQuote->extremo_a = $request->extremo_a[$index] ?? null;
+    //                 $sectionQuote->extremo_b = $request->extremo_b[$index] ?? null;
+    //                 $sectionQuote->kms = $request->kms[$index] ?? null;
+    //                 $sectionQuote->recurrente_mes = $request->recurrente_mes[$index] ?? null;
+    //                 $sectionQuote->recurrente_12 = $request->recurrente_12[$index] ?? null;
+    //                 $sectionQuote->recurrente_24 = $request->recurrente_24[$index] ?? null;
+    //                 $sectionQuote->recurrente_36 = $request->recurrente_36[$index] ?? null;
+    //                 $sectionQuote->tiempo = $request->tiempo[$index] ?? null;
+    //                 $sectionQuote->valor_km_usd = $request->valor_km_usd[$index] ?? null;
+    //                 $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
+    //                 $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
+    //                 $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
+    //                 $sectionQuote->observation = $request->observation[$index] ?? null;
+    //                 \Log::info("Se llenó un tramo o trayecto");
+
+    //                 $sectionQuote->save();
+    //             }
+    //         }
+
+    //         DB::commit();
+    //         Alert::success('Bien hecho!', 'Registro insertado correctamente');
+    //         return redirect()->route('commercial.quotes.index');
+    //     } catch (PDPException $e) {
+    //         DB::rollBack();
+    //         Alert::error('Error', 'Error al insertar registro.');
+    //         return redirect()->back();
+    //     }
+    // }
 
     public function obtenerAnchosDeBanda(Request $request)
     {
@@ -285,10 +371,10 @@ class CommercialQuoteController extends Controller
             $quote = Quotes::findOrFail($id);
             $quote->issue = $request->issue;
             $quote->name = $request->name;
+            $quote->type_document_id = $request->type_document_id;
             $quote->identification = $request->identification;
             $quote->email = $request->email;
             $quote->phone = $request->phone;
-            $quote->observation = $request->observation;
 
             $quote->save();
 
@@ -302,8 +388,9 @@ class CommercialQuoteController extends Controller
 
                     if ($tariffQuote) {
                         // Actualizar tarifas existentes
-                        $tariffQuote->name_service = $tariffQuote->name_service;
+                        $tariffQuote->name_service = $tariffQuote->name_service[$index];
                         $tariffQuote->address       = $request->address[$index] ?? null;
+                        $tariffQuote->observation   = $request->observation[$index] ?? null;
                         $tariffQuote->nrc_12        = $request->nrc_12[$index];
                         $tariffQuote->nrc_24        = $request->nrc_24[$index];
                         $tariffQuote->nrc_36        = $request->nrc_36[$index];
@@ -314,9 +401,10 @@ class CommercialQuoteController extends Controller
                         // Crear nuevas tarifas
                         $tariffQuote                            = new DetailsQuotesTariffs();
                         $tariffQuote->quote_id                  = $quote->id;
-                        $tariffQuote->name_service              = $tariffQuote->name_service;
+                        $tariffQuote->name_service              = $tariffQuote->name_service[$index];
                         $tariffQuote->bandwidth                 = $bandwidth;
                         $tariffQuote->address                   = $request->address[$index] ?? null;
+                        $tariffQuote->observation               = $request->observation[$index] ?? null;
                         $tariffQuote->nrc_12                    = $request->nrc_12[$index];
                         $tariffQuote->nrc_24                    = $request->nrc_24[$index];
                         $tariffQuote->nrc_36                    = $request->nrc_36[$index];
@@ -339,35 +427,6 @@ class CommercialQuoteController extends Controller
                     break;
                 }
             }
-
-            // if ($seccionesPresentes) {
-            //     // Eliminar secciones actuales para este quote_id
-            //     DetailsQuotesSection::where('quote_id', $quote->id)->delete();
-
-            //     $cantidadSecciones = count($request->tramo);
-            //     for ($index = 0; $index < $cantidadSecciones; $index++) {
-            //         $sectionQuote = new DetailsQuotesSection();
-            //         $sectionQuote->quote_id = $quote->id;
-            //         $sectionQuote->tramo = $request->tramo[$index] ?? null;
-            //         $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
-            //         $sectionQuote->hilos = $request->hilos[$index] ?? null;
-            //         $sectionQuote->extremo_a = $request->extremo_a[$index] ?? null;
-            //         $sectionQuote->extremo_b = $request->extremo_b[$index] ?? null;
-            //         $sectionQuote->kms = $request->kms[$index] ?? null;
-            //         $sectionQuote->recurrente_mes = $request->recurrente_mes[$index] ?? null;
-            //         $sectionQuote->recurrente_12 = $request->recurrente_12[$index] ?? null;
-            //         $sectionQuote->recurrente_24 = $request->recurrente_24[$index] ?? null;
-            //         $sectionQuote->recurrente_36 = $request->recurrente_36[$index] ?? null;
-            //         $sectionQuote->tiempo = $request->tiempo[$index] ?? null;
-            //         $sectionQuote->valor_km_usd = $request->valor_km_usd[$index] ?? null;
-            //         $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
-            //         $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
-            //         $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
-
-            //         $sectionQuote->save();
-            //     }
-            // }
-
             if ($seccionesPresentes) {
                 // Obtener las secciones actuales
                 $existingSections = DetailsQuotesSection::where('quote_id', $quote->id)->get()->keyBy('id');
@@ -378,7 +437,7 @@ class CommercialQuoteController extends Controller
                     $sectionQuote = $existingSections->get($sectionId) ?: new DetailsQuotesSection();
             
                     $sectionQuote->quote_id = $quote->id;
-                    $sectionQuote->name_service = $sectionQuote->name_service;
+                    $sectionQuote->name_service = $sectionQuote->name_service[$index];
                     $sectionQuote->tramo = $request->tramo[$index] ?? null;
                     $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
                     $sectionQuote->hilos = $request->hilos[$index] ?? null;
@@ -394,6 +453,7 @@ class CommercialQuoteController extends Controller
                     $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
                     $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
                     $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
+                    $sectionQuote->observation = $request->observation[$index] ?? null;
             
                     $sectionQuote->save();
             
