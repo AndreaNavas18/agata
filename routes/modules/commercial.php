@@ -109,6 +109,7 @@ Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('comm
 Route::get('/obtener-anchos-de-banda', [CommercialQuoteController::class, 'obtenerAnchosDeBanda']);
 Route::get('/obtener-detalles-tarifa', [CommercialQuoteController::class, 'obtenerDetallesTarifa']);
 Route::get('/obtener-ciudades/{department_id}', [CommercialBandwidthController::class, 'obtenerCiudades']);
+Route::get('obtener-tipos-documentos', [CommercialQuoteController::class, 'obtenerTiposDocumentos']);
 
 Route::middleware(['can:commercial.index'])->namespace('Commercial')->name('commercial.')->group(function () {
 

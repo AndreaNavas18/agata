@@ -88,7 +88,7 @@
                     'id' => 'observation_template',
                 ])
                 @endcomponent
-                <textarea class="form-control" id="observation_template" name="observation[]" rows="7">
+                <textarea class="form-control observation" id="observation_template" name="observation[]" rows="7">
                 Los valores no incluyen IVA.
                 Pre viabilidad sujeta a visita en sitio.
                 En caso de requerir obra civil no se incluye.

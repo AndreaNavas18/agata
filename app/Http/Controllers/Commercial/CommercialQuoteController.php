@@ -241,15 +241,20 @@ class CommercialQuoteController extends Controller
         \Log::info('Bandwidth ID received: ' . $request->input('bandwidth_id'));
         try {
             $bandwidthId = $request->input('bandwidth_id');
-            if (!$bandwidthId) {
-                return response()->json(['error' => 'Bandwidth ID is required'], 400);
+            $nameService = $request->input('name_service');
+
+            if (!$bandwidthId || !$nameService) {
+                return response()->json(['error' => 'Bandwidth ID and name service are required'], 400);
             }
     
-            $tarifa = CommercialTariff::where('bandwidth_id', $bandwidthId)->first();
+            $tarifa = CommercialTariff::where('bandwidth_id', $bandwidthId)
+                                    ->where('name_service', $nameService)
+                                    ->first();
+
             \Log::info('tarifa: ' . $tarifa);
     
             if (!$tarifa) {
-                return response()->json(['error' => 'No tariff found for the given bandwidth ID'], 404);
+                return response()->json(['error' => 'No tariff found for the given bandwidth ID and name service'], 404);
             }
     
             return response()->json([
@@ -264,6 +269,13 @@ class CommercialQuoteController extends Controller
             return response()->json(['error' => 'An error occurred while fetching the tariff details'], 500);
         }
     }
+
+    public function obtenerTiposDocumentos()
+    {
+        $typeDocuments = TypeDocument::all();
+        return response()->json($typeDocuments);
+    }
+
 
     public function manage($id, Request $request) {
         $quote = Quotes::findOrFail($id);
@@ -336,6 +348,8 @@ class CommercialQuoteController extends Controller
         $quote = Quotes::with(['tariffs.tariff', 'tariffs.bandwidth', 'sections'])->findOrFail($id);
         $tarifas = CommercialTariff::all();
         $servicios = CommercialTypeService::all();
+        $typeDocuments = TypeDocument::all();
+
 
         if ($quote->tariffs->isNotEmpty()) {
             $servicioId = $quote->tariffs->first()['name_service'];
@@ -358,7 +372,8 @@ class CommercialQuoteController extends Controller
             'servicios',
             'bandwidths',
             'bandwidthIds',
-            'servicioId'
+            'servicioId',
+            'typeDocuments'
         ));
     }
 

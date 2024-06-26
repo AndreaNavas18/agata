@@ -26,7 +26,8 @@ class DetailsQuotesSection extends Model
         'valor_km_usd',
         'valor_total_iru_usd',
         'valor_km_cop',
-        'valor_total'
+        'valor_total',
+        'observation',
     ];
 
     public function quote()

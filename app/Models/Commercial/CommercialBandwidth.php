@@ -40,4 +40,5 @@ class CommercialBandwidth extends Model
         return $this->belongsTo(City::class, 'city_id');
     }
     
+    
 }

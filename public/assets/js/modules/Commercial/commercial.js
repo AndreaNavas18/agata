@@ -94,10 +94,10 @@ $(document).ready(function() {
         $('#' + nameServiceId).change(function() {
             var servicioId = $(this).val();
             if (servicioId) {
-                cargarVelocidades(servicioId, $('#' + velocidadesContainerId + ' .bandwidth'));
+                cargarVelocidades(servicioId, $('#' + velocidadesContainerId + ' #bandwidth'));
             } else {
-                $('#' + velocidadesContainerId + ' .bandwidth').empty();
-                $('#' + velocidadesContainerId + ' .bandwidth').selectpicker('refresh');
+                $('#' + velocidadesContainerId + ' #bandwidth').empty();
+                $('#' + velocidadesContainerId + ' #bandwidth').selectpicker('refresh');
             }
         });
 
@@ -112,9 +112,9 @@ $(document).ready(function() {
             $('#' + velocidadesContainerId).append($velocidadTemplate);
             console.log("Velocidad añadida al servicio.");
 
-            actualizarSelectIndividual($velocidadTemplate.find('.bandwidth'), servicioId);
+            actualizarSelectIndividual($velocidadTemplate.find('#bandwidth'), servicioId);
 
-            $velocidadTemplate.find('.bandwidth').change(function() {
+            $velocidadTemplate.find('#bandwidth').change(function() {
                 var bandwidthId = $(this).val();
                 var $group = $(this).closest('.velocidad-group');
                 console.log("Ancho de banda seleccionado:", bandwidthId);
@@ -128,6 +128,8 @@ $(document).ready(function() {
                     type: 'GET',
                     data: { bandwidth_id: bandwidthId },
                     success: function(response) {
+                        $group.find('.address').val(response.address);
+                        $group.find('.observation').val(response.observation);
                         $group.find('.nrc_12').val(response.recurring_value_12);
                         $group.find('.nrc_24').val(response.recurring_value_24);
                         $group.find('.nrc_36').val(response.recurring_value_36);
@@ -190,6 +192,8 @@ $(document).ready(function() {
     }
 
     function limpiarCampos($group) {
+        $group.find('.address').val('');
+        $group.find('.observation').val('');
         $group.find('.nrc_12').val('');
         $group.find('.nrc_24').val('');
         $group.find('.nrc_36').val('');

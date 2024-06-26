@@ -3,7 +3,8 @@
 
     @push('script')
         {{-- validación form --}}
-        <script src="{{asset('assets/js/modules/Commercial/commercial.js')}}"></script>
+        {{-- <script src="{{asset('assets/js/modules/Commercial/commercial.js')}}"></script> --}}
+        <script src="{{ asset('assets/js/modules/Commercial/quote_edit.js') }}"></script>
     @endpush
 @section('content')
 
