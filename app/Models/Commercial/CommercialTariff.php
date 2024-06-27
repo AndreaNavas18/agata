@@ -10,7 +10,16 @@ class CommercialTariff extends Model
     // use HasFactory;
 
     protected $table = 'commercial_tariffs';
-    protected $fillable = [];
+    protected $fillable = [
+        'commercial_type_service_id',
+        'bandwidth_id',
+        'recurring_value_12',
+        'recurring_value_24',
+        'recurring_value_36',
+        'value_mbps_12',
+        'value_mbps_24',
+        'value_mbps_36',
+    ];
     protected $guarded = [];
 
     /* *************************************************************
@@ -60,18 +69,12 @@ class CommercialTariff extends Model
         return $this->belongsTo(CommercialBandwidth::class, 'bandwidth_id');
     }
 
-     // Relación hasMany para 'name_service'
+    
      public function detailsByNameService()
      {
-         return $this->hasMany(DetailsQuotesTariffs::class, 'name_service', 'id');
+         return $this->belongsToMany(Quotes::class, 'details_quotes_tariffs', 'tariff_id', 'quote_id');
      }
  
-     // Relación hasMany para 'bandwidth'
-     public function detailsByBandwidth()
-     {
-         return $this->hasMany(DetailsQuotesTariffs::class, 'bandwidth', 'id');
-     }
-
      public function sectionByNameService()
      {
          return $this->hasMany(DetailsQuotesSection::class, 'name_service', 'id');

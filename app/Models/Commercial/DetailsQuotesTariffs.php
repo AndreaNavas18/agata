@@ -15,8 +15,7 @@ class DetailsQuotesTariffs extends Model
 
     protected $fillable = [
         'quote_id',
-        'name_service',
-        'bandwidth',
+        'tariff_id',
         'address',
         'observation',
         'nrc_12',
@@ -34,11 +33,7 @@ class DetailsQuotesTariffs extends Model
 
     public function tariff()
     {
-        return $this->belongsTo(CommercialTariff::class, 'name_service', 'id');
+        return $this->belongsTo(CommercialTariff::class, 'tariff_id');
     }
 
-    public function bandwidth()
-    {
-        return $this->belongsTo(CommercialBandwidth::class, 'bandwidth', 'id');
-    }
 }

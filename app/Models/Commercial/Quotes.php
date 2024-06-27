@@ -50,7 +50,7 @@ class Quotes extends Model
 
 
     public function tariffs() {
-        return $this->hasMany(DetailsQuotesTariffs::class, 'quote_id');
+        return $this->belongsToMany(DetailsQuotesTariffs::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
     }
 
     public function sections() {

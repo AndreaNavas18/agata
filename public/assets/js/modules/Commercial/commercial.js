@@ -44,164 +44,362 @@ $(document).ready(function() {
 
 });
 
-$(document).ready(function() {
-    var serviciosDisponibles = {};
-    var serviceCounter = 0;
+//Aqui cargamos las ciudades
 
-    // Función para cargar las velocidades mediante Ajax
-    function cargarVelocidades(servicioId, $select) {
-        $.ajax({
-            url: '/obtener-anchos-de-banda',
-            type: 'GET',
-            data: { servicio_id: servicioId },
-            success: function(response) {
-                serviciosDisponibles[servicioId] = response;
-                actualizarSelectIndividual($select, servicioId);
-                console.log("Anchos de banda cargados:", response);
-            },
-            error: function(xhr, status, error) {
-                console.error("Error al obtener anchos de banda:", error);
-            }
-        });
-    }
+// document.addEventListener('DOMContentLoaded', function () {
+//     const departmentSelect = document.getElementById('department_id');
+//     const citySelect = document.getElementById('city_id');
 
-    // Función para añadir un nuevo servicio
-    function addService() {
-        serviceCounter++;
-        var $template = $($('#service-template').html());
-        
-        // Asignar IDs únicos a los elementos del template
-        var serviceId = 'service_' + serviceCounter;
-        var nameServiceId = 'name_service_' + serviceCounter;
-        var observationId = 'observation_' + serviceCounter;
-        var velocidadesContainerId = 'velocidades-container_' + serviceCounter;
-        var tramosContainerId = 'tramos-container_' + serviceCounter;
+//     departmentSelect.addEventListener('change', function () {
+//         const departmentId = this.value;
+//         console.log('Departamento seleccionado:', departmentId);
 
-        $template.find('.name_service').attr('id', nameServiceId);
-        $template.find('label[for="name_service_template"]').attr('for', nameServiceId);
-        $template.find('#name_service_template').attr('id', nameServiceId);
+//         // Limpiar las opciones de ciudades
+//         citySelect.innerHTML = '<option value="">--Seleccione--</option>';
+//         console.log('Opciones de ciudad limpiadas');
 
-        $template.find('textarea').attr('id', observationId);
-        $template.find('label[for="observation_template"]').attr('for', observationId);
-        $template.find('#observation_template').attr('id', observationId);
+//         if (departmentId) {
+//             fetch(`/obtener-ciudades/${departmentId}`)
+//                 .then(response => {
+//                     console.log('Respuesta de la petición:', response);
+//                     if (!response.ok) {
+//                         throw new Error('Error en la respuesta de la petición');
+//                     }
+//                     return response.json();
+//                 })
+//                 .then(data => {
+//                     console.log('Datos recibidos:', data);
+//                     if (data && Array.isArray(data)) {
+//                         data.forEach(city => {
+//                             const option = document.createElement('option');
+//                             option.value = city.id;
+//                             option.textContent = city.name;
+//                             citySelect.appendChild(option);
+//                             console.log(`Opción agregada: ${city.name}`);
+//                         });
+//                          $('.selectpicker').selectpicker('refresh');
+//                     } else {
+//                         console.error('No se recibieron datos válidos. Verifique la respuesta del servidor.');
+//                     }
+//                 })
+//                 .catch(error => {
+//                     console.error('Error:', error);
+//                 });
+//         }
+//     });
+// });
 
-        $template.find('.velocidades-container').attr('id', velocidadesContainerId);
-        $template.find('.tramos-container').attr('id', tramosContainerId);
+document.addEventListener('DOMContentLoaded', function () {
+    const departmentSelect = document.getElementById('department_id');
+    const citySelect = document.getElementById('city_id');
+    const serviceSelect = document.getElementById('service_id');
+    const bandwidthSelect = document.getElementById('bandwidth_id');
 
-        $('#services-container').append($template);
-        console.log("Nuevo servicio añadido.");
+    const nrc12Input = document.getElementById('nrc_12');
+    const nrc24Input = document.getElementById('nrc_24');
+    const nrc36Input = document.getElementById('nrc_36');
+    const mrc12Input = document.getElementById('mrc_12');
+    const mrc24Input = document.getElementById('mrc_24');
+    const mrc36Input = document.getElementById('mrc_36');
 
-        $('#' + nameServiceId).change(function() {
-            var servicioId = $(this).val();
-            if (servicioId) {
-                cargarVelocidades(servicioId, $('#' + velocidadesContainerId + ' #bandwidth'));
-            } else {
-                $('#' + velocidadesContainerId + ' #bandwidth').empty();
-                $('#' + velocidadesContainerId + ' #bandwidth').selectpicker('refresh');
-            }
-        });
-
-        $template.find('.add-velocidad').click(function() {
-            var servicioId = $('#' + nameServiceId).val();
-            if (!servicioId) {
-                alert('Seleccione un servicio primero.');
-                return;
-            }
-
-            var $velocidadTemplate = $($('#velocidad-template').html());
-            $('#' + velocidadesContainerId).append($velocidadTemplate);
-            console.log("Velocidad añadida al servicio.");
-
-            actualizarSelectIndividual($velocidadTemplate.find('#bandwidth'), servicioId);
-
-            $velocidadTemplate.find('#bandwidth').change(function() {
-                var bandwidthId = $(this).val();
-                var $group = $(this).closest('.velocidad-group');
-                console.log("Ancho de banda seleccionado:", bandwidthId);
-                if (!bandwidthId) {
-                    limpiarCampos($group);
-                    return;
-                }
-
-                $.ajax({
-                    url: '/obtener-detalles-tarifa',
-                    type: 'GET',
-                    data: { bandwidth_id: bandwidthId },
-                    success: function(response) {
-                        $group.find('.address').val(response.address);
-                        $group.find('.observation').val(response.observation);
-                        $group.find('.nrc_12').val(response.recurring_value_12);
-                        $group.find('.nrc_24').val(response.recurring_value_24);
-                        $group.find('.nrc_36').val(response.recurring_value_36);
-                        $group.find('.mrc_12').val(response.value_mbps_12);
-                        $group.find('.mrc_24').val(response.value_mbps_24);
-                        $group.find('.mrc_36').val(response.value_mbps_36);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error al obtener detalles de tarifa:", error);
-                    }
-                });
-            });
-
-            $velocidadTemplate.find('.remove-velocidad').click(function() {
-                $(this).closest('.velocidad-group').remove();
-            });
-
-            $velocidadTemplate.find('.selectpicker').selectpicker();
-        });
-
-        $template.find('.add-tramo').click(function() {
-            var $tramoTemplate = $($('#tramo-template').html());
-            $('#' + tramosContainerId).append($tramoTemplate);
-            console.log("Otras opciones añadidas al servicio.");
-
-            $tramoTemplate.find('.remove-tramo').click(function() {
-                $(this).closest('.tramo-group').remove();
-            });
-        });
-
-        $template.find('.remove-service').click(function() {
-            $(this).closest('.service-group').remove();
-        });
-
-        $template.find('.add-service').click(function() {
-            addService();
-        });
-
-        $template.find('.selectpicker').selectpicker();
-    }
-
-    // Inicializar el primer servicio al cargar la página
-    $('#add-service').click(function() {
-        addService();
+    departmentSelect.addEventListener('change', () => {
+        fetchCities();
+        fetchBandwidths();
     });
 
-    function actualizarSelectIndividual($select, servicioId) {
-        $select.empty();
-        $select.append($('<option>').text('--Seleccione--').attr('value', ''));
+    citySelect.addEventListener('change', fetchBandwidths);
+    serviceSelect.addEventListener('change', fetchBandwidths);
+    bandwidthSelect.addEventListener('change', fetchBandwidthDetails);
 
-        var sortedBandwidths = serviciosDisponibles[servicioId].sort(function(a, b) {
-            return a.id - b.id;
-        });
+    function fetchCities() {
+        const departmentId = departmentSelect.value;
+        console.log('Departamento seleccionado:', departmentId);
 
-        $.each(sortedBandwidths, function(index, bandwidth) {
-            $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
-        });
+        citySelect.innerHTML = '<option value="">--Seleccione--</option>';
 
-        $select.selectpicker('refresh');
+        if (departmentId) {
+            fetch(`/obtener-ciudades/${departmentId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la petición');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Ciudades recibidas:', data);
+                    data.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city.id;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     }
 
-    function limpiarCampos($group) {
-        $group.find('.address').val('');
-        $group.find('.observation').val('');
-        $group.find('.nrc_12').val('');
-        $group.find('.nrc_24').val('');
-        $group.find('.nrc_36').val('');
-        $group.find('.mrc_12').val('');
-        $group.find('.mrc_24').val('');
-        $group.find('.mrc_36').val('');
+    function fetchBandwidths() {
+        const departmentId = departmentSelect.value;
+        const cityId = citySelect.value;
+        const serviceId = serviceSelect.value;
+
+        console.log('Departamento seleccionado:', departmentId);
+        console.log('Ciudad seleccionada:', cityId);
+        console.log('Servicio seleccionado:', serviceId);
+
+        bandwidthSelect.innerHTML = '<option value="">--Seleccione--</option>';
+
+        if (serviceId && departmentId && cityId) {
+            fetch(`/obtener-anchos-de-banda?servicio_id=${serviceId}&department_id=${departmentId}&city_id=${cityId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta de la petición');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Datos de anchos de banda recibidos:', data);
+                    data.forEach(bandwidth => {
+                        const option = document.createElement('option');
+                        option.value = bandwidth.id;
+                        option.textContent = `${bandwidth.bandwidth.name}`;
+                        bandwidthSelect.appendChild(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
     }
+
+    function fetchBandwidthDetails() {
+        const bandwidthId = bandwidthSelect.value;
+        const serviceId = serviceSelect.value;
+    
+        console.log('Ancho de banda seleccionado:', bandwidthId);
+        console.log('Servicio seleccionado:', serviceId);
+    
+        if (bandwidthId && serviceId) {
+            $.ajax({
+                url: '/obtener-detalles-tarifa',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    bandwidth_id: bandwidthId,
+                    service_id: serviceId,
+                }),
+                success: function(data) {
+                    console.log('Detalles de la tarifa recibidos:', data);
+    
+                    // Asignar valores a los campos del formulario
+                    nrc12Input.value = data.recurring_value_12 || '';
+                    nrc24Input.value = data.recurring_value_24 || '';
+                    nrc36Input.value = data.recurring_value_36 || '';
+                    mrc12Input.value = data.value_mbps_12 || '';
+                    mrc24Input.value = data.value_mbps_24 || '';
+                    mrc36Input.value = data.value_mbps_36 || '';
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        }
+    }
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// $(document).ready(function() {
+//     var serviciosDisponibles = {};
+//     var serviceCounter = 0;
+
+//     // Función para cargar las velocidades mediante Ajax
+//     function cargarVelocidades(servicioId, $select) {
+//         $.ajax({
+//             url: '/obtener-anchos-de-banda',
+//             type: 'GET',
+//             data: { servicio_id: servicioId },
+//             success: function(response) {
+//                 serviciosDisponibles[servicioId] = response;
+//                 actualizarSelectIndividual($select, servicioId);
+//                 console.log("Anchos de banda cargados:", response);
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error("Error al obtener anchos de banda:", error);
+//             }
+//         });
+//     }
+
+//     // Función para añadir un nuevo servicio
+//     function addService() {
+//         serviceCounter++;
+//         var $template = $($('#service-template').html());
+        
+//         // Asignar IDs únicos a los elementos del template
+//         var serviceId = 'service_' + serviceCounter;
+//         var nameServiceId = 'name_service_' + serviceCounter;
+//         var observationId = 'observation_' + serviceCounter;
+//         var velocidadesContainerId = 'velocidades-container_' + serviceCounter;
+//         var tramosContainerId = 'tramos-container_' + serviceCounter;
+
+//         $template.find('.name_service').attr('id', nameServiceId);
+//         $template.find('label[for="name_service_template"]').attr('for', nameServiceId);
+//         $template.find('#name_service_template').attr('id', nameServiceId);
+
+//         $template.find('textarea').attr('id', observationId);
+//         $template.find('label[for="observation_template"]').attr('for', observationId);
+//         $template.find('#observation_template').attr('id', observationId);
+
+//         $template.find('.velocidades-container').attr('id', velocidadesContainerId);
+//         $template.find('.tramos-container').attr('id', tramosContainerId);
+
+//         $('#services-container').append($template);
+//         console.log("Nuevo servicio añadido.");
+
+//         $('#' + nameServiceId).change(function() {
+//             var servicioId = $(this).val();
+//             if (servicioId) {
+//                 cargarVelocidades(servicioId, $('#' + velocidadesContainerId + ' #bandwidth'));
+//             } else {
+//                 $('#' + velocidadesContainerId + ' #bandwidth').empty();
+//                 $('#' + velocidadesContainerId + ' #bandwidth').selectpicker('refresh');
+//             }
+//         });
+
+//         $template.find('.add-velocidad').click(function() {
+//             var servicioId = $('#' + nameServiceId).val();
+//             if (!servicioId) {
+//                 alert('Seleccione un servicio primero.');
+//                 return;
+//             }
+
+//             var $velocidadTemplate = $($('#velocidad-template').html());
+//             $('#' + velocidadesContainerId).append($velocidadTemplate);
+//             console.log("Velocidad añadida al servicio.");
+
+//             actualizarSelectIndividual($velocidadTemplate.find('#bandwidth'), servicioId);
+
+//             $velocidadTemplate.find('#bandwidth').change(function() {
+//                 var bandwidthId = $(this).val();
+//                 var $group = $(this).closest('.velocidad-group');
+//                 console.log("Ancho de banda seleccionado:", bandwidthId);
+//                 if (!bandwidthId) {
+//                     limpiarCampos($group);
+//                     return;
+//                 }
+
+//                 $.ajax({
+//                     url: '/obtener-detalles-tarifa',
+//                     type: 'GET',
+//                     data: { bandwidth_id: bandwidthId },
+//                     success: function(response) {
+//                         $group.find('.address').val(response.address);
+//                         $group.find('.observation').val(response.observation);
+//                         $group.find('.nrc_12').val(response.recurring_value_12);
+//                         $group.find('.nrc_24').val(response.recurring_value_24);
+//                         $group.find('.nrc_36').val(response.recurring_value_36);
+//                         $group.find('.mrc_12').val(response.value_mbps_12);
+//                         $group.find('.mrc_24').val(response.value_mbps_24);
+//                         $group.find('.mrc_36').val(response.value_mbps_36);
+//                     },
+//                     error: function(xhr, status, error) {
+//                         console.error("Error al obtener detalles de tarifa:", error);
+//                     }
+//                 });
+//             });
+
+//             $velocidadTemplate.find('.remove-velocidad').click(function() {
+//                 $(this).closest('.velocidad-group').remove();
+//             });
+
+//             $velocidadTemplate.find('.selectpicker').selectpicker();
+//         });
+
+//         $template.find('.add-tramo').click(function() {
+//             var $tramoTemplate = $($('#tramo-template').html());
+//             $('#' + tramosContainerId).append($tramoTemplate);
+//             console.log("Otras opciones añadidas al servicio.");
+
+//             $tramoTemplate.find('.remove-tramo').click(function() {
+//                 $(this).closest('.tramo-group').remove();
+//             });
+//         });
+
+//         $template.find('.remove-service').click(function() {
+//             $(this).closest('.service-group').remove();
+//         });
+
+//         $template.find('.add-service').click(function() {
+//             addService();
+//         });
+
+//         $template.find('.selectpicker').selectpicker();
+//     }
+
+//     // Inicializar el primer servicio al cargar la página
+//     $('#add-service').click(function() {
+//         addService();
+//     });
+
+//     function actualizarSelectIndividual($select, servicioId) {
+//         $select.empty();
+//         $select.append($('<option>').text('--Seleccione--').attr('value', ''));
+
+//         var sortedBandwidths = serviciosDisponibles[servicioId].sort(function(a, b) {
+//             return a.id - b.id;
+//         });
+
+//         $.each(sortedBandwidths, function(index, bandwidth) {
+//             $select.append($('<option>').text(bandwidth.name).attr('value', bandwidth.id));
+//         });
+
+//         $select.selectpicker('refresh');
+//     }
+
+//     function limpiarCampos($group) {
+//         $group.find('.address').val('');
+//         $group.find('.observation').val('');
+//         $group.find('.nrc_12').val('');
+//         $group.find('.nrc_24').val('');
+//         $group.find('.nrc_36').val('');
+//         $group.find('.mrc_12').val('');
+//         $group.find('.mrc_24').val('');
+//         $group.find('.mrc_36').val('');
+//     }
+// });
 
 
 

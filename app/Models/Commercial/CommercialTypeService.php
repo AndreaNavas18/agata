@@ -10,7 +10,9 @@ class CommercialTypeService extends Model
    // use HasFactory;
 
    protected $table = 'commercial_type_services';
-   protected $fillable = [];
+   protected $fillable = [
+    'name'
+   ];
    protected $guarded = [];
 
     /* *************************************************************
@@ -22,9 +24,9 @@ class CommercialTypeService extends Model
     }
 
     
-    public function bandwidth()
+    public function tariffs()
     {
-        return $this->belongsTo(CommercialBandwidth::class, 'bandwidth');
+        return $this->hasMany(CommercialTariff::class, 'commercial_type_service_id');
     }
 
 
