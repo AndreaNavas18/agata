@@ -77,9 +77,11 @@ class CommercialQuoteController extends Controller
                     $tariff = CommercialTariff::where('commercial_type_service_id', $service_id)
                     ->where('bandwidth_id', $request->bandwidth_id[$index])
                     ->first();
-                    \Log::info('Tariff IDDDDqq: ' . $tariff->id);
 
+                    dd($tariff);
+                    
                     if($tariff){
+                        \Log::info('Tariff IDDDDqq: ' . $tariff->id);
                         DetailsQuotesTariffs::create([
                             'quote_id' => $quote->id,
                             'tariff_id' => $tariff->id,  // Asumiendo que el service_id es el tariff_id
@@ -93,7 +95,7 @@ class CommercialQuoteController extends Controller
                             'mrc_36' => $request->mrc_36[$index] ?? null,
                         ]);
                     }else {
-                        return redirect()->back()->with('error', 'No se encontró una tarifa para el servicio seleccionado');
+                        \Log::warning('No se encontró la tarifa para el servicio ID: ' . $service_id . ' y ancho de banda ID: ' . $request->bandwidth_id[$index]);
                     }
 
                 }
