@@ -1,126 +1,105 @@
-<template id="tramo-template" >
-    <div class="tramo-group row">
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Tramo',
-                'id' => 'tramo',
-            ])
-            @endcomponent
-            <input type="text" name="tramo[]" class="form-control tramo">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Trayecto',
-                'id' => 'trayecto',
-            ])
-            @endcomponent
-            <input type="text" name="trayecto[]" class="form-control trayecto">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Número de hilos',
-                'id' => 'hilos',
-            ])
-            @endcomponent
-            <input type="number" name="hilos[]" class="form-control hilos">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Kms',
-                'id' => 'kms',
-            ])
-            @endcomponent
-            <input type="number" name="kms[]" class="form-control kms">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Extremo A',
-                'id' => 'extremo_a',
-            ])
-            @endcomponent
-            <input type="text" name="extremo_a[]" class="form-control extremo_a">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Extremo B',
-                'id' => 'extremo_b',
-            ])
-            @endcomponent
-            <input type="text" name="extremo_b[]" class="form-control extremo_b">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Tiempo',
-                'id' => 'tiempo',
-            ])
-            @endcomponent
-            <input type="text" name="tiempo[]" class="form-control tiempo">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Recurrente mensual',
-                'id' => 'recurrente_mes',
-            ])
-            @endcomponent
-            <input type="number" name="recurrente_mes[]" class="form-control recurrente_mes decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Recurrente 12 meses',
-                'id' => 'recurrente_12',
-            ])
-            @endcomponent
-            <input type="number" name="recurrente_12[]" class="form-control recurrente_12 decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Recurrente 24 meses',
-                'id' => 'recurrente_24',
-            ])
-            @endcomponent
-            <input type="number" name="recurrente_24[]" class="form-control recurrente_24 decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Recurrente 36 meses',
-                'id' => 'recurrente_36',
-            ])
-            @endcomponent
-            <input type="number" name="recurrente_36[]" class="form-control recurrente_36 decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Vr Km/par USD',
-                'id' => 'valor_km_usd',
-            ])
-            @endcomponent
-            <input type="number" name="valor_km_usd[]" class="form-control valor_km_usd decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Vr total IRU USD',
-                'id' => 'valor_total_iru_usd',
-            ])
-            @endcomponent
-            <input type="number" name="valor_total_iru_usd[]" class="form-control valor_total_iru_usd decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Vr Km/par COP',
-                'id' => 'valor_km_cop',
-            ])
-            @endcomponent
-            <input type="number" name="valor_km_cop[]" class="form-control valor_km_cop decimal" step="0.01" min="0">
-        </div>
-        <div class="col-md-6 mb-3">
-            @component('componentes.label', [
-                'title' => 'Valor total',
-                'id' => 'valor_total',
-            ])
-            @endcomponent
-            <input type="number" name="valor_total[]" class="form-control valor_total decimal" step="0.01" min="0">
-        </div>
-        <button type="button" class="btn btn-danger remove-tramo" style="width:80px,height:50px">Eliminar</button>
-        <hr>
-    </div>
-</template>
+@component('componentes.table')
+    @slot('thead')
+            <th>SERVICIO</th>
+            <th>TRAMO</th>
+            <th>TRAYECTO</th>
+            <th>HILOS</th>
+            <th>EXTREMO A</th>
+            <th>EXTREMO B</th>
+            <th>KMS</th>
+            <th>RECURRENTE MES</th>
+            <th>RECURRENTE 12 MESES</th>
+            <th>RECURRENTE 24 MESES</th>
+            <th>RECURRENTE 36 MESES</th>
+            <th>TIEMPO</th>
+            <th>VALOR KM/USD</th>
+            <th>VALOR TOTAL IRU/USD</th>
+            <th>VALOR KM/COP</th>
+            <th>VALOR TOTAL</th>
+            <th>CONDICIONES</th>
+            <th></th>
+    @endslot
+    @slot('tbody')
+    <tbody id="tbody-tramos">
+        <tr class="detail-row2" id="filaModelo2">
+            <td>
+                <select class="form-control selectpicker" id="service_id_0" name="service_id[0]" >
+                    <option value="">--Seleccione--</option>
+                    @foreach ($servicios as $servicioRow)
+                        <option value="{{ $servicioRow->id }}">
+                            {{ $servicioRow->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </td>
+            <td>
+                <input type="text" name="tramo[0]" class="form-control" id="tramo_0" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="trayecto[0]" class="form-control" id="trayecto_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="hilos[0]" class="form-control" id="hilos_0" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="extremo_a[0]" class="form-control" id="extremo_a_0" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="extremo_b[0]" class="form-control" id="extremo_b_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="kms[0]" class="form-control" id="kms_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_mes[0]" class="form-control" id="recurrente_mes_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_12[0]" class="form-control" id="recurrente_12_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_24[0]" class="form-control" id="recurrente_24_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_36[0]" class="form-control" id="recurrente_36_0" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="tiempo[0]" class="form-control" id="tiempo_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_km_usd[0]" class="form-control" id="valor_km_usd_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_total_iru_usd[0]" class="form-control" id="valor_total_iru_usd_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_km_cop[0]" class="form-control" id="valor_km_cop_0" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_total[0]" class="form-control" id="valor_total_0" style="width:130px">
+            </td>
+            <td>
+                <textarea type="text" name="observation[0]" class="form-control" id="observation_0" style="width:250px;height:100px">
+                    Los valores no incluyen IVA.
+                    Pre viabilidad sujeta a visita en sitio.
+                    En caso de requerir obra civil no se incluye.
+                    Medio de entrega radio enlace.
+                    No incluye servicios de colocación.
+                    Tiempo de implementación 45 días calendario.
+                    </textarea>
+            </td>
+            <td>
+                <button class="btn btn-danger eliminar-fila2" type="button">Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+    @endslot
+@endcomponent
+
+<!-- Botón para agregar nueva fila -->
+<div style="display: flex;margin-top:20px;justify-content:flex-end">
+    <div id="agregarFila2" class="btn btn-secondary" style="font-size:20px;width:30px;height:30px;display:flex;align-items:center;font-weight:bold;cursor:pointer;">+</div>
+</div>
+
+<script>
+    var servicios = @json($servicios);
+</script>

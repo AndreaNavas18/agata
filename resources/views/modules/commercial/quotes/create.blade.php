@@ -2,6 +2,8 @@
 @section('title', 'Nueva cotizacion')
     @push('script')
         <script src="{{asset('assets/js/modules/Commercial/commercial.js')}}"></script>
+        <script src="{{asset('assets/js/modules/Commercial/quote_tramo.js')}}"></script>
+
     @endpush
 @section('content')
 

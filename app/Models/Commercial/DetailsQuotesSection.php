@@ -11,7 +11,7 @@ class DetailsQuotesSection extends Model
 
     protected $fillable = [
         'quote_id',
-        'name_service',
+        'service_id',
         'tramo',
         'trayecto',
         'hilos',

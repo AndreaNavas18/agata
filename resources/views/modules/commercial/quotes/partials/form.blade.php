@@ -58,7 +58,19 @@
         <input type="text" name="phone" class="form-control">
     </div>
 </div>
+@component('componentes.cardTitle',[
+    'shadow' => true,
+    'icono'  => 'fas fa-info-circle',
+    'title' => 'Anchos de banda'])
+@endcomponent
 <div>
     @include('modules.commercial.quotes.partials.service')
-
+</div>
+@component('componentes.cardTitle',[
+    'shadow' => true,
+    'icono'  => 'fas fa-info-circle',
+    'title' => 'Otras opciones'])
+@endcomponent
+<div>
+    @include('modules.commercial.quotes.partials.tramo')
 </div>
