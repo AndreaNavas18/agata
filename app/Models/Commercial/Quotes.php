@@ -15,6 +15,7 @@ class Quotes extends Model
         'issue',
         'consecutive',
         'name',
+        'type_document_id',
         'identification',
         'email',
         'phone',
@@ -32,8 +33,8 @@ class Quotes extends Model
             
             if ($lastConsecutive) {
                 $parts = explode('-', $lastConsecutive);
-                if (count($parts) >= 3) {
-                    $lastConsecutiveNumber = (int) $parts[2];
+                if (count($parts) >= 2) {
+                    $lastConsecutiveNumber = (int) end($parts);
                 } else {
                     $lastConsecutiveNumber = 0;
                 }
@@ -55,6 +56,10 @@ class Quotes extends Model
 
     public function sections() {
         return $this->hasMany(DetailsQuotesSection::class, 'quote_id');
+    }
+
+    public function typeDocument() {
+        return $this->belongsTo(TypeDocument::class, 'type_document_id');
     }
 
 

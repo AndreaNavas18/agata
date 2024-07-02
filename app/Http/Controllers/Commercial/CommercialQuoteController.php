@@ -58,6 +58,8 @@ class CommercialQuoteController extends Controller
             'phone' => 'nullable|string|max:255',
             // Puedes agregar más validaciones según tus necesidades
         ]);
+
+        \Log::info('tipo documentoqqq: ' . $request->type_document_id);
     
         // Crear la cotización
         $quote = Quotes::create([
@@ -78,13 +80,13 @@ class CommercialQuoteController extends Controller
                     ->where('bandwidth_id', $request->bandwidth_id[$index])
                     ->first();
 
-                    dd($tariff);
+                    // dd($tariff);
                     
                     if($tariff){
                         \Log::info('Tariff IDDDDqq: ' . $tariff->id);
                         DetailsQuotesTariffs::create([
                             'quote_id' => $quote->id,
-                            'tariff_id' => $tariff->id,  // Asumiendo que el service_id es el tariff_id
+                            'tariff_id' => $tariff->id,
                             'address' => $request->address[$index],
                             'observation' => $request->observation[$index] ?? null,
                             'nrc_12' => $request->nrc_12[$index] ?? null,
@@ -139,7 +141,7 @@ class CommercialQuoteController extends Controller
             }
         }
 
-        return redirect()->view('modules.commercial.quotes.index');
+        return redirect()->route('commercial.quotes.index')->with('success', 'Registro insertado correctamente');
     }
     
 
@@ -231,11 +233,61 @@ class CommercialQuoteController extends Controller
 
     public function destroy($id) {
 
+        try {
+            DB::beginTransaction();
+            $quote = Quotes::findOrFail($id);
+            if (!$quote->delete()) {
+                Alert::error('Error', 'Error al eliminar registro.');
+                return redirect()->back();
+            }
+            DetailsQuotesTariffs::where('quote_id', $id)->delete();
+            DetailsQuotesSection::where('quote_id', $id)->delete();
+
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro eliminado correctamente');
+            return redirect()->back();
+        } catch (QueryException $th) {
+            if ($th->getCode() === '23000') {
+                Alert::error('Error!', 'No se puede eliminar el registro porque está asociado con otro registro.');
+                return redirect()->back();
+            } else {
+                Alert::error('Error!', $th->getMessage());
+                return redirect()->back();
+            }
+        }
+
+
 
     }
 
     public function search(Request $request)
     {
+
+        $issue = strtolower($request->input('issue'));
+        $name = $request->input('name');
+        $identification = $request->input('identification');
+
+        $query = Quotes::query();
+
+        // Aplicar la búsqueda por asunto si se proporcionó
+        if (!empty($issue)) {
+            $query->where('issue', 'LIKE', "%$issue%");
+        }
+        
+        // Aplicar la búsqueda por nombre si se proporcionó
+        if (!empty($name)) {
+            $query->where('name', 'LIKE', "%$name%");
+        }
+
+        // Aplicar la búsqueda por identificación si se proporcionó
+        if (!empty($identification)) {
+            $query->where('identification', 'LIKE', "%$identification%");
+        }
+
+        $quotes = $query->paginate();
+        $data = $request->all();
+
+        return view('modules.commercial.quotes.index', compact('quotes', 'data'));
       
     }
 

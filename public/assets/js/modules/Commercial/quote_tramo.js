@@ -84,17 +84,18 @@ document.addEventListener('DOMContentLoaded', function () {
         $(newRow2).find('.selectpicker').selectpicker('refresh');
     });
 
-    const firstRow2 = document.querySelector('#tbody-tramos tr');
-    addEventListenersToRow(firstRow2, 0);
-
-    function eliminarFila2(btnEliminar2) {
-        const fila2 = btnEliminar2.closest('tr');
-        fila2.remove();
-    }
-
     document.addEventListener('click', function (event) {
         if (event.target.classList.contains('eliminar-fila2')) {
             eliminarFila2(event.target);
         }
     });
+    
+    function eliminarFila2(btnEliminar2) {
+        const fila2 = btnEliminar2.closest('tr');
+        fila2.remove();
+    }
+    const firstRow2 = document.querySelector('#tbody-tramos tr');
+    addEventListenersToRow(firstRow2, 0);
+
+
 });
