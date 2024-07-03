@@ -18,7 +18,7 @@
     @slot('tbody')
         <tr class="detail-row" id="filaModelo">
             <td>
-                <select class="form-control selectpicker" id="service_id_0" name="service_id[0]" >
+                <select class="form-control selectpicker" id="commercial_type_service_id_0" name="commercial_type_service_id[0]" >
                     <option value="">--Seleccione--</option>
                     @foreach ($servicios as $servicioRow)
                         <option value="{{ $servicioRow->id }}">

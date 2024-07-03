@@ -70,17 +70,16 @@ class CommercialTariff extends Model
     }
 
     
-     public function detailsByNameService()
-     {
-         return $this->belongsToMany(Quotes::class, 'details_quotes_tariffs', 'tariff_id', 'quote_id');
-     }
- 
-     public function sectionByNameService()
-     {
-         return $this->hasMany(DetailsQuotesSection::class, 'name_service', 'id');
-     }
- 
+    //  public function detailsByNameService()
+    //  {
+    //      return $this->belongsToMany(Quotes::class, 'details_quotes_tariffs', 'tariff_id', 'quote_id');
+    //  }
 
+    public function quotes()
+    {
+        return $this->belongsToMany(Quote::class, 'details_quotes_tariffs', 'tariff_id', 'quote_id');
+    }
+ 
 
 
     /* *************************************************************

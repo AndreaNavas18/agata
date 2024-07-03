@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Commercial\DetailsQuotesSection;
 use App\Models\Commercial\DetailsQuotesTariffs;
+use App\Models\General\TypeDocument;
 
 
 class Quotes extends Model
@@ -50,8 +51,13 @@ class Quotes extends Model
     }
 
 
-    public function tariffs() {
-        return $this->belongsToMany(DetailsQuotesTariffs::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
+    // public function tariffs() {
+    //     return $this->belongsToMany(DetailsQuotesTariffs::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
+    // }
+
+    public function tariffs()
+    {
+        return $this->belongsToMany(CommercialTariff::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
     }
 
     public function sections() {

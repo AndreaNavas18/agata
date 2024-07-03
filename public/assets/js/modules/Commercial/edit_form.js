@@ -1,53 +1,8 @@
-$(document).ready(function() {
-    // var fieldCounter = 0;
-    // Inicializa el contador de campos adicionales
-    $('#addFieldsButton').click(function() {
-        // fieldCounter++;
-        // Agrega el h3 antes de agregar el formulario
-        var ruta = $('input#rutaAjax').attr('data-url-form');
-        $.get(ruta, function (data) {
-
-            // Crea un nuevo elemento jQuery a partir de los datos modificados
-            // var newData = $(data).find('input, select').map(function () {
-            //     // Verifica si el elemento tiene un ID
-            //     if ($(this).attr('id')) {
-            //         // Modifica el ID agregando el contador
-            //         var oldId = $(this).attr('id');
-            //         var newId = oldId + '_' + fieldCounter;
-            //         $(this).attr('id', newId);
-
-            //         // Agrega el atributo data
-            //         $(this).data('counter', fieldCounter);
-            //     }3
-            //     return this; // Retorna el elemento modificado
-            // });
-
-            // Agrega el formulario al contenedor
-            $('#additionalFieldsContainer').append(data);
-            
-            // Inicializa los selectores
-            $('.selectpicker').selectpicker();
-            // Agrega una linea de espacio   
-            $('#additionalFieldsContainer').children('div.container').last().prepend('<hr style="margin-top: 0; margin-bottom: 15px">');
-            //Titulo de Nueva Tarifa   
-            $('#additionalFieldsContainer').children('div.container').last().prepend('<h4><strong>Nueva Tarifa</strong>');
-            // Agrega un botón de eliminar solo si no existe uno dentro del formulario   
-            $('#additionalFieldsContainer').children('div.container').last().append('<button type="button" class="btn btn-danger btn-sm removeFieldsButton"><i class="fas fa-delete"></i>Eliminar</button>');
-        });
-    });
-
-    // Agrega un listener de eventos para los botones de eliminar
-    $('#additionalFieldsContainer').on('click', '.removeFieldsButton', function() {
-        // Encuentra el formulario asociado y lo elimínalo
-        $(this).closest('div.container').remove();
-    });
-
-});
-
-
 document.addEventListener('DOMContentLoaded', function () {
-    const agregarFilaBtn = document.getElementById('agregarFila');
+    const agregarFilaBtn = document.getElementById('agregarFila'); 
+    const agregarFilaBtn2 = document.getElementById('agregarFila2');
 
+    // Función para agregar event listeners a una fila de servicio
     function addEventListenersToRow(row, index) {
         const departmentSelect = row.querySelector(`select[id^="department_id"]`);
         const citySelect = row.querySelector(`select[id^="city_id"]`);
@@ -60,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const mrc24Input = row.querySelector(`input[id^="mrc_24"]`);
         const mrc36Input = row.querySelector(`input[id^="mrc_36"]`);
 
+        // Event listeners para los selects y inputs relevantes
         departmentSelect.addEventListener('change', () => {
             fetchCities(departmentSelect, citySelect, index);
             fetchBandwidths(departmentSelect, citySelect, serviceSelect, bandwidthSelect, index);
@@ -78,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Función para obtener ciudades según departamento seleccionado
     function fetchCities(departmentSelect, citySelect, index) {
         const departmentId = departmentSelect.value;
-        console.log('Departamento seleccionado:', departmentId);
 
         citySelect.innerHTML = '<option value="">--Seleccione--</option>';
 
@@ -88,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/obtener-ciudades/${departmentId}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Ciudades recibidas:', data);
                     data.forEach(city => {
                         const option = document.createElement('option');
                         option.value = city.id;
@@ -101,14 +56,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Función para obtener anchos de banda según departamento, ciudad y servicio seleccionados
     function fetchBandwidths(departmentSelect, citySelect, serviceSelect, bandwidthSelect, index) {
         const departmentId = departmentSelect.value;
         const cityId = citySelect.value;
         const serviceId = serviceSelect.value;
-
-        console.log('Departamento seleccionado:', departmentId);
-        console.log('Ciudad seleccionada:', cityId);
-        console.log('Servicio seleccionado:', serviceId);
 
         bandwidthSelect.innerHTML = '<option value="">--Seleccione--</option>';
 
@@ -116,9 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(`/obtener-anchos-de-banda?servicio_id=${serviceId}&department_id=${departmentId}&city_id=${cityId}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Datos de anchos de banda recibidos:', data);
                     data.forEach(bandwidth => {
-                        console.log(`ID: ${bandwidth.bandwidth.id}, Name: ${bandwidth.bandwidth.name}`);
                         const option = document.createElement('option');
                         option.value = bandwidth.bandwidth.id;
                         option.textContent = `${bandwidth.bandwidth.name}`;
@@ -130,13 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Función para obtener detalles de tarifa según ancho de banda y servicio seleccionados
     function fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input) {
-        console.log('Función fetchBandwidthDetails llamada.');
+        console.log('Función EN EDICION fetchBandwidthDetails llamada.');
         const bandwidthId = bandwidthSelect.value;
         const serviceId = serviceSelect.value;
-
-        console.log('Ancho de banda seleccionado:', bandwidthId);
-        console.log('Servicio seleccionado:', serviceId);
 
         if (bandwidthId && serviceId) {
             $.ajax({
@@ -148,8 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     service_id: serviceId,
                 },
                 success: function(data) {
-                    console.log('Detalles de la tarifa recibidos:', data);
-
+                    console.log('Detalles de la tarifa recibidos EN EDICION:', data);
                     nrc12Input.value = data.recurring_value_12 || '';
                     nrc24Input.value = data.recurring_value_24 || '';
                     nrc36Input.value = data.recurring_value_36 || '';
@@ -158,12 +105,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     mrc36Input.value = data.value_mbps_36 || '';
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error:', errorThrown);
+                    console.error('Error EN EDICION:', errorThrown);
                 }
             });
         }
     }
 
+    // Event listener para agregar nueva fila en el formulario de creación
     agregarFilaBtn.addEventListener('click', function () {
         const tbody = document.querySelector('tbody');
         const rowIndex = tbody.querySelectorAll('tr').length;
@@ -173,18 +121,18 @@ document.addEventListener('DOMContentLoaded', function () {
             <td>
                 <select id="commercial_type_service_id_${rowIndex}" name="commercial_type_service_id[${rowIndex}]" class="form-control selectpicker">
                     <option value="">--Seleccione--</option>
-                     ${servicios.map(servicio => `<option value="${servicio.id}">${servicio.name}</option>`).join('')}
+                    ${servicios.map(servicio => `<option value="${servicio.id}">${servicio.name}</option>`).join('')}
                 </select>
             </td>
             <td>
                 <select id="department_id_${rowIndex}" name="department_id[${rowIndex}]" class="form-control selectpicker">
-                   <option value="">--Seleccione--</option>
+                    <option value="">--Seleccione--</option>
                     ${departamentos.map(departamento => `<option value="${departamento.id}">${departamento.name}</option>`).join('')}
                 </select>
             </td>
             <td>
                 <select id="city_id_${rowIndex}" name="city_id[${rowIndex}]" class="form-control selectpicker">
-                   <option value="">--Seleccione--</option>
+                    <option value="">--Seleccione--</option>
                 </select>
             </td>
             <td>
@@ -214,17 +162,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <input id="mrc_36_${rowIndex}" name="mrc_36[${rowIndex}]" type="number" class="form-control">
             </td>
             <td>
-                <textarea type="text" name="observation[${rowIndex}]" class="form-control" id="observation_${rowIndex}" style="width:250px;height:100px" >
-                Los valores no incluyen IVA.
-                Pre viabilidad sujeta a visita en sitio.
-                En caso de requerir obra civil no se incluye.
-                Medio de entrega radio enlace.
-                No incluye servicios de colocación.
-                Tiempo de implementación 45 días calendario.
+                <textarea type="text" name="observation[${rowIndex}]" class="form-control" id="observation_${rowIndex}" style="width:250px;height:100px">
+                    Los valores no incluyen IVA.
+                    Pre viabilidad sujeta a visita en sitio.
+                    En caso de requerir obra civil no se incluye.
+                    Medio de entrega radio enlace.
+                    No incluye servicios de colocación.
+                    Tiempo de implementación 45 días calendario.
                 </textarea>
             </td>
             <td>
-              <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
+                <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
             </td>
         `;
 
@@ -237,20 +185,95 @@ document.addEventListener('DOMContentLoaded', function () {
         $(newRow).find('.selectpicker').selectpicker('refresh');
     });
 
-    // Inicializar los event listeners en la primera fila
-    const firstRow = document.querySelector('tbody tr');
-    addEventListenersToRow(firstRow, 0);
+    $('.selectpicker').selectpicker('refresh');
 
-    function eliminarFila(btnEliminar) {
-        const fila = btnEliminar.closest('tr');
-        fila.remove();
-    }
 
-    document.addEventListener('click', function (event) {
-        if (event.target.classList.contains('eliminar-fila')) {
-            eliminarFila(event.target);
-        }
+    // Event listener para agregar nueva fila en el formulario de edición
+    agregarFilaBtn2.addEventListener('click', function () {
+        const tbody2 = document.querySelector('#tbody-tramos');
+        const rowIndex2 = tbody2.querySelectorAll('tr').length;
+        const newRow2 = document.createElement('tr');
+
+        newRow2.innerHTML = `
+            <td>
+                <select id="service_id_${rowIndex2}" name="service_id[${rowIndex2}]" class="form-control selectpicker">
+                    <option value="">--Seleccione--</option>
+                    ${servicios.map(servicio => `<option value="${servicio.id}">${servicio.name}</option>`).join('')}
+                </select>
+            </td>
+            <td>
+                <input type="text" name="tramo[${rowIndex2}]" class="form-control" id="tramo_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="trayecto[${rowIndex2}]" class="form-control" id="trayecto_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="hilos[${rowIndex2}]" class="form-control" id="hilos_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="extremo_a[${rowIndex2}]" class="form-control" id="extremo_a_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="text" name="extremo_b[${rowIndex2}]" class="form-control" id="extremo_b_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="kms[${rowIndex2}]" class="form-control" id="kms_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_mes[${rowIndex2}]" class="form-control" id="recurrente_mes_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_12[${rowIndex2}]" class="form-control" id="recurrente_12_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_24[${rowIndex2}]" class="form-control" id="recurrente_24_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="recurrente_36[${rowIndex2}]" class="form-control" id="recurrente_36_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_km_usd[${rowIndex2}]" class="form-control" id="valor_km_usd_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_total_iru_usd[${rowIndex2}]" class="form-control" id="valor_total_iru_usd_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_km_cop[${rowIndex2}]" class="form-control" id="valor_km_cop_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <input type="number" name="valor_total[${rowIndex2}]" class="form-control" id="valor_total_${rowIndex2}" style="width:130px">
+            </td>
+            <td>
+                <textarea type="text" name="observation[${rowIndex2}]" class="form-control" id="observation_${rowIndex2}" style="width:250px;height:100px">
+                </textarea>
+            </td>
+            <td>
+                <button class="btn btn-danger eliminar-fila2" type="button">Eliminar</button>
+            </td>
+        `;
+
+        tbody2.appendChild(newRow2);
+
+        $('.selectpicker').selectpicker('refresh');
+
+        addEventListenersToRow(newRow2, rowIndex2);
+
+        // Refrescar selectpicker
+        $(newRow2).find('.selectpicker').selectpicker('refresh');
+    });
+
+    // Event listener para eliminar fila en el formulario de creación
+    $(document).on('click', '.eliminar-fila', function () {
+        $(this).closest('tr').remove();
+    });
+
+    // Event listener para eliminar fila en el formulario de edición
+    $(document).on('click', '.eliminar-fila2', function () {
+        $(this).closest('tr').remove();
+    });
+
+    // Event listener para cargar selectpickers al cargar la página
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
     });
 });
-
-

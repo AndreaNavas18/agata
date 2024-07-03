@@ -29,5 +29,10 @@ class CommercialTypeService extends Model
         return $this->hasMany(CommercialTariff::class, 'commercial_type_service_id');
     }
 
+    public function detailsQuotesSections()
+    {
+        return $this->hasMany(DetailsQuotesSection::class, 'service_id');
+    }
+
 
 }

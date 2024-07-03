@@ -65,14 +65,29 @@
         @endcomponent
         <input type="text" name="phone" class="form-control" value="{{ $quote->phone }}">
     </div>
-    <div id="services-container">
-        @foreach($quote->tariffs as $index => $tariff)
-            @include('modules.commercial.quotes.partials.service', ['index' => $index, 'tariff' => $tariff])
-        @endforeach
-    </div>
+
+    @component('componentes.cardTitle',[
+        'shadow' => true,
+        'icono'  => 'fas fa-info-circle',
+        'title' => 'Anchos de banda'])
+    @endcomponent
+
+   <div>
+        {{--Aquí iría la tabla de tarifas --}}
+        @include('modules.commercial.quotes.partials.edit.serviceEdit')
+   </div>
+   @component('componentes.cardTitle',[
+        'shadow' => true,
+        'icono'  => 'fas fa-info-circle',
+        'title' => 'Otras opciones'])
+    @endcomponent
     
-    <template id="service-template">
-        @include('modules.commercial.quotes.partials.service', ['index' => 'INDEX'])
-    </template>
+    <div>
+        {{--Aquí iría la tabla de tramos --}}
+        @include('modules.commercial.quotes.partials.edit.tramoEdit')
+    </div>
 </div>
 
+<script>
+    var servicios = @json($servicios);
+</script>

@@ -81,7 +81,7 @@
                                     'title' => 'Nombre del servicio',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->tariff->comercialTypeService->name ?? 'No se especificó' }}
+                                    {{ $services->firstWhere('id', $tariffItem->name_service)->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -89,7 +89,7 @@
                                     'title' => 'Departamento',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->tariff->bandwidth->department->name ?? 'No se especificó' }}
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->department->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -97,7 +97,7 @@
                                     'title' => 'Ciudad',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->tariff->bandwidth->city->name ?? 'No se especificó' }}
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->city->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -105,6 +105,7 @@
                                     'title' => 'Dirección | Coordenadas',])
                                 @endcomponent
                                 <div>
+                                    {{-- {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->city->name ?? 'No se especificó' }} --}}
                                     {{ $tariffItem->address ?? 'No se especificó' }}
                                 </div>
                             </div>
@@ -113,7 +114,7 @@
                                     'title' => 'Velocidad (Mbps)',])
                                 @endcomponent
                                 <div>
-                                    {{ $tariffItem->tariff->bandwidth->name ?? 'No se especificó' }}
+                                    {{ $bandwidths->firstWhere('id', $tariffItem->bandwidth)->name ?? 'No se especificó' }}
                                 </div>
                             </div>
                             <div class="col-md-3 mb-4">
@@ -140,18 +141,20 @@
                                     {{ $tariffItem->nrc_36 ?? 'N/A' }}
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    <div class="card-border">
+                        <div class="row">
                             <div class="col-md-12 mb-4">
                                 @component('componentes.label', [
                                     'title' => 'Condiciones',
                                     'required' => false])
                                 @endcomponent
-                                <textarea disabled class="form-control">
-                                    {{  $tariffItem->observation }}
-                                </textarea>
+                                <textarea disabled class="form-control">{{  $quote->observation }}</textarea>
                             </div>
                         </div>
                     </div>
-                    @endforeach
                     @if($section->isNotEmpty())
                         @foreach ($section as $sectionItem)
                         <div class="card-border">
@@ -161,7 +164,7 @@
                                         'title' => 'Servicio',])
                                     @endcomponent
                                     <div>
-                                        {{ $sectionItem->typeService->name ?? 'No se especificó' }}
+                                        {{ $services->firstWhere('id', $sectionItem->name_service)->name ?? 'No se especificó' }}
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-4">
@@ -284,15 +287,8 @@
                                        $ {{ $sectionItem->valor_total ?? 'N/A' }}
                                     </div>
                                 </div>
-                                <div class="col-md-12 mb-4">
-                                    @component('componentes.label', [
-                                        'title' => 'Condiciones',
-                                        'required' => false])
-                                    @endcomponent
-                                    <textarea disabled class="form-control">
-                                        {{  $sectionItem->observation }}
-                                    </textarea>
-                                </div>
+
+
                             </div>
                         </div>
                         @endforeach

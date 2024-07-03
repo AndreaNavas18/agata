@@ -35,8 +35,12 @@ class DetailsQuotesSection extends Model
         return $this->belongsTo(Quotes::class, 'quote_id');
     }
 
-    public function tariff()
-    {
-        return $this->belongsTo(CommercialTariff::class, 'name_service', 'id');
+    // public function tariff()
+    // {
+    //     return $this->belongsTo(CommercialTariff::class, 'service_id', 'id');
+    // }
+
+    public function typeService() {
+        return $this->belongsTo(CommercialTypeService::class, 'service_id', 'id');
     }
 }
