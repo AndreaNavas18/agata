@@ -226,8 +226,8 @@ class TicketController extends Controller
                 $query->join('customers_services as cs2', 'tickets.customer_service_id', '=', 'cs2.id')
                       ->where('cs2.provider_id', $providerId);
             }
-            
-            
+        
+
 
             // Aplicar la búsqueda por estado si se seleccionó
             if (!empty($selectedState)) {

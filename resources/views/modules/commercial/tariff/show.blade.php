@@ -11,7 +11,7 @@
             'dataBreadcrumb' => ['id' =>$tariff->id ]
         ])
 
-         {{-- tabs--}}
+         {{-- tabs--}} 
          {{-- @include('modules.customers.services.partials.tab',[
             'urlnfo' => route('customers.services.show.service', $service->id),
             'urlConfig' => route('customers.services.show.config', ['id' => $service->id] )
@@ -39,7 +39,7 @@
                 <div class="col-md-4 mb-3">
                     @component('componentes.label', [
                         'title' => 'Tipo de Servicio',
-                        'required' => false])
+                        'required' => false])    
                     @endcomponent
                     <div>
                     </div>
@@ -51,12 +51,12 @@
                         'title' => 'BW',
                         'required' => false])
                     @endcomponent
-                    <div>
+                    <div>   
                     </div>
                     {{  $tariff->bandwidth ? $tariff->bandwidth->name : 'No se especifico'}}
                 </div>
 
-                <div class="col-md-4 mb-3">
+           <div class="col-md-4 mb-3">
                     @component('componentes.label', [
                         'title' => 'Valor Recurrente',
                         'required' => false])

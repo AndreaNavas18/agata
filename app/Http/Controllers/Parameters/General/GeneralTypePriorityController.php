@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Parameters\General;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Employees\EmployeePositionDepartment;
 use App\Models\Tickets\GeneralTypesPriority;
 use App\Models\Tickets\TicketPriority;
 use Illuminate\Database\QueryException;
@@ -24,8 +25,9 @@ class GeneralTypePriorityController extends Controller
         $prioritiesList = TicketPriority::all();
         //Motivos de solicitud
         $typesPrioritiesList = GeneralTypesPriority::all();
+        $departamentsList = EmployeePositionDepartment::all();
         return view('modules.parameters.general.typePriorities.index', 
-        compact('datos','prioritiesList','typesPrioritiesList'));	
+        compact('datos','prioritiesList','typesPrioritiesList', 'departamentsList'));	
     }
 
     /**
@@ -37,11 +39,12 @@ class GeneralTypePriorityController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        $request->validate(['name' => 'required|max:100', 'id_ticket_priority' => 'required']);
+        $request->validate(['name' => 'required|max:100', 'id_ticket_priority' => 'required', 'id_departament' => 'required']);
         
         $typePriority= new GeneralTypesPriority();
         $typePriority->name= $request->name;
         $typePriority->id_ticket_priority = $request->id_ticket_priority;
+        $typePriority->id_departament= $request->id_departament;
         
         if (!$typePriority->save()) {
             DB::rollBack();
@@ -63,13 +66,14 @@ class GeneralTypePriorityController extends Controller
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-
+  
         $request->validate(
             ['name' => 'required|max:100', 
-            'id_ticket_priority' => 'required']);
+            'id_ticket_priority' => 'required',
+            'id_departament' => 'required']);
         $name = $request->name;
         $ticketPriorityId = $request->id_ticket_priority;
-
+        $departament = $request->id_departament;   
         //validaciones
         $typePriority = GeneralTypesPriority::findOrFail($id);
         $typePriorityNew = GeneralTypesPriority::where('name', $name)->first();
@@ -81,6 +85,7 @@ class GeneralTypePriorityController extends Controller
 
         $typePriority->name = $name;
         $typePriority->id_ticket_priority = $ticketPriorityId;
+        $typePriority->id_departament = $departament;
 
         if (!$typePriority->save()) {
             DB::rollBack();
