@@ -20,7 +20,8 @@
             </small>
             <div class="font-weight-bold mb-1">Tú</div>
             <small><em>{{ in_array(Auth()->user()->role_id, [2, 3, 7, 8]) ? 'Cliente' : 'Soporte'  }}</em></small>
-            {!! $reply->replie !!}
+            {{-- {!! $reply->replie !!} --}}
+            {!! str_replace('&NBSP;', ' ', $reply->replie) !!}
             {{-- archivos--}}
             @if(count($reply->files)>0)
                 <div class="border-top mt-2 mb-2"></div>
@@ -66,7 +67,8 @@
             </small>
             <div class="font-weight-bold mb-1">{{  $reply->user ? $reply->user->name : '---'  }}</div>
             <small><em>{{ $reply->user->role_id==2 ? 'Cliente' : 'Soporte'  }}</em></small>
-            {!! $reply->replie !!}
+            {{-- {!! $reply->replie !!} --}}
+            {!! str_replace('&NBSP;', ' ', $reply->replie) !!}
              {{-- archivos--}}
              @if(count($reply->files)>0)
              <div class="border-top mt-2 mb-2"></div>

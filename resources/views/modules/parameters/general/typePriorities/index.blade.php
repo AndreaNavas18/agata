@@ -71,6 +71,7 @@
                     @slot('thead')
                         <th>Nombre</th>
                         <th>Prioridad</th>
+                        <th>Departamento</th>
                         <th></th>
                     @endslot
                     @slot('tbody')
@@ -86,6 +87,13 @@
                                         Sin prioridad asignada
                                     @endif
 
+                                </td>
+                                <td>
+                                    @if ($row->departament)
+                                    {{ $row->departament->name }}
+                                @else
+                                    Sin departamento asignado
+                                @endif
                                 </td>
                                 <td>
 
@@ -150,6 +158,30 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                {{-- Editar Depart --}}
+                                                <div class="form-group">
+                                                    @component('componentes.label', [
+                                                        'title' => 'Departamento Encargado',
+                                                        'id' => 'id_departament',
+                                                        'required' => true])
+                                                    @endcomponent
+                                                    <select 
+                                                        class="form-control selectpicker" 
+                                                        name="id_departament" 
+                                                        id="id_departament"
+                                                        required>
+                                                        <option value="">Seleccione un departamento</option>
+                                                        @foreach($departamentsList as $departament)
+                                                            <option value="{{ $departament->id }}" 
+                                                                @if ($row->departament && $row->departament->id == $departament->id)
+                                                                    selected
+                                                                @endif
+                                                            >
+                                                                {{ $departament->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             @endslot
 
                                             @slot('footer')
@@ -207,6 +239,18 @@
                         <option value="">Seleccione una prioridad</option>
                         @foreach($prioritiesList as $priority)
                             <option value="{{ $priority->id }}">{{ $priority->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                {{-- Departamento --}}
+                <div class="form-group">
+                    <label class="form-label">Departamento Encargado</label>
+                    <select class="form-control"
+                        name="id_departament"
+                        required>
+                        <option value="">Seleccione un departamento</option>
+                        @foreach($departamentsList as $departament)
+                            <option value="{{ $departament->id }}">{{ $departament->name }}</option>
                         @endforeach
                     </select>
                 </div>

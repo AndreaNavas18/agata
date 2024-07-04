@@ -66,7 +66,7 @@ class CustomerController extends Controller
 
         // Verificar si se proporciona una identificación en la solicitud y filtrar por ella
         if ($request->filled('identification')) {
-            $customers = $customers->name($request->identification);
+            $customers = $customers->identification($request->identification);
         }
 
         // Verificar la acción solicitada

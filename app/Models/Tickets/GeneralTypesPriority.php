@@ -2,6 +2,7 @@
 
 namespace App\Models\Tickets;
 
+use App\Models\Employees\EmployeePositionDepartment;
 use Illuminate\Database\Eloquent\Model;
 
 class GeneralTypesPriority extends Model
@@ -30,5 +31,10 @@ class GeneralTypesPriority extends Model
     public function ticketPriority()
     {
         return $this->belongsTo(TicketPriority::class, 'id_ticket_priority');
+    }
+
+    public function departament()
+    {
+        return $this->belongsTo(EmployeePositionDepartment::class, 'id_departament');
     }
 }
