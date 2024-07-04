@@ -20,7 +20,6 @@ class Quotes extends Model
         'identification',
         'email',
         'phone',
-        'observation'
     ];
 
 
@@ -57,7 +56,9 @@ class Quotes extends Model
 
     public function tariffs()
     {
-        return $this->belongsToMany(CommercialTariff::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
+        // return $this->belongsToMany(CommercialTariff::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id');
+        return $this->belongsToMany(CommercialTariff::class, 'details_quotes_tariffs', 'quote_id', 'tariff_id')
+        ->withPivot('id', 'address', 'observation', 'nrc_12', 'nrc_24', 'nrc_36', 'mrc_12', 'mrc_24', 'mrc_36');
     }
 
     public function sections() {
@@ -66,6 +67,11 @@ class Quotes extends Model
 
     public function typeDocument() {
         return $this->belongsTo(TypeDocument::class, 'type_document_id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(DetailsQuotesTariffs::class);
     }
 
 

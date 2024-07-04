@@ -59,6 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const mrc12Input = row.querySelector(`input[id^="mrc_12"]`);
         const mrc24Input = row.querySelector(`input[id^="mrc_24"]`);
         const mrc36Input = row.querySelector(`input[id^="mrc_36"]`);
+        const observationInput = row.querySelector(`textarea[id^="observation"]`);
+        const observationHiddenInput = row.querySelector(`input[name="observation_hidden[${index}]"]`);
+
+        observationInput.addEventListener('input', () => {
+            observationHiddenInput.value = observationInput.value;
+        });
 
         departmentSelect.addEventListener('change', () => {
             fetchCities(departmentSelect, citySelect, index);
@@ -74,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         bandwidthSelect.addEventListener('change', () => {
-            fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input);
+            fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input, observationInput);
         });
     }
 
@@ -222,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 No incluye servicios de colocación.
                 Tiempo de implementación 45 días calendario.
                 </textarea>
+                <input type="hidden" name="observation_hidden[${rowIndex}]" id="observation_hidden_${rowIndex}">
             </td>
             <td>
               <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>

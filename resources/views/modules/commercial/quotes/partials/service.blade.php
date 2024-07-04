@@ -77,6 +77,7 @@
                 No incluye servicios de colocación.
                 Tiempo de implementación 45 días calendario.
                 </textarea>
+                <input type="hidden" name="observation_hidden[0]" id="observation_hidden_0">
             </td>
             <td>
                 <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
@@ -94,3 +95,5 @@
     var servicios = @json($servicios);
     var departamentos = @json($departamentos);
 </script>
+
+<input type="hidden" name="observation[${rowIndex}]" id="hidden_observation_${rowIndex}">

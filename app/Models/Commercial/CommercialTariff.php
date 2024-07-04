@@ -79,6 +79,11 @@ class CommercialTariff extends Model
     {
         return $this->belongsToMany(Quote::class, 'details_quotes_tariffs', 'tariff_id', 'quote_id');
     }
+
+    public function details()
+    {
+        return $this->hasOne(DetailsQuotesTariffs::class, 'tariff_id');
+    }
  
 
 

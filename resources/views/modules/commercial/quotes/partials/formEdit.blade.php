@@ -72,7 +72,7 @@
         'title' => 'Anchos de banda'])
     @endcomponent
 
-   <div>
+   <div style="overflow-x: auto">
         {{--Aquí iría la tabla de tarifas --}}
         @include('modules.commercial.quotes.partials.edit.serviceEdit')
    </div>
@@ -82,7 +82,7 @@
         'title' => 'Otras opciones'])
     @endcomponent
     
-    <div>
+    <div style="overflow-x: auto">
         {{--Aquí iría la tabla de tramos --}}
         @include('modules.commercial.quotes.partials.edit.tramoEdit')
     </div>
