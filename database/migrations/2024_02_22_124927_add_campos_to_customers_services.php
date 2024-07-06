@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::table('customers_services', function (Blueprint $table) {
             //
-            $table->string('otp')->nullable()->after('stratecsa_id');
+            $table->string('stratecsa_id')->nullable()->after('id');
             $table->string('id_serviciocliente')->nullable()->after('stratecsa_id');
+            $table->string('otp')->nullable()->after('id_serviciocliente');
 
         });
     }
@@ -30,8 +31,9 @@ return new class extends Migration
     {
         Schema::table('customers_services', function (Blueprint $table) {
             //
-            $table->dropColumn('OTP');
+            $table->dropColumn('stratecsa_id');
             $table->dropColumn('id_serviciocliente');
+            $table->dropColumn('otp');
         });
     }
 };

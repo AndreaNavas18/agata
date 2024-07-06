@@ -15,21 +15,26 @@ class SubmodulosSeeder extends Seeder
      */
     public function run()
     {
-        // Submodule::create(['name' => 'Dashboard', 'initials' => 'dashboard']);
-        // Submodule::create(['name' => 'Permisos', 'initials'=> 'permisos']);
-        // Submodule::create(['name' => 'Roles', 'initials'=> 'roles']);
-        // Submodule::create(['name' => 'Submodulos', 'initials'=> 'submodulos']);
-        // Submodule::create(['name' => 'Usuarios', 'initials'=> 'usuarios']);
-        // Submodule::create(['name' => 'Parametros Empleados', 'initials'=> 'parametros.empleados']);
-        // Submodule::create(['name' => 'Parametros General', 'initials'=> 'parametros.general']);
-        // Submodule::create(['name' => 'Clientes', 'initials'=> 'clientes']);
-        // Submodule::create(['name' => 'Empleados', 'initials'=> 'empleados']);
-        // Submodule::create(['name' => 'Proveedores', 'initials'=> 'proveedores']);
-        // Submodule::create(['name' => 'Proyectos', 'initials'=> 'proyectos']);
-        // Submodule::create(['name' => 'Servicios', 'initials'=> 'servicios']);
-        
-        //Nueva Fila Comercial//07/05/2024
-        Submodule::create(['name' => 'Comercial', 'initials'=> 'Comercial']);
+        Submodule::firstOrCreate(['name' => 'Tickets', 'initials'=> 'tickets']);
+        Submodule::firstOrCreate(['name' => 'borarrlo', 'initials'=> 'borrarlo']);
+        Submodule::firstOrCreate(['name' => 'borarrlo2', 'initials'=> 'borrarlo3']);
+        Submodule::firstOrCreate(['name' => 'borarrlo3', 'initials'=> 'borrarlo3']);
+        Submodule::firstOrCreate(['name' => 'Vista', 'initials'=> 'vista']);
+        Submodule::firstOrCreate(['name' => 'Dashboard', 'initials' => 'dashboard']);
+        Submodule::firstOrCreate(['name' => 'Permisos', 'initials'=> 'permisos']);
+        Submodule::firstOrCreate(['name' => 'Roles', 'initials'=> 'roles']);
+        Submodule::firstOrCreate(['name' => 'Submodulos', 'initials'=> 'submodulos']);
+        Submodule::firstOrCreate(['name' => 'Usuarios', 'initials'=> 'usuarios']);
+        Submodule::firstOrCreate(['name' => 'borarrlo4', 'initials'=> 'borrarlo4']);
+        Submodule::firstOrCreate(['name' => 'Parametros Empleados', 'initials'=> 'parametros.empleados']);
+        Submodule::firstOrCreate(['name' => 'Parametros General', 'initials'=> 'parametros.general']);
+        Submodule::firstOrCreate(['name' => 'Clientes', 'initials'=> 'clientes']);
+        Submodule::firstOrCreate(['name' => 'Empleados', 'initials'=> 'empleados']);
+        Submodule::firstOrCreate(['name' => 'Proveedores', 'initials'=> 'proveedores']);
+        Submodule::firstOrCreate(['name' => 'Proyectos', 'initials'=> 'proyectos']);
+        Submodule::firstOrCreate(['name' => 'Servicios', 'initials'=> 'servicios']);
+        Submodule::firstOrCreate(['name' => 'Comercial', 'initials'=> 'comercial']);
+
 
     }
 }

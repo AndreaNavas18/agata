@@ -17,13 +17,15 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run()
     {
         // Reset cached roles and permissions
-        // app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Roles
-    //     Role::create(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'admin']);
 
-    //     // Asignación de roles
-    //     $usuario = User::findOrFail(1);
-    //     $usuario->assignRole('admin');
+        // Asignación de roles
+        $usuario = User::where('email', 'jcalderon@stratecsa.com')->first();
+        if ($usuario && !$usuario->hasRole('admin')) {
+            $usuario->assignRole('admin');
+        }
      }
 }

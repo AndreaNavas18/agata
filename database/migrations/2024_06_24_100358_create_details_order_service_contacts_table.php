@@ -24,6 +24,13 @@ return new class extends Migration
             //En espera
             $table->timestamps();
         });
+
+        // Schema::create('general_types_priorities', function (Blueprint $table) {
+        //     $table->bigIncrements('id');
+        //     $table->string('name', 50);
+        //     $table->bigInteger('id_ticket_priority');
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -34,5 +41,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('details_order_service_contacts');
+        Schema::dropIfExists('general_types_priorities');
     }
 };

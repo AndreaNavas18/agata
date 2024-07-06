@@ -14,18 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('last_name');
+            $table->string('full_name');
+            $table->string('email')->unique();
             $table->string('password');
-            $table->enum('status', ['Active','Inactive']);
-            $table->unsignedBigInteger('employee_id');
+            $table->enum('status', ['Activo','Inactivo']);
+            $table->bigInteger('customer_id')->nullable();
+            $table->bigInteger('role_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
-
-            // Indices
-            $table->index('username', 'usu_idx');
-
-            $table->foreign('employee_id')->references('id')->on('employees');
 
         });
     }

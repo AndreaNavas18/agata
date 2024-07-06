@@ -15,9 +15,9 @@ class TicketSeeder  extends Seeder
     public function run()
     {
         // prioridades
-        // TicketPriority::create(['name' => 'Alta', 'color' => 'bg-danger']);
-        // TicketPriority::create(['name' => 'Media', 'color' => 'bg-warning']);
-        // TicketPriority::create(['name' => 'Baja', 'color' => 'bg-info']);
+        TicketPriority::firstOrCreate(['name' => 'Alta', 'color' => 'bg-danger']);
+        TicketPriority::firstOrCreate(['name' => 'Media', 'color' => 'bg-warning']);
+        TicketPriority::firstOrCreate(['name' => 'Baja', 'color' => 'bg-info']);
     }
 
 }

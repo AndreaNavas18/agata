@@ -8,6 +8,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
@@ -51,6 +53,7 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
+        \Log::info('a ver ps', $request->all());
         if (Auth::attempt([
             'email'   => $request->input('email'),
             'password' => $request->input('password'),
@@ -61,8 +64,9 @@ class LoginController extends Controller
         //     } else {
                 return redirect()->route('home')->with('info', 'Bienvenido ' . Helpers::capitalizarTextoCompleto(Auth::user()->full_name) . '!');
             
-            } else
-            return redirect()->route('login')->with('error', 'Las credenciales no coinciden ó el usuario se encuentra inactivo.');
+            } else{
+                return redirect()->route('login')->with('error', 'Las credenciales no coinciden ó el usuario se encuentra inactivo.');
+            }
     }
 
 

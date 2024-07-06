@@ -49,7 +49,7 @@ class CommercialQuoteController extends Controller
 
     public function store(Request $request)
     {
-        \Log::info('Datos recibidos en el controlador:', $request->all());
+        \Log::info('Datos DE LA COTIZACION recibidos STORE:', $request->all());
 
         try {
             $observations = $request->input('observation_hidden');
@@ -76,7 +76,8 @@ class CommercialQuoteController extends Controller
             ]);
         
             // Guardar servicios en la tabla intermedia
-            if ($request->has('commercial_type_service_id')) {
+            if (!empty($request->commercial_type_service_id)) {
+                \Log::info('Servicios si se recibieron');
                 foreach ($request->commercial_type_service_id as $index => $commercial_type_service_id) {
                     if ($commercial_type_service_id) {
 
@@ -88,7 +89,7 @@ class CommercialQuoteController extends Controller
                         
                         if($tariff){
                             \Log::info('Tariff IDDDDqq: ' . $tariff->id);
-                            \Log::info('Observation: ' . $request->observation[$index]);
+                            // \Log::info('Observation: ' . $request->observation[$index]);
 
                             $tariffQuote = new DetailsQuotesTariffs();
                             $tariffQuote->quote_id = $quote->id;
@@ -109,12 +110,17 @@ class CommercialQuoteController extends Controller
 
                     }
                 }
+            } else{
+                \Log::info('Servicios no se recibieron');
             }
         
             // Guardar tramos en la tabla intermedia
-            if ($request->has('tramo') || $request->has('trayecto')) {
+            if (!empty($request->tramo) || !empty($request->trayecto)) {
+                \Log::info('Tramos o trayectos si se recibieron');
                 foreach ($request->tramo as $index => $tramo) {
-                    if ($tramo) {
+                    $trayecto = $request->trayecto[$index];
+                    if (!empty($tramo) || !empty($trayecto)) {
+                        \Log::info('Guardando tramo para el índice: ' . $index);
                             $sectionQuote = new DetailsQuotesSection();
                             $sectionQuote->quote_id = $quote->id;
                             $sectionQuote->service_id = $request->service_id[$index];
@@ -135,9 +141,12 @@ class CommercialQuoteController extends Controller
                             $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
                             $sectionQuote->observation = $request->observation[$index] ?? null;
                             $sectionQuote->save();
+                            \Log::info('Tramo guardado con éxito para el índice: ' . $index);
                         }
 
                     }
+            }else {
+                \Log::info('Tramos no se recibieron');
             }
 
             return redirect()->route('commercial.quotes.index')->with('success', 'Registro insertado correctamente');
@@ -306,8 +315,25 @@ class CommercialQuoteController extends Controller
       
     }
 
-    public function edit ($id) {
-        $quote = Quotes::with(['tariffs', 'sections', 'tariffs.bandwidth', 'tariffs.details'])->findOrFail($id);
+    public function edit ($id) 
+    {
+        $quote = Quotes::with([
+            'tariffs' => function ($query) use ($id) {
+                $query->where('details_quotes_tariffs.quote_id', $id);
+            },
+            'sections',
+            'tariffs.bandwidth',
+            'tariffs.details'
+        ])->findOrFail($id);
+    
+        // Verificación adicional
+        $filteredTariffs = $quote->tariffs->filter(function ($tariff) use ($id) {
+            return $tariff->pivot->quote_id == $id;
+        });
+
+        // dd($filteredTariffs);
+        
+        // $quote = Quotes::with(['tariffs', 'sections', 'tariffs.bandwidth', 'tariffs.details'])->findOrFail($id);
         $tarifas = CommercialTariff::all();
         $servicios = CommercialTypeService::all();
         $typeDocuments = TypeDocument::all();
@@ -322,6 +348,7 @@ class CommercialQuoteController extends Controller
         } else {
             $servicioId = optional($quote->sections->first())->commercial_type_service_id;
         }
+
 
         // dd([
         //     'quote' => $quote,

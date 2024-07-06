@@ -14,12 +14,18 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        // User::create([
-        //     'id'          => 1,
-    	// 	'username'      => 'julian.calderon',
-    	// 	'password'    => bcrypt('123456'),
-        //     'status'      => 'Active',
-        //     'employee_id' => 1,
-    	// ]);
+        $firstUser = User::where('email', 'jcalderon@stratecsa.com')->first();
+
+        if (!$firstUser){
+            User::create([
+                'name'       => 'Julian',
+                'last_name'   => 'Calderon',
+                'full_name'  => 'Julian Calderon',
+                'email'      => 'jcalderon@stratecsa.com',
+                'password'    => bcrypt('123456'),
+                'status'      => 'Activo',
+            ]);
+        }
+
     }
 }

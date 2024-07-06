@@ -31,9 +31,24 @@ return new class extends Migration
             $table->softDeletes();
         });
 
+        Schema::create('general_countries', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name', 100);
+
+            // Times
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('general_departments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100);
+            $table->unsignedBigInteger('country_id');
+
+            // FK
+            $table->foreign('country_id')
+                ->references('id')
+                ->on('general_countries');
 
             // Times
             $table->timestamps();
@@ -79,6 +94,7 @@ return new class extends Migration
         Schema::dropIfExists('general_departments');
         Schema::dropIfExists('general_types_contacs');
         Schema::dropIfExists('general_types_contacs');
+        Schema::dropIfExists('general_countries');
 
 
     }

@@ -17,22 +17,22 @@ class GeneralTableSeeder  extends Seeder
     public function run()
     {
         // Tipos de contactos
-        // TypeContact::create(['name' => 'Comercial']);
-        // TypeContact::create(['name' => 'Financiero']);
-        // TypeContact::create(['name' => 'Soporte']);
+        TypeContact::firstOrCreate(['name' => 'Comercial']);
+        TypeContact::firstOrCreate(['name' => 'Financiero']);
+        TypeContact::firstOrCreate(['name' => 'Soporte']);
 
         // Tipos de Documentos
-        // TypeDocument::create(['name' => 'Cédula']);
-        // TypeDocument::create(['name' => 'Cédula de Extranjería']);
-        // TypeDocument::create(['name' => 'Pasaporte']);
-        // TypeDocument::create(['name' => 'Tarjeta de Identidad']);
-        // TypeDocument::create(['name' => 'Registro Civil']);
+        TypeDocument::firstOrCreate(['name' => 'Cédula']);
+        TypeDocument::firstOrCreate(['name' => 'Cédula de Extranjería']);
+        TypeDocument::firstOrCreate(['name' => 'Pasaporte']);
+        TypeDocument::firstOrCreate(['name' => 'Tarjeta de Identidad']);
+        TypeDocument::firstOrCreate(['name' => 'Registro Civil']);
 
         //servicios
-        // Service::create(['name' => 'Internet']);
-        // Service::create(['name' => 'Hosting']);
-        // Service::create(['name' => 'Servidor']);
-        // Service::create(['name' => 'Desarrollo']);
+        Service::firstOrCreate(['name' => 'Internet']);
+        Service::firstOrCreate(['name' => 'Hosting']);
+        Service::firstOrCreate(['name' => 'Servidor']);
+        Service::firstOrCreate(['name' => 'Desarrollo']);
 
     }
 

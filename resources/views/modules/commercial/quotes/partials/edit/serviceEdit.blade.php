@@ -16,6 +16,8 @@
         @endslot
         @slot('tbody')
             @foreach ($quote->tariffs as $index => $tariff)
+            @if ($tariff->pivot->quote_id == $quote->id)
+            @dump($tariff)
                 <tr class="detail-row" id="filaTarifa{{ $index }}">
                     <td>
                         <select class="form-control selectpicker" id="commercial_type_service_id_{{ $index }}" name="commercial_type_service_id[{{ $index }}]">
@@ -89,6 +91,7 @@
                         <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
                     </td>
                 </tr>
+            @endif
             @endforeach
         @endslot
     @endcomponent
