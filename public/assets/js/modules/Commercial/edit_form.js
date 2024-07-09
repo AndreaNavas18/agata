@@ -14,8 +14,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const mrc12Input = row.querySelector(`input[id^="mrc_12"]`);
         const mrc24Input = row.querySelector(`input[id^="mrc_24"]`);
         const mrc36Input = row.querySelector(`input[id^="mrc_36"]`);
+        const observationInput = row.querySelector(`textarea[id^="observation"]`);
+        const observationHiddenInput = row.querySelector(`input[name="observation_hidden[${index}]"]`);
 
         // Event listeners para los selects y inputs relevantes
+
+        observationInput.addEventListener('input', () => {
+            observationHiddenInput.value = observationInput.value;
+        });
+
         departmentSelect.addEventListener('change', () => {
             fetchCities(departmentSelect, citySelect, index);
             fetchBandwidths(departmentSelect, citySelect, serviceSelect, bandwidthSelect, index);
@@ -30,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         bandwidthSelect.addEventListener('change', () => {
-            fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input);
+            fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input, observationInput);
         });
     }
 
@@ -81,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Función para obtener detalles de tarifa según ancho de banda y servicio seleccionados
-    function fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input) {
+    function fetchBandwidthDetails(bandwidthSelect, serviceSelect, nrc12Input, nrc24Input, nrc36Input, mrc12Input, mrc24Input, mrc36Input, observationInput) {
         console.log('Función EN EDICION fetchBandwidthDetails llamada.');
         const bandwidthId = bandwidthSelect.value;
         const serviceId = serviceSelect.value;
@@ -103,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     mrc12Input.value = data.value_mbps_12 || '';
                     mrc24Input.value = data.value_mbps_24 || '';
                     mrc36Input.value = data.value_mbps_36 || '';
+                    observationInput.value = data.observation || '';
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error EN EDICION:', errorThrown);
@@ -170,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     No incluye servicios de colocación.
                     Tiempo de implementación 45 días calendario.
                 </textarea>
+                <input type="hidden" name="observation_hidden[${rowIndex}]" id="observation_hidden_${rowIndex}">
             </td>
             <td>
                 <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
@@ -178,12 +187,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tbody.appendChild(newRow);
 
+        $('#observation_hidden_' + rowIndex).val($('#observation_' + rowIndex).val());
+
         // Añadir event listeners a la nueva fila
         addEventListenersToRow(newRow, rowIndex);
 
+        $('.selectpicker').selectpicker('refresh');
+
         // Refrescar selectpicker
-        $(newRow).find('.selectpicker').selectpicker('refresh');
+        // $(newRow).find('.selectpicker').selectpicker('refresh');
     });
+    
 
     $('.selectpicker').selectpicker('refresh');
 
@@ -245,7 +259,14 @@ document.addEventListener('DOMContentLoaded', function () {
             </td>
             <td>
                 <textarea type="text" name="observation[${rowIndex2}]" class="form-control" id="observation_${rowIndex2}" style="width:250px;height:100px">
+                Los valores no incluyen IVA.
+                Pre viabilidad sujeta a visita en sitio.
+                En caso de requerir obra civil no se incluye.
+                Medio de entrega radio enlace.
+                No incluye servicios de colocación.
+                Tiempo de implementación 45 días calendario.
                 </textarea>
+                <input type="hidden" name="observation_hidden[${rowIndex2}]" id="observation_hidden_${rowIndex2}">
             </td>
             <td>
                 <button class="btn btn-danger eliminar-fila2" type="button">Eliminar</button>
@@ -254,15 +275,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tbody2.appendChild(newRow2);
 
+        $('#observation_hidden_' + rowIndex2).val($('#observation_' + rowIndex2).val());
+
         $('.selectpicker').selectpicker('refresh');
-
+        
         addEventListenersToRow(newRow2, rowIndex2);
-
+        
         // Refrescar selectpicker
         $(newRow2).find('.selectpicker').selectpicker('refresh');
     });
 
-    // Event listener para eliminar fila en el formulario de creación
     $(document).on('click', '.eliminar-fila', function () {
         $(this).closest('tr').remove();
     });

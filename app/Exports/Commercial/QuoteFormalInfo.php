@@ -40,14 +40,14 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
     public function collection()
     {
         return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        ->with(['bandwidth', 'tariff'])
-        ->get()
-        ->map(function ($item) {
-            $bandwidth = CommercialBandwidth::with(['department', 'city'])->find($item->bandwidth);
-            $item->bandwidth_department_name = optional($bandwidth->department)->name ?? 'N/A';
-            $item->bandwidth_city_name = optional($bandwidth->city)->name ?? 'N/A';
-            return $item;
-        });
+            ->with(['tariff.bandwidth', 'tariff.comercialTypeService'])
+            ->get()
+            ->map(function ($item) {
+                $bandwidth = CommercialBandwidth::with(['department', 'city'])->find($item->tariff->bandwidth_id);
+                $item->bandwidth_department_name = optional($bandwidth->department)->name ?? 'N/A';
+                $item->bandwidth_city_name = optional($bandwidth->city)->name ?? 'N/A';
+                return $item;
+            });
     }
 
     public function map($row): array
@@ -56,14 +56,14 @@ class QuoteFormalInfo implements FromCollection, WithHeadings, WithMapping, With
         $typeServiceName = 'N/A';
 
         foreach ($this->bandwidths as $bandRow) {
-            if ($bandRow->id == $row->bandwidth) {
+            if ($bandRow->id == $row->tariff->bandwidth->id) {
                 $bandwidthName = $bandRow->name;
                 break; 
             }
         }
         
         foreach ($this->typeservices as $typeRow) {
-            if ($typeRow->id == $row->name_service) {
+            if ($typeRow->id == $row->tariff->comercialTypeService->id) {
                 $typeServiceName = $typeRow->name;
                 break; 
                 }

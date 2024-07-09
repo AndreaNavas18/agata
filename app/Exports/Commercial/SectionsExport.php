@@ -56,6 +56,7 @@ class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             'valor_total_iru_usd',
             'valor_km_cop',
             'valor_total',
+            'observation'
         ];
 
         $filteredColumns = [];
@@ -97,6 +98,7 @@ class SectionsExport implements FromCollection, WithHeadings, ShouldAutoSize, Wi
             'valor_total_iru_usd' => 'Valor Total IRU USD',
             'valor_km_cop' => 'Valor Km COP',
             'valor_total' => 'Valor Total',
+            'observation' => 'Condiciones'
         ];
 
         foreach ($this->filteredColumns as $column) {

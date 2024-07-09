@@ -72,13 +72,6 @@
         <ul class="slide-menu">
             <li>
                 <a class="slide-item loading" href="{{ route('commercial.quotes.index') }}">
-                    <span>C</span>
-                </a>
-            </li>
-        </ul>
-        <ul class="slide-menu">
-            <li>
-                <a class="slide-item loading" href="{{ route('commercial.quotes.index') }}">
                     <span>Cotizaciones</span>
                 </a>
             </li>

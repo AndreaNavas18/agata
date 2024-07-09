@@ -39,20 +39,17 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
     public function collection()
     {
         return DetailsQuotesTariffs::where('quote_id', $this->quote->id)
-        ->with(['bandwidth'])
+        ->with(['tariff.bandwidth'])
         ->get();
     }
 
    
     public function map($row): array
     {
-        // $bandwidthName = $row->bandwidth->name ?? 'N/A';
-        // dd($bandwidthName);
-
-        $bandwidthName = 'N/A'; 
+        $bandwidthName = 'N/A';
 
         foreach ($this->bandwidths as $bandRow) {
-            if ($bandRow->id == $row->bandwidth) {
+            if ($bandRow->id == $row->tariff->bandwidth->id) {
                 $bandwidthName = $bandRow->name;
                 break; 
             }
@@ -66,6 +63,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
             $row->mrc_12,
             $row->mrc_24,
             $row->mrc_36,
+            $row->observation
         ];
     }
 
@@ -79,7 +77,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
             'MRC 12 Meses',
             'MRC 24 Meses',
             'MRC 36 Meses',
-
+            'Condiciones'
         ];
     }
 
@@ -100,7 +98,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
         }
 
         // Estilo para la primera fila (A1:G1)
-        $sheet->getStyle('A1:G1')->applyFromArray([
+        $sheet->getStyle('A1:H1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['rgb' => 'FFFFFF'],
@@ -148,6 +146,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
             'E' => '"$"#,##0',
             'F' => '"$"#,##0',
             'G' => '"$"#,##0',
+            'H' => NumberFormat::FORMAT_TEXT,
             ];
     }
             
@@ -161,6 +160,7 @@ class QuoteExport implements FromCollection, WithHeadings, WithMapping, WithColu
             'E' => 16,
             'F' => 16,
             'G' => 16,
+            'H' => 250,
             ];
     }
                     

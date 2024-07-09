@@ -15,9 +15,8 @@
             <th></th>
         @endslot
         @slot('tbody')
-            @foreach ($quote->tariffs as $index => $tariff)
-            @if ($tariff->pivot->quote_id == $quote->id)
-            @dump($tariff)
+            @foreach ($filteredTariffs as $index => $tariff)
+            {{-- @dump($tariff) --}}
                 <tr class="detail-row" id="filaTarifa{{ $index }}">
                     <td>
                         <select class="form-control selectpicker" id="commercial_type_service_id_{{ $index }}" name="commercial_type_service_id[{{ $index }}]">
@@ -83,15 +82,24 @@
                     </td>
                     <td>
                         <textarea type="text" name="observation[{{ $index }}]" class="form-control" id="observation_{{ $index }}" style="width:250px;height:100px">
-                            {{ optional($tariff->details)->observation }}
+                            @if (optional($tariff->details)->observation)
+                                {{ optional($tariff->details)->observation }}
+                            @else
+                                Los valores no incluyen IVA.
+                                Pre viabilidad sujeta a visita en sitio.
+                                En caso de requerir obra civil no se incluye.
+                                Medio de entrega radio enlace.
+                                No incluye servicios de colocación.
+                                Tiempo de implementación 45 días calendario.
+                            @endif
                         </textarea>
+                        <input type="hidden" name="observation_hidden[0]" id="observation_hidden_0">
                     </td>
 
                     <td>
                         <button class="btn btn-danger eliminar-fila" type="button">Eliminar</button>
                     </td>
                 </tr>
-            @endif
             @endforeach
         @endslot
     @endcomponent
@@ -100,3 +108,10 @@
     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
         <div id="agregarFila" class="btn btn-secondary" style="font-size: 20px; width: 30px; height: 30px; display: flex; align-items: center; font-weight: bold; cursor: pointer;">+</div>
     </div>
+
+    <script>
+        var servicios = @json($servicios);
+        var departamentos = @json($departamentos);
+    </script>
+    
+    <input type="hidden" name="observation[${rowIndex}]" id="hidden_observation_${rowIndex}">

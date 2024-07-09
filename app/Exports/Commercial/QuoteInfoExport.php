@@ -26,7 +26,7 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
 
     public function __construct(Quotes $quote)
     {
-        $this->quote = $quote;
+        $this->quote = $quote->load('typeDocument');
     }
 
     public function collection()
@@ -41,10 +41,10 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
             $row->consecutive,
             $row->issue,
             $row->name,
-            $row->identification,
+            $row->typeDocument->name,
+            " ".$row->identification,
             $row->email,
-            $row->phone,
-            $row->observation
+            $row->phone
         ];
     }
   
@@ -55,10 +55,10 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
             'Consecutivo',
             'Asunto',
             'Nombre',
+            'Tipo de identificación',
             'Identificación',
             'Correo',
-            'Teléfono',
-            'Condiciones'
+            'Teléfono'
         ];
    }
 
@@ -68,11 +68,25 @@ class QuoteInfoExport implements FromCollection, WithHeadings, WithMapping, With
             'A' => 20,
             'B' => 25,
             'C' => 20,
-            'D' => 23,
-            'E' => 15,
+            'D' => 13,
+            'E' => 50,
             'F' => 15,
-            'G' => 60,  // Ancho mayor para la columna de Observación
+            'G' => 15,
         ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_TEXT,
+            'B' =>  NumberFormat::FORMAT_TEXT,
+            'C' =>  NumberFormat::FORMAT_TEXT,
+            'D' =>  NumberFormat::FORMAT_TEXT,
+            'E' =>  NumberFormat::FORMAT_TEXT,
+            'F' =>  NumberFormat::FORMAT_TEXT,
+            'G' =>  NumberFormat::FORMAT_TEXT,
+            'H' => NumberFormat::FORMAT_TEXT,
+            ];
     }
 
     public function styles(Worksheet $sheet)

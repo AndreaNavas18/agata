@@ -321,19 +321,18 @@ class CommercialQuoteController extends Controller
             'tariffs' => function ($query) use ($id) {
                 $query->where('details_quotes_tariffs.quote_id', $id);
             },
-            'sections',
+            'tariffs.details' => function ($query) use ($id) {
+                $query->where('quote_id', $id);
+            },
             'tariffs.bandwidth',
-            'tariffs.details'
+            'sections'
         ])->findOrFail($id);
     
         // Verificación adicional
         $filteredTariffs = $quote->tariffs->filter(function ($tariff) use ($id) {
-            return $tariff->pivot->quote_id == $id;
+            return $tariff->details->where('quote_id', $id)->count() > 0;
         });
 
-        // dd($filteredTariffs);
-        
-        // $quote = Quotes::with(['tariffs', 'sections', 'tariffs.bandwidth', 'tariffs.details'])->findOrFail($id);
         $tarifas = CommercialTariff::all();
         $servicios = CommercialTypeService::all();
         $typeDocuments = TypeDocument::all();
@@ -349,15 +348,6 @@ class CommercialQuoteController extends Controller
             $servicioId = optional($quote->sections->first())->commercial_type_service_id;
         }
 
-
-        // dd([
-        //     'quote' => $quote,
-        //     'tariffs' => $quote->tariffs,
-        //     'first_tariff' => $quote->tariffs->first(),
-        //     'first_tariff_commercial_type_service_id' => optional($quote->tariffs->first())->commercial_type_service_id,
-        // ]);
-
-    
         return view('modules.commercial.quotes.edit', compact(
             'quote',
             'tarifas',
@@ -367,14 +357,120 @@ class CommercialQuoteController extends Controller
             'servicioId',
             'typeDocuments',
             'departamentos',
-            'cities'
+            'cities',
+            'filteredTariffs'
         ));
     }
 
     public function update(Request $request, $id)
     {
-       
+        \Log::info('Datos de la cotización recibidos UPDATE:', $request->all());
+
+        try {
+            $observations = $request->input('observation');
+
+            // Validación de los datos de la cotización
+            $request->validate([
+                'issue' => 'nullable|string|max:255',
+                'name' => 'required|string|max:255',
+                'type_document_id' => 'nullable|integer',
+                'identification' => 'nullable|string|max:255',
+                'email' => 'nullable|string|email|max:255',
+                'phone' => 'nullable|string|max:255',
+            ]);
+
+            \Log::info('tipo documento: ' . $request->type_document_id);
+
+            // Buscar la cotización existente
+            $quote = Quotes::findOrFail($id);
+
+            // Actualizar la cotización
+            $quote->update([
+                'issue' => $request->issue,
+                'name' => $request->name,
+                'type_document_id' => $request->type_document_id,
+                'identification' => $request->identification,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ]);
+
+            // Eliminar las tarifas y tramos existentes para la cotización
+            DetailsQuotesTariffs::where('quote_id', $quote->id)->delete();
+            $quote->sections()->delete();
+
+            // Guardar servicios en la tabla intermedia
+            if (!empty($request->commercial_type_service_id)) {
+                \Log::info('Servicios si se recibieron');
+                foreach ($request->commercial_type_service_id as $index => $commercial_type_service_id) {
+                    if ($commercial_type_service_id) {
+                        $tariff = CommercialTariff::where('commercial_type_service_id', $commercial_type_service_id)
+                            ->where('bandwidth_id', $request->bandwidth_id[$index])
+                            ->first();
+
+                        if ($tariff) {
+                            \Log::info('Tariff ID: ' . $tariff->id);
+
+                            $tariffQuote = new DetailsQuotesTariffs();
+                            $tariffQuote->quote_id = $quote->id;
+                            $tariffQuote->tariff_id = $tariff->id;
+                            $tariffQuote->address = $request->address[$index] ?? null;
+                            $tariffQuote->observation = $observations[$index] ?? null;
+                            $tariffQuote->nrc_12 = $request->nrc_12[$index] ?? null;
+                            $tariffQuote->nrc_24 = $request->nrc_24[$index] ?? null;
+                            $tariffQuote->nrc_36 = $request->nrc_36[$index] ?? null;
+                            $tariffQuote->mrc_12 = $request->mrc_12[$index] ?? null;
+                            $tariffQuote->mrc_24 = $request->mrc_24[$index] ?? null;
+                            $tariffQuote->mrc_36 = $request->mrc_36[$index] ?? null;
+                            $tariffQuote->save();
+                        } else {
+                            \Log::warning('No se encontró la tarifa para el servicio ID: ' . $commercial_type_service_id . ' y ancho de banda ID: ' . $request->bandwidth_id[$index]);
+                        }
+                    }
+                }
+            } else {
+                \Log::info('Servicios no se recibieron');
+            }
+
+            // Guardar tramos en la tabla intermedia
+            if (!empty($request->tramo) || !empty($request->trayecto)) {
+                \Log::info('Tramos o trayectos si se recibieron');
+                foreach ($request->tramo as $index => $tramo) {
+                    $trayecto = $request->trayecto[$index];
+                    if (!empty($tramo) || !empty($trayecto)) {
+                        \Log::info('Guardando tramo para el índice: ' . $index);
+                        $sectionQuote = new DetailsQuotesSection();
+                        $sectionQuote->quote_id = $quote->id;
+                        $sectionQuote->service_id = $request->service_id[$index];
+                        $sectionQuote->tramo = $request->tramo[$index] ?? null;
+                        $sectionQuote->trayecto = $request->trayecto[$index] ?? null;
+                        $sectionQuote->hilos = $request->hilos[$index] ?? null;
+                        $sectionQuote->extremo_a = $request->extremo_a[$index] ?? null;
+                        $sectionQuote->extremo_b = $request->extremo_b[$index] ?? null;
+                        $sectionQuote->kms = $request->kms[$index] ?? null;
+                        $sectionQuote->recurrente_mes = $request->recurrente_mes[$index] ?? null;
+                        $sectionQuote->recurrente_12 = $request->recurrente_12[$index] ?? null;
+                        $sectionQuote->recurrente_24 = $request->recurrente_24[$index] ?? null;
+                        $sectionQuote->recurrente_36 = $request->recurrente_36[$index] ?? null;
+                        $sectionQuote->tiempo = $request->tiempo[$index] ?? null;
+                        $sectionQuote->valor_km_usd = $request->valor_km_usd[$index] ?? null;
+                        $sectionQuote->valor_total_iru_usd = $request->valor_total_iru_usd[$index] ?? null;
+                        $sectionQuote->valor_km_cop = $request->valor_km_cop[$index] ?? null;
+                        $sectionQuote->valor_total = $request->valor_total[$index] ?? null;
+                        $sectionQuote->observation = $request->observation[$index] ?? null;
+                        $sectionQuote->save();
+                        \Log::info('Tramo guardado con éxito para el índice: ' . $index);
+                    }
+                }
+            } else {
+                \Log::info('Tramos no se recibieron');
+            }
+
+            return redirect()->route('commercial.quotes.index')->with('success', 'Registro actualizado correctamente');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Error al actualizar el registro');
+        }
     }
+
 
 
     public function export($id)

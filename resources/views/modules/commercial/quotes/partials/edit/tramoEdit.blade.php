@@ -80,7 +80,17 @@
                     </td>
                     <td>
                         <textarea type="text" name="observation[{{ $index }}]" class="form-control" id="observation_{{ $index }}" style="width:250px;height:100px">
-                        {{ $section->observation }}
+                        @if ($section->observation)
+                            {{ $section->observation }}
+                        @else
+                        Los valores no incluyen IVA.
+                        Pre viabilidad sujeta a visita en sitio.
+                        En caso de requerir obra civil no se incluye.
+                        Medio de entrega radio enlace.
+                        No incluye servicios de colocación.
+                        Tiempo de implementación 45 días calendario.
+                        @endif
+
                         </textarea>
                     </td>
                     <td>
@@ -97,3 +107,7 @@
         <div id="agregarFila2" class="btn btn-secondary" style="font-size: 20px; width: 30px; height: 30px; display: flex; align-items: center; font-weight: bold; cursor: pointer;">+</div>
     </div>
 </div>
+
+<script>
+    var servicios = @json($servicios);
+</script>
