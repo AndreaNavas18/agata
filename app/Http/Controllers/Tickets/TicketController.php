@@ -108,7 +108,6 @@ class TicketController extends Controller
     public function search(Request $request) {
 
         $tickets = Ticket::query();
-        // Obtener el usuario logueado
         $user = Auth::user();
         //Todos los valores para pasarlos al Select
         $prioritiesAll = TicketPriority::all();
@@ -116,7 +115,6 @@ class TicketController extends Controller
         $providersAll = Provider::orderBy('name')->get();
         $customersAll = Customer::orderBy('name')->get();
         $customerServiceAll = CustomerService::all();
-        
         
         // Verificar si el usuario tiene un cliente asociado
         if ($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -142,7 +140,7 @@ class TicketController extends Controller
             
             // Aplicar la búsqueda por estado si se seleccionó
             if (!empty($selectedState)) {
-                $query->where('state', $selectedState);
+                $query->where('tickets.state', $selectedState);
             }
         
             // Ordenar los resultados
@@ -154,10 +152,8 @@ class TicketController extends Controller
             return view('modules.tickets.index', 
             ['customerServices' => $customerServices], 
             compact('tickets', 'data', 'states'));
-
         }
         else{
-
             $ticketIssue = strtolower($request->input('ticket_issue'));
 
             $priorityId = $request->input('priority_id');
@@ -227,11 +223,9 @@ class TicketController extends Controller
                       ->where('cs2.provider_id', $providerId);
             }
         
-
-
             // Aplicar la búsqueda por estado si se seleccionó
             if (!empty($selectedState)) {
-                $query->where('state', $selectedState);
+                $query->where('tickets.state', $selectedState);
             }
 
             if (!empty($consecutive)) {
@@ -253,8 +247,6 @@ class TicketController extends Controller
             if (!empty($email_notification)) {
                 $query->where('emails_notification', 'LIKE', "%$email_notification%");
             }
-
-
 
             // Condición para filtrar por fecha si se proporcionan las fechas de inicio y fin
             if (!empty($startDate) && !empty($finalDate)) {
