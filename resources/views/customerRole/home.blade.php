@@ -64,5 +64,6 @@
             </div>
         </div><!-- col end -->
     </div>
+    @include('notificaciones')
 
 @endsection

@@ -39,6 +39,7 @@ class HomeController extends Controller
         // }
         $user = Auth()->user();
         $allowedRoles = [2, 3, 7, 8];
+        $notifications = $user->notifications;
 
         if (in_array(Auth()->user()->role_id, $allowedRoles) && $user->customer_id) {
             //Que solo pueda ver la informacion de sus tickets y no de todos
@@ -49,7 +50,8 @@ class HomeController extends Controller
             return view('home', compact(
                 'ticketsOpen',
                 'ticketsClosed',
-                'ticketsPending'
+                'ticketsPending',
+                'notifications'
             ));
         } else {
             
@@ -67,7 +69,8 @@ class HomeController extends Controller
                 'totalCustomers',
                 'tottalEmployees',
                 'totalProviders',
-                'totalServicesInternet'
+                'totalServicesInternet',
+                'notifications'
             ));
         }
 

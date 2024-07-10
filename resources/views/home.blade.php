@@ -105,6 +105,7 @@
             </div>
         </div><!-- col end -->
     </div>
+    @include('notificaciones')
     @else
     {{-- Contenido específico para el rol_id = 2 --}}
     @include('customerRole.home')

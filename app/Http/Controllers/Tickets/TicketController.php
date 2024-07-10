@@ -29,6 +29,7 @@ use App\Mail\ticketSoporte;
 use App\Mail\TicketAsignado;
 use App\Models\General\Proyecto;
 use Illuminate\Support\Facades\Validator;
+use App\Events\TicketCreated;
 
 class TicketController extends Controller
 {
@@ -47,6 +48,7 @@ class TicketController extends Controller
         $customersAll = Customer::orderBy('name')->get();
         $employeesAll = Employee::orderBy('first_name')->get();
         $providersAll = Provider::orderBy('name')->get();
+        
 
         // Verificar si el usuario tiene el rol con ID 2, 3, 7 o 8
         if($user->role_id == 2 || $user->role_id == 3 || $user->role_id == 7 || $user->role_id == 8) {
@@ -66,7 +68,7 @@ class TicketController extends Controller
                 'prioritiesAll',
                 'customersAll',
                 'employeesAll',
-                'providersAll'
+                'providersAll',
             ));
 
         }else {
@@ -452,14 +454,23 @@ class TicketController extends Controller
         // });
         // Log::info("Send email", $ticket->send_email);
 
-
+        
         DB::commit();
         Alert::success('¡Éxito!', 'Registro insertado correctamente');
+        
         // Verificar si el usuario ha optado por enviar un correo electrónico
         $this->sendEmail($ticket, $request->input('emails_notification'));
+        $this->sendNotification($ticket);
+        
       
         return redirect()->route('tickets.index')->with('ticket', $ticket);
     
+    }
+
+    public function sendNotification(Ticket $ticket)
+    {
+        // Disparar el evento TicketCreated
+        $ticket->notify(new TicketCreatedNotification($ticket));
     }
 
     public function sendEmail(Ticket $ticket, $emails)

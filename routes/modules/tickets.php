@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Tickets\TicketController;
 use App\Http\Controllers\Tickets\TicketVisitController;
+use App\Http\Controllers\NotificationController;
 
 Route::namespace('Tickets')->name('tickets.')->group(function () {
 
@@ -74,3 +75,5 @@ Route::namespace('Tickets')->name('tickets.')->group(function () {
 
 
 });
+
+Route::patch('notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
