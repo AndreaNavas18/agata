@@ -90,23 +90,23 @@ class EmployeeTableSeeder extends Seeder
         ]);
 
 
-        Employee::firstOrCreate([
-        	'id'                      => 1,
-            'type_document_id'      => 1,
-        	'identification'          => 1143854194,
-	        'first_name'            => 'Julian',
-	        'surname'               => 'Calderon',
-	        'full_name'             => 'Julian Calderon',
-	        'birth_date'            => '1994-02-24',
-	        'email'                  => 'jcalderon@stratecsa.com',
-	        'address'               => 'Cra 7j',
-	        'state_id'              => 1,
-	        'arl_id'                => 1,
-	        'fund_pension_id'       => 1,
-	        'severance_fund_id'     => 1,
-	        'eps_id'                => 1,
-	        'position_id'           => 1,
-        ]);
+        // Employee::firstOrCreate([
+        // 	'id'                      => 1,
+        //     'type_document_id'      => 1,
+        // 	'identification'          => 1143854194,
+	    //     'first_name'            => 'Julian',
+	    //     'surname'               => 'Calderon',
+	    //     'full_name'             => 'Julian Calderon',
+	    //     'birth_date'            => '1994-02-24',
+	    //     'email'                  => 'jcalderon@stratecsa.com',
+	    //     'address'               => 'Cra 7j',
+	    //     'state_id'              => 1,
+	    //     'arl_id'                => 1,
+	    //     'fund_pension_id'       => 1,
+	    //     'severance_fund_id'     => 1,
+	    //     'eps_id'                => 1,
+	    //     'position_id'           => 1,
+        // ]);
     }
 
 }
