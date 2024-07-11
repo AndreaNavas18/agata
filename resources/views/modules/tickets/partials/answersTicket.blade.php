@@ -25,7 +25,7 @@
             {{-- archivos--}}
             @if(count($reply->files)>0)
                 <div class="border-top mt-2 mb-2"></div>
-                @foreach ($reply->files as $key => $file )
+                {{-- @foreach ($reply->files as $key => $file )
                     <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }}
                         mr-3 mb-3"
                         data-toggle="tooltip"
@@ -36,7 +36,34 @@
                         target="_blank">
                         <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px;'></i>
                     </a>
+                @endforeach --}}
+
+                @foreach ($reply->files as $key => $file)
+                @if (pathinfo($file->name_original, PATHINFO_EXTENSION) == 'pdf')
+                <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }} mr-3 mb-3 open-pdf-modal"
+                   data-toggle="modal"
+                   data-target="#pdfModal"
+                   data-path="{{ Storage::url($file->path) }}">
+                    <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px; color:white;'></i>
+                </a>
+                    @elseif (pathinfo($file->name_original, PATHINFO_EXTENSION) == 'jpg' || pathinfo($file->name_original, PATHINFO_EXTENSION) == 'png')
+                        <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }}
+                            mr-3 mb-3"
+                            data-toggle="modal"
+                            data-target="#imageModal"
+                            data-original-title="Tooltip on top"
+                            data-image-url="{{ Storage::url($file->path) }}">
+                            <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px; color:white;'></i>
+                        </a>
+                    @else
+                        <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }} mr-3 mb-3"
+                           target="_blank"
+                           href="{{ Storage::url($file->path) }}">
+                            <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px;color:white;'></i>
+                        </a>
+                    @endif
                 @endforeach
+                
             @endif
             {{-- visita tecnica --}}
             <div class="border-top mt-2 mb-2"></div>
@@ -72,7 +99,7 @@
              {{-- archivos--}}
              @if(count($reply->files)>0)
              <div class="border-top mt-2 mb-2"></div>
-                @foreach ($reply->files as $key => $file )
+                {{-- @foreach ($reply->files as $key => $file )
                     <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }}
                         mr-3 mb-3"
                         data-toggle="tooltip"
@@ -83,8 +110,35 @@
                         target="_blank">
                         <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px;'></i>
                     </a>
+                @endforeach --}}
+                @foreach ($reply->files as $key => $file)
+                @if (pathinfo($file->name_original, PATHINFO_EXTENSION) == 'pdf')
+                    <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }} 
+                       mr-3 mb-3 open-pdf-modal"
+                       data-toggle="modal"
+                       data-target="#pdfModal"
+                       data-path="{{ Storage::url($file->path) }}">
+                        <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} "  style='font-size: 25px; color:white;'></i>
+                    </a>
+                    @elseif (in_array(strtolower(pathinfo($file->name_original, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
+                    <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }}
+                            mr-3 mb-3"
+                            data-toggle="modal"
+                            data-target="#imageModal"
+                            data-original-title="Tooltip on top"
+                            data-image-url="{{ Storage::url($file->path) }}">
+                            <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} " style='font-size: 25px; color:white;'></i>
+                        </a>
+                    @else
+                        <a class="btn btn-{{ \App\Models\Helpers::getIconFile($file->extension)['color'] }} mr-3 mb-3"
+                           target="_blank"
+                           href="{{ Storage::url($file->path) }}">
+                            <i class="{!! \App\Models\Helpers::getIconFile($file->extension)['icon'] !!} "  style='font-size: 25px; color:white;'></i>
+                        </a>
+                    @endif
                 @endforeach
             @endif
+
             {{-- visita tecnica --}}
             <div class="border-top mt-2 mb-2"></div>
             @if(!in_array(Auth()->user()->role_id, [2, 3, 7, 8]))
@@ -150,3 +204,29 @@
         </div>
     </div>
 @endif
+
+
+
+
+
+{{-- Script para Ejecutar la Modal para visualizar las imágenes y pdf --}}
+<script>
+    $(document).ready(function() {
+        // Captura el evento de clic en los enlaces con la clase .btn
+        $('.btn').on('click', function() {
+            var imageUrl = $(this).data('image-url'); // Obtiene la URL de la imagen del atributo data-image-url
+            $('#imageViewer').attr('src', imageUrl); // Actualiza la fuente de la imagen en el modal
+        });
+         // Abrir modal para PDFs
+         $('.open-pdf-modal').on('click', function() {
+            var pdfUrl = $(this).data('path');
+            $('#pdfViewer').attr('src', pdfUrl);
+        });
+    });
+</script>
+
+
+<div>
+    @include('componentes.modalFiles')
+
+</div>

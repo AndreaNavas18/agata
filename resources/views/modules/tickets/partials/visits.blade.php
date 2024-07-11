@@ -80,12 +80,33 @@
                                     @foreach ($ticketVisit->ticketvisitfiles as $file)
                                         <tr>
                                             <td>
+                                                @if (pathinfo($file->name_original, PATHINFO_EXTENSION) == 'pdf')
+                                                <a class="btn btn-info open-pdf-modal"
+                                                    data-toggle="modal"
+                                                    data-target="#pdfModal"
+                                                    data-original-title= "{{ $ticketVisit->name_original }}"
+                                                    data-path="{{ Storage::url($file->path) }}" >
+                                                    <i class="fas fa-file-download" style='color:white;'></i>
+
+                                                    @elseif (in_array(strtolower(pathinfo($file->name_original, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
+                                                    <a class="btn btn-info"
+                                                    {{-- target="_blank"
+                                                    href="{{ Storage::url($file->path) }}"
+                                                    data-original-title= "{{ $ticketVisit->name_original }}" > --}}
+                                                    data-toggle="modal"
+                                                    data-target="#imageModal"
+                                                    data-original-title= "{{ $ticketVisit->name_original }}"
+                                                    data-image-url="{{ Storage::url($file->path) }}" >
+                                                    <i class="fas fa-file-download" style='color:white;'></i>
+                                                </a>
+                                                
+                                                @else
                                                 <a class="btn btn-info"
                                                     target="_blank"
-                                                    href="{{ Storage::url($file->path) }}"
-                                                    data-original-title= "{{ $ticketVisit->name_original }}" >
-                                                    <i class="fas fa-file-download"></i>
-                                                </a>
+                                                    href="{{ Storage::url($file->path) }}">
+                                                    <i class="fas fa-file-download" style='color:white;'></i>
+                                            </a>
+                                            @endif
                                             </td>
                                             <td>
                                                 <span> 
@@ -107,3 +128,23 @@
 </div>
 
 
+{{-- Script para Ejecutar la Modal para visualizar las imágenes y pdf --}}
+<script>
+    $(document).ready(function() {
+        // Captura el evento de clic en los enlaces con la clase .btn
+        $('.btn').on('click', function() {
+            var imageUrl = $(this).data('image-url'); // Obtiene la URL de la imagen del atributo data-image-url
+            $('#imageViewer').attr('src', imageUrl); // Actualiza la fuente de la imagen en el modal
+        });
+         // Abrir modal para PDFs
+         $('.open-pdf-modal').on('click', function() {
+            var pdfUrl = $(this).data('path');
+            $('#pdfViewer').attr('src', pdfUrl);
+        });
+    });
+</script>
+
+
+<div>
+    @include('componentes.modalFiles')
+</div>

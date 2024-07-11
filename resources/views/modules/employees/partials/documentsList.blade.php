@@ -11,7 +11,7 @@
             @slot('tbody')
                 @foreach ($employee->files as $file)
                     <tr>
-                        <td>
+                        {{-- <td>
                             <a href="{{ route('employees.download.file', ['id' => $file->id]) }}" download>
                                 {{ $file->name_original }}
                             </a>
@@ -23,6 +23,36 @@
                                 <i class="fas fa-file-download"></i>
                             </a>
                         </td>
+                         --}}
+
+                        <td>
+                            <a href="{{ route('employees.download.file', ['id' => $file->id]) }}" download>
+                                {{ $file->name_original }}
+                            </a>
+                        </td>
+                        <td>
+                            @if (pathinfo($file->name_original, PATHINFO_EXTENSION) == 'pdf')
+                                <button class="btn btn-info open-pdf-modal" 
+                                data-path="{{ Storage::url($file->path) }}">
+                                    <i class="fas fa-file-pdf"></i>
+                                </button>
+
+                            {{-- @elseif (pathinfo($file->name_original, PATHINFO_EXTENSION)) --}}
+                            @elseif (in_array(strtolower(pathinfo($file->name_original, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
+                                <button class="btn btn-info open-image-modal" 
+                                data-path="{{ Storage::url($file->path) }}">
+                                    <i class="fas fa-file-image"></i>
+                                </button>
+                             @else
+                            <a class="btn btn-info"
+                                 target="_blank"
+                                 href="{{ Storage::url($file->path) }}">
+                                 <i class="fas fa-file-download"></i>
+                            </a>
+                            @endif
+                        </td>
+                        
+                        
                 @can('employees.destroy')
                         <td>
                             <a href="{{ route('employees.delete.file', $file->id) }}"
@@ -47,3 +77,24 @@
         </div>
     </div>
 @endif
+
+
+{{-- Script para Ejecutar la Modal para visualizar las imágenes y pdf --}}
+
+<script>
+    $(document).ready(function() {
+        // Abrir modal para PDF
+        $('.open-pdf-modal').click(function() {
+            var pdfPath = $(this).data('path');
+            $('#pdfViewer').attr('src', pdfPath);
+            $('#pdfModal').modal('show');
+        });
+
+        // Abrir modal para imágenes
+        $('.open-image-modal').click(function() {
+            var imagePath = $(this).data('path');
+            $('#imageViewer').attr('src', imagePath);
+            $('#imageModal').modal('show');
+        });
+    });
+</script>
