@@ -59,8 +59,18 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->noCustomerRole()->get();
         $proyectos = Proyecto::where('customer_id', Auth()->user()->customer_id)->get();
+        
+        if(Auth()->user()->role_id == 10){
+            //Solo puede crear usuarios de soporte
+            $roles = Role::where('id', 7)
+            ->orWhere('id', 8)
+            ->orWhere('id', 5)
+            ->get();
+        }else {
+            $roles = Role::orderBy('name')->noCustomerRole()->get();
+        }
+
         return view('modules.users.create', compact('roles', 'proyectos'));
     }
 
@@ -89,8 +99,8 @@ class UserController extends Controller
             $user->role_id=7;
             $user->customer_id=Auth()->user()->customer_id;
             $user->proyecto_id=$request->input('proyecto_id') ?? null;
-        }else if($userAuthenticated->role_id == 10) {
-            $user->role_id=5;
+        // }else if($userAuthenticated->role_id == 10) {
+        //     $user->role_id=5;
         }else {
             $user->role_id=$request->input('role_id');
             self::assignRole($user, $request->input('role_id'));

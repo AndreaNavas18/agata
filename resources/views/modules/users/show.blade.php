@@ -29,14 +29,14 @@
 
         @component('componentes.table')
             @slot('thead')
-            @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
+            @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10 || Auth()->user()->role_id == 2 || Auth()->user()->role_id == 7))
                 <th class="w-50">Roles</th>
             @endif
                 <th class="w-50">Usuario desde</th>
             @endslot
             @slot('tbody')
                 <tr>
-                    @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10))
+                    @if(!(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 10 || Auth()->user()->role_id == 2 || Auth()->user()->role_id == 7))
                     <td>
                         <ul>
                             @forelse($user->getRoleNames() as $rol)

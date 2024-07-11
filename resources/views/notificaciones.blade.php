@@ -1,4 +1,4 @@
-<div class="container">
+{{-- <div class="container">
     <div class="notifications mt-4">
         <h2 style="font-size: 18px">Notificaciones</h2>
         @if($notifications->isEmpty())
@@ -21,4 +21,4 @@
             </div>
         @endif
     </div>
-</div>
+</div> --}}
