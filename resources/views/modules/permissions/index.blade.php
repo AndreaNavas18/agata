@@ -158,11 +158,13 @@
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text prefijo">
-                                                                        {{ $perm->submodule->initials.'_' }}
+                                                                        {{ optional($perm->submodule)->initials ? optional($perm->submodule)->initials . '_' : '' }}
                                                                     </span>
                                                                 </div>
                                                                 @php
-                                                                    $perm->name = str_replace($perm->submodule->initials.'_', '', $perm->name);
+                                                                    if ($perm->submodule) {
+                                                                        $perm->name = str_replace($perm->submodule->initials . '_', '', $perm->name);
+                                                                    }
                                                                 @endphp
                                                                 <input class="form-control"
                                                                     type="text"
