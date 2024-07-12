@@ -460,18 +460,18 @@ class TicketController extends Controller
         
         // Verificar si el usuario ha optado por enviar un correo electrónico
         $this->sendEmail($ticket, $request->input('emails_notification'));
-        $this->sendNotification($ticket);
+        // $this->sendNotification($ticket);
         
       
         return redirect()->route('tickets.index')->with('ticket', $ticket);
     
     }
 
-    public function sendNotification(Ticket $ticket)
-    {
-        // Disparar el evento TicketCreated
-        $ticket->notify(new TicketCreatedNotification($ticket));
-    }
+    // public function sendNotification(Ticket $ticket)
+    // {
+    //     // Disparar el evento TicketCreated
+    //     $ticket->notify(new TicketCreatedNotification($ticket));
+    // }
 
     public function sendEmail(Ticket $ticket, $emails)
     {
