@@ -711,6 +711,8 @@ class TicketController extends Controller
 
         $action = $request->input('action');
 
+        \Log::info("Estado del tickedttt: ".$ticket->state);
+
         if($action === 'manage'){
             return view('modules.tickets.manage', compact(
                 'hoursClock',

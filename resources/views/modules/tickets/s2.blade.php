@@ -303,7 +303,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if ($ticket->state=='u')
+                        @if ($ticket->state=='ABIERTO')
                             <div class="flex-grow-0 py-3 px-4 border-top">
                                 <div class="d-flex align-items-center py-1">
                                     <div class="position-relative">
