@@ -102,10 +102,10 @@ class CustomerUserController extends Controller
         $user->password = bcrypt($request->input('password'));
         $user->status = 'Activo';
         $user->customer_id = $customerId;
-        $user->role_id=2;
+        $user->role_id=7;
         $user->full_name=$request->input('name').' '.$request->input('last_name');
-        // Asigna un rol al usuario (en este caso, el rol con ID 3)
-        UserController::assignRole($user, 2);
+        // Asigna un rol al usuario (en este caso, el rol con ID 7)
+        UserController::assignRole($user, 7);
 
         // Intenta guardar el usuario en la base de datos
         if (!$user->save()) {
