@@ -276,50 +276,78 @@ class Helpers
 		return $horas.':'.$minutos.':'.$segundos;
 	}
 
+//Funcion que estaba
+    // public static function sumaHora($hour1, $hour2) {
+      
+    //     list( $h1, $m1, $s1 ) = explode( ':', $hour1 );
+	// 	list( $h2, $m2, $s2 ) = explode( ':', $hour2 );
+        
+    //     Log::info("message", ["Valor de hour1: $hour1"]);
+
+
+	// 	$st = $s1+$s2;
+    //     $minutosAdd=0;
+	// 	if($st > 59){
+    //         $minutosAdd=intval(floor($st/60));
+	// 		$st = $st - 60 * $minutosAdd;
+    //         //agrego minutos que salen de los segundos a los minutos de la hora 2
+	// 		$m1 = $m1 + $minutosAdd;
+	// 	}
+
+    //     //calcular minutos totales
+	// 	$mt = $m1 + $m2;
+    //     $hoursAdd=0;
+	// 	if($mt > 59){
+    //         $hoursAdd=intval(floor($mt/60));
+    //         $mt = $mt - 60 * $hoursAdd;
+	// 		$h1 = $h1 + $hoursAdd;
+	// 	}
+
+	// 	$ht = $h1 + $h2;
+	// 	$c=0;
+
+
+	// 	if ($ht < 10){
+	// 		$ht = $c.$ht;
+	// 	}
+
+	// 	if ($mt < 10){
+	// 		$mt = $c.$mt;
+	// 	}
+
+	// 	if ($st < 10){
+	// 		$st = $c.$st;
+	// 	}
+	// 	return($ht.":".$mt.":".$st);
+    // }
 
     public static function sumaHora($hour1, $hour2) {
-      
-        list( $h1, $m1, $s1 ) = explode( ':', $hour1 );
-		list( $h2, $m2, $s2 ) = explode( ':', $hour2 );
-        
+        list($h1, $m1, $s1) = explode(':', $hour1);
+        list($h2, $m2, $s2) = explode(':', $hour2);
+    
         Log::info("message", ["Valor de hour1: $hour1"]);
-
-
-		$st = $s1+$s2;
-        $minutosAdd=0;
-		if($st > 59){
-            $minutosAdd=intval(floor($st/60));
-			$st = $st - 60 * $minutosAdd;
-            //agrego minutos que salen de los segundos a los minutos de la hora 2
-			$m1 = $m1 + $minutosAdd;
-		}
-
-        //calcular minutos totales
-		$mt = $m1 + $m2;
-        $hoursAdd=0;
-		if($mt > 59){
-            $hoursAdd=intval(floor($mt/60));
-            $mt = $mt - 60 * $hoursAdd;
-			$h1 = $h1 + $hoursAdd;
-		}
-
-		$ht = $h1 + $h2;
-		$c=0;
-
-
-		if ($ht < 10){
-			$ht = $c.$ht;
-		}
-
-		if ($mt < 10){
-			$mt = $c.$mt;
-		}
-
-		if ($st < 10){
-			$st = $c.$st;
-		}
-		return($ht.":".$mt.":".$st);
+        Log::info("message", ["Valor de hour2: $hour2"]);
+    
+        // Sumar segundos y minutos adicionales si se exceden 60
+        $st = $s1 + $s2;
+        $minutosAdd = intval($st / 60);
+        $st = $st % 60;
+    
+        $mt = $m1 + $m2 + $minutosAdd;
+        $hoursAdd = intval($mt / 60);
+        $mt = $mt % 60;
+    
+        $ht = $h1 + $h2 + $hoursAdd;
+    
+        // Formatear horas, minutos y segundos
+        $ht = str_pad($ht, 2, '0', STR_PAD_LEFT);
+        $mt = str_pad($mt, 2, '0', STR_PAD_LEFT);
+        $st = str_pad($st, 2, '0', STR_PAD_LEFT);
+    
+        return $ht . ":" . $mt . ":" . $st;
     }
+    
+
 
     public static function getIconFile($extension) {
         $icon='far fa-file-pdf';

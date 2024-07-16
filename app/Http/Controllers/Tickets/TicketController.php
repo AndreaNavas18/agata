@@ -816,6 +816,8 @@ class TicketController extends Controller
         //tiempo reloj
         $ticket = Ticket::findOrFail($id);
         $timeActually = Carbon::now();
+        Log::info('Tiempo actual: ' . $timeActually);
+
         DB::beginTransaction();
         //nueva respuesta
         $ticketReply                        = new TicketReply();
@@ -827,6 +829,7 @@ class TicketController extends Controller
            if($request->state == 'Cerrado'){
                $ticket->state_clock = 'Detenido';
                $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+               Log::info('Tiempo calculado: ' . $ticket->time_clock);
                $ticket->datetime_clock     = $timeActually;
            }
        }else {
@@ -842,7 +845,7 @@ class TicketController extends Controller
         }
 
         if($ticket->customer_id == Auth()->user()->customer_id) {
-            Log::info("AQUI ESTAMOS REY" .$ticket->state_clock);
+            Log::info("Cliente respondiendo, estado reloj: " . $ticket->state_clock);
             if($ticket->priority_id == 1){
                 if($ticket->state_clock == 'DETENIDO'){
                     $ticket->state_clock        = 'CORRIENDO';
@@ -856,7 +859,7 @@ class TicketController extends Controller
             //actualizar el ticket
             if(strcasecmp(strtolower($request->state_clock), strtolower($ticket->state_clock)) !== 0){
                 if ($request->filled('state_clock')) {
-                    Log::info("Este es el estado del ticketclock".$ticket->state_clock);
+                    Log::info("Actualizando estado reloj: " . $ticket->state_clock);
                     if ($request->state_clock == 'Corriendo') {
                         $ticket->state_clock        = $request->state_clock;
                         $ticket->datetime_clock     = $timeActually;
@@ -869,12 +872,14 @@ class TicketController extends Controller
                             //se esta deteniendo el reloj
                             $ticket->state_clock        = $request->state_clock;
                             $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+                            Log::info('Tiempo calculado al detener: ' . $ticket->time_clock);
                         }
                     }
                 } else {
                     if ($ticket->state_clock == 'Corriendo' &&  !$request->filled('state_clock')) {
                         $ticket->state_clock        = 'Detenido';
                         $ticket->time_clock         = Ticket::calculateTimeClock($timeActually, $ticket);
+                        Log::info('Tiempo calculado al detener sin estado: ' . $ticket->time_clock);
                         $ticket->datetime_clock     = $timeActually;
                     }
                 }
