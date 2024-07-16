@@ -64,13 +64,48 @@
         hours = {{ $hoursClock }};
         var secs, mins, gethours;
 
+        function startWatch1() {
+            if (seconds === 60) {
+                seconds = 0;
+                minutes = minutes + 1;
+            }
+
+            mins = minutes < 10 ? "0" + minutes  : minutes;
+
+            if (minutes === 60) {
+                minutes = 0;
+                hours = hours + 1;
+            }
+
+            gethours = hours < 10 ? "0" + hours : hours;
+            // gethours = hours;
+            secs = seconds < 10 ? "0" + seconds : seconds;
+
+
+            var clockHour = document.getElementById("clockHour");
+            clockHour.innerHTML = gethours;
+            //minutes
+            var clockMinute = document.getElementById("clockMinute");
+            clockMinute.innerHTML = mins;
+            //seconds
+            var clockSecond = document.getElementById("clockSecond");
+            clockSecond.innerHTML = secs;
+
+            /* call the seconds counter after displaying the Count-Up
+                and increment seconds by +1 to keep it counting */
+            seconds++;
+
+            /* call the setTimeout( ) to keep the Count-Up alive ! */
+            clearTime = setTimeout(startWatch, 1000);
+        }
+
         function startWatch() {
         if (seconds === 60) {
             seconds = 0;
             minutes = minutes + 1;
         }
 
-        mins = minutes < 10 ? "0" + minutes  : minutes;
+        mins = minutes < 10 ? "0" + minutes : minutes;
 
         if (minutes === 60) {
             minutes = 0;
@@ -78,26 +113,16 @@
         }
 
         gethours = hours < 10 ? "0" + hours : hours;
-        // gethours = hours;
         secs = seconds < 10 ? "0" + seconds : seconds;
 
+        document.getElementById("clockHour").innerHTML = gethours;
+        document.getElementById("clockMinute").innerHTML = mins;
+        document.getElementById("clockSecond").innerHTML = secs;
 
-        var clockHour = document.getElementById("clockHour");
-        clockHour.innerHTML = gethours;
-        //minutes
-        var clockMinute = document.getElementById("clockMinute");
-        clockMinute.innerHTML = mins;
-        //seconds
-        var clockSecond = document.getElementById("clockSecond");
-        clockSecond.innerHTML = secs;
-
-        /* call the seconds counter after displaying the Count-Up
-            and increment seconds by +1 to keep it counting */
         seconds++;
 
-        /* call the setTimeout( ) to keep the Count-Up alive ! */
         clearTime = setTimeout(startWatch, 1000);
-        }
+    }
 
         window.addEventListener("load", function() {
             startWatch();
