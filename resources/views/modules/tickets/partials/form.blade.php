@@ -161,7 +161,9 @@
 
                 @foreach ($listProjects as $projectRow)
                     <option value="{{ $projectRow === '' ? 'Null' : $projectRow }}"
-                        {{ isset($ticket) && $ticket->service->proyecto_id == $projectRow ? 'selected' : '' }}>
+                        {{ isset($ticket) && $ticket->service->proyecto_id == $projectRow ? 'selected' : '' }}
+                        {{ isset($service) && $service->proyecto_id == $projectRow ? 'selected' : '' }}
+                        >
                         @foreach ($projectsList as $projectRowList)
                             @if ($projectRow == null && !$sinProyecto)
                                 @php
@@ -286,7 +288,7 @@
     {{-- data-url-services="{{ route('tickets.customers.services') }}" --}}
     data-url-projects="{{ route('customers.ruta_para_obtener_proyectos') }}"
     data-url-services-project="{{ route('tickets.customers.servicesProject') }}">
-    {{--Obtener el id del suaurio autenticado para pasarlo al AJAX y así buscar todos  proyectos asociados a alguien servicio.--}}
+    {{--Obtener el id del suaurio autenticado para pasarlo al AJAX y así buscar todos  proyectos asociados a algun servicio.--}}
     <input type="hidden" id="id_customer" name="id_user" data-id-customer="{{ (in_array(Auth()->user()->role_id, [2, 3, 7, 8])) ? Auth()->user()->customer_id : '' }}">
 
 
