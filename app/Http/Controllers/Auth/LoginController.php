@@ -53,7 +53,6 @@ class LoginController extends Controller
      */
     public function authenticate(Request $request)
     {
-        \Log::info('a ver ps', $request->all());
         if (Auth::attempt([
             'email'   => $request->input('email'),
             'password' => $request->input('password'),

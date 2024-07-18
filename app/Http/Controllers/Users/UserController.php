@@ -85,40 +85,53 @@ class UserController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-        $request->validate([
-            'name' => 'required',
-            'last_name' => 'required',
-            'role_id' => '',
-            'password' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'proyecto_id' => '',
-        ]);
-        $user = new User();
-        $userAuthenticated = Auth()->user();
-        if ($userAuthenticated->role_id == 2 || $userAuthenticated->role_id == 3 || $userAuthenticated->role_id == 7 || $userAuthenticated->role_id == 8){
-            $user->role_id=7;
-            $user->customer_id=Auth()->user()->customer_id;
-            $user->proyecto_id=$request->input('proyecto_id') ?? null;
-        // }else if($userAuthenticated->role_id == 10) {
-        //     $user->role_id=5;
-        }else {
-            $user->role_id=$request->input('role_id');
-            self::assignRole($user, $request->input('role_id'));
-        }
+        try{
+            $request->validate([
+                'name' => 'required',
+                'last_name' => 'required',
+                'role_id' => '',
+                'password' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'proyecto_id' => 'nullable|array',
+                'proyecto_id.*' => 'exists:proyectos,id',
+            ]);
+            $user = new User();
+            $userAuthenticated = Auth()->user();
+            if ($userAuthenticated->role_id == 2 || $userAuthenticated->role_id == 3 || $userAuthenticated->role_id == 7 || $userAuthenticated->role_id == 8){
+                $user->role_id=7;
+                $user->customer_id=Auth()->user()->customer_id;
+            // }else if($userAuthenticated->role_id == 10) {
+            //     $user->role_id=5;
+            }else {
+                $user->role_id=$request->input('role_id');
+                self::assignRole($user, $request->input('role_id'));
+            }
 
-        $user->name = $request->input('name');
-        $user->last_name = $request->input('last_name');
-        $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
-        $user->status = 'Activo';
-        $user->full_name=$request->input('name').' '.$request->input('last_name');
-        if(!$user->save()) {
+            $user->name = $request->input('name');
+            $user->last_name = $request->input('last_name');
+            $user->email = $request->input('email');
+            $user->password = bcrypt($request->input('password'));
+            $user->status = 'Activo';
+            $user->full_name=$request->input('name').' '.$request->input('last_name');
+
+            if(!$user->save()) {
+                DB::rollBack();
+                Alert::error('Error', 'Error al guardar el registro.');
+            }
+
+            // Asigna los proyectos al usuario si existen
+            if ($request->has('proyecto_id')) {
+                $user->proyectos()->sync($request->input('proyecto_id'));
+            }
+
+            DB::commit();
+            Alert::success('¡Éxito!', 'Registro insertado exitosamente');
+            return redirect()->route('users.index');
+        }catch (\Exception $e) {
             DB::rollBack();
             Alert::error('Error', 'Error al guardar el registro.');
+            return redirect()->back()->withInput();
         }
-        DB::commit();
-        Alert::success('¡Éxito!', 'Registro insertado exitosamente');
-        return redirect()->route('users.index');
     }
 
     /**

@@ -20,7 +20,7 @@ use Session;
 
 class CustomerProyectoController extends Controller
 {
-    public function indexAll() {
+    public function indexAll1() {
 
         session::flash('tab','proyectosAll');
         $user = Auth()->user();
@@ -28,11 +28,13 @@ class CustomerProyectoController extends Controller
 
 
         if (in_array(Auth()->user()->role_id, $allowedRoles) && $user->customer_id) {
-            
-    
-            if(Auth()->user()->proyecto_id != null){
-                $customerServices = CustomerService::where('proyecto_id', Auth()->user()->proyecto_id);
+            \Log::info('Usuario con permisos para ver todos los proyectos');
+            if($user->proyectos()->exists()){
+                \Log::info('Usuario con proyectos asociados');
+                $proyectoIds = $user->proyectos->pluck('id')->toArray();
+                $customerServicesQuery->whereIn('proyecto_id', $proyectoIds);
             }else{
+                \Log::info('Usuario sin proyectos asociados');
                 $customerServices = CustomerService::where('customer_id', $user->customer_id);
             }
 
@@ -47,7 +49,6 @@ class CustomerProyectoController extends Controller
             $projectIds = $customerServices->pluck('proyecto_id')->unique();
             // $proyectos = Proyecto::whereIn('id', $projectIds)->get();
             $proyectos = Proyecto::whereIn('id', $projectIds)->paginate();
-
 
             $tabPanel='customerProyectosTabEdit';
             $typesInstalations = [
@@ -72,6 +73,7 @@ class CustomerProyectoController extends Controller
             ));
 
         }else {
+            \Log::info('Usuario de la empresa');
             $servicesList=Service::get();
             $customers= Customer::with('customerContacs','customerServices')->get();
             $countries= Country::get();
@@ -104,6 +106,100 @@ class CustomerProyectoController extends Controller
         }
 
     }
+
+    public function indexAll() {
+        session::flash('tab','proyectosAll');
+        $user = Auth()->user();
+        $allowedRoles = [2, 3, 7, 8];
+    
+        if (in_array($user->role_id, $allowedRoles) && $user->customer_id) {
+            \Log::info('Usuario con permisos para ver todos los proyectos');
+    
+            // Inicializamos la consulta de servicios de clientes
+            $customerServicesQuery = CustomerService::where('customer_id', $user->customer_id);
+    
+            if ($user->proyectos()->exists()) {
+                \Log::info('Usuario con proyectos asociados');
+                $proyectoIds = $user->proyectos->pluck('id')->toArray();
+                $customerServicesQuery->whereIn('proyecto_id', $proyectoIds);
+            } else {
+                \Log::info('Usuario sin proyectos asociados');
+            }
+    
+            // Obtener servicios de clientes
+            $customerServices = $customerServicesQuery->get();
+            
+            // Obtener el cliente relacionado
+            $customers = Customer::where('id', $user->customer_id)->get();
+            $customer = Customer::with('customerContacs', 'customerServices')->findOrFail($user->customer_id);
+    
+            // Obtener otros datos necesarios
+            $departments = Department::get();
+            $cities = City::get();
+            $countries = Country::get();
+            $servicesList = Service::get();
+            $typesServices = Service::get();
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+            $providers = Provider::get();
+            
+            // Obtener los ids únicos de los proyectos asociados a los servicios del cliente
+            $projectIds = $customerServices->pluck('proyecto_id')->unique();
+            $proyectos = Proyecto::whereIn('id', $projectIds)->paginate();
+    
+            $tabPanel = 'customerProyectosTabEdit';
+    
+            return view('modules.customers.proyectos.index', compact(
+                'customers',
+                'countries',
+                'departments',
+                'cities',
+                'tabPanel',
+                'customerServices',
+                'servicesList',
+                'typesServices',
+                'proyectos',
+                'typesInstalations',
+                'providers',
+            ));
+    
+        } else {
+            \Log::info('Usuario de la empresa');
+            
+            // Datos generales para usuarios sin permisos especiales
+            $servicesList = Service::get();
+            $customers = Customer::with('customerContacs','customerServices')->get();
+            $countries = Country::get();
+            $departments = Department::get();
+            $cities = City::get();
+            $customerServices = CustomerService::get();
+            $typesInstalations = [
+                'Propia'    =>'Propia',
+                'Terceros'  =>'Terceros'
+            ];
+            $providers = Provider::get();
+            $tabPanel = 'customerProyectosTabEdit';
+            $typesServices = Service::get();
+            $proyectos = Proyecto::paginate();
+    
+            return view('modules.customers.proyectos.index', compact(
+                'customers',
+                'countries',
+                'departments',
+                'cities',
+                'tabPanel',
+                'customerServices',
+                'servicesList',
+                'typesInstalations',
+                'providers',
+                'typesServices',
+                'proyectos',
+            ));
+        }
+    }
+    
 
 
     /**

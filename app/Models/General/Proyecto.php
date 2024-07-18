@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Customers\Customer;
 use App\Models\Customers\CustomerService;
 use FontLib\Table\Type\name;
+use App\Models\Users\User;
 
 class Proyecto extends Model
 {
@@ -40,6 +41,6 @@ class Proyecto extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'proyecto_id');
+        return $this->belongsToMany(User::class, 'details_users_proyectos', 'proyecto_id', 'user_id');
     }
 }

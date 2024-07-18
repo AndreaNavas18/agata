@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Http\Request;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
+use App\Models\General\Proyecto;
 
 class User extends Authenticatable
 {
@@ -89,9 +90,14 @@ class User extends Authenticatable
         return $query->where('customer_id', $customerId);
     }
 
-    public function proyecto()
+    // public function proyecto()
+    // {
+    //     return $this->belongsTo(Proyecto::class, 'proyecto_id');
+    // }
+
+    public function proyectos()
     {
-        return $this->belongsTo(Proyecto::class, 'proyecto_id');
+        return $this->belongsToMany(Proyecto::class, 'details_users_proyectos', 'user_id', 'proyecto_id');
     }
 
 }

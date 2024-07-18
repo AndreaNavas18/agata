@@ -107,7 +107,7 @@
                     </div>
                 </div>
 
-                @if(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 )
+                @if(Auth()->user()->role_id == 3 || Auth()->user()->role_id == 8 || Auth()->user()->role_id == 9)
                     <div class="col-sm-12 col-md-6">
                         <div class="form-group">
                             @component('componentes.label', [
@@ -117,8 +117,9 @@
                             @endcomponent
                             <select class="form-control selectpicker
                                 {{ $errors->has('proyecto_id') ? 'is-invalid' : '' }}"
-                                name="proyecto_id"
+                                name="proyecto_id[]"
                                 id="proyecto_id"
+                                multiple
                                 >
                                 <option value="">--Seleccione--</option>
                                 @foreach($proyectos as $proyecto)
