@@ -277,3 +277,6 @@
         </div>
      @endcomponent
 @endsection
+
+@include('componentes.modalFiles')
+

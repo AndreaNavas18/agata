@@ -324,9 +324,12 @@ class TicketController extends Controller
         if($serviceId != null){
             Log::info($serviceId);
             Log::info("Si tiene servicio Id");
+            $service = CustomerService::findOrFail($serviceId);
+
             //Quiero que le mande ese valor a la vista
             return view('modules.tickets.create', compact(
-            'serviceId', 
+            'serviceId',
+            'service', 
             'customersList',
             'positionsDepartmanets',
             'prioritiesList',
