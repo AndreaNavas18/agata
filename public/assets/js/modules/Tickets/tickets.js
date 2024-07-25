@@ -68,11 +68,13 @@ $('#employee_position_department_id').change(function () {
         }
         projectId = $('#project_id').val();
         if(!projectChanged && projectId!==undefined){
-            serachServicesProjectCustomer(customerId, projectId);
+            //Se pone temporalmente comentado para que deje mostrar el nombre del servicio, pero debe de cprregirse la logica para que el sevicio quede seleccionado filtrado por el proyecto al que opertenece.
+            // serachServicesProjectCustomer(customerId, projectId);
         }
+        
     });
 
-
+ 
 // Id del proyecto Seleccionado
 $('#project_id').on('change', function () {
     var projectId = $(this).val();
