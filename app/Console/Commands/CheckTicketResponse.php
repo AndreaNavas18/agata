@@ -49,7 +49,7 @@ class CheckTicketResponse extends Command
         }
 
         if (!empty($ticketsToSendEmail)) {
-            Mail::to('karennavas333@gmail.com')->send(new ReminderEmail($ticketsToSendEmail));
+            Mail::to('stratecsa@outlook.es')->send(new ReminderEmail($ticketsToSendEmail));
         }
 
         // return Command::SUCCESS;

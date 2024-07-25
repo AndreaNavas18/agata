@@ -59,8 +59,8 @@ class TicketCreatedNotification extends Notification
     {
             return [
                 'ticket_id' => $this->ticket->id,
-                'employee_name' => optional($this->ticket->employee)->name, // Usa optional para evitar errores si employee es null
-                'priority_name' => optional($this->ticket->priority)->name, // Usa optional para evitar errores si priority es null
+                'employee_name' => optional($this->ticket->employee)->name,
+                'priority_name' => optional($this->ticket->priority)->name,
                 'created_at' => $this->ticket->created_at->format('d/m/Y H:i'),
             ];
     }

@@ -177,7 +177,7 @@ class PqrController extends Controller
 
             if (!empty($agentEmail)) {
                 // Enviar correo electrónico al agente asignado
-                $recipients = [$agentEmail, 'karennavas333@gmail.com'];
+                $recipients = [$agentEmail, 'stratecsa@outlook.es'];
                 Mail::to($recipients)->send(new pqrAsignacionMail($pqr));
             } 
         }else {
@@ -189,7 +189,7 @@ class PqrController extends Controller
 
             $emails = $employees->pluck('email')->toArray();
              // Añadir correo adicional
-            $emails[] = 'karennavas333@gmail.com';
+            $emails[] = 'stratecsa@outlook.es';
 
             if (!empty($emails)) {
                 Mail::to($emails)->send(new PqrAsignacionMail($pqr));
