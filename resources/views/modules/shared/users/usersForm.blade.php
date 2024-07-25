@@ -80,6 +80,35 @@
                             class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}">
                     </div>
                 </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group">
+                        @component('componentes.label', [
+                            'title' => 'Proyecto',
+                            'id' => 'proyecto_id',
+                            'required' => ''])
+                        @endcomponent
+                        <select class="form-control selectpicker
+                            {{ $errors->has('proyecto_id') ? 'is-invalid' : '' }}"
+                            name="proyecto_id[]"
+                            id="proyecto_id"
+                            multiple
+                            >
+                            <option value="">--Seleccione--</option>
+                            @foreach($proyectos as $proyecto)
+                                <option value="{{ $proyecto->id }}">
+                                    {{-- {{ old('role_id') && old('role_id') == $rol->id ? 'selected' : ''}}> --}}
+                                    {{ $proyecto->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
         @endslot
         @slot('footer')

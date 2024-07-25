@@ -27,6 +27,6 @@
     @endcomponent
 
     {{-- modal --}}
-    @include('modules.Shared.Users.usersForm')
+    @include('modules.shared.users.usersForm')
 @endsection
 

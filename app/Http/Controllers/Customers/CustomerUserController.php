@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Session;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Models\General\Proyecto;
 
 class CustomerUserController extends Controller
 {
@@ -34,11 +35,14 @@ class CustomerUserController extends Controller
         // Define el panel de pestañas a mostrar en la vista
         $tabPanel = 'customerUsersTabEdit';
 
+        $proyectos = Proyecto::where('customer_id',$customerId)->get();
+
         // Devuelve la vista con el cliente, los usuarios asociados y el panel de pestañas
         return view('modules.customers.edit', compact(
             'customer',
             'users',
-            'tabPanel'
+            'tabPanel',
+            'proyectos'
         ));
     }
 
@@ -63,10 +67,14 @@ class CustomerUserController extends Controller
         // Define el panel de pestañas a mostrar en la vista
         $tabPanel = 'customerUsersTabShow';
 
+        $proyectos = Proyecto::where('customer_id',$customerId)->get();
+
+
         return view('modules.customers.show', compact(
             'customer',
             'users',
-            'tabPanel'
+            'tabPanel',
+            'proyectos'
         ));
     }
 
@@ -89,6 +97,8 @@ class CustomerUserController extends Controller
             'last_name' => 'required',
             'password' => 'required',
             'email' => 'required|email|unique:users,email',
+            'proyecto_id' => 'nullable|array',
+            'proyecto_id.*' => 'exists:proyectos,id',
         ]);
 
         // Comienza una transacción de base de datos
@@ -107,6 +117,7 @@ class CustomerUserController extends Controller
         // Asigna un rol al usuario (en este caso, el rol con ID 7)
         UserController::assignRole($user, 7);
 
+        
         // Intenta guardar el usuario en la base de datos
         if (!$user->save()) {
             // En caso de error, revierte la transacción
@@ -114,6 +125,10 @@ class CustomerUserController extends Controller
             Alert::error('Error', 'Error al guardar el registro.');
         } else {
             // En caso de éxito, confirma la transacción
+            if ($request->has('proyecto_id')) {
+                $user->proyectos()->sync($request->input('proyecto_id'));
+            }
+            
             DB::commit();
             Alert::success('Éxito', 'Registro insertado exitosamente');
         }
