@@ -53,7 +53,7 @@
                         <div class="col-8">
                             <div class="mt-4 mb-0 text-white">
                                 <h3 class="mb-0">{{$ticketsPending}}</h3>
-                                <p class="text-white mt-1 ">Tickets pendientes</p>
+                                <p class="text-white mt-1 ">Tickets sin respuesta</p>
                             </div>
                         </div>
                         <div class="col-4">
