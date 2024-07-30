@@ -47,24 +47,24 @@ Route::middleware(['can:customers.index'])->namespace('Customers')->name('custom
     *--------- servicios
     ***********************/
 
-    Route::get('/clientes/servicios/editar/{customerId}', [ CustomerServiceController::class, 'index' ])->name('services.index')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers.services.index');
+    // Route::get('/clientes/servicios/editar/{customerId}', [ CustomerServiceController::class, 'index' ])->name('services.index')
+    // ->where('id', '[0-9]+')
+    // ->middleware('can:customers.services.index');
 
-    Route::get('/clientes/servicios/editar/buscar/{customerId}', [ CustomerServiceController::class, 'indexSearch' ])->name('services.index.search')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers.services.index');
+    // Route::get('/clientes/servicios/editar/buscar/{customerId}', [ CustomerServiceController::class, 'indexSearch' ])->name('services.index.search')
+    // ->where('id', '[0-9]+')
+    // ->middleware('can:customers.services.index');
 
-    Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
-    ->where('id', '[0-9]+')
-    ->middleware('can:customers.services.index');
+    // Route::get('/clientes/servicios/ver/{customerId}', [ CustomerServiceController::class, 'show' ])->name('services.show')
+    // ->where('id', '[0-9]+')
+    // ->middleware('can:customers.services.index');
 
     Route::get('/clientes/servicios/ver/buscar/{customerId}', [ CustomerServiceController::class, 'showSearch' ])->name('services.show.search')
     ->where('id', '[0-9]+')
     ->middleware('can:customers.services.show');
 
-    Route::post('/clientes/servicios/crear/{customerId}',[ CustomerServiceController::class, 'store' ])->name('services.store')
-    ->middleware('can:customers.services.create');
+    // Route::post('/clientes/servicios/crear/{customerId?}',[ CustomerServiceController::class, 'store' ])->name('services.store')
+    // ->middleware('can:customers.services.create');
 
     Route::put('/clientes/servicios/editar/{id}', [ CustomerServiceController::class, 'update' ])->name('services.update')
     ->where('id', '[0-9]+')
